@@ -3,7 +3,12 @@
     "jest": "^27.1.1"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.6.7",
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
+    "framer-motion": "^4.1.17",
     "graphql-ws": "^5.5.0",
+    "react-icons": "^4.2.0",
     "uWebSockets.js": "uNetworking/uWebSockets.js#v19.3.0"
   }
 }
