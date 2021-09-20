@@ -198,9 +198,6 @@ fulcrum_gateway/.pnp.js
 # testing
 fulcrum_gateway/coverage
 
-# production
-fulcrum_gateway/build
-
 # misc
 fulcrum_gateway/.DS_Store
 fulcrum_gateway/.env.local
