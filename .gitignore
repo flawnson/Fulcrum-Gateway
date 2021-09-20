@@ -185,3 +185,29 @@ fabric.properties
 
 # Node directories and files
 node_modules/
+
+### Ignores created from npx create-react-app my-app --template nativebase-typescript
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+fulcrum_gateway/node_modules
+fulcrum_gateway/.pnp
+fulcrum_gateway/.pnp.js
+
+# testing
+fulcrum_gateway/coverage
+
+# production
+fulcrum_gateway/build
+
+# misc
+fulcrum_gateway/.DS_Store
+fulcrum_gateway/.env.local
+fulcrum_gateway/.env.development.local
+fulcrum_gateway/.env.test.local
+fulcrum_gateway/.env.production.local
+
+fulcrum_gateway/npm-debug.log*
+fulcrum_gateway/yarn-debug.log*
+fulcrum_gateway/yarn-error.log*
