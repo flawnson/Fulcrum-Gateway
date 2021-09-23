@@ -1,10 +1,16 @@
 import React from 'react';
-import { NativeBaseProvider, Box } from 'native-base';
+import { INativebaseConfig, NativeBaseProvider, Box } from 'native-base';
+import IDValidator from './src/components/IDValidator'
+import {TextInput} from "react-native";
+
+const config: object = {
+    strictMode: 'error',
+};
 
 function App() {
   return (
-      <NativeBaseProvider>
-        <Box>Hello world</Box>
+      <NativeBaseProvider config={config}>
+          <IDValidator />
       </NativeBaseProvider>
   );
 }
