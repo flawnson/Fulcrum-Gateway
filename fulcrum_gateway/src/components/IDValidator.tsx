@@ -10,7 +10,7 @@ import {
 import { SafeAreaView, StyleSheet, TextInput } from "react-native";
 
 function QueueIDForm() {
-    const [formData, setData] = React.useState<any>({});
+    const [formData, setData] = React.useState<any>({submitted: false});
     const [errors, setErrors] = React.useState<object>({});
     const validate = () => {
         if (formData.name === undefined) {
@@ -30,6 +30,7 @@ function QueueIDForm() {
     };
 
     const onSubmit = () => {
+        setData({...formData, submitted: true})
         validate() ? console.log('Submitted') : console.log('Validation Failed');
     };
 
@@ -46,7 +47,7 @@ function QueueIDForm() {
                 </FormControl.HelperText>
                 <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>Error Name</FormControl.ErrorMessage>
             </FormControl>
-            <Button onPress={onSubmit} mt="5" colorScheme="cyan" >
+            <Button onPress={onSubmit} mt="5" colorScheme="cyan" isLoading={formData.submitted} isLoadingText="Submitting">
                 Submit
             </Button>
         </VStack>
