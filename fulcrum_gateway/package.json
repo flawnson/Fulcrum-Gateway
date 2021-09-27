@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "expo": "^42.0.4",
+    "expo": "^1.0.0",
     "express": "^4.17.1",
     "graphql-ws": "^5.5.0",
     "native-base": "^3.1.0",
@@ -20,6 +20,7 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-svg": "^12.1.1",
     "react-native-web": "^0.17.1",
+    "react-router-native": "^5.2.1",
     "styled-components": "^5.3.1",
     "styled-system": "^5.1.5",
     "uWebSockets.js": "uNetworking/uWebSockets.js#v19.3.0"
