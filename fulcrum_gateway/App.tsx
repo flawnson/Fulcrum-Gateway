@@ -2,7 +2,7 @@ import React from 'react';
 import { NativeBaseProvider } from 'native-base';
 import { registerRootComponent } from 'expo';
 import { NativeRouter, Route, Link } from 'react-router-native';
-import IDValidator from './src/components/IDValidator'
+import IDValidator from './src/components/molecules/IDValidator'
 
 
 const config: object = {
@@ -11,14 +11,11 @@ const config: object = {
 
 function App() {
   return (
-      <NativeRouter>
-          <NativeBaseProvider config={config}>
+      <NativeBaseProvider config={config}>
+          <NativeRouter>
               <IDValidator />
-          </NativeBaseProvider>
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/topics" component={Topics} />
-      </NativeRouter>
+          </NativeRouter>
+      </NativeBaseProvider>
   );
 }
 

@@ -7,7 +7,6 @@ import {
     NativeBaseProvider,
     Center
 } from "native-base";
-import { SafeAreaView, StyleSheet, TextInput } from "react-native";
 
 function QueueIDForm() {
     const [formData, setData] = React.useState<any>({submitted: false});
