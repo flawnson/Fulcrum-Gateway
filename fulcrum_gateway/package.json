@@ -12,7 +12,7 @@
   "dependencies": {
     "@expo/config-types": "^42.0.0",
     "@types/react-router-native": "^5.1.1",
-    "expo": "^1.0.0",
+    "expo": "^42.0.4",
     "express": "^4.17.1",
     "graphql-ws": "^5.5.0",
     "native-base": "^3.1.0",

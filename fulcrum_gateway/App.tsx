@@ -1,8 +1,9 @@
 import React from 'react';
+import { StyleSheet, Text, View, AppRegistry } from "react-native";
 import { NativeBaseProvider } from 'native-base';
 import { registerRootComponent } from 'expo';
 import { NativeRouter, Route, Link } from 'react-router-native';
-import IDValidator from './src/components/molecules/IDValidator'
+import IDValidator from './src/components/organisms/queueUp'
 
 
 const config: object = {
@@ -13,11 +14,23 @@ function App() {
   return (
       <NativeBaseProvider config={config}>
           <NativeRouter>
-              <IDValidator />
+              <View style={styles.container}>
+                  <Route exact path="/" component={IDValidator} />
+              </View>
           </NativeRouter>
       </NativeBaseProvider>
   );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        marginTop: -50,
+        marginLeft: -100,
+    },
+});
 
 registerRootComponent(App)
 export default App

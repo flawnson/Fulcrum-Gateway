@@ -54,10 +54,8 @@ function QueueIDForm() {
 }
 export default function () {
     return (
-        <NativeBaseProvider>
-            <Center flex={1}>
-                <QueueIDForm />
-            </Center>
-        </NativeBaseProvider>
+        <Center flex={1}>
+            <QueueIDForm />
+        </Center>
     );
 }
