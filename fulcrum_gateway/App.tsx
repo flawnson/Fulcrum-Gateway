@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, AppRegistry } from "react-native";
 import { NativeBaseProvider } from 'native-base';
 import { registerRootComponent } from 'expo';
 import { NativeRouter, Route, Link } from 'react-router-native';
-import IDValidator from './src/components/organisms/queueUp'
+import queueUp from './src/components/organisms/queueUp'
 
 
 const config: object = {
@@ -15,7 +15,7 @@ function App() {
       <NativeBaseProvider config={config}>
           <NativeRouter>
               <View style={styles.container}>
-                  <Route exact path="/" component={IDValidator} />
+                  <Route exact path="/" component={queueUp} />
               </View>
           </NativeRouter>
       </NativeBaseProvider>
