@@ -26,7 +26,6 @@ export default function () {
 
 const styles = StyleSheet.create({
     qrCode: {
-        border: "solid",
         position: "absolute",
         height: 50,
         width: 50,
