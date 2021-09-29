@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, AppRegistry } from "react-native";
 import { NativeBaseProvider } from 'native-base';
 // @ts-ignore
-import { registerRootComponent } from 'expo';
 import { NativeRouter, Route, Link } from 'react-router-native';
 import queueUp from './src/components/organisms/queueUp'
 
@@ -33,5 +32,4 @@ const styles = StyleSheet.create({
     },
 });
 
-registerRootComponent(App)
 export default App
