@@ -4,22 +4,25 @@ import {StyleSheet,
         View,
         Image,
         TouchableWithoutFeedback} from 'react-native'
+import { Center } from 'native-base'
 import { Link } from 'react-router-native'
-import IDValidator from "../molecules/IDValidator"
+import IDValidator from '../molecules/IDValidator'
 
 
 export default function () {
     return (
-        <View>
-            <IDValidator/>
-            <Text style={styles.subText}>
-                Create your own virtual queue at <Text style={styles.linkText}>fiefoe.com</Text>
-            </Text>
-            <Link to={'/'}>
-                {/*<TouchableWithoutFeedback onPress={() => { moveToAddNewCustomer()} }}>*/}
-                <Image style={styles.qrCode} source={require("../../assets/images/qr-icon.png")}/>
-            </Link>
-        </View>
+        <Center flex={1}>
+            <View>
+                <IDValidator/>
+                <Text style={styles.subText}>
+                    Create your own virtual queue at <Text style={styles.linkText}>fiefoe.com</Text>
+                </Text>
+                <Link to={'/'}>
+                    {/*<TouchableWithoutFeedback onPress={() => { moveToAddNewCustomer()} }}>*/}
+                    <Image style={styles.qrCode} source={require("../../assets/images/qr-icon.png")}/>
+                </Link>
+            </View>
+        </Center>
     )
 }
 

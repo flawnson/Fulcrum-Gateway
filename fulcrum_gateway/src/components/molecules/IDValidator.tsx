@@ -4,7 +4,6 @@ import {
     FormControl,
     Input,
     Button,
-    NativeBaseProvider,
     Center
 } from "native-base";
 
@@ -36,14 +35,18 @@ function QueueIDForm() {
     return (
         <VStack width="90%" mx="3">
             <FormControl>
-                <FormControl.Label _text={{bold: true}}>Queue ID</FormControl.Label>
+                <Center>
+                    <FormControl.Label _text={{bold: true}}>Queue ID</FormControl.Label>
+                </Center>
                 <Input
                     placeholder="Ex. 6477135354"
                     onChangeText={(value) => setData({ ...formData, name: value })}
                 />
+                <Center>
                 <FormControl.HelperText _text={{fontSize: 'xs'}}>
                     Queue ID must be 10 characters.
                 </FormControl.HelperText>
+                </Center>
                 <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>Error Name</FormControl.ErrorMessage>
             </FormControl>
             <Button onPress={onSubmit} mt="5" colorScheme="cyan" isLoading={formData.submitted} isLoadingText="Submitting">
@@ -54,8 +57,6 @@ function QueueIDForm() {
 }
 export default function () {
     return (
-        <Center flex={1}>
-            <QueueIDForm />
-        </Center>
+        <QueueIDForm />
     );
 }

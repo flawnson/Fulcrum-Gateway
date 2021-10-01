@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, AppRegistry } from "react-native";
+import { StyleSheet, Text, View, } from "react-native";
 import { NativeBaseProvider } from 'native-base';
 // @ts-ignore
 import { NativeRouter, Route, Link } from 'react-router-native';
