@@ -11,23 +11,32 @@ import IDValidator from '../molecules/IDValidator'
 
 export default function () {
     return (
-        <Center flex={1}>
-            <View>
+        <View style={styles.container}>
+            <Center flex={1}>
+                <View>
                 <IDValidator/>
-                <Text style={styles.subText}>
-                    Create your own virtual queue at <Text style={styles.linkText}>fiefoe.com</Text>
-                </Text>
-                <Link to={'/'}>
-                    {/*<TouchableWithoutFeedback onPress={() => { moveToAddNewCustomer()} }}>*/}
-                    <Image style={styles.qrCode} source={require("../../assets/images/qr-icon.png")}/>
-                </Link>
-            </View>
-        </Center>
+                    <Text style={styles.subText}>
+                        Create your own virtual queue at <Text style={styles.linkText}>fiefoe.com</Text>
+                    </Text>
+                    <Link to={'/'}>
+                        {/*<TouchableWithoutFeedback onPress={() => { moveToAddNewCustomer()} }}>*/}
+                        <Image style={styles.qrCode} source={require("../../assets/images/qr-icon.png")}/>
+                    </Link>
+                </View>
+            </Center>
+        </View>
     )
 }
 
 
 const styles = StyleSheet.create({
+    container: {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        marginTop: -50,
+        marginLeft: -100,
+    },
     qrCode: {
         position: "absolute",
         height: 50,
