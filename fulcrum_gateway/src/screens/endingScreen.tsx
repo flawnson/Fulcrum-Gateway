@@ -4,7 +4,12 @@ import {StyleSheet,
         Text} from 'react-native'
 
 
-export default function() {
+type ending_props = {
+    summoningTime: number
+}
+
+
+export default function(props: ending_props) {
     return (
         <View>
             <Text style={styles.header}>
@@ -14,7 +19,7 @@ export default function() {
                 Reach the venue by
             </Text>
             <Text style={styles.header}>
-                10:00
+                {props.summoningTime}
             </Text>
             <Text style={styles.subHeader}>
                 To keep your position in line

@@ -15,24 +15,31 @@ const config: object = {
 
 function App() {
     const Stack = createNativeStackNavigator();
-    const isQueuedUp = true
+    const isInQueue = true
+    const isQueuer = true
+    const isOrganizer = false
 
     return (
       <NativeBaseProvider config={config}>
           <NavigationContainer>
               <Stack.Navigator initialRouteName="Home">
                   <Stack.Group screenOptions={{ headerStyle: { backgroundColor: 'papayawhip' } }} >
-                      {isQueuedUp ? (
+                      {isInQueue && isQueuer ? (
                       <>
                           <Stack.Screen name="Home" component={queueUp} />
-                          <Stack.Screen name="Profile" component={abandonedScreen} />
-                          <Stack.Screen name="Settings" component={abandonedScreen} />
-                      </>
-                      ) : (
-                      <>
                           <Stack.Screen name="QueuerDashboard" component={abandonedScreen} />
-                          <Stack.Screen name="SignUp" component={abandonedScreen} />
                       </>
+                      ) : isInQueue && isOrganizer ? (
+                          <>
+                              <Stack.Screen name="Home" component={abandonedScreen} />
+                              <Stack.Screen name="OrganizerDashboard" component={abandonedScreen} />
+                          </>
+                      ) : (
+                          <>
+                              <Stack.Screen name="Landing" component={abandonedScreen} />
+                              <Stack.Screen name="Landing" component={abandonedScreen} />
+                              <Stack.Screen name="SignUp" component={abandonedScreen} />
+                          </>
                       )}
                   </Stack.Group>
               </Stack.Navigator>

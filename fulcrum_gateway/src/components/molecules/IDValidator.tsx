@@ -43,9 +43,9 @@ function QueueIDForm() {
                     onChangeText={(value) => setData({ ...formData, name: value })}
                 />
                 <Center>
-                <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                    Queue ID must be 10 characters.
-                </FormControl.HelperText>
+                    <FormControl.HelperText _text={{fontSize: 'xs'}}>
+                        Queue ID must be 10 characters.
+                    </FormControl.HelperText>
                 </Center>
                 <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>Error Name</FormControl.ErrorMessage>
             </FormControl>
