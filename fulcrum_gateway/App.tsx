@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import queueUp from './src/components/organisms/queueUp'
 import abandonedScreen from "./src/screens/abandonedScreen";
+import {RootStackParamList} from "./types";
 
 
 const config: object = {
@@ -14,7 +15,7 @@ const config: object = {
 };
 
 function App() {
-    const Stack = createNativeStackNavigator();
+    const Stack = createNativeStackNavigator<RootStackParamList>();
     const isInQueue = true
     const isQueuer = true
     const isOrganizer = false
@@ -36,7 +37,6 @@ function App() {
                           </>
                       ) : (
                           <>
-                              <Stack.Screen name="Landing" component={abandonedScreen} />
                               <Stack.Screen name="Landing" component={abandonedScreen} />
                               <Stack.Screen name="SignUp" component={abandonedScreen} />
                           </>

@@ -6,8 +6,10 @@ import {
     Button,
     Center
 } from "native-base";
+import {homeScreenProps} from "../../../types";
 
-function QueueIDForm() {
+
+export default function ({route, navigation}: homeScreenProps) {
     const [formData, setData] = React.useState<any>({submitted: false});
     const [errors, setErrors] = React.useState<object>({});
     const validate = () => {
@@ -30,6 +32,7 @@ function QueueIDForm() {
     const onSubmit = () => {
         setData({...formData, submitted: true})
         validate() ? console.log('Submitted') : console.log('Validation Failed');
+        navigation.navigate('QueuerDashboard')
     };
 
     return (
@@ -53,10 +56,5 @@ function QueueIDForm() {
                 Submit
             </Button>
         </VStack>
-    );
-}
-export default function () {
-    return (
-        <QueueIDForm />
     );
 }
