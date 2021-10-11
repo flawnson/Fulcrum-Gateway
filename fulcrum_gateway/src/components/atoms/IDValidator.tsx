@@ -9,7 +9,7 @@ import {
 import {HomeScreenProps} from "../../../types";
 
 
-export default function ({route, navigation}: HomeScreenProps) {
+export default function ({navigation}: HomeScreenProps) {
     const [formData, setData] = React.useState<any>({submitted: false});
     const [errors, setErrors] = React.useState<object>({});
     const validate = () => {
@@ -32,7 +32,7 @@ export default function ({route, navigation}: HomeScreenProps) {
     const onSubmit = () => {
         setData({...formData, submitted: true})
         validate() ? console.log('Submitted') : console.log('Validation Failed');
-        navigation.navigate('QueuerDashboard')
+        navigation.navigate("QueuerDashboard")
     };
 
     return (
