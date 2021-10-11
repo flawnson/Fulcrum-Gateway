@@ -9,7 +9,6 @@ import queueUp from './src/components/organisms/queueUp'
 import abandonedScreen from "./src/screens/abandonedScreen";
 import {RootStackParamList} from "./types";
 
-
 const config: object = {
     strictMode: 'error',
 };

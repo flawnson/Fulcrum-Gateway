@@ -6,10 +6,10 @@ import {
     Button,
     Center
 } from "native-base";
-import {homeScreenProps} from "../../../types";
+import {HomeScreenProps} from "../../../types";
 
 
-export default function ({route, navigation}: homeScreenProps) {
+export default function ({route, navigation}: HomeScreenProps) {
     const [formData, setData] = React.useState<any>({submitted: false});
     const [errors, setErrors] = React.useState<object>({});
     const validate = () => {

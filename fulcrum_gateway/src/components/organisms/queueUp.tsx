@@ -7,18 +7,18 @@ import {StyleSheet,
 import { Center } from 'native-base'
 import { Link } from 'react-router-native'
 import IDValidator from '../molecules/IDValidator'
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import {useNavigation} from "@react-navigation/native";
-import {homeScreenProps} from "../../../types";
+import {useNavigation, useRoute} from "@react-navigation/native";
+import {HomeNavigationProps, HomeScreenRouteProps} from "../../../types";
 
 
 export default function () {
-    const navigation = useNavigation<homeScreenProps>()
+    const navigation = useNavigation<HomeNavigationProps>()
+    const route = useRoute<HomeScreenRouteProps>();
     return (
         <View style={styles.container}>
             <Center flex={1}>
                 <View>
-                <IDValidator navigation={navigation} />
+                <IDValidator route={route} navigation={navigation} />
                     <Text style={styles.subText}>
                         Create your own virtual queue at <Text style={styles.linkText}>fiefoe.com</Text>
                     </Text>
