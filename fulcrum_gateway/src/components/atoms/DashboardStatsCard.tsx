@@ -2,8 +2,7 @@ import React from 'react';
 import { VStack, Box, Divider } from 'native-base';
 
 type queuerStatsProps = {
-    lineIndex: number,
-    ETA: number
+    stat: number,
 }
 
 export default function (props: queuerStatsProps) {
