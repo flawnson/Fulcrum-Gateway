@@ -6,7 +6,9 @@ import { NativeRouter, Route, Link } from 'react-router-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import EnQueue from './src/components/organisms/EnQueue'
-import abandonedScreen from "./src/screens/abandonedScreen";
+import AbandonedScreen from "./src/screens/AbandonedScreen";
+import QueuerDashboard from "./src/pages/QueuerDashboard";
+import OrganizerDashboard from "./src/pages/QueuerDashboard";
 import {RootStackParamList} from "./types";
 
 const config: object = {
@@ -27,17 +29,17 @@ function App() {
                       {isInQueue && isQueuer ? (
                       <>
                           <Stack.Screen name="Home" component={EnQueue} />
-                          <Stack.Screen name="QueuerDashboard" component={abandonedScreen} />
+                          <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
                       </>
                       ) : isInQueue && isOrganizer ? (
                           <>
-                              <Stack.Screen name="Home" component={abandonedScreen} />
-                              <Stack.Screen name="OrganizerDashboard" component={abandonedScreen} />
+                              <Stack.Screen name="Home" component={AbandonedScreen} />
+                              <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboard} />
                           </>
                       ) : (
                           <>
-                              <Stack.Screen name="Landing" component={abandonedScreen} />
-                              <Stack.Screen name="SignUp" component={abandonedScreen} />
+                              <Stack.Screen name="Landing" component={AbandonedScreen} />
+                              <Stack.Screen name="SignUp" component={AbandonedScreen} />
                           </>
                       )}
                   </Stack.Group>

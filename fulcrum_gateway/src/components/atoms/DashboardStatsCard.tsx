@@ -1,5 +1,6 @@
 import React from 'react';
 import { VStack, Box, Divider } from 'native-base';
+import {StyleSheet} from "react-native";
 
 type queuerStatsProps = {
     stat: number,
@@ -22,3 +23,14 @@ export default function (props: queuerStatsProps) {
         </Box>
     );
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        marginTop: 200,
+        marginLeft: -100,
+    },
+})
