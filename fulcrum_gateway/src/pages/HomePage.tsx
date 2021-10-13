@@ -3,7 +3,7 @@ import {StyleSheet,
         Image,
         TouchableHighlight} from 'react-native'
 import {View} from 'native-base'
-import QueueUp from "../molecules/QueueUp";
+import QueueUp from "../components/molecules/EnqueueGroup";
 
 
 export default function () {
@@ -15,7 +15,7 @@ export default function () {
         <View>
             <QueueUp/>
             <TouchableHighlight style={styles.qrButton} onPress={goToCameraView}>
-                <Image style={styles.qrCode} source={require("../../assets/images/qr-icon.png")} />
+                <Image style={styles.qrCode} source={require("../assets/images/qr-icon.png")} />
             </TouchableHighlight>
         </View>
     )

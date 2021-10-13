@@ -5,11 +5,12 @@ import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NativeRouter, Route, Link } from 'react-router-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import EnQueue from './src/components/organisms/EnQueue'
+import HomePage from './src/pages/HomePage'
 import AbandonedScreen from "./src/screens/AbandonedScreen";
 import QueuerDashboard from "./src/pages/QueuerDashboard";
 import OrganizerDashboard from "./src/pages/QueuerDashboard";
 import {RootStackParamList} from "./types";
+import CreateQueuePage from "./src/pages/CreateQueuePage";
 
 const config: object = {
     strictMode: 'error',
@@ -18,8 +19,8 @@ const config: object = {
 function App() {
     const Stack = createNativeStackNavigator<RootStackParamList>();
     const isInQueue = true
-    const isQueuer = true
-    const isOrganizer = false
+    const isQueuer = false
+    const isOrganizer = true
 
     return (
       <NativeBaseProvider config={config} theme={theme}>
@@ -28,12 +29,13 @@ function App() {
                   <Stack.Group screenOptions={{ headerStyle: { backgroundColor: 'papayawhip' } }} >
                       {isInQueue && isQueuer ? (
                       <>
-                          <Stack.Screen name="Home" component={EnQueue} />
+                          <Stack.Screen name="Home" component={HomePage} />
                           <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
                       </>
                       ) : isInQueue && isOrganizer ? (
                           <>
-                              <Stack.Screen name="Home" component={AbandonedScreen} />
+                              <Stack.Screen name="Home" component={HomePage} />
+                              <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
                               <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboard} />
                           </>
                       ) : (
