@@ -1,3 +1,4 @@
+import React from 'react';
 import DashboardStatsCard from "../atoms/DashboardStatsCard";
 import {View} from "native-base";
 
@@ -7,11 +8,10 @@ type queuerStatsProps = {
     eta: number,
     waited: number,
     avg: number,
-    values: Function,  // Not sure if this is the best way to be doing this...
 }
 
 export default function (props: queuerStatsProps) {
-    const queuerStatCards = props.values().map((queuerStat: number) => <DashboardStatsCard stat={queuerStat}/>)
+    const queuerStatCards = Object.values(props).map((queuerStat) => <DashboardStatsCard stat={queuerStat}/>)
 
     return (
         <View>

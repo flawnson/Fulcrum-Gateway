@@ -8,7 +8,6 @@ export default function () {
         eta: 15,
         waited: 5,
         avg: 10,
-        values: Function,  // Not sure if this is the best way to be doing this...
     }
     return (
         <View>
