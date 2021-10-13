@@ -29,9 +29,17 @@ export default function ({navigation}: HomeScreenProps) {
         return true;
     };
 
-    const onSubmit = () => {
+    const onSuccess = () => {
         setData({...formData, submitted: true})
-        validate() ? navigation.navigate("QueuerDashboard") : setErrors({...errors, invalid: "invalid submission"});
+        navigation.navigate("QueuerDashboard")
+    }
+
+    const onFailure = () => {
+        setErrors({...errors, invalid: "invalid submission"})
+    }
+
+    const onSubmit = () => {
+        validate() ?  onSuccess() : onFailure();
     };
 
     return (
