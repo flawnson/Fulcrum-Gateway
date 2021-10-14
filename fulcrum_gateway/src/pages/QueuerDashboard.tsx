@@ -7,10 +7,16 @@ import QueuerDashboardGroup from "../components/organisms/QueuerDashboardStats";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps>()
+    const tempProps = {
+        index: 3,
+        eta: 15,
+        waited: 5,
+        avg: 10,
+    }
 
     return (
         <View>
-            <QueuerDashboardGroup/>
+            <QueuerDashboardGroup queuerDashboardProps={tempProps}/>
         </View>
     )
 }

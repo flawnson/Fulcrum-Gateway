@@ -35,6 +35,7 @@ export default function ({navigation}: HomeScreenProps) {
     }
 
     const onFailure = () => {
+        setData({...formData, submitted: false})
         setErrors({...errors, invalid: "invalid submission"})
     }
 

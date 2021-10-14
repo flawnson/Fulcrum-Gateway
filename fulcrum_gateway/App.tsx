@@ -19,8 +19,8 @@ const config: object = {
 function App() {
     const Stack = createNativeStackNavigator<RootStackParamList>();
     const isInQueue = true
-    const isQueuer = false
-    const isOrganizer = true
+    const isQueuer = true
+    const isOrganizer = false
 
     return (
       <NativeBaseProvider config={config} theme={theme}>

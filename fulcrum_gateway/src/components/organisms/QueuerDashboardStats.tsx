@@ -2,16 +2,19 @@ import React from 'react';
 import QueuerDashboardStatsCardGroup from "../molecules/QueuerStatsCardGroup";
 import {View} from "native-base";
 
-export default function () {
-    const tempProps = {
-        index: 3,
-        eta: 15,
-        waited: 5,
-        avg: 10,
+type Props = {
+    queuerDashboardProps: {
+        index: number,
+        eta: number,
+        waited: number,
+        avg: number,
     }
+}
+
+export default function (props: Props) {
     return (
         <View>
-            <QueuerDashboardStatsCardGroup {...tempProps}/>
+            <QueuerDashboardStatsCardGroup {...props.queuerDashboardProps}/>
         </View>
     )
 }

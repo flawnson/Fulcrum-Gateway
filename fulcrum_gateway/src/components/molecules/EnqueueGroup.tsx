@@ -12,10 +12,6 @@ export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
 
-    const goToCameraView = () => {
-        console.log("yes")
-    };
-
     return (
         <Center style={styles.container} flex={1}>
             <IDValidator route={route} navigation={navigation} />

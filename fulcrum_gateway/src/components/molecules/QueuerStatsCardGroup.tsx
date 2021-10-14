@@ -11,7 +11,8 @@ type queuerStatsProps = {
 }
 
 export default function (props: queuerStatsProps) {
-    const queuerStatCards = Object.values(props).map((queuerStat) => <DashboardStatsCard stat={queuerStat}/>)
+    const queuerStatCards = Object.entries(props).map(([key, queuerStat]) =>
+        <DashboardStatsCard key={key} stat={queuerStat}/>)
 
     return (
         <View>
