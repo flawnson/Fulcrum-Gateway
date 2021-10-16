@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet,
         Text} from 'react-native'
 import { Center, View } from 'native-base'
-import { Link } from 'react-router-native'
 import IDValidator from '../atoms/EnqueueForm'
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps} from "../../../types";

@@ -60,7 +60,7 @@ export default function ({navigation}: HomeScreenProps) {
                 </Center>
                 <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>Error Name</FormControl.ErrorMessage>
             </FormControl>
-            <Button onPress={onSubmit} mt="5" colorScheme="cyan" isLoading={formData.submitted} isLoadingText="Submitting">
+            <Button onPress={onSubmit} mt="5" isLoading={formData.submitted} isLoadingText="Submitting">
                 Submit
             </Button>
         </VStack>

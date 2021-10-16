@@ -9,8 +9,9 @@ import HomePage from './src/pages/HomePage'
 import AbandonedScreen from "./src/screens/AbandonedScreen";
 import QueuerDashboard from "./src/pages/QueuerDashboard";
 import OrganizerDashboard from "./src/pages/QueuerDashboard";
-import {RootStackParamList} from "./types";
 import CreateQueuePage from "./src/pages/CreateQueuePage";
+import LandingPage from "./src/screens/LandingPage";
+import {RootStackParamList} from "./types";
 
 const config: object = {
     strictMode: 'error',
@@ -30,11 +31,13 @@ function App() {
                       {isInQueue && isQueuer ? (
                       <>
                           <Stack.Screen name="Home" component={HomePage} />
+                          <Stack.Screen name="LandingPage" component={LandingPage} />
                           <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
                       </>
                       ) : isInQueue && isOrganizer ? (
                           <>
                               <Stack.Screen name="Home" component={HomePage} />
+                              <Stack.Screen name="LandingPage" component={LandingPage} />
                               <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
                               <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboard} />
                           </>
@@ -74,7 +77,17 @@ const theme = extendTheme({
     },
     config: {
         // Changing initialColorMode to 'dark'
-        initialColorMode: 'dark',
+        initialColorMode: 'light',
+    },
+    components: {
+        Button: {
+            baseStyle: {},
+            defaultProps: {
+                colorScheme: 'red',
+            },
+            variants: {},
+            sizes: {},
+        },
     },
 });
 
