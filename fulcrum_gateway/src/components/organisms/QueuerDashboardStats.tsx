@@ -1,6 +1,6 @@
 import React from 'react';
 import QueuerDashboardStatsCardGroup from "../molecules/QueuerStatsCardGroup";
-import {View} from "native-base";
+import {SimpleGrid} from "native-base";
 
 type Props = {
     queuerDashboardProps: {
@@ -13,9 +13,7 @@ type Props = {
 
 export default function (props: Props) {
     return (
-        <View>
-            <QueuerDashboardStatsCardGroup {...props.queuerDashboardProps}/>
-        </View>
+        <QueuerDashboardStatsCardGroup {...props.queuerDashboardProps}/>
     )
 }
 

@@ -1,7 +1,8 @@
 import React from 'react'
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
-import {StyleSheet, View} from 'react-native'
+import {StyleSheet} from 'react-native'
+import {View, VStack, SimpleGrid} from "native-base";
 import QueuerDashboardGroup from "../components/organisms/QueuerDashboardStats";
 
 
@@ -15,8 +16,6 @@ export default function () {
     }
 
     return (
-        <View>
-            <QueuerDashboardGroup queuerDashboardProps={tempProps}/>
-        </View>
+        <QueuerDashboardGroup queuerDashboardProps={tempProps}/>
     )
 }
