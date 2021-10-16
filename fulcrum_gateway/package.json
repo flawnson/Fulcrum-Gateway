@@ -10,22 +10,44 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@types/react-native": "^0.65.2",
+    "@expo/config-types": "^42.0.0",
+    "@react-navigation/native": "^6.0.4",
+    "@react-navigation/native-stack": "^6.2.2",
     "@types/react-router-native": "^5.1.1",
     "expo": "^42.0.4",
-    "native-base": "^3.2.0",
-    "react": "^17.0.2",
+    "express": "^4.17.1",
+    "graphql-ws": "^5.5.0",
+    "native-base": "^3.1.0",
+    "react": "17.0.2",
+    "react-dom": "^17.0.2",
     "react-native": "0.65.1",
-    "react-native-safe-area-context": "^3.3.2",
-    "react-native-svg": "^12.1.1",
+    "react-native-safe-area-context": "3.2.0",
+    "react-native-screens": "^3.8.0",
+    "react-native-svg": "12.1.1",
+    "react-native-web": "~0.13.12",
     "react-router-native": "^5.2.1",
     "styled-components": "^5.3.1",
-    "styled-system": "^5.1.5"
+    "styled-system": "^5.1.5",
+    "uWebSockets.js": "uNetworking/uWebSockets.js#v19.3.0"
   },
   "devDependencies": {
+    "@babel/core": "~7.9.0",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
     "@types/jest": "^26.0.23",
+    "@types/react-native": "~0.63.2",
+    "@types/react-test-renderer": "^17.0.1",
+    "babel-jest": "^26.6.3",
+    "babel-plugin-react-native-web": "^0.17.1",
+    "eslint": "^7.14.0",
     "jest": "^27.2.0",
+    "metro-react-native-babel-preset": "^0.66.0",
+    "react-native-codegen": "^0.0.7",
+    "react-test-renderer": "17.0.2",
     "typescript": "~4.0.0"
+  },
+  "resolutions": {
+    "@types/react": "^17"
   },
   "jest": {
     "preset": "react-native",

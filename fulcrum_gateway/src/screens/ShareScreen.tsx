@@ -5,7 +5,13 @@ import {StyleSheet,
         View} from 'react-native'
 
 
-export default function() {
+type share_props = {
+    currentQueueQR: Image,
+    currentQueueID: number,
+}
+
+
+export default function(props: share_props) {
     return (
         <View>
             <Text style={styles.header}>
@@ -13,7 +19,7 @@ export default function() {
             </Text>
             <Image source={require("../assets/images/qr-icon-black.png")}/>
             <Text style={styles.subText}>
-                6477135354
+                {props.currentQueueID}
             </Text>
         </View>
     )
