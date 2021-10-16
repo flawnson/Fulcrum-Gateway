@@ -1,7 +1,8 @@
 import React from 'react'
 import {extendTheme} from "native-base";
+import {DefaultTheme} from "@react-navigation/native";
 
-export const theme = extendTheme({
+export const nativebaseTheme = extendTheme({
     colors: {
         // Add new color
         primary: {
@@ -23,17 +24,9 @@ export const theme = extendTheme({
     },
     config: {
         // Changing initialColorMode to 'dark'
-        initialColorMode: 'light',
+        initialColorMode: 'dark',
     },
     components: {
-        View: {
-            defaultProps: {
-            }
-        },
-        Center: {
-            defaultProps: {
-            }
-        },
         Button: {
             baseStyle: {},
             defaultProps: {
@@ -44,3 +37,14 @@ export const theme = extendTheme({
         },
     },
 });
+
+
+export const navigationTheme = { // https://reactnavigation.org/docs/themes/
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        background: '#8743FF',
+    },
+};
+
+

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native'
 import { Center, Text } from 'native-base'
-import IDValidator from '../atoms/EnqueueForm'
+import EnqueueForm from '../atoms/EnqueueForm'
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps} from "../../../types";
 
@@ -12,7 +12,7 @@ export default function () {
 
     return (
         <Center style={styles.container} flex={1}>
-            <IDValidator route={route} navigation={navigation} />
+            <EnqueueForm route={route} navigation={navigation} />
             <Text style={styles.subText}>
                 Create your own virtual queue at
                 <Text style={styles.linkText} onPress={() => navigation.navigate('LandingPage')}> fiefoe.com</Text>
