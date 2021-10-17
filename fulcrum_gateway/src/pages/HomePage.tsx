@@ -2,11 +2,14 @@ import React from 'react';
 import {StyleSheet,
         Image,
         TouchableHighlight} from 'react-native'
-import {View} from 'native-base'
+import {View,
+        Button,
+        useColorMode} from 'native-base'
 import EnqueueGroup from "../components/molecules/EnqueueGroup";
 
 
 export default function () {
+    const { colorMode, toggleColorMode } = useColorMode();
     const goToCameraView = () => {
         console.log("yes")
     };
@@ -14,6 +17,7 @@ export default function () {
     return (
         <View>
             <EnqueueGroup/>
+            <Button onPress={toggleColorMode}>Toggle</Button>
             <TouchableHighlight style={styles.qrButton} onPress={goToCameraView}>
                 <Image style={styles.qrCode} source={require("../assets/images/qr-icon.png")} />
             </TouchableHighlight>

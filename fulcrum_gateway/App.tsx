@@ -13,6 +13,7 @@ import CreateQueuePage from "./src/pages/CreateQueuePage";
 import LandingPage from "./src/screens/LandingPage";
 import {RootStackParamList} from "./types";
 import {nativebaseTheme, navigationTheme} from "./theme";
+import { registerRootComponent } from 'expo';
 
 const config: object = {
     strictMode: 'error',
@@ -25,8 +26,8 @@ function App() {
     const isOrganizer = false
 
     return (
-      <NativeBaseProvider config={config} theme={nativebaseTheme}>
-          <NavigationContainer theme={navigationTheme}>
+      <NativeBaseProvider config={config} theme={nativebaseTheme()}>
+          <NavigationContainer theme={navigationTheme()}>
               <Stack.Navigator initialRouteName="Home">
                   <Stack.Group screenOptions={{ headerStyle: { backgroundColor: 'papayawhip' } }} >
                       {isInQueue && isQueuer ? (
@@ -57,3 +58,4 @@ function App() {
 
 
 export default App
+registerRootComponent(App)
