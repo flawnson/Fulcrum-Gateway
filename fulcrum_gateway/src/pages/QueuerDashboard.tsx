@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
 import {StyleSheet} from 'react-native'
 import {Center, Heading, Text, Image} from "native-base";
 import QueuerDashboardGroup from "../components/organisms/QueuerDashboardStats";
+import useInterval from "../api/useInterval";
 
 
 export default function () {
@@ -14,6 +15,13 @@ export default function () {
         waited: 5,
         avg: 10,
     }
+    const [props, setProps] = useState(tempProps)
+
+    useInterval(async () => {
+        console.log("checking")
+        const response = await (() => tempProps)
+        setProps(response)
+    }, 1000)
 
     return (
         <Center style={styles.animationFormat}>
@@ -25,7 +33,7 @@ export default function () {
             />
             <Text style={styles.textFormat}>Almost there!</Text>
             <Center>
-                <QueuerDashboardGroup queuerDashboardProps={tempProps}/>
+                <QueuerDashboardGroup queuerDashboardProps={props}/>
             </Center>
         </Center>
     )

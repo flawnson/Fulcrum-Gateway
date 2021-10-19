@@ -1,10 +1,10 @@
 import React from 'react'
-import {extendTheme} from "native-base";
+import {extendTheme, useColorMode} from "native-base";
 import {DarkTheme, DefaultTheme} from "@react-navigation/native";
 import {useColorScheme} from "react-native";
 
 export function nativebaseTheme () {
-    const colorTheme = useColorScheme()
+    const { colorMode } = useColorMode();
     const darkTheme = {
         colors: {
             // Add new color
@@ -33,7 +33,7 @@ export function nativebaseTheme () {
             Button: {
                 baseStyle: {},
                 defaultProps: {
-                    colorScheme: 'green',
+                    colorScheme: 'red',
                 },
                 variants: {},
                 sizes: {},
@@ -46,7 +46,7 @@ export function nativebaseTheme () {
             }
         },
     }
-    const defaultTheme = {
+    const lightTheme = {
         colors: {
             // Add new color
             primary: {
@@ -82,15 +82,16 @@ export function nativebaseTheme () {
         },
     }
 
-    return extendTheme(colorTheme === 'dark' ? darkTheme : defaultTheme);
+    return extendTheme(colorMode === 'dark' ? darkTheme : lightTheme);
 }
 
 export function navigationTheme () {  // https://reactnavigation.org/docs/themes/
+    const { colorMode } = useColorMode();
     return ({
-        ...('dark' === 'dark' ? DarkTheme : DefaultTheme),  // Should do useColorScheme() hook from react native
+        ...(colorMode === 'dark' ? DarkTheme : DefaultTheme),  // Should do useColorScheme() hook from react native
         colors: {
-            ...('dark' === 'dark' ? DarkTheme.colors : DefaultTheme.colors),
-            background: ('dark' === 'dark' ? '#8743FF' : '#ffffff'),
+            ...(colorMode === 'dark' ? DarkTheme.colors : DefaultTheme.colors),
+            background: (colorMode === 'dark' ? '#8743FF' : '#ffffff'),
         }
     })
 }
