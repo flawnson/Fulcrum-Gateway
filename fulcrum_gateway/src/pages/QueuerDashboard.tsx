@@ -18,10 +18,11 @@ export default function () {
     const [props, setProps] = useState(tempProps)
 
     useInterval(async () => {
-        console.log("checking")
-        const response = await (() => tempProps)
-        setProps(response)
-    }, 1000)
+        console.log(props)
+        // const response = await (() => ({'index': 2, 'eta': 10, 'waited': 8, 'avg': 9}))
+        const response = await fetch('http://localhost:8080/queuer/stats')
+        setProps(await response.json())
+    }, 5000)
 
     return (
         <Center style={styles.animationFormat}>
