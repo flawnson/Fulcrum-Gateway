@@ -2,36 +2,51 @@ import React from 'react';
 import {StyleSheet,
         View,
         Text} from 'react-native'
+import {useNavigation} from "@react-navigation/native";
+import {HomeScreenProps} from "../../types";
+import {Center} from "native-base";
 
 
 export default function() {
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     return (
         <View>
-            <Text style={styles.header}>
-                Come again soon!
-            </Text>
-            <Text style={styles.subText}>
-                Requeue or create your own queue at <Text style={styles.linkText}>fiefoe.com</Text>
-            </Text>
+            <Center style={styles.container}>
+                <Text style={styles.header}>
+                    Come again soon!
+                </Text>
+                <Text style={styles.subText}>
+                    Requeue or create your own queue at
+                    <Text style={styles.linkText} onPress={() => navigation.navigate('LandingPage')}> fiefoe.com</Text>
+                </Text>
+            </Center>
         </View>
     )
 }
 
 
 const styles = StyleSheet.create({
-    header: {
+    container: {
         position: "absolute",
-        textAlign: "center",
+        top: "50%",
+        left: "50%",
+        marginTop: 200,
+        marginLeft: -100,
+    },
+    header: {
+        margin: 10,
         fontSize: 40,
-        fontWeight: "bold"
+        fontFamily: 'Poppins-Light.otf',
+        textAlign: "center",
     },
     subText: {
-        position: "absolute",
-        top: 300,
-        textAlign: "center"
+        margin: 10,
+        textAlign: "center",
     },
     linkText: {
-        fontWeight: 'bold'
+        textAlign: "center",
+        fontFamily: 'Poppins-ExtraBold.otf',
+        fontWeight: 'bold',
     }
 
 })

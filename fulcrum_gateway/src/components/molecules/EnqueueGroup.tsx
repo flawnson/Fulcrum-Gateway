@@ -11,7 +11,7 @@ export default function () {
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
 
     return (
-        <Center style={styles.container} flex={1}>
+        <Center style={styles.container}>
             <EnqueueForm route={route} navigation={navigation} />
             <Text style={styles.subText}>
                 Create your own virtual queue at
@@ -35,9 +35,11 @@ const styles = StyleSheet.create({
         top: 300,
         textAlign: "center",
         marginTop: 50,
+        fontFamily: 'Poppins-Regular.otf'
     },
     linkText: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'Poppins-Regular.otf'
     }
 });
 
