@@ -1,16 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import {FormControl,
-        VStack, Center,
-        Input, Button,
-        Slider, Stack,
-        Text} from 'native-base'
+import {FormControl, VStack, Center, Input, Button, Select, Stack, Text} from 'native-base'
 import {HomeScreenProps} from "../../../types";
 
 type defaultData = {
     submitted: boolean,
-    name: string,
-    maxSize: number,
-    gracePeriod: number,
+    name: string
 }
 
 type defaultErrors = {
@@ -19,13 +13,10 @@ type defaultErrors = {
 }
 
 export default function ({navigation}: HomeScreenProps) {
-    const defaultData = {submitted: false, name: "Sample Queue name", maxSize: 9, gracePeriod: 0}
+    const defaultData = {submitted: false, name: "Sample Queue name"}
     const defaultErrors = {nameInvalid: false}
     const [formData, setData] = useState<defaultData>(defaultData);
     const [errors, setErrors] = useState<defaultErrors>(defaultErrors);
-    const [onChangeValue, setOnChangeValue] = useState(500)
-    const [onChangeEndValue, setOnChangeEndValue] = useState(500)
-    const [gracePeriod, setGracePeriod] = useState(5)
 
     useEffect(() => {validate()})
 
@@ -90,48 +81,20 @@ export default function ({navigation}: HomeScreenProps) {
             <FormControl isRequired isInvalid={errors.nameInvalid}>
                 <Stack>
                     <Center>
-                        <FormControl.Label _text={{bold: true}}>Cap the queue at {onChangeValue} queuers</FormControl.Label>
+                        <FormControl.Label _text={{bold: true}}>What type of business are you?</FormControl.Label>
                     </Center>
                     <Center>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>There is a maximum of 1000 queuers allowed</Text>
+                            <Text>Just so we can get an idea of the scale and velocity of the queue</Text>
                         </FormControl.HelperText>
                     </Center>
-                    <Slider
-                        defaultValue={500}
-                        colorScheme="cyan"
-                        onChange={(v) => {
-                            setOnChangeValue(Math.floor(v))
-                        }}
-                        onChangeEnd={(v) => {
-                            v && setOnChangeEndValue(Math.floor(v))
-                            setData({...formData, maxSize: v})
-                        }}
-                        minValue={0}
-                        maxValue={1000}
-                    >
-                        <Slider.Track>
-                            <Slider.FilledTrack />
-                        </Slider.Track>
-                        <Slider.Thumb />
-                    </Slider>
-                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
-                </Stack>
-            </FormControl>
-            <FormControl isRequired isInvalid={errors.nameInvalid}>
-                <Stack>
-                    <Center>
-                        <FormControl.Label _text={{bold: true}}>Wait for {formData.gracePeriod} minutes when summoning a queuer</FormControl.Label>
-                    </Center>
-                    <Center>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>Set a grace period for summoned queuers to reach your venue</Text>
-                        </FormControl.HelperText>
-                    </Center>
-                    <Input
-                        placeholder={"5"}
-                        onChangeText={(value) => setData({ ...formData, gracePeriod: parseInt(value) })}
-                    />
+                    <Select placeholder={"Fictional restaurant"}>
+                        <Select.Item label="Media" value="media" />
+                        <Select.Item label="Retail" value="retail" />
+                        <Select.Item label="Restaurant" value="restaurant" />
+                        <Select.Item label="Entertainment" value="entertainment" />
+                        <Select.Item label="Service" value="service" />
+                    </Select>
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
