@@ -4,6 +4,7 @@ import {HomeScreenProps} from "../../types";
 import {StyleSheet} from 'react-native'
 import {Center, Heading, Text, Image} from "native-base";
 import QueuerDashboardGroup from "../components/organisms/QueuerDashboardStats";
+import QueuerDashboardMenu from "../containers/queuerDashboardMenu"
 import useInterval from "../api/useInterval";
 
 
@@ -36,6 +37,7 @@ export default function () {
             <Center>
                 <QueuerDashboardGroup queuerDashboardProps={props}/>
             </Center>
+            <QueuerDashboardMenu />
         </Center>
     )
 }

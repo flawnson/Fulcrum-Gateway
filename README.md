@@ -1,6 +1,13 @@
 # Fulcrum-Gateway
 The backend API (Fulcrum) and frontend UI (Gateway) for the queue app.
 
+## Git structure
+I use 4 branches to work:
+1. `main` is a working version of the project ready for demos.
+2. `feature` is the frontend development branch.
+3. `backend` is the backend development branch.
+4. `hotfix` is for urgent bug fixes and other immediate issues.
+
 ## Directory structure
 ### src/
 All source code lives in this directory

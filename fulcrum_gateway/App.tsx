@@ -32,9 +32,10 @@ function App() {
                   <Stack.Group screenOptions={{ headerStyle: { backgroundColor: 'papayawhip' } }} >
                       {isInQueue && isQueuer ? (
                       <>
-                          <Stack.Screen name="Home" component={CreateQueuePage} />
+                          <Stack.Screen name="Home" component={QueuerDashboard} />
                           <Stack.Screen name="LandingPage" component={LandingPage} />
                           <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
+                          <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
                       </>
                       ) : isInQueue && isOrganizer ? (
                           <>
@@ -45,7 +46,8 @@ function App() {
                           </>
                       ) : (
                           <>
-                              <Stack.Screen name="Landing" component={AbandonedScreen} />
+                              <Stack.Screen name="Home" component={HomePage} />
+                              <Stack.Screen name="Landing" component={LandingPage} />
                               <Stack.Screen name="SignUp" component={AbandonedScreen} />
                           </>
                       )}
