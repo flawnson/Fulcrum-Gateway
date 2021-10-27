@@ -1,6 +1,7 @@
 import React from 'react';
 import DashboardStatsCard from "../atoms/DashboardStatsCard";
-import {View} from "native-base";
+import {View, SimpleGrid} from "native-base";
+import {StyleSheet} from "react-native";
 
 
 type queuerStatsProps = {
@@ -15,11 +16,17 @@ export default function (props: queuerStatsProps) {
         <DashboardStatsCard key={key} stat={queuerStat}/>)
 
     return (
-        <View>
+        <SimpleGrid columns={2} spacingY={8} spacingX={4} style={styles.stats}>
             {queuerStatCards}
-        </View>
+        </SimpleGrid>
     )
 }
 
 
+const styles = StyleSheet.create({
+    stats: {
+        marginTop: 25,
+        marginBottom: 25,
+    },
+})
 

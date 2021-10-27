@@ -7,6 +7,7 @@ import {
     Center
 } from "native-base";
 import {HomeScreenProps} from "../../../types";
+import {CommonActions} from "@react-navigation/native";
 
 
 export default function ({navigation}: HomeScreenProps) {
@@ -32,6 +33,7 @@ export default function ({navigation}: HomeScreenProps) {
     const onSuccess = () => {
         setData({...formData, submitted: true})
         navigation.navigate("QueuerDashboard")
+        setData({...formData, submitted: false})  // In case user goes back to home page (probably wrong :P)
     }
 
     const onFailure = () => {

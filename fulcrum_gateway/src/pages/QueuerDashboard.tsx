@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
-import {StyleSheet, View} from 'react-native'
+import {StyleSheet} from 'react-native'
+import {Center, Heading, Text, Image} from "native-base";
 import QueuerDashboardGroup from "../components/organisms/QueuerDashboardStats";
+import QueuerDashboardMenu from "../containers/queuerDashboardMenu"
+import useInterval from "../api/useInterval";
 
 
 export default function () {
@@ -13,10 +16,51 @@ export default function () {
         waited: 5,
         avg: 10,
     }
+    const [props, setProps] = useState(tempProps)
+
+    useInterval(async () => {
+        console.log(props)
+        // const response = await (() => ({'index': 2, 'eta': 10, 'waited': 8, 'avg': 9}))
+        const response = await fetch('http://localhost:8080/queuer/stats')
+        setProps(await response.json())
+    }, 5000)
 
     return (
-        <View>
-            <QueuerDashboardGroup queuerDashboardProps={tempProps}/>
-        </View>
+        <Center style={styles.animationFormat}>
+            <Heading style={styles.headingFormat}>Someone's Queue</Heading>
+            <Image
+                source={require('../assets/images/queueup.gif')}
+                alt={"Loading..."}
+                style={styles.animation}
+            />
+            <Text style={styles.textFormat}>Almost there!</Text>
+            <Center>
+                <QueuerDashboardGroup queuerDashboardProps={props}/>
+            </Center>
+            <QueuerDashboardMenu />
+        </Center>
     )
 }
+
+const styles = StyleSheet.create({
+    animationFormat: {
+        position: 'relative',
+    },
+    animation: {
+        marginTop: 25,
+        marginBottom: 25,
+        width: 309,
+        height: 93,
+    },
+    headingFormat: {
+        marginTop: 25,
+        marginBottom: 25,
+    },
+    textFormat: {
+        marginTop: 25,
+        marginBottom: 25,
+    },
+})
+
+
+

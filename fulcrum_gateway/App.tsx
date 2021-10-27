@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, } from "react-native";
-import { NativeBaseProvider, extendTheme } from 'native-base';
+import { NativeBaseProvider } from 'native-base';
 // @ts-ignore
 import { NativeRouter, Route, Link } from 'react-router-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,6 +12,8 @@ import OrganizerDashboard from "./src/pages/QueuerDashboard";
 import CreateQueuePage from "./src/pages/CreateQueuePage";
 import LandingPage from "./src/screens/LandingPage";
 import {RootStackParamList} from "./types";
+import {nativebaseTheme, navigationTheme} from "./theme";
+import { registerRootComponent } from 'expo';
 
 const config: object = {
     strictMode: 'error',
@@ -24,15 +26,16 @@ function App() {
     const isOrganizer = false
 
     return (
-      <NativeBaseProvider config={config} theme={theme}>
-          <NavigationContainer>
+      <NativeBaseProvider config={config} theme={nativebaseTheme()}>
+          <NavigationContainer theme={navigationTheme()}>
               <Stack.Navigator initialRouteName="Home">
                   <Stack.Group screenOptions={{ headerStyle: { backgroundColor: 'papayawhip' } }} >
                       {isInQueue && isQueuer ? (
                       <>
-                          <Stack.Screen name="Home" component={HomePage} />
+                          <Stack.Screen name="Home" component={QueuerDashboard} />
                           <Stack.Screen name="LandingPage" component={LandingPage} />
                           <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
+                          <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
                       </>
                       ) : isInQueue && isOrganizer ? (
                           <>
@@ -43,7 +46,8 @@ function App() {
                           </>
                       ) : (
                           <>
-                              <Stack.Screen name="Landing" component={AbandonedScreen} />
+                              <Stack.Screen name="Home" component={HomePage} />
+                              <Stack.Screen name="Landing" component={LandingPage} />
                               <Stack.Screen name="SignUp" component={AbandonedScreen} />
                           </>
                       )}
@@ -55,40 +59,5 @@ function App() {
 }
 
 
-const theme = extendTheme({
-    colors: {
-        // Add new color
-        primary: {
-            50: '#E3F2F9',
-            100: '#C5E4F3',
-            200: '#A2D4EC',
-            300: '#7AC1E4',
-            400: '#47A9DA',
-            500: '#0088CC',
-            600: '#007AB8',
-            700: '#006BA1',
-            800: '#005885',
-            900: '#003F5E',
-        },
-        // Redefinig only one shade, rest of the color will remain same.
-        amber: {
-            400: '#d97706',
-        },
-    },
-    config: {
-        // Changing initialColorMode to 'dark'
-        initialColorMode: 'light',
-    },
-    components: {
-        Button: {
-            baseStyle: {},
-            defaultProps: {
-                colorScheme: 'red',
-            },
-            variants: {},
-            sizes: {},
-        },
-    },
-});
-
 export default App
+registerRootComponent(App)

@@ -1,8 +1,7 @@
 import React from 'react';
-import {StyleSheet,
-        Text} from 'react-native'
-import { Center, View } from 'native-base'
-import IDValidator from '../atoms/EnqueueForm'
+import { StyleSheet } from 'react-native'
+import { Center, Text } from 'native-base'
+import EnqueueForm from '../atoms/EnqueueForm'
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps} from "../../../types";
 
@@ -12,10 +11,11 @@ export default function () {
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
 
     return (
-        <Center style={styles.container} flex={1}>
-            <IDValidator route={route} navigation={navigation} />
+        <Center style={styles.container}>
+            <EnqueueForm route={route} navigation={navigation} />
             <Text style={styles.subText}>
-                Create your own virtual queue at <Text style={styles.linkText}>fiefoe.com</Text>
+                Create your own virtual queue at
+                <Text style={styles.linkText} onPress={() => navigation.navigate('LandingPage')}> fiefoe.com</Text>
             </Text>
         </Center>
     )
@@ -35,9 +35,11 @@ const styles = StyleSheet.create({
         top: 300,
         textAlign: "center",
         marginTop: 50,
+        fontFamily: 'Poppins-Regular.otf'
     },
     linkText: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontFamily: 'Poppins-Regular.otf'
     }
 });
 
