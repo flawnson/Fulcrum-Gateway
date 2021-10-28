@@ -1,9 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import {FormControl,
-        VStack, Center,
-        Input, Button,
-        Slider, Stack,
-        Text} from 'native-base'
+import React, {useEffect, useState} from 'react'
+import {Button, Center, FormControl, Input, Slider, Stack, Text, VStack} from 'native-base'
 import {HomeScreenProps} from "../../../types";
 
 type defaultData = {
@@ -41,7 +37,7 @@ export default function ({navigation}: HomeScreenProps) {
         }
     }
 
-    const submit = () => {
+    const check = () => {
         if (formData.name === undefined) {
             setErrors({
                 ...errors,
@@ -52,8 +48,27 @@ export default function ({navigation}: HomeScreenProps) {
         return true;
     };
 
+    async function submit () {
+        try {
+            const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            // enter you logic when the fetch is successful
+            return await response.json()
+        } catch(error) {
+            // enter your logic for when there is an error (ex. error toast)
+            return error
+        }
+    }
+
     const onSuccess = () => {
         setData({...formData, submitted: true})
+        const submissionData = submit()
+        console.log(submissionData);
         navigation.navigate("OrganizerDashboard")
         setData({...formData, submitted: false})
     }
@@ -64,7 +79,7 @@ export default function ({navigation}: HomeScreenProps) {
 
     const onSubmit = () => {
         setData({...formData, submitted: true})
-        submit() ? onSuccess() : onFailure();
+        check() ? onSuccess() : onFailure();
 
     };
 
