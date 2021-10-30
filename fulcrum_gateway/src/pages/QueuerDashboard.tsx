@@ -19,8 +19,12 @@ export default function () {
     const [props, setProps] = useState(tempProps)
 
     useInterval(async () => {
-        const response = await fetch('http://localhost:8080/queuer/stats')
-        setProps(await response.json())
+        try {
+            const response = await fetch('http://localhost:8080/queuer/stats')
+            setProps(await response.json())
+        } catch(error) {
+            console.log(error)
+        }
     }, 5000)
 
     return (

@@ -6,6 +6,7 @@ import { NativeRouter, Route, Link } from 'react-router-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomePage from './src/pages/HomePage'
+import SummonScreen from "./src/screens/SummonScreen";
 import AbandonedScreen from "./src/screens/AbandonedScreen";
 import QueuerDashboard from "./src/pages/QueuerDashboard";
 import OrganizerDashboard from "./src/pages/QueuerDashboard";
@@ -32,7 +33,7 @@ function App() {
                   <Stack.Group screenOptions={{ headerStyle: { backgroundColor: 'papayawhip' } }} >
                       {isInQueue && isQueuer ? (
                       <>
-                          <Stack.Screen name="Home" component={QueuerDashboard} />
+                          <Stack.Screen name="Home" component={SummonScreen} />
                           <Stack.Screen name="LandingPage" component={LandingPage} />
                           <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
                           <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />

@@ -13,6 +13,15 @@ app.get('/queuer/stats', (req, res) => {
     })
 })
 
+app.get('/queuer/summon', (req, res) => {
+    res.status(200).json({
+        'name': 'The organizer name',
+        'address': 'The venue',
+        'time': '9:52',
+    })
+})
+
+
 app.post('/organizer/form', function (req, res) {
     JSON.parse(req.body)
     res.send('POST request to the homepage')
