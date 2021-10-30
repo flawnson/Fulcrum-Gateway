@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import {FormControl,
-        VStack, Center,
-        Input, Button,
-        Slider, Stack,
-        Text} from 'native-base'
+    VStack, Center,
+    Input, Button,
+    Slider, Stack,
+    Select, Text} from 'native-base'
 import {HomeScreenProps} from "../../../types";
 
 type defaultData = {
@@ -32,10 +32,10 @@ export default function ({navigation}: HomeScreenProps) {
     const validate = () => {
         if (formData.name.length > 50) {
             setErrors({
-                    ...errors,
-                    nameError: 'Name is too short',
-                });
-                setErrors({...errors, nameInvalid: true})
+                ...errors,
+                nameError: 'Name is too short',
+            });
+            setErrors({...errors, nameInvalid: true})
         } else {
             setErrors({...errors, nameInvalid: false})
         }
@@ -132,6 +132,20 @@ export default function ({navigation}: HomeScreenProps) {
                         placeholder={"5"}
                         onChangeText={(value) => setData({ ...formData, gracePeriod: parseInt(value) })}
                     />
+                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
+                </Stack>
+            </FormControl>
+            <FormControl isRequired isInvalid={errors.nameInvalid}>
+                <Stack>
+                    <Center>
+                        <FormControl.Label _text={{bold: true}}>Party Size</FormControl.Label>
+                    </Center>
+                    <Center>
+                        <FormControl.HelperText _text={{fontSize: 'xs'}}>
+                            <Text>What is the maximum number of people a queuer can represent?</Text>
+                        </FormControl.HelperText>
+                    </Center>
+                    <Select placeholder={"5"}/>
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
