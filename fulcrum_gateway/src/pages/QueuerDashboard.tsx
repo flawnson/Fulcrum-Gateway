@@ -4,7 +4,7 @@ import {HomeScreenProps} from "../../types";
 import {StyleSheet} from 'react-native'
 import {Center, Heading, Text, Image} from "native-base";
 import QueuerDashboardGroup from "../components/organisms/QueuerDashboardStats";
-import QueuerDashboardMenu from "../containers/queuerDashboardMenu"
+import QueuerDashboardMenu from "../containers/QueuerDashboardMenu"
 import useInterval from "../api/useInterval";
 
 
@@ -19,10 +19,12 @@ export default function () {
     const [props, setProps] = useState(tempProps)
 
     useInterval(async () => {
-        console.log(props)
-        // const response = await (() => ({'index': 2, 'eta': 10, 'waited': 8, 'avg': 9}))
-        const response = await fetch('http://localhost:8080/queuer/stats')
-        setProps(await response.json())
+        try {
+            const response = await fetch('http://localhost:8080/queuer/stats')
+            setProps(await response.json())
+        } catch(error) {
+            console.log(error)
+        }
     }, 5000)
 
     return (
