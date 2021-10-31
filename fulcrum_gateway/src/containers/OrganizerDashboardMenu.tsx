@@ -15,9 +15,9 @@ export default function () {
                         )
                     }}
                 >
-            <Menu.Item>Defer Position</Menu.Item>
-            <Menu.Item onPress={() => navigation.navigate("AbandonedScreen")}>Leave Queue</Menu.Item>
-            <Menu.Item>Get Directions</Menu.Item>
+            <Menu.Item>End Queue</Menu.Item>
+            <Menu.Item onPress={() => navigation.navigate("AbandonedScreen")}>Pause Queue</Menu.Item>
+            <Menu.Item>Announcement</Menu.Item>
             <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>Share Queue</Menu.Item>
         </Menu>
     )
