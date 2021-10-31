@@ -1,24 +1,29 @@
 import React, {useEffect, useState} from 'react'
-import {Button, Center, FormControl, Input, Slider, Stack, Text, VStack} from 'native-base'
+import {Button, Center,
+        FormControl, Input,
+        Slider, Stack,
+        Text, VStack,
+        Select} from 'native-base'
 import {HomeScreenProps} from "../../../types";
 
-type defaultData = {
+type DefaultData = {
     submitted: boolean,
     name: string,
     maxSize: number,
     gracePeriod: number,
+    partySize: number,
 }
 
-type defaultErrors = {
+type DefaultErrors = {
     nameError?: string
     nameInvalid: boolean,
 }
 
 export default function ({navigation}: HomeScreenProps) {
-    const defaultData = {submitted: false, name: "Sample Queue name", maxSize: 9, gracePeriod: 0}
+    const defaultData = {submitted: false, name: "Sample Queue name", maxSize: 10, gracePeriod: 0, partySize: 1}
     const defaultErrors = {nameInvalid: false}
-    const [formData, setData] = useState<defaultData>(defaultData);
-    const [errors, setErrors] = useState<defaultErrors>(defaultErrors);
+    const [formData, setData] = useState<DefaultData>(defaultData);
+    const [errors, setErrors] = useState<DefaultErrors>(defaultErrors);
     const [onChangeValue, setOnChangeValue] = useState(500)
     const [onChangeEndValue, setOnChangeEndValue] = useState(500)
     const [gracePeriod, setGracePeriod] = useState(5)
@@ -143,10 +148,31 @@ export default function ({navigation}: HomeScreenProps) {
                             <Text>Set a grace period for summoned queuers to reach your venue</Text>
                         </FormControl.HelperText>
                     </Center>
-                    <Input
-                        placeholder={"5"}
-                        onChangeText={(value) => setData({ ...formData, gracePeriod: parseInt(value) })}
-                    />
+                    <Select
+                        placeholder={"0"}
+                        onValueChange={(value) => setData({ ...formData, gracePeriod: parseInt(value) })}
+                    >
+                        {[...Array(10).keys()].map(number => <Select.Item label={number.toString()} value="ux" />)}
+                    </Select>
+                <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
+                </Stack>
+            </FormControl>
+            <FormControl isRequired isInvalid={errors.nameInvalid}>
+                <Stack>
+                    <Center>
+                        <FormControl.Label _text={{bold: true}}>A queuer can represent {formData.partySize} people.</FormControl.Label>
+                    </Center>
+                    <Center>
+                        <FormControl.HelperText _text={{fontSize: 'xs'}}>
+                            <Text>Set a maximum party size that a queuer can represent</Text>
+                        </FormControl.HelperText>
+                    </Center>
+                    <Select
+                        placeholder={"0"}
+                        onValueChange={(value) => setData({ ...formData, partySize: parseInt(value) })}
+                    >
+                        {[...Array(10).keys()].map(number => <Select.Item label={number.toString()} value="ux" />)}
+                    </Select>
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
