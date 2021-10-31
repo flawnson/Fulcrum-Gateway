@@ -12,12 +12,12 @@ type queuerStatsProps = {
 }
 
 export default function (props: queuerStatsProps) {
-    const queuerStatCards = Object.entries(props).map(([key, queuerStat]) =>
+    const organizerStatCards = Object.entries(props).map(([key, queuerStat]) =>
         <DashboardStatsCard key={key} stat={queuerStat}/>)
 
     return (
         <SimpleGrid columns={2} spacingY={8} spacingX={4} style={styles.stats}>
-            {queuerStatCards}
+            {organizerStatCards}
         </SimpleGrid>
     )
 }

@@ -9,6 +9,7 @@ export type RootStackParamList = {
     OrganizerDashboard: undefined;
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
+    ShareScreen: undefined
     Landing: undefined;
     SignUp: undefined;
 };
