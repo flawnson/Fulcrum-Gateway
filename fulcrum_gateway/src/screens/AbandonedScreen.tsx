@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     subText: {
-        margin: 10,
         textAlign: "center",
+        margin: 10,
     },
     linkText: {
         textAlign: "center",
