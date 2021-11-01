@@ -4,6 +4,17 @@ const cors = require('cors')
 
 app.use(cors())
 
+app.get('/organizer/stats', (req, res) => {
+    res.status(200).json({
+        'enqueued': 37,
+        'serviced': 23,
+        'deferrals': 8,
+        'avg': 12,
+        'abandonments': 2,
+        'noshows': 0
+    })
+})
+
 app.get('/queuer/stats', (req, res) => {
     res.status(200).json({
         'index': 2,

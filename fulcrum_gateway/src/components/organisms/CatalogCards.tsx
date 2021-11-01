@@ -1,6 +1,7 @@
 import React from 'react';
 import OrganizerDashboardStatsCardGroup from "../molecules/OrganizerStatsCardGroup";
 import {SimpleGrid} from "native-base";
+import CatalogEntityCardGroup from "../molecules/CatalogEntityCardGroup";
 
 type Props = {
     queuerDashboardProps: {
@@ -15,7 +16,7 @@ type Props = {
 
 export default function (props: Props) {
     return (
-        <OrganizerDashboardStatsCardGroup {...props.queuerDashboardProps}/>
+        <CatalogEntityCardGroup {...props.queuerDashboardProps}/>
     )
 }
 

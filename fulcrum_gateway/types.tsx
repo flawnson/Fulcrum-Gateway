@@ -12,6 +12,8 @@ export type RootStackParamList = {
     ShareScreen: undefined
     Landing: undefined;
     SignUp: undefined;
+    EndScreen: undefined;
+    SummonScreen: undefined;
 };
 
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;

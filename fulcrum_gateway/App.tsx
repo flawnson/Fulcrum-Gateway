@@ -7,9 +7,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomePage from './src/pages/HomePage'
 import SummonScreen from "./src/screens/SummonScreen";
+import EndScreen from "./src/screens/EndScreen"
+import ShareScreen from "./src/screens/ShareScreen"
 import AbandonedScreen from "./src/screens/AbandonedScreen";
 import QueuerDashboard from "./src/pages/QueuerDashboard";
-import OrganizerDashboard from "./src/pages/QueuerDashboard";
+import OrganizerDashboard from "./src/pages/OrganizerDashboard";
 import CreateQueuePage from "./src/pages/CreateQueuePage";
 import LandingPage from "./src/screens/LandingPage";
 import {RootStackParamList} from "./types";
@@ -37,6 +39,8 @@ function App() {
                           <Stack.Screen name="LandingPage" component={LandingPage} />
                           <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
                           <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
+                          <Stack.Screen name="ShareScreen" component={ShareScreen} />
+                          <Stack.Screen name="SummonScreen" component={SummonScreen} />
                       </>
                       ) : isInQueue && isOrganizer ? (
                           <>
@@ -44,6 +48,8 @@ function App() {
                               <Stack.Screen name="LandingPage" component={LandingPage} />
                               <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
                               <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboard} />
+                              <Stack.Screen name="ShareScreen" component={ShareScreen} />
+                              <Stack.Screen name="EndScreen" component={EndScreen} />
                           </>
                       ) : (
                           <>
