@@ -11,10 +11,12 @@ import useInterval from "../api/useInterval";
 export default function () {
     const navigation = useNavigation<HomeScreenProps>()
     const tempProps = {
-        index: 3,
-        eta: 15,
-        waited: 5,
-        avg: 10,
+        'enqueued': 35,
+        'serviced': 22,
+        'deferrals': 8,
+        'avg': 12,
+        'abandonments': 2,
+        'noshows': 0
     }
     const [props, setProps] = useState(tempProps)
 
@@ -30,7 +32,6 @@ export default function () {
     return (
         <Center style={styles.animationFormat}>
             <Heading style={styles.headingFormat}>Someone's Queue</Heading>
-            <Text style={styles.textFormat}>Almost there!</Text>
             <Center>
                 <OrganizerDashboardGroup queuerDashboardProps={props}/>
             </Center>
