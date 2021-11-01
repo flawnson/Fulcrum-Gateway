@@ -2,7 +2,7 @@ import React from 'react';
 import { HStack, Box, Divider } from 'native-base';
 
 type OrganizerCatalogProps = {
-    'stat': number
+    'user': object
 }
 
 export default function (props: OrganizerCatalogProps) {

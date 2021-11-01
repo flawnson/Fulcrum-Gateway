@@ -3,7 +3,7 @@ import { VStack, Box, Divider, Text } from 'native-base';
 import {StyleSheet} from "react-native";
 
 type queuerStat = {
-    stat: number,
+    'user': object,
 }
 
 export default function (props: queuerStat) {
@@ -12,7 +12,7 @@ export default function (props: queuerStat) {
             <VStack space={4} divider={<Divider />}>
                 <Box px={4} pt={4}>
                     <Text>
-                        {props.stat}
+                        {props.user}
                     </Text>
                 </Box>
             </VStack>
