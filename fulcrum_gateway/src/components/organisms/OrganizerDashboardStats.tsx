@@ -3,7 +3,7 @@ import OrganizerDashboardStatsCardGroup from "../molecules/OrganizerStatsCardGro
 import {SimpleGrid} from "native-base";
 
 type Props = {
-    queuerDashboardProps: {
+    OrganizerDashboardProps: {
         'enqueued': number,
         'serviced': number,
         'deferrals': number,
@@ -15,7 +15,7 @@ type Props = {
 
 export default function (props: Props) {
     return (
-        <OrganizerDashboardStatsCardGroup {...props.queuerDashboardProps}/>
+        <OrganizerDashboardStatsCardGroup {...props.OrganizerDashboardProps}/>
     )
 }
 
