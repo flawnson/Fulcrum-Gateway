@@ -1,5 +1,5 @@
 import React from 'react';
-import { HStack, Box, Divider } from 'native-base';
+import { HStack, Box, Divider, Center } from 'native-base';
 
 type OrganizerCatalogProps = {
     'user': object
@@ -7,7 +7,7 @@ type OrganizerCatalogProps = {
 
 export default function (props: OrganizerCatalogProps) {
     return (
-        <Box borderRadius='md'>
+        <Center borderRadius={'md'}>
             <HStack space={4} divider={<Divider />}>
                 <Box px={4} pt={4}>
                     NativeBase
@@ -21,6 +21,6 @@ export default function (props: OrganizerCatalogProps) {
                     GeekyAnts
                 </Box>
             </HStack>
-        </Box>
+        </Center>
     );
 }

@@ -6,7 +6,7 @@ import {StyleSheet} from "react-native";
 
 type OrganizerStatsProps = {
     props: {
-        'users': object
+        'users': Array<object>
     }
 }
 

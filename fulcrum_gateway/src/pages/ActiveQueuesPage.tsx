@@ -3,11 +3,11 @@ import CatalogEntityCardGroup from "../components/molecules/CatalogEntityCardGro
 import {VStack} from "native-base";
 
 export default function () {
-    const [props, setProps] = useState({'users': {}})
+    const [props, setProps] = useState({'users': []})
 
     async function getQueueData () {
         try {
-            const response = await fetch('http://localhost:8080/queuer/stats')
+            const response = await fetch('http://localhost:8080/queue')
             setProps(await response.json())
         } catch(error) {
             console.log(error)
