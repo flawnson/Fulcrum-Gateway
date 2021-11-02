@@ -3,9 +3,9 @@ import CatalogEntityCardGroup from "../components/molecules/CatalogEntityCardGro
 import {VStack} from "native-base";
 
 export default function () {
-    const [props, setProps] = useState({'users': []})
+    const [props, setProps] = useState({'entities': []})
 
-    async function getQueueData () {
+    async function fetchQueueData () {
         try {
             const response = await fetch('http://localhost:8080/queue')
             setProps(await response.json())
@@ -14,7 +14,9 @@ export default function () {
         }
     }
 
+    fetchQueueData()
+
     return (
-        <CatalogEntityCardGroup props={props}/>
+        <CatalogEntityCardGroup entities={props.entities}/>
     )
 }

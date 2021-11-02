@@ -9,8 +9,8 @@ type queuerStat = {
 export default function (props: queuerStat) {
     return (
         <Box borderRadius='md'>
-            <VStack space={4} divider={<Divider />}>
-                <Box px={4} pt={4}>
+            <VStack space={'4'} divider={<Divider />}>
+                <Box px={'4'} pt={'4'}>
                     <Text>
                         {props.stat}
                     </Text>
