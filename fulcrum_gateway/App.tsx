@@ -17,6 +17,7 @@ import LandingPage from "./src/screens/LandingPage";
 import {RootStackParamList} from "./types";
 import {nativebaseTheme, navigationTheme} from "./theme";
 import { registerRootComponent } from 'expo';
+import ActiveQueuesPage from "./src/pages/ActiveQueuesPage";
 
 const config: object = {
     strictMode: 'error',
@@ -35,7 +36,7 @@ function App() {
                   <Stack.Group screenOptions={{ headerStyle: { backgroundColor: 'papayawhip' } }} >
                       {isInQueue && isQueuer ? (
                       <>
-                          <Stack.Screen name="Home" component={OrganizerDashboard} />
+                          <Stack.Screen name="Home" component={ActiveQueuesPage} />
                           <Stack.Screen name="LandingPage" component={LandingPage} />
                           <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
                           <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />

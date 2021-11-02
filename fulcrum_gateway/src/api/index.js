@@ -24,6 +24,16 @@ app.get('/queuer/stats', (req, res) => {
     })
 })
 
+
+app.get('/queue', (req, res) => {
+    res.status(200).json({
+        'users': [{'Joe': {'index': 1, 'waited': 10}},
+                  {'Ann': {'index': 2, 'waited': 8}},
+                  {'Jasmine': {'index': 3, 'waited': 4}},
+                  {'Flawnson': {'index': 4, 'waited': 1}}]
+    })
+})
+
 app.get('/queuer/summon', (req, res) => {
     res.status(200).json({
         'name': 'The organizer name',
