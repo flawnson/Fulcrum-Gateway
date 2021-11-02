@@ -23,7 +23,7 @@ export default function ({navigation}: HomeScreenProps) {
     const defaultData = {submitted: false, name: "Sample Queue name", maxSize: 10, gracePeriod: 0, partySize: 1}
     const defaultErrors = {nameInvalid: false}
     const [formData, setData] = useState<DefaultData>(defaultData);
-    const [errors, setErrors] = useState<DefaultErrors>(defaultErrors);
+    const [errors, setError] = useState<DefaultErrors>(defaultErrors);
     const [onChangeValue, setOnChangeValue] = useState(500)
     const [onChangeEndValue, setOnChangeEndValue] = useState(500)
     const [gracePeriod, setGracePeriod] = useState(5)
@@ -32,23 +32,23 @@ export default function ({navigation}: HomeScreenProps) {
 
     const validate = () => {
         if (formData.name.length > 50) {
-            setErrors({
+            setError({
                     ...errors,
                     nameError: 'Name is too short',
                 });
-                setErrors({...errors, nameInvalid: true})
+                setError({...errors, nameInvalid: true})
         } else {
-            setErrors({...errors, nameInvalid: false})
+            setError({...errors, nameInvalid: false})
         }
     }
 
     const check = () => {
         if (formData.name === undefined) {
-            setErrors({
+            setError({
                 ...errors,
                 nameError: 'Name is required',
             });
-            setErrors({...errors, nameInvalid: true})
+            setError({...errors, nameInvalid: true})
         }
         return true;
     };

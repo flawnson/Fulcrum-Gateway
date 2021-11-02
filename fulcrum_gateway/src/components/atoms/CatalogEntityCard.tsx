@@ -2,23 +2,26 @@ import React from 'react';
 import { HStack, Box, Divider, Center } from 'native-base';
 
 type OrganizerCatalogProps = {
-    'user': object
+    'entity': {
+        name: string,
+        index: string,
+        waited: string,
+    }
 }
 
 export default function (props: OrganizerCatalogProps) {
+    console.log(props)
     return (
         <Center borderRadius={'md'}>
-            <HStack space={4} divider={<Divider />}>
-                <Box px={4} pt={4}>
-                    NativeBase
+            <HStack space={'4'} divider={<Divider />}>
+                <Box px={'4'} pt={'4'}>
+                    {props.entity.name}
                 </Box>
-                <Box px={4}>
-                    NativeBase is a free and open source framework that enable developers
-                    to build high-quality mobile apps using React Native iOS and Android
-                    apps with a fusion of ES6.
+                <Box px={'4'}>
+                    {props.entity.index}
                 </Box>
-                <Box px={4} pb={4}>
-                    GeekyAnts
+                <Box px={'4'} pb={'4'}>
+                    {props.entity.waited}
                 </Box>
             </HStack>
         </Center>

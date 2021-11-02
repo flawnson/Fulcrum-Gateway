@@ -15,17 +15,18 @@ type SummonData = {
 export default function() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const [props, setProps] = useState<SummonData>({})
+    const [errors, setError] = useState<any>([]);
+
+    useEffect(() => {fetchData()}, [])
 
     const fetchData = async () => {
         try {
             const response = await fetch('http://localhost:8080/queuer/summon')
             setProps(await response.json())
         } catch (error) {
-            return error
+            setError([...errors, error])
         }
     }
-
-    fetchData()
 
     return (
         <View>

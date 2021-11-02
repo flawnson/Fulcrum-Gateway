@@ -25,12 +25,20 @@ app.get('/queuer/stats', (req, res) => {
 })
 
 
-app.get('/queue', (req, res) => {
+app.get('/queues', (req, res) => {
     res.status(200).json({
-        'users': [{'Joe': {'index': 1, 'waited': 10}},
-                  {'Ann': {'index': 2, 'waited': 8}},
-                  {'Jasmine': {'index': 3, 'waited': 4}},
-                  {'Flawnson': {'index': 4, 'waited': 1}}]
+        'entities': [{'name': 'Carnival Queue', 'index': 1, 'waited': 10},
+                     {'name': 'Concession Stand Queue', 'index': 2, 'waited': 8},
+                     {'name': 'Bumper Cars Queue', 'index': 3, 'waited': 4}]
+    })
+})
+
+app.get('/queuers', (req, res) => {
+    res.status(200).json({
+        'entities': [{'name': 'Joe', 'index': 1, 'waited': 10},
+                     {'name': 'Ann', 'index': 2, 'waited': 8},
+                     {'name': 'Jasmine', 'index': 3, 'waited': 4},
+                     {'name': 'Flawnson', 'index': 4, 'waited': 1}]
     })
 })
 

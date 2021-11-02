@@ -4,15 +4,19 @@ import {View, VStack} from "native-base";
 import {StyleSheet} from "react-native";
 
 
+type Entity = {
+    name: string,
+    index: string,
+    waited: string,
+}
+
 type OrganizerStatsProps = {
-    props: {
-        'users': Array<object>
-    }
+    'entities': Array<Entity>
 }
 
 export default function (props: OrganizerStatsProps) {
-    const OrganizerStatCards = Object.entries(props).map(([key, queuerStat]) =>
-        <CatalogEntityCard key={key} user={queuerStat}/>)
+    const OrganizerStatCards = Object.entries(props.entities).map(([key, queuerStat]) =>
+        <CatalogEntityCard key={key} entity={queuerStat}/>)
 
     return (
         <VStack style={styles.stats}>
