@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@expo/config-types": "^42.0.0",
+    "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.4",
     "@react-navigation/native-stack": "^6.2.2",
     "@types/react-router-native": "^5.1.1",
@@ -22,6 +23,8 @@
     "react": "17.0.2",
     "react-dom": "^17.0.2",
     "react-native": "^0.66.1",
+    "react-native-gesture-handler": "^1.10.3",
+    "react-native-reanimated": "^2.2.3",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "^3.8.0",
     "react-native-svg": "^9.12.0",

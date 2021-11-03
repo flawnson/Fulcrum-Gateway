@@ -14,6 +14,8 @@ export type RootStackParamList = {
     SignUp: undefined;
     EndScreen: undefined;
     SummonScreen: undefined;
+    EnqueuedQueuersPage: undefined;
+    ActiveQueuesPage: undefined;
 };
 
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;

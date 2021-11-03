@@ -2,7 +2,10 @@
   "expo": {
     "name": "fulcrum_gateway",
     "slug": "fulcrum_gateway",
+    "privacy": "public",
+    "icon": "./src/assets/images/test-tube.png",
     "web": {
+      "favicon": "./src/assets/images/test-tube.png",
       "build": {
         "babel": {
           "include": [
@@ -10,6 +13,10 @@
           ]
         }
       }
+    },
+    "android": {
+    },
+    "ios": {
     }
   }
 }

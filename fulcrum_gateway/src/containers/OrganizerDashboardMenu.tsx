@@ -5,7 +5,6 @@ import {HomeScreenProps} from "../../types";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const [showModal, setShowModal] = useState(false)
 
     return (
         <Menu w="190" trigger={(triggerProps) => { return (
