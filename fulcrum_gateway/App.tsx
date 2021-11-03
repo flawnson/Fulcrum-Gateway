@@ -1,7 +1,7 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet, Text, View, } from "react-native";
 import { NativeBaseProvider } from 'native-base';
-// @ts-ignore
 import { NativeRouter, Route, Link } from 'react-router-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -34,10 +34,10 @@ function App() {
       <NativeBaseProvider config={config} theme={nativebaseTheme()}>
           <NavigationContainer theme={navigationTheme()}>
               <Stack.Navigator initialRouteName="Home">
-                  <Stack.Group screenOptions={{ headerStyle: { backgroundColor: 'papayawhip' } }} >
+                  <Stack.Group screenOptions={{ headerShown: false }} >
                       {isInQueue && isQueuer ? (
                       <>
-                          <Stack.Screen name="Home" component={EnqueuedQueuersPage} />
+                          <Stack.Screen name="Home" component={LandingPage} />
                           <Stack.Screen name="LandingPage" component={LandingPage} />
                           <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
                           <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
@@ -50,8 +50,8 @@ function App() {
                               <Stack.Screen name="LandingPage" component={LandingPage} />
                               <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
                               <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboard} />
-                              <Stack.Screen name="Home" component={EnqueuedQueuersPage} />
-                              <Stack.Screen name="Home" component={ActiveQueuesPage} />
+                              <Stack.Screen name="EnqueuedQueuersPage" component={EnqueuedQueuersPage} />
+                              <Stack.Screen name="ActiveQueuesPage" component={ActiveQueuesPage} />
                               <Stack.Screen name="ShareScreen" component={ShareScreen} />
                               <Stack.Screen name="EndScreen" component={EndScreen} />
                           </>

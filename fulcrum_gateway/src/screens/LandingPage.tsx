@@ -6,11 +6,20 @@ import {
     Text
 } from 'native-base'
 import {StyleSheet} from "react-native";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import FeaturesScreen from '../screens/FeaturesScreen'
+import ContactScreen from '../screens/ContactScreen'
 
 
 export default function () {
+    const Drawer = createDrawerNavigator();
+
     return (
         <View>
+            <Drawer.Navigator>
+                <Drawer.Screen name="Features" component={FeaturesScreen} />
+                <Drawer.Screen name="Contact" component={ContactScreen} />
+            </Drawer.Navigator>
             <VStack>
                 <Text style={styles.logo}>
                     Fiefoe
