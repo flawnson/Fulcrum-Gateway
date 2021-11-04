@@ -9,10 +9,12 @@ import {StyleSheet} from "react-native";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import FeaturesScreen from '../screens/FeaturesScreen'
 import ContactScreen from '../screens/ContactScreen'
+import { useTranslation } from 'react-i18next';
 
 
 export default function () {
     const Drawer = createDrawerNavigator();
+    const { t, i18n } = useTranslation();
 
     return (
         <View>
@@ -29,6 +31,12 @@ export default function () {
                            alt={"Cute queueing gif"}
                            style={styles.animation}/>
                 </Center>
+                <Text style={styles.header}>
+                    {t("Virtual lines that save time.")}
+                </Text>
+                <Text style={styles.subHeader}>
+                    {t("Fiefoe helps you find create and monitor virtual queues and generate more sales by increasing throughput and customer satisfaction.")}
+                </Text>
                 <Center>
                     <HStack>
                         <Button style={styles.smallButton}>
@@ -55,6 +63,16 @@ const styles = StyleSheet.create({
         fontSize: 100,
         textAlign: 'center',
         fontFamily: 'Poppins-Bold.otf'
+    },
+    header: {
+        fontSize: 50,
+        textAlign: 'center',
+        fontFamily: 'Poppins-ExtraBold.otf'
+    },
+    subHeader: {
+        fontSize: 20,
+        textAlign: 'center',
+        fontFamily: 'Poppins-Regular.otf'
     },
     animation: {
         marginTop: 25,
