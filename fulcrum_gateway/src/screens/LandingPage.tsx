@@ -10,11 +10,15 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import FeaturesScreen from '../screens/FeaturesScreen'
 import ContactScreen from '../screens/ContactScreen'
 import { useTranslation } from 'react-i18next';
+import {useNavigation} from "@react-navigation/native";
+import {HomeScreenProps} from "../../types";
 
 
 export default function () {
     const Drawer = createDrawerNavigator();
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const { t, i18n } = useTranslation();
+    console.log(t("testing"))
 
     return (
         <View>
@@ -39,16 +43,16 @@ export default function () {
                 </Text>
                 <Center>
                     <HStack>
-                        <Button style={styles.smallButton}>
+                        <Button onPress={() => navigation.navigate("Home")} style={styles.smallButton}>
                             Join a queue
                         </Button>
-                        <Button style={styles.smallButton}>
+                        <Button onPress={() => navigation.navigate("CreateQueuePage")} style={styles.smallButton}>
                             Create a queue
                         </Button>
                     </HStack>
                 </Center>
                 <Center>
-                    <Button style={styles.longButton}>
+                    <Button onPress={() => navigation.navigate("Home")} style={styles.longButton}>
                         Sign up
                     </Button>
                 </Center>
