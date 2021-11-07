@@ -3,7 +3,7 @@ import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigati
 
 /* React Navigation types used throughout app*/
 export type RootStackParamList = {
-    Home: undefined;
+    HomePage: undefined;
     LandingPage: undefined;
     QueuerDashboard: undefined;
     OrganizerDashboard: undefined;

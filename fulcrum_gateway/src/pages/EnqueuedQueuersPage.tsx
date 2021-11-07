@@ -15,7 +15,6 @@ export default function () {
             console.log(error)
         }
     }
-    // fetchQueuerData()
 
     return (
         <CatalogEntityCardGroup entities={props.entities}/>
