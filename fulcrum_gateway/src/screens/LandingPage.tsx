@@ -18,7 +18,7 @@ export default function () {
     const Drawer = createDrawerNavigator();
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const { t, i18n } = useTranslation();
-    console.log(t("testing"))
+    console.log(t('en.translation.hello'))
 
     return (
         <View>
