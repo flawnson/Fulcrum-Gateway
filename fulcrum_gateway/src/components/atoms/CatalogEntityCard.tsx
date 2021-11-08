@@ -10,7 +10,6 @@ type OrganizerCatalogProps = {
 }
 
 export default function (props: OrganizerCatalogProps) {
-    console.log(props)
     return (
         <Center borderRadius={'md'}>
             <HStack space={'4'} divider={<Divider />}>

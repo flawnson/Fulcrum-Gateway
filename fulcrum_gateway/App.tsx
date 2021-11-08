@@ -33,11 +33,11 @@ function App() {
     return (
       <NativeBaseProvider config={config} theme={nativebaseTheme()}>
           <NavigationContainer theme={navigationTheme()}>
-              <Stack.Navigator initialRouteName="Home">
+              <Stack.Navigator initialRouteName="HomePage">
                   <Stack.Group screenOptions={{ headerShown: false }} >
                       {isInQueue && isQueuer ? (
                       <>
-                          <Stack.Screen name="Home" component={LandingPage} />
+                          <Stack.Screen name="HomePage" component={HomePage} />
                           <Stack.Screen name="LandingPage" component={LandingPage} />
                           <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
                           <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
@@ -46,7 +46,7 @@ function App() {
                       </>
                       ) : isInQueue && isOrganizer ? (
                           <>
-                              <Stack.Screen name="Home" component={HomePage} />
+                              <Stack.Screen name="HomePage" component={HomePage} />
                               <Stack.Screen name="LandingPage" component={LandingPage} />
                               <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
                               <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboard} />
@@ -57,7 +57,7 @@ function App() {
                           </>
                       ) : (
                           <>
-                              <Stack.Screen name="Home" component={HomePage} />
+                              <Stack.Screen name="HomePage" component={HomePage} />
                               <Stack.Screen name="Landing" component={LandingPage} />
                               <Stack.Screen name="SignUp" component={AbandonedScreen} />
                           </>
