@@ -24,7 +24,6 @@ app.get('/queuer/stats', (req, res) => {
     })
 })
 
-
 app.get('/queues', (req, res) => {
     res.status(200).json({
         'entities': [{'name': 'Carnival Queue', 'index': 1, 'waited': 10},
