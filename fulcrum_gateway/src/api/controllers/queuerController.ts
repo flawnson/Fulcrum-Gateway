@@ -1,3 +1,6 @@
+// @ts-nocheck to get rid of req and res uninferable types
+// To get rid of isolatedModules TS error
+export {}
 
 // Display list of all Authors.
 exports.get_queuer_stats = function(req, res) {

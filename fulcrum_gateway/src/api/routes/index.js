@@ -7,8 +7,6 @@ const cors = require('cors')
 
 app.use(cors())
 
-
-
 app.use(queuerRouter);
 app.use(organizerRouter);
 

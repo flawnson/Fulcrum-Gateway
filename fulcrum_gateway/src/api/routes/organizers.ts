@@ -1,3 +1,5 @@
+// To remove TS error
+export {};
 const express = require('express');
 const router = express.Router();
 
