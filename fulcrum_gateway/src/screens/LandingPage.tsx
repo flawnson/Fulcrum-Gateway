@@ -18,7 +18,7 @@ export default function () {
     const Drawer = createDrawerNavigator();
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const { t, i18n } = useTranslation();
-    console.log(t('en.translation.hello'))
+    console.log(t('demoScope.title'))
 
     return (
         <View>
@@ -36,7 +36,7 @@ export default function () {
                            style={styles.animation}/>
                 </Center>
                 <Text style={styles.header}>
-                    {t("Virtual lines that save time.")}
+                    {t('demoScope.title')}
                 </Text>
                 <Text style={styles.subHeader}>
                     {t("Fiefoe helps you find create and monitor virtual queues and generate more sales by increasing throughput and customer satisfaction.")}

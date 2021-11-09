@@ -56,7 +56,7 @@ function App() {
                       ) : (
                           <>
                               <Stack.Screen name="Home" component={HomePage} />
-                              <Stack.Screen name="Landing" component={LandingPage} />
+                              <Stack.Screen name="LandingPage" component={LandingPage} />
                               <Stack.Screen name="SignUp" component={AbandonedScreen} />
                           </>
                       )}
