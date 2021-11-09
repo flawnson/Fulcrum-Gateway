@@ -17,6 +17,7 @@ import {nativebaseTheme, navigationTheme} from "./theme";
 import { registerRootComponent } from 'expo';
 import ActiveQueuesPage from "./src/pages/ActiveQueuesPage";
 import EnqueuedQueuersPage from "./src/pages/EnqueuedQueuersPage";
+import './i18n';
 
 const config: object = {
     strictMode: 'error',

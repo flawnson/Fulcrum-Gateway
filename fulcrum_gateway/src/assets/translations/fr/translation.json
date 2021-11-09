@@ -1,5 +1,5 @@
 {
-  "_comment": "src/localization/en/translation.json",
+  "_comment": "src/assets/translations/en/translation.json",
   "demoScope": {
     "title": "i18next is Great!",
     "description": "Everyone understands me!"
