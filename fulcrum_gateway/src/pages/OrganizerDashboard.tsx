@@ -5,7 +5,7 @@ import {StyleSheet} from 'react-native'
 import {Center, Heading, Text, Image} from "native-base";
 import OrganizerDashboardGroup from "../components/organisms/OrganizerDashboardStats";
 import OrganizerDashboardMenu from "../containers/OrganizerDashboardMenu"
-import useInterval from "../api/useInterval";
+import useInterval from "../utilities/useInterval";
 
 
 export default function () {

@@ -5,7 +5,7 @@ import {StyleSheet} from 'react-native'
 import {Center, Heading, Text, Image} from "native-base";
 import QueuerDashboardGroup from "../components/organisms/QueuerDashboardStats";
 import QueuerDashboardMenu from "../containers/QueuerDashboardMenu"
-import useInterval from "../api/useInterval";
+import useInterval from "../utilities/useInterval";
 
 
 export default function () {
