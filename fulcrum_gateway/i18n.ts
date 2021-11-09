@@ -9,12 +9,8 @@ import frTranslation from './src/assets/translations/fr/translation.json'
 // for passing in lng and translations on init
 
 export const resources = {
-    en: {
-        translation: enTranslation,
-    },
-    fr: {
-        translation: frTranslation,
-    },
+    en: enTranslation,
+    fr: frTranslation,
 }
 
 i18n
@@ -29,8 +25,9 @@ i18n
     // init i18next
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
-        // backend: {loadPath: './src/assets/translations/{{lng}}/{{ns}}.json', allowMultiLoading: true},
         resources,
+        ns: ['common'],
+        defaultNS: 'common',
         lng: 'en',
         fallbackLng: 'en',
         debug: true,

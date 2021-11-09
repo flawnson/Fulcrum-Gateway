@@ -1,8 +1,11 @@
 {
   "_comment": "src/assets/translations/en/translation.json",
-  "test": "success",
-  "demoScope": {
-    "title": "i18next is Great!",
+  "common": {
+    "test": "SUCCESS",
+    "hello": "there"
+  },
+  "landingPage": {
+    "title": "Virtual lines that save time.",
     "description": "Everyone understands me!"
   }
 }

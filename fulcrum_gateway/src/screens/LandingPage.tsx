@@ -17,8 +17,7 @@ import {HomeScreenProps} from "../../types";
 export default function () {
     const Drawer = createDrawerNavigator();
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { t, i18n } = useTranslation();
-    console.log(t('test'))
+    const { t, i18n } = useTranslation("landingPage");
 
     return (
         <View>
@@ -36,7 +35,7 @@ export default function () {
                            style={styles.animation}/>
                 </Center>
                 <Text style={styles.header}>
-                    {t('demoScope.title')}
+                    {t('title')}
                 </Text>
                 <Text style={styles.subHeader}>
                     {t("Fiefoe helps you find create and monitor virtual queues and generate more sales by increasing throughput and customer satisfaction.")}
