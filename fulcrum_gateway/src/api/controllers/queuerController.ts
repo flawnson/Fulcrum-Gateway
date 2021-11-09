@@ -13,6 +13,26 @@ exports.join_queue = function(req, res, next) {
     }
 };
 
+exports.defer_queue = function(req, res, next) {
+    try {
+        console.log(req.params.queuerId)
+        JSON.parse(req.body)
+        res.sendStatus(201)
+    } catch(e) {
+        res.sendStatus(500) && next(error)
+    }
+};
+
+exports.leave_queue = function(req, res, next) {
+    try {
+        console.log(req.params.queuerId)
+        JSON.parse(req.body)
+        res.sendStatus(201)
+    } catch(e) {
+        res.sendStatus(500) && next(error)
+    }
+};
+
 exports.get_queuer_stats = function(req, res, next) {
     try {
         console.log(req.params.queuerId)

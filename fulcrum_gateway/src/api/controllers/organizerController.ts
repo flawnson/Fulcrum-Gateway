@@ -49,7 +49,6 @@ exports.get_queues = function(req, res, next) {
     }
 };
 
-
 exports.get_queue_stats = function(req, res, next) {
     try {
         res.status(200).json({
@@ -64,3 +63,42 @@ exports.get_queue_stats = function(req, res, next) {
         res.sendStatus(500) && next(error)
     }
 };
+
+exports.get_enqueued_stats = function (req, res, next) {
+    try {
+        return null
+    } catch(e) {
+        res.sendStatus(500) && next(error)
+    }
+}
+exports.kick_enqueued = function (req, res, next) {
+    try {
+        return null
+    } catch(e) {
+        res.sendStatus(500) && next(error)
+    }
+}
+
+exports.end_queue = function (req, res, next) {
+    try {
+        return null
+    } catch(e) {
+        res.sendStatus(500) && next(error)
+    }
+}
+
+exports.pause_queue = function (req, res, next) {
+    try {
+        return null
+    } catch(e) {
+        res.sendStatus(500) && next(error)
+    }
+}
+
+exports.edit_queue = function (req, res, next) {
+    try {
+        return null
+    } catch(e) {
+        res.sendStatus(500) && next(error)
+    }
+}
