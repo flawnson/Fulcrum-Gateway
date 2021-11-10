@@ -1,5 +1,7 @@
-import queuerRouter from './queuers'
-import organizerRouter from './organizers'
+// @ts-nocheck to get err as uninferable type
+// @ts-ignore
+const queuerRouter = require('./organizers')
+const organizerRouter = require('./organizers')
 
 const app = require('express')()
 const port = 8080
@@ -12,7 +14,7 @@ app.use(organizerRouter);
 
 app.listen(port, function(err){
     if (err) console.log(err);
-    console.log("Server listening on PORT", PORT);
+    console.log("Server listening on PORT", port);
 });
 
 

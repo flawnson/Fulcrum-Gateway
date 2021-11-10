@@ -4,8 +4,8 @@ const express = require('express');
 const router = express.Router();
 
 // Require controller modules.
-const organizer_controller = require('../controllers/bookController');
-const queue_controller = require('../controllers/authorController');
+const organizer_controller = require('../controllers/organizerController');
+const queue_controller = require('../controllers/queueController');
 
 router.post('/organizer/:organizerId/create', organizer_controller.create_queue_form)
 
@@ -19,12 +19,12 @@ router.get('/organizer/:organizerId/queues/:queueId/pause', organizer_controller
 
 router.get('/organizer/:organizerId/queues/:queueId/edit', organizer_controller.edit_queue)
 
-router.get('/organizer/:organizerId/queues/:queueId/enqueued', organizer_controller.get_enqueued)
+router.get('/organizer/:organizerId/queues/:queueId/enqueued', queue_controller.get_enqueued)
 
-router.get('/organizer/:organizerId/queues/:queueId/:queuerId/stats', organizer_controller.get_enqueued_stats)
+router.get('/organizer/:organizerId/queues/:queueId/:queuerId/stats', queue_controller.get_enqueued_stats)
 
-router.get('/organizer/:organizerId/queues/:queueId/:queuerId/summon', organizer_controller.summon_enqueued)
+router.get('/organizer/:organizerId/queues/:queueId/:queuerId/summon', queue_controller.summon_enqueued)
 
-router.get('/organizer/:organizerId/queues/:queueId/:queuerId/kick', organizer_controller.kick_enqueued)
+router.get('/organizer/:organizerId/queues/:queueId/:queuerId/kick', queue_controller.kick_enqueued)
 
 module.exports = router

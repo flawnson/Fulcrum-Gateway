@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 
 // Require controller modules.
-const queuer_controller = require('../controllers/authorController');
+const queuer_controller = require('../controllers/queuerController');
 
 router.get('/queuer/:queueId/join', queuer_controller.join_queue)
 
