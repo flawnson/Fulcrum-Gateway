@@ -1,10 +1,9 @@
-// To remove TS error
-export {};
+// @ts-nocheck for express and router redeclaration error
 const express = require('express');
 const router = express.Router();
 
 // Require controller modules.
-const queuer_controller = require('../controllers/queuerController');
+const queuer_controller = require('../controllers/queuerController.ts');
 
 router.get('/queuer/:queueId/join', queuer_controller.join_queue)
 

@@ -1,7 +1,7 @@
 // @ts-nocheck to get err as uninferable type
 // @ts-ignore
-const queuerRouter = require('./organizers')
-const organizerRouter = require('./organizers')
+const queuerRouter = require('./queuers.ts')
+const organizerRouter = require('./organizers.ts')
 
 const app = require('express')()
 const port = 8080
@@ -9,6 +9,11 @@ const cors = require('cors')
 
 app.use(cors())
 
+app.get('/', (req, res) => {
+    res.status(200).json({
+        "Hello": "there!"
+    })
+})
 app.use(queuerRouter);
 app.use(organizerRouter);
 

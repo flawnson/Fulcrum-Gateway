@@ -1,6 +1,4 @@
 // @ts-nocheck to get rid of req and res uninferable types
-// To get rid of isolatedModules TS error
-export {}
 
 exports.get_enqueued = function(req, res, next) {
     try {

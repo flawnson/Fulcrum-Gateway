@@ -20,7 +20,7 @@ export default function () {
 
     useInterval(async () => {
         try {
-            const response = await fetch('http://localhost:8080/queuer/stats')
+            const response = await fetch('http://localhost:8080/queuer/QUEUERID/stats')
             setProps(await response.json())
         } catch(error) {
             console.log(error)

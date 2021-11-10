@@ -1,11 +1,10 @@
-// To remove TS error
-export {};
+// @ts-nocheck for express and router redeclaration error
 const express = require('express');
 const router = express.Router();
 
 // Require controller modules.
-const organizer_controller = require('../controllers/organizerController');
-const queue_controller = require('../controllers/queueController');
+const organizer_controller = require('../controllers/organizerController.ts');
+const queue_controller = require('../controllers/queueController.ts');
 
 router.post('/organizer/:organizerId/create', organizer_controller.create_queue_form)
 
