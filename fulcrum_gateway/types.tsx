@@ -18,6 +18,6 @@ export type RootStackParamList = {
     ActiveQueuesPage: undefined;
 };
 
-export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
-export type HomeNavigationProps = NativeStackNavigationProp<RootStackParamList, 'Home'>;
-export type HomeScreenRouteProps = RouteProp<RootStackParamList, 'Home'>;
+export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'HomePage'>;
+export type HomeNavigationProps = NativeStackNavigationProp<RootStackParamList, 'HomePage'>;
+export type HomeScreenRouteProps = RouteProp<RootStackParamList, 'HomePage'>;

@@ -9,7 +9,7 @@ export default function () {
     return (
         <Menu w="190" trigger={(triggerProps) => { return (
                         <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-                        <HamburgerIcon />
+                            <HamburgerIcon />
                         </Pressable>
                         )
                     }}
