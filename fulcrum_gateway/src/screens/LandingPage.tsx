@@ -9,10 +9,15 @@ import {StyleSheet} from "react-native";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import FeaturesScreen from '../screens/FeaturesScreen'
 import ContactScreen from '../screens/ContactScreen'
+import { useTranslation } from 'react-i18next';
+import {useNavigation} from "@react-navigation/native";
+import {HomeScreenProps} from "../../types";
 
 
 export default function () {
     const Drawer = createDrawerNavigator();
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const { t, i18n } = useTranslation("landingPage");
 
     return (
         <View>
@@ -29,19 +34,25 @@ export default function () {
                            alt={"Cute queueing gif"}
                            style={styles.animation}/>
                 </Center>
+                <Text style={styles.header}>
+                    {t('title')}
+                </Text>
+                <Text style={styles.subHeader}>
+                    {t('description')}
+                </Text>
                 <Center>
                     <HStack>
-                        <Button style={styles.smallButton}>
-                            Join a queue
+                        <Button onPress={() => navigation.navigate("Home")} style={styles.smallButton}>
+                            {t('join')}
                         </Button>
-                        <Button style={styles.smallButton}>
-                            Create a queue
+                        <Button onPress={() => navigation.navigate("CreateQueuePage")} style={styles.smallButton}>
+                            {t('create')}
                         </Button>
                     </HStack>
                 </Center>
                 <Center>
-                    <Button style={styles.longButton}>
-                        Sign up
+                    <Button onPress={() => navigation.navigate("Home")} style={styles.longButton}>
+                        {t('signup')}
                     </Button>
                 </Center>
             </VStack>
@@ -55,6 +66,16 @@ const styles = StyleSheet.create({
         fontSize: 100,
         textAlign: 'center',
         fontFamily: 'Poppins-Bold.otf'
+    },
+    header: {
+        fontSize: 50,
+        textAlign: 'center',
+        fontFamily: 'Poppins-ExtraBold.otf'
+    },
+    subHeader: {
+        fontSize: 20,
+        textAlign: 'center',
+        fontFamily: 'Poppins-Regular.otf'
     },
     animation: {
         marginTop: 25,

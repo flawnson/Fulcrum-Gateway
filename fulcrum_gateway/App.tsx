@@ -1,8 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, Text, View, } from "react-native";
 import { NativeBaseProvider } from 'native-base';
-import { NativeRouter, Route, Link } from 'react-router-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomePage from './src/pages/HomePage'
@@ -19,6 +17,7 @@ import {nativebaseTheme, navigationTheme} from "./theme";
 import { registerRootComponent } from 'expo';
 import ActiveQueuesPage from "./src/pages/ActiveQueuesPage";
 import EnqueuedQueuersPage from "./src/pages/EnqueuedQueuersPage";
+import './i18n';
 import OrganizerDashboardTabs from "./src/pages/OrganizerDashboardTabs"
 
 const config: object = {
@@ -59,7 +58,7 @@ function App() {
                       ) : (
                           <>
                               <Stack.Screen name="HomePage" component={HomePage} />
-                              <Stack.Screen name="Landing" component={LandingPage} />
+                              <Stack.Screen name="LandingPage" component={LandingPage} />
                               <Stack.Screen name="SignUp" component={AbandonedScreen} />
                           </>
                       )}

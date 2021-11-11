@@ -5,6 +5,7 @@ import {Button, Center,
         Text, VStack,
         Select} from 'native-base'
 import {HomeScreenProps} from "../../../types";
+import {useTranslation} from "react-i18next";
 
 type DefaultData = {
     submitted: boolean,
@@ -27,6 +28,7 @@ export default function ({navigation}: HomeScreenProps) {
     const [onChangeValue, setOnChangeValue] = useState(500)
     const [onChangeEndValue, setOnChangeEndValue] = useState(500)
     const [gracePeriod, setGracePeriod] = useState(5)
+    const { t, i18n } = useTranslation(["homePage", "common"]);
 
     useEffect(() => {validate()})
 
@@ -93,11 +95,11 @@ export default function ({navigation}: HomeScreenProps) {
             <FormControl isRequired isInvalid={errors.nameInvalid}>
                 <Stack>
                     <Center>
-                        <FormControl.Label _text={{bold: true}}>What's your name?</FormControl.Label>
+                        <FormControl.Label _text={{bold: true}}>{t("business_name_label")}</FormControl.Label>
                     </Center>
                     <Center>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>What's the name of your business, event, or venue?</Text>
+                            <Text>{t("buesiness_name_helper")}</Text>
                         </FormControl.HelperText>
                     </Center>
                     <Input
@@ -110,11 +112,11 @@ export default function ({navigation}: HomeScreenProps) {
             <FormControl isRequired isInvalid={errors.nameInvalid}>
                 <Stack>
                     <Center>
-                        <FormControl.Label _text={{bold: true}}>Cap the queue at {onChangeValue} queuers</FormControl.Label>
+                        <FormControl.Label _text={{bold: true}}>{t("queue_cap_label", {onChangeValue: onChangeValue})}</FormControl.Label>
                     </Center>
                     <Center>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>There is a maximum of 1000 queuers allowed</Text>
+                            <Text>{t("queue_cap_helper")}</Text>
                         </FormControl.HelperText>
                     </Center>
                     <Slider
@@ -141,11 +143,11 @@ export default function ({navigation}: HomeScreenProps) {
             <FormControl isRequired isInvalid={errors.nameInvalid}>
                 <Stack>
                     <Center>
-                        <FormControl.Label _text={{bold: true}}>Wait for {formData.gracePeriod} minutes when summoning a queuer</FormControl.Label>
+                        <FormControl.Label _text={{bold: true}}>{t("grace_period_label", {gracePeriod: formData.gracePeriod})}</FormControl.Label>
                     </Center>
                     <Center>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>Set a grace period for summoned queuers to reach your venue</Text>
+                            <Text>{t("grace_period_helper")}</Text>
                         </FormControl.HelperText>
                     </Center>
                     <Select
@@ -160,11 +162,11 @@ export default function ({navigation}: HomeScreenProps) {
             <FormControl isRequired isInvalid={errors.nameInvalid}>
                 <Stack>
                     <Center>
-                        <FormControl.Label _text={{bold: true}}>A queuer can represent {formData.partySize} people.</FormControl.Label>
+                        <FormControl.Label _text={{bold: true}}>{t("party_size_label", {partySize: formData.partySize})}</FormControl.Label>
                     </Center>
                     <Center>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>Set a maximum party size that a queuer can represent</Text>
+                            <Text>{t("party_size_helper")}</Text>
                         </FormControl.HelperText>
                     </Center>
                     <Select

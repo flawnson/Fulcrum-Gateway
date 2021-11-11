@@ -3,6 +3,7 @@ import {StyleSheet} from 'react-native'
 import {Text, View, Center, VStack} from "native-base";
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
+import {useTranslation} from "react-i18next";
 
 
 type SummonData = {
@@ -16,6 +17,7 @@ export default function() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const [props, setProps] = useState<SummonData>({})
     const [errors, setError] = useState<any>([]);
+    const { t, i18n } = useTranslation("summonScreen");
 
     useEffect(() => {fetchData()}, [])
 
@@ -33,19 +35,19 @@ export default function() {
             <Center>
                 <VStack>
                     <Text style={styles.header}>
-                        You're up!
+                        {t('message')}
                     </Text>
                     <Text style={styles.subHeader}>
-                        Reach {props.address} by
+                        {t('reach_by', {props: props.address})}
                     </Text>
                     <Text style={styles.header}>
                         {props.time}
                     </Text>
                     <Text style={styles.subHeader}>
-                        To keep your position in line
+                        {t('reach_by_cont')}
                     </Text>
                     <Text style={styles.subText}>
-                        Requeue or create your own queue at
+                        {t('footer')}
                         <Text style={styles.linkText} onPress={() => navigation.navigate('LandingPage')}> fiefoe.com</Text>
                     </Text>
                 </VStack>

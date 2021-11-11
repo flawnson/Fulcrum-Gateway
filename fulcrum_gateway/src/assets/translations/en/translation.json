@@ -1,0 +1,46 @@
+{
+  "common": {
+    "test": "success",
+    "hello": "there",
+    "submit": "Submit"
+  },
+  "landingPage": {
+    "title": "Virtual lines that save time.",
+    "description": "Fiefoe helps you find create and monitor virtual queues and generate more sales by increasing throughput and customer satisfaction.",
+    "join": "Join a queue",
+    "create": "Create a queue",
+    "signup": "Sign up"
+  },
+  "abandonedScreen": {
+    "message": "Come again soon!",
+    "footer": "Requeue or create your own queue at"
+  },
+  "endScreen": {
+    "message": "That's a wrap!",
+    "footer": "Create another queue at"
+  },
+  "shareScreen": {
+    "message": "Scan the QR code or enter the ID"
+  },
+  "summonScreen": {
+    "message": "You're up!",
+    "reach_by": "Reach {{props}} by",
+    "reach_by_cont": "to keep your spot in line.",
+    "footer": "Requeue or create your own queue at"
+  },
+  "homePage": {
+    "queue_id": "Queue ID",
+    "helper": "Queue ID must be 10 characters.",
+    "footer": "Create your own virtual queue at"
+  },
+  "createQueuePage": {
+    "business_name_label": "What's your name?",
+    "business_name_helper": "What's the name of your business, event, or venue?",
+    "queue_cap_label": "Cap the queue at {{onChangeValue}} queuers",
+    "queue_cap_helper": "There is a maximum of 1000 queuers allowed",
+    "grace_period_label": "Wait for {{gracePeriod}} minutes when summoning a queuer",
+    "grace_period_helper": "Set a grace period for summoned queuers to reach your venue",
+    "party_size_label": "A queuer can represent {{partySize}} people.",
+    "party_size_helper": "Set a maximum party size that a queuer can represent"
+  }
+}
