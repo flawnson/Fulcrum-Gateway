@@ -15,7 +15,14 @@ exports.get_enqueued = function(req, res, next) {
 
 exports.get_enqueued_stats = function (req, res, next) {
     try {
-        return null
+        res.status(200).json({
+            'enqueued': 34,
+            'serviced': 23,
+            'deferrals': 8,
+            'avg': 10,
+            'abandonments': 2,
+            'noshows': 0
+        })
     } catch(e) {
         res.sendStatus(500) && next(error)
     }

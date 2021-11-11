@@ -6,6 +6,7 @@ import {Center, Heading, Text, Image} from "native-base";
 import OrganizerDashboardGroup from "../components/organisms/OrganizerDashboardStats";
 import OrganizerDashboardMenu from "../containers/OrganizerDashboardMenu"
 import useInterval from "../utilities/useInterval";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 export default function () {
@@ -22,7 +23,7 @@ export default function () {
 
     useInterval(async () => {
         try {
-            const response = await fetch('http://localhost:8080/organizer/stats')
+            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/QUEUERID/stats')
             setProps(await response.json())
         } catch(error) {
             console.log(error)

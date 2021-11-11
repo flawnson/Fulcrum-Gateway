@@ -32,7 +32,6 @@ exports.leave_queue = function(req, res, next) {
 
 exports.get_queuer_stats = function(req, res, next) {
     try {
-        console.log(req.params.queuerId)
         res.status(200).json({
             'index': 2,
             'eta': 10,
