@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import CatalogEntityCardGroup from "../components/molecules/CatalogEntityCardGroup";
 import {VStack} from "native-base";
 
 export default function () {
     const [props, setProps] = useState({'entities': []})
+
+    useEffect(() => {fetchQueueData()}, [])
 
     async function fetchQueueData () {
         try {
@@ -13,8 +15,6 @@ export default function () {
             console.log(error)
         }
     }
-
-    fetchQueueData()
 
     return (
         <CatalogEntityCardGroup entities={props.entities}/>

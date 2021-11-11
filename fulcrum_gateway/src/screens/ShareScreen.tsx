@@ -3,6 +3,7 @@ import {StyleSheet,
         Image,
         Text,
         View} from 'react-native'
+import {useTranslation} from "react-i18next";
 
 
 type share_props = {
@@ -12,10 +13,12 @@ type share_props = {
 
 
 export default function(props: share_props) {
+    const { t, i18n } = useTranslation("landingPage");
+
     return (
         <View>
             <Text style={styles.header}>
-                Come again soon!
+                {t('message')}
             </Text>
             <Image source={require("../assets/images/qr-icon-black.png")}/>
             <Text style={styles.subText}>

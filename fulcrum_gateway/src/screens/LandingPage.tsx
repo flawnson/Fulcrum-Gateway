@@ -38,21 +38,21 @@ export default function () {
                     {t('title')}
                 </Text>
                 <Text style={styles.subHeader}>
-                    {t("Fiefoe helps you find create and monitor virtual queues and generate more sales by increasing throughput and customer satisfaction.")}
+                    {t('description')}
                 </Text>
                 <Center>
                     <HStack>
                         <Button onPress={() => navigation.navigate("Home")} style={styles.smallButton}>
-                            Join a queue
+                            {t('join')}
                         </Button>
                         <Button onPress={() => navigation.navigate("CreateQueuePage")} style={styles.smallButton}>
-                            Create a queue
+                            {t('create')}
                         </Button>
                     </HStack>
                 </Center>
                 <Center>
                     <Button onPress={() => navigation.navigate("Home")} style={styles.longButton}>
-                        Sign up
+                        {t('signup')}
                     </Button>
                 </Center>
             </VStack>

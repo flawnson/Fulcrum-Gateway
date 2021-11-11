@@ -1,7 +1,10 @@
 {
-  "_comment": "src/assets/translations/en/translation.json",
-  "demoScope": {
-    "title": "i18next is Great!",
+  "common": {
+    "test": "success",
+    "hello": "there"
+  },
+  "landingPage": {
+    "title": "Economiser le tempts avec les lignes digital.",
     "description": "Everyone understands me!"
   }
 }

@@ -5,19 +5,22 @@ import {StyleSheet,
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
 import {Center} from "native-base";
+import {useTranslation} from "react-i18next";
 
 
 export default function() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
+    const { t, i18n } = useTranslation("landingPage");
+
     return (
         <View>
             <Center style={styles.container}>
                 <Text style={styles.header}>
-                    That's a wrap!
+                    {t('message')}
                 </Text>
                 <Text style={styles.subText}>
-                    Create another queue at
-                    <Text style={styles.linkText} onPress={() => navigation.navigate('LandingPage')}> fiefoe.com</Text>
+                    {t('footer')}
+                <Text style={styles.linkText} onPress={() => navigation.navigate('LandingPage')}> fiefoe.com</Text>
                 </Text>
             </Center>
         </View>
