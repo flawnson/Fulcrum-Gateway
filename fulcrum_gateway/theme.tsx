@@ -3,8 +3,7 @@ import {extendTheme, useColorMode} from "native-base";
 import {DarkTheme, DefaultTheme} from "@react-navigation/native";
 import {useColorScheme} from "react-native";
 
-export function nativebaseTheme () {
-    const { colorMode } = useColorMode();
+export function nativebaseTheme (colorMode: string) {
     const darkTheme = {
         colors: {
             // Add new color
@@ -85,8 +84,7 @@ export function nativebaseTheme () {
     return extendTheme(colorMode === 'dark' ? darkTheme : lightTheme);
 }
 
-export function navigationTheme () {  // https://reactnavigation.org/docs/themes/
-    const { colorMode } = useColorMode();
+export function navigationTheme (colorMode: string) {  // https://reactnavigation.org/docs/themes/
     return ({
         ...(colorMode === 'dark' ? DarkTheme : DefaultTheme),  // Should do useColorScheme() hook from react native
         colors: {

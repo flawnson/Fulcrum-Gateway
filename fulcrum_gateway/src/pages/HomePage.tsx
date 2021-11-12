@@ -1,15 +1,15 @@
 import React from 'react';
 import {StyleSheet,
         Image,
+        Switch,
         TouchableHighlight} from 'react-native'
-import {View,
-        Button,
-        useColorMode} from 'native-base'
+import {View} from 'native-base'
 import EnqueueGroup from "../components/molecules/EnqueueGroup";
+import {PreferencesContext} from "../utilities/useTheme";
 
 
 export default function () {
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
     const goToCameraView = () => {
         console.log("yes")
     };
@@ -17,7 +17,7 @@ export default function () {
     return (
         <View>
             <EnqueueGroup/>
-            <Button onPress={toggleColorMode}>Toggle</Button>
+            <Switch onValueChange={toggleTheme} value={isThemeDark}>Toggle</Switch>
             <TouchableHighlight style={styles.qrButton} onPress={goToCameraView}>
                 <Image style={styles.qrCode} source={require("../assets/images/qr-icon.png")} />
             </TouchableHighlight>

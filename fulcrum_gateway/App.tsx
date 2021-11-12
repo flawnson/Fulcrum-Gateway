@@ -19,6 +19,7 @@ import ActiveQueuesPage from "./src/pages/ActiveQueuesPage";
 import EnqueuedQueuersPage from "./src/pages/EnqueuedQueuersPage";
 import './i18n';
 import OrganizerDashboardTabs from "./src/pages/OrganizerDashboardTabs"
+import {PreferencesContext} from "./src/utilities/useTheme";
 
 const config: object = {
     strictMode: 'error',
@@ -27,46 +28,65 @@ const config: object = {
 function App() {
     const Stack = createNativeStackNavigator<RootStackParamList>();
     const isInQueue = true
-    const isQueuer = false
-    const isOrganizer = true
+    const isQueuer = true
+    const isOrganizer = false
+    const [isThemeDark, setIsThemeDark] = React.useState(false);
+
+    let theme = isThemeDark ? {nativebase: nativebaseTheme("dark"), navigation: navigationTheme("dark")} :
+                              {nativebase: nativebaseTheme("light"), navigation: navigationTheme("light")};
+
+    const toggleTheme = React.useCallback(() => {
+        return setIsThemeDark(!isThemeDark);
+    }, [isThemeDark]);
+
+    const preferences = React.useMemo(
+        () => ({
+            toggleTheme,
+            isThemeDark,
+        }),
+        [toggleTheme, isThemeDark]
+    );
 
     return (
-      <NativeBaseProvider config={config} theme={nativebaseTheme()}>
-          <NavigationContainer theme={navigationTheme()}>
-              <Stack.Navigator initialRouteName="HomePage">
-                  <Stack.Group screenOptions={{ headerShown: false }} >
-                      {isInQueue && isQueuer ? (
-                      <>
-                          <Stack.Screen name="HomePage" component={HomePage} />
-                          <Stack.Screen name="LandingPage" component={LandingPage} />
-                          <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
-                          <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
-                          <Stack.Screen name="ShareScreen" component={ShareScreen} />
-                          <Stack.Screen name="SummonScreen" component={SummonScreen} />
-                      </>
-                      ) : isInQueue && isOrganizer ? (
-                          <>
-                              <Stack.Screen name="HomePage" component={OrganizerDashboardTabs} />
-                              <Stack.Screen name="LandingPage" component={LandingPage} />
-                              <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
-                              <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboardTabs} />
-                              <Stack.Screen name="EnqueuedQueuersPage" component={EnqueuedQueuersPage} />
-                              <Stack.Screen name="ActiveQueuesPage" component={ActiveQueuesPage} />
-                              <Stack.Screen name="ShareScreen" component={ShareScreen} />
-                              <Stack.Screen name="EndScreen" component={EndScreen} />
-                          </>
-                      ) : (
+        <PreferencesContext.Provider value={preferences}>
+          <NativeBaseProvider config={config} theme={theme.nativebase}>
+              <NavigationContainer theme={theme.navigation}>
+                  <Stack.Navigator initialRouteName="HomePage">
+                      <Stack.Group screenOptions={{ headerShown: false }} >
+                          {isInQueue && isQueuer ? (
                           <>
                               <Stack.Screen name="HomePage" component={HomePage} />
                               <Stack.Screen name="LandingPage" component={LandingPage} />
-                              <Stack.Screen name="SignUp" component={AbandonedScreen} />
+                              <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
+                              <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
+                              <Stack.Screen name="ShareScreen" component={ShareScreen} />
+                              <Stack.Screen name="SummonScreen" component={SummonScreen} />
                           </>
-                      )}
-                  </Stack.Group>
-              </Stack.Navigator>
-          </NavigationContainer>
-      </NativeBaseProvider>
-  );
+                          ) : isInQueue && isOrganizer ? (
+                              <>
+                                  <Stack.Screen name="HomePage" component={OrganizerDashboardTabs} />
+                                  <Stack.Screen name="LandingPage" component={LandingPage} />
+                                  <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
+                                  <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboardTabs} />
+                                  <Stack.Screen name="EnqueuedQueuersPage" component={EnqueuedQueuersPage} />
+                                  <Stack.Screen name="ActiveQueuesPage" component={ActiveQueuesPage} />
+                                  <Stack.Screen name="ShareScreen" component={ShareScreen} />
+                                  <Stack.Screen name="EndScreen" component={EndScreen} />
+                              </>
+                          ) : (
+                              <>
+                                  <Stack.Screen name="HomePage" component={HomePage} />
+                                  <Stack.Screen name="LandingPage" component={LandingPage} />
+                                  <Stack.Screen name="SignUp" component={AbandonedScreen} />
+                              </>
+                          )}
+                      </Stack.Group>
+                  </Stack.Navigator>
+              </NavigationContainer>
+          </NativeBaseProvider>
+        </PreferencesContext.Provider>
+
+    );
 }
 
 
