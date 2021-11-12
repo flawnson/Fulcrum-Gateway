@@ -9,7 +9,7 @@ export default function () {
 
     async function fetchQueuerData () {
         try {
-            const response = await fetch('http://localhost:8080/queuers')
+            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/enqueued')
             setProps(await response.json())
         } catch(error) {
             console.log(error)

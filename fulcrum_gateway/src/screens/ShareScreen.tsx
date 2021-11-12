@@ -13,7 +13,7 @@ type share_props = {
 
 
 export default function(props: share_props) {
-    const { t, i18n } = useTranslation("landingPage");
+    const { t, i18n } = useTranslation("shareScreen");
 
     return (
         <View>

@@ -10,7 +10,7 @@ import {useTranslation} from "react-i18next";
 
 export default function() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const { t, i18n } = useTranslation("landingPage");
+    const { t, i18n } = useTranslation("abandonedScreen");
 
     return (
         <View>

@@ -42,7 +42,7 @@ export default function () {
                 </Text>
                 <Center>
                     <HStack>
-                        <Button onPress={() => navigation.navigate("Home")} style={styles.smallButton}>
+                        <Button onPress={() => navigation.navigate("HomePage")} style={styles.smallButton}>
                             {t('join')}
                         </Button>
                         <Button onPress={() => navigation.navigate("CreateQueuePage")} style={styles.smallButton}>
@@ -51,7 +51,7 @@ export default function () {
                     </HStack>
                 </Center>
                 <Center>
-                    <Button onPress={() => navigation.navigate("Home")} style={styles.longButton}>
+                    <Button onPress={() => navigation.navigate("HomePage")} style={styles.longButton}>
                         {t('signup')}
                     </Button>
                 </Center>
