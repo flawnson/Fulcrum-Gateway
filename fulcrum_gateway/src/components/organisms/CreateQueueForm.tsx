@@ -28,9 +28,10 @@ export default function ({navigation}: HomeScreenProps) {
     const [onChangeValue, setOnChangeValue] = useState(500)
     const [onChangeEndValue, setOnChangeEndValue] = useState(500)
     const [gracePeriod, setGracePeriod] = useState(5)
-    const { t, i18n } = useTranslation(["homePage", "common"]);
+    const { t, i18n } = useTranslation(["createQueuePage", "common"]);
 
-    useEffect(() => {validate()})
+    // Be careful with this it might trigger infinite render loop
+    useEffect(() => {validate()}, [])
 
     const validate = () => {
         if (formData.name.length > 50) {
@@ -99,7 +100,7 @@ export default function ({navigation}: HomeScreenProps) {
                     </Center>
                     <Center>
                         <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>{t("buesiness_name_helper")}</Text>
+                            <Text>{t("business_name_helper")}</Text>
                         </FormControl.HelperText>
                     </Center>
                     <Input
@@ -154,7 +155,7 @@ export default function ({navigation}: HomeScreenProps) {
                         placeholder={"0"}
                         onValueChange={(value) => setData({ ...formData, gracePeriod: parseInt(value) })}
                     >
-                        {[...Array(10).keys()].map(number => <Select.Item label={number.toString()} value="ux" />)}
+                        {[...Array(10).keys()].map(number => <Select.Item key={number} label={number.toString()} value="ux" />)}
                     </Select>
                 <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
                 </Stack>

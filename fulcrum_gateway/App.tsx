@@ -9,7 +9,6 @@ import EndScreen from "./src/screens/EndScreen"
 import ShareScreen from "./src/screens/ShareScreen"
 import AbandonedScreen from "./src/screens/AbandonedScreen";
 import QueuerDashboard from "./src/pages/QueuerDashboard";
-import OrganizerDashboard from "./src/pages/OrganizerDashboard";
 import CreateQueuePage from "./src/pages/CreateQueuePage";
 import LandingPage from "./src/screens/LandingPage";
 import {RootStackParamList} from "./types";
@@ -55,7 +54,7 @@ function App() {
                       <Stack.Group screenOptions={{ headerShown: false }} >
                           {isInQueue && isQueuer ? (
                           <>
-                              <Stack.Screen name="HomePage" component={HomePage} />
+                              <Stack.Screen name="HomePage" component={CreateQueuePage} />
                               <Stack.Screen name="LandingPage" component={LandingPage} />
                               <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
                               <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
