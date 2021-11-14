@@ -208,3 +208,6 @@ fulcrum_gateway/.env.production.local
 fulcrum_gateway/npm-debug.log*
 fulcrum_gateway/yarn-debug.log*
 fulcrum_gateway/yarn-error.log*
+
+# expo
+.expo/
