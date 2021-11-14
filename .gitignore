@@ -211,3 +211,6 @@ fulcrum_gateway/yarn-error.log*
 
 # expo
 .expo/
+
+# Pycharm
+.idea/
