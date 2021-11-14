@@ -16,7 +16,7 @@ router.get('/organizer/:organizerId/queues/:queueId/end', organizer_controller.e
 
 router.get('/organizer/:organizerId/queues/:queueId/pause', organizer_controller.pause_queue)
 
-router.get('/organizer/:organizerId/queues/:queueId/edit', organizer_controller.edit_queue)
+router.post('/organizer/:organizerId/queues/:queueId/edit', organizer_controller.edit_queue)
 
 router.get('/organizer/:organizerId/queues/:queueId/enqueued', queue_controller.get_enqueued)
 

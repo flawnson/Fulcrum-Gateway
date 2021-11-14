@@ -23,7 +23,7 @@ export default function() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch('http://localhost:8080/queuer/summon')
+            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/QUEUERID/summon')
             setProps(await response.json())
         } catch (error) {
             setError([...errors, error])

@@ -1,5 +1,6 @@
 // @ts-nocheck to get rid of req and res uninferable types
 
+// @ts-ignore
 exports.create_queue_form = function(req, res, next) {
     try {
         console.log(req.params.organizerId)
@@ -53,10 +54,12 @@ exports.pause_queue = function (req, res, next) {
     }
 }
 
-exports.edit_queue = function (req, res, next) {
+exports.edit_queue = function(req, res, next) {
     try {
-        return null
+        console.log(req.params.organizerId)
+        JSON.parse(req.body)
+        res.sendStatus(201)
     } catch(e) {
         res.sendStatus(500) && next(error)
     }
-}
+};
