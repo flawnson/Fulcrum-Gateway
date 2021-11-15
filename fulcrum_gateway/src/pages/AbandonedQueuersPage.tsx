@@ -6,18 +6,18 @@ import useInterval from "../utilities/useInterval";
 export default function () {
     const [props, setProps] = useState({'entities': []})
 
-    useEffect(() => {fetchQueuerData()}, [])
+    useEffect(() => {fetchAbandonedData()}, [])
 
-    async function fetchQueuerData () {
+    async function fetchAbandonedData () {
         try {
-            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/enqueued')
+            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/abandoned')
             setProps(await response.json())
         } catch(error) {
             console.log(error)
         }
     }
 
-    useInterval(fetchQueuerData, 5000)
+    useInterval(fetchAbandonedData, 5000)
 
     return (
         <CatalogEntityCardGroup entities={props.entities}/>

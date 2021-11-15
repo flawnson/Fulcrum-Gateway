@@ -2,7 +2,8 @@ import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import OrganizerDashboard from "./OrganizerDashboard";
 import EnqueuedQueuersPage from "./EnqueuedQueuersPage";
-import AbandonedScreen from "../screens/AbandonedScreen";
+import ServicedQueuersPage from "./ServicedQueuersPage";
+import AbandonedQueuersPage from "./AbandonedQueuersPage";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
@@ -48,14 +49,14 @@ export default function OrganizerDashboardTabs() {
             />
             <Tab.Screen
                 name="Serviced"
-                component={AbandonedScreen}
+                component={ServicedQueuersPage}
                 options={{
                     tabBarLabel: 'Serviced',
                 }}
             />
             <Tab.Screen
                 name="Abandoned"
-                component={AbandonedScreen}
+                component={AbandonedQueuersPage}
                 options={{
                     tabBarLabel: 'Abandoned',
                 }}

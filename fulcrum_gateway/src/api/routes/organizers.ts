@@ -14,16 +14,20 @@ router.get('/organizer/:organizerId/queues/:queueId/stats', organizer_controller
 
 router.get('/organizer/:organizerId/queues/:queueId/end', organizer_controller.end_queue)
 
-router.get('/organizer/:organizerId/queues/:queueId/pause', organizer_controller.pause_queue)
+router.post('/organizer/:organizerId/queues/:queueId/pause', organizer_controller.pause_queue)
 
-router.get('/organizer/:organizerId/queues/:queueId/edit', organizer_controller.edit_queue)
+router.post('/organizer/:organizerId/queues/:queueId/edit', organizer_controller.edit_queue)
 
 router.get('/organizer/:organizerId/queues/:queueId/enqueued', queue_controller.get_enqueued)
 
+router.get('/organizer/:organizerId/queues/:queueId/serviced', queue_controller.get_serviced)
+
+router.get('/organizer/:organizerId/queues/:queueId/abandoned', queue_controller.get_abandoned)
+
 router.get('/organizer/:organizerId/queues/:queueId/:queuerId/stats', queue_controller.get_enqueued_stats)
 
-router.get('/organizer/:organizerId/queues/:queueId/:queuerId/summon', queue_controller.summon_enqueued)
+router.post('/organizer/:organizerId/queues/:queueId/:queuerId/summon', queue_controller.summon_enqueued)
 
-router.get('/organizer/:organizerId/queues/:queueId/:queuerId/kick', queue_controller.kick_enqueued)
+router.post('/organizer/:organizerId/queues/:queueId/:queuerId/kick', queue_controller.kick_enqueued)
 
 module.exports = router
