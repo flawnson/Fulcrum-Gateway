@@ -56,7 +56,7 @@ exports.pause_queue = function (req, res, next) {
     }
 }
 
-exports.edit_queue = function (req, res, next) {
+exports.edit_queue = function(req, res, next) {
     try {
         console.log(req.params.organizerId)
         JSON.parse(req.body)
@@ -64,4 +64,4 @@ exports.edit_queue = function (req, res, next) {
     } catch(e) {
         res.sendStatus(500) && next(error)
     }
-}
+};

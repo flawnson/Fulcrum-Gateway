@@ -27,17 +27,16 @@ export default function ({navigation}: HomeScreenProps) {
     const [errors, setError] = useState<DefaultErrors>(defaultErrors);
     const [onChangeValue, setOnChangeValue] = useState(500)
     const [onChangeEndValue, setOnChangeEndValue] = useState(500)
-    const [gracePeriod, setGracePeriod] = useState(5)
     const { t, i18n } = useTranslation(["createQueuePage", "common"]);
 
     // Be careful with this it might trigger infinite render loop
-    useEffect(() => {validate()}, [])
+    useEffect(() => {validate()}, [formData])
 
     const validate = () => {
         if (formData.name.length > 50) {
             setError({
                     ...errors,
-                    nameError: 'Name is too short',
+                    nameError: 'Name is too long',
                 });
                 setError({...errors, nameInvalid: true})
         } else {
@@ -110,7 +109,7 @@ export default function ({navigation}: HomeScreenProps) {
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
-            <FormControl isRequired isInvalid={errors.nameInvalid}>
+            <FormControl isRequired>
                 <Stack>
                     <Center>
                         <FormControl.Label _text={{bold: true}}>{t("queue_cap_label", {onChangeValue: onChangeValue})}</FormControl.Label>
@@ -138,10 +137,10 @@ export default function ({navigation}: HomeScreenProps) {
                         </Slider.Track>
                         <Slider.Thumb />
                     </Slider>
-                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
+                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Queue cap error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
-            <FormControl isRequired isInvalid={errors.nameInvalid}>
+            <FormControl isRequired>
                 <Stack>
                     <Center>
                         <FormControl.Label _text={{bold: true}}>{t("grace_period_label", {gracePeriod: formData.gracePeriod})}</FormControl.Label>
@@ -152,15 +151,14 @@ export default function ({navigation}: HomeScreenProps) {
                         </FormControl.HelperText>
                     </Center>
                     <Select
-                        placeholder={"0"}
                         onValueChange={(value) => setData({ ...formData, gracePeriod: parseInt(value) })}
                     >
                         {[...Array(10).keys()].map(number => <Select.Item key={number} label={number.toString()} value="ux" />)}
                     </Select>
-                <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
+                <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Grace period error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
-            <FormControl isRequired isInvalid={errors.nameInvalid}>
+            <FormControl isRequired>
                 <Stack>
                     <Center>
                         <FormControl.Label _text={{bold: true}}>{t("party_size_label", {partySize: formData.partySize})}</FormControl.Label>
@@ -171,12 +169,11 @@ export default function ({navigation}: HomeScreenProps) {
                         </FormControl.HelperText>
                     </Center>
                     <Select
-                        placeholder={"0"}
                         onValueChange={(value) => setData({ ...formData, partySize: parseInt(value) })}
                     >
-                        {[...Array(10).keys()].map(number => <Select.Item label={number.toString()} value="ux" />)}
+                        {[...Array(10).keys()].map(number => <Select.Item key={number} label={number.toString()} value="ux" />)}
                     </Select>
-                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
+                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Part size error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
             <Button onPress={onSubmit} mt="5" colorScheme="cyan" isLoading={formData.submitted} isLoadingText="Submitting">
