@@ -10,7 +10,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 export default function () {
-    const navigation = useNavigation<HomeScreenProps>()
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const tempProps = {
         'enqueued': 35,
         'serviced': 22,

@@ -15,6 +15,7 @@ export type RootStackParamList = {
     SummonScreen: undefined;
     EnqueuedQueuersPage: undefined;
     ActiveQueuesPage: undefined;
+    QRCodeScanner: undefined;
 };
 
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'HomePage'>;
