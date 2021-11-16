@@ -35,14 +35,14 @@ export default function OrganizerDashboardTabs() {
         >
             <Tab.Screen
                 name="OrganizerDashboard"
-                component={OrganizerDashboard}
+                component={EnqueuedQueuersPage}
                 options={{
                     tabBarLabel: 'Dashboard',
                 }}
             />
             <Tab.Screen
                 name="Enqueued"
-                component={EnqueuedQueuersPage}
+                component={OrganizerDashboard}
                 options={{
                     tabBarLabel: 'Enqueued',
                 }}
