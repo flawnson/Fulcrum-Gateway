@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Image, StyleSheet,
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet,
         Pressable, Animated,
         PanResponder, Dimensions } from "react-native";
 import { HStack, Text,
@@ -11,6 +11,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type OrganizerCatalogProps = {
     'entity': {
+        queuerId: number,
         name: string,
         index: string,
         waited: string,
@@ -20,18 +21,39 @@ type OrganizerCatalogProps = {
 export default function (props: OrganizerCatalogProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [summoned, setSummoned] = useState<boolean>(false)
+    const [online, setOnline] = useState<boolean>(true)
+
+    async function toggleSummonQueuer (queuerId: number) {
+        try {
+            const response = await fetch('/organizer/ORGANIZERID/queues/QUEUEID/QUEUERID/summon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({queuerId: queuerId})
+            });
+            // enter you logic when the fetch is successful
+            return await response.json()
+        } catch(error) {
+            // enter your logic for when there is an error (ex. error toast)
+            return error
+        }
+    }
+
+    useEffect(() => {
+        toggleSummonQueuer(props.entity.queuerId).then(null)
+    }, [summoned])
 
     const onBellPress = function () {
         setSummoned(!summoned)
     }
-    const onCheckPress = function () {
-        // Remove user from catalog
-    }
+
     const onCardPress = function () {
         navigation.navigate("QueuerDashboard")
     }
 
     const pan = useRef(new Animated.ValueXY()).current;
+
     const panResponder = useRef(
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
@@ -40,11 +62,11 @@ export default function (props: OrganizerCatalogProps) {
                 { dx: pan.x }
             ], {useNativeDriver: false}),
             onPanResponderRelease: (evt, gestureState) => {
-                if (gestureState.dx > 120) {
+                if (gestureState.dx > 200) {
                     Animated.spring(pan, {
                         toValue: { x: Dimensions.get('window').width + 100, y: gestureState.dy }, useNativeDriver: false
                     }).start(() => console.log('hi'))
-                } else if (gestureState.dx < -120) {
+                } else if (gestureState.dx < -200) {
                     Animated.spring(pan, {
                         toValue: { x: -Dimensions.get('window').width - 100, y: gestureState.dy }, useNativeDriver: false
                     }).start(() => console.log('bye'))
@@ -85,7 +107,9 @@ export default function (props: OrganizerCatalogProps) {
                 >
                     <Pressable onPress={onCardPress}>
                         <HStack space='5' style={styles.group}>
-                            <Avatar style={styles.icon} source={require("../../assets/images/generic-user-icon.jpg")}><Avatar.Badge bg="green.500"/></Avatar>
+                            <Avatar style={styles.icon} source={require("../../assets/images/generic-user-icon.jpg")}>
+                                <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
+                            </Avatar>
                             <Text suppressHighlighting={true} style={styles.text}>
                                 {props.entity.name}
                             </Text>

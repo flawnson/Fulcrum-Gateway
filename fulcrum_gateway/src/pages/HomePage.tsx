@@ -9,7 +9,7 @@ import QRCodeScanner from "../components/atoms/QRCodeScanner";
 import { PreferencesContext } from "../utilities/useTheme";
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 
 
 export default function () {
@@ -17,11 +17,25 @@ export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
     return (
-        <View>
+        <View style={styles.container}>
             <EnqueueGroup/>
-            <Switch onValueChange={toggleTheme} value={isThemeDark}>Toggle</Switch>
+            <Switch
+                style={styles.switch}
+                onValueChange={toggleTheme}
+                value={isThemeDark}
+            />
+            <Feather
+                style={styles.switchName}
+                name={isThemeDark ? 'sun' : 'moon'}
+                size={32}
+                color={isThemeDark ? 'white': 'black'}
+            />
             <TouchableHighlight style={styles.qrButton} onPress={() => navigation.navigate("QRCodeScanner")}>
-                <MaterialCommunityIcons name={'qrcode-scan'} size={32} color={isThemeDark ? 'white': 'black'} />
+                <MaterialCommunityIcons
+                    name={'qrcode-scan'}
+                    size={32}
+                    color={isThemeDark ? 'white': 'black'}
+                />
             </TouchableHighlight>
         </View>
     )
@@ -29,9 +43,23 @@ export default function () {
 
 
 const styles = StyleSheet.create({
+    container: {
+        position: "relative",
+        margin: "3%"
+    },
+    switch: {
+        position: "absolute",
+        top: "15px",
+        left: "37px",
+    },
+    switchName: {
+        position: "absolute",
+        top: "8px",
+    },
     qrButton: {
-        marginTop: "5%",
-        marginLeft: "80%",
+        position: "absolute",
+        top: "8px",
+        right: "16px",
     },
 });
 
