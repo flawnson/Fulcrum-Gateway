@@ -16,9 +16,11 @@ import {nativebaseTheme, navigationTheme} from "./theme";
 import { registerRootComponent } from 'expo';
 import ActiveQueuesPage from "./src/pages/ActiveQueuesPage";
 import EnqueuedQueuersPage from "./src/pages/EnqueuedQueuersPage";
-import './i18n';
 import OrganizerDashboardTabs from "./src/pages/OrganizerDashboardTabs"
+import QRCodeScanner from "./src/components/atoms/QRCodeScanner"
+import './i18n';
 import {PreferencesContext} from "./src/utilities/useTheme";
+import OrganizerDashboard from "./src/pages/OrganizerDashboard";
 
 const config: object = {
     strictMode: 'error',
@@ -54,12 +56,13 @@ function App() {
                       <Stack.Group screenOptions={{ headerShown: false }} >
                           {isInQueue && isQueuer ? (
                           <>
-                              <Stack.Screen name="HomePage" component={OrganizerDashboardTabs} />
+                              <Stack.Screen name="HomePage" component={HomePage} />
                               <Stack.Screen name="LandingPage" component={LandingPage} />
                               <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
                               <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
                               <Stack.Screen name="ShareScreen" component={ShareScreen} />
                               <Stack.Screen name="SummonScreen" component={SummonScreen} />
+                              <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
                           </>
                           ) : isInQueue && isOrganizer ? (
                               <>

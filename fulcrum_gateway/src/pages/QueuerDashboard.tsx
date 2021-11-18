@@ -9,7 +9,7 @@ import useInterval from "../utilities/useInterval";
 
 
 export default function () {
-    const navigation = useNavigation<HomeScreenProps>()
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const tempProps = {
         index: 3,
         eta: 15,

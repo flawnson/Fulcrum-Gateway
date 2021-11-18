@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     },
     linkText: {
         textAlign: "center",
-        fontFamily: 'Poppins-ExtraBold.otf',
         fontWeight: 'bold',
     }
 })

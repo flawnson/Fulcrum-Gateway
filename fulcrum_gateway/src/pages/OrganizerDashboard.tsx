@@ -10,7 +10,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 export default function () {
-    const navigation = useNavigation<HomeScreenProps>()
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const tempProps = {
         'enqueued': 35,
         'serviced': 22,
@@ -23,7 +23,7 @@ export default function () {
 
     useInterval(async () => {
         try {
-            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/QUEUERID/stats')
+            const response = await fetch('/organizer/ORGANIZERID/queues/QUEUEID/stats')
             setProps(await response.json())
         } catch(error) {
             console.log(error)

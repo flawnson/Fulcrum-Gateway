@@ -65,17 +65,14 @@ const styles = StyleSheet.create({
     logo: {
         fontSize: 100,
         textAlign: 'center',
-        fontFamily: 'Poppins-Bold.otf'
     },
     header: {
         fontSize: 50,
         textAlign: 'center',
-        fontFamily: 'Poppins-ExtraBold.otf'
     },
     subHeader: {
         fontSize: 20,
         textAlign: 'center',
-        fontFamily: 'Poppins-Regular.otf'
     },
     animation: {
         marginTop: 25,

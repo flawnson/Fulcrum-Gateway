@@ -8,8 +8,27 @@ type queuerStat = {
 
 export default function (props: queuerStat) {
     return (
-        <Box borderRadius='md'>
-            <VStack space='4' divider={<Divider />}>
+        <Box
+            maxW="80"
+            rounded="lg"
+            borderRadius="lg"
+            overflow="hidden"
+            borderColor="coolGray.200"
+            borderWidth="1"
+            _dark={{
+                borderColor: "coolGray.600",
+                backgroundColor: "gray.700",
+            }}
+            _web={{
+                shadow: "2",
+                borderWidth: "0",
+            }}
+            _light={{
+                backgroundColor: "gray.50",
+            }}
+            style={styles.card}
+        >
+            <VStack space='2' divider={<Divider />}>
                 <Box px='4' pt='4'>
                     <Text>
                         {props.stat}
@@ -22,11 +41,6 @@ export default function (props: queuerStat) {
 
 
 const styles = StyleSheet.create({
-    container: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        marginTop: 200,
-        marginLeft: -100,
+    card: {
     },
 })

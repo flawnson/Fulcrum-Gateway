@@ -3,10 +3,10 @@
 exports.get_enqueued = function(req, res, next) {
     try {
         res.status(200).json({
-            'entities': [{'name': 'Joe', 'index': 1, 'waited': 10},
-                         {'name': 'Ann', 'index': 2, 'waited': 8},
-                         {'name': 'Jasmine', 'index': 3, 'waited': 4},
-                         {'name': 'Flawnson', 'index': 4, 'waited': 1}]
+            'entities': [{'queuerId': 1234567890, 'name': 'Joe', 'index': 1, 'waited': 10, 'online': true},
+                         {'queuerId': 1324354657, 'name': 'Ann', 'index': 2, 'waited': 8, 'online': false},
+                         {'queuerId': 9876543210, 'name': 'Jasmine', 'index': 3, 'waited': 4, 'online': true},
+                         {'queuerId': 6210001000, 'name': 'Flawnson', 'index': 4, 'waited': 1, 'online': true}]
         })
     } catch(e) {
         res.sendStatus(500) && next(error)

@@ -5,9 +5,11 @@ import {StyleSheet} from "react-native";
 
 
 type Entity = {
+    queuerId: number,
     name: string,
     index: string,
     waited: string,
+    online: boolean,
 }
 
 type OrganizerStatsProps = {

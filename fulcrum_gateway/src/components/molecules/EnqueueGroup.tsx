@@ -5,12 +5,16 @@ import EnqueueForm from '../atoms/EnqueueForm'
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps} from "../../../types";
 import {useTranslation} from "react-i18next";
+import {useFonts} from "expo-font"
 
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const { t, i18n } = useTranslation("homePage");
+    let [fontsLoaded] = useFonts({
+        'Poppins': require('../../assets/fonts/poppins/Poppins-Regular.otf'),
+    });
 
     return (
         <Center style={styles.container}>
@@ -37,11 +41,9 @@ const styles = StyleSheet.create({
         top: 300,
         textAlign: "center",
         marginTop: 50,
-        fontFamily: 'Poppins-Regular.otf'
     },
     linkText: {
         fontWeight: 'bold',
-        fontFamily: 'Poppins-Regular.otf'
     }
 });
 
