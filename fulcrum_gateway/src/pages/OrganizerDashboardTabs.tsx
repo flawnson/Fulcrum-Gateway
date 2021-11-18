@@ -31,6 +31,8 @@ export default function OrganizerDashboardTabs() {
                 },
                 tabBarActiveTintColor: '#8743FF',
                 tabBarInactiveTintColor: 'gray',
+                headerShown: true,
+                headerBackVisible: true
             })}
         >
             <Tab.Screen
