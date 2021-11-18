@@ -1,8 +1,5 @@
 // @ts-nocheck to get rid of req and res uninferable types
 
-const graphqlHTTP = require('express-graphql');
-const { buildSchema } = require('graphql');
-
 // @ts-ignore
 exports.create_queue_form = function(req, res, next) {
     try {
