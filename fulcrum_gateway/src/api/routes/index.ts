@@ -2,6 +2,7 @@
 // @ts-ignore
 const queuerRouter = require('./queuers.ts')
 const organizerRouter = require('./organizers.ts')
+const queuesRouter = require('./queues.ts')
 
 const app = require('express')()
 const port = 8080
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
 })
 app.use(queuerRouter);
 app.use(organizerRouter);
+app.use(queuesRouter);
 
 app.listen(port, function(err){
     if (err) console.log(err);

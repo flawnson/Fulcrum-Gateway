@@ -12,9 +12,11 @@ exports.join_queue = function(req, res, next) {
 
 exports.get_queue_info = function(req, res, next) {
     try {
+        // Get the queueID from the gueuerID
+        const queueID = getQueueID(queuerID)
         res.status(200).json({
-            'index': 2,
-            'eta': 10,
+            'qrCode': 'somePath',
+            'idCode': 1234567890,
         })
     } catch(e) {
         res.sendStatus(500) && next(error)
