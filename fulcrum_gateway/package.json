@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@expo-google-fonts/poppins": "^0.2.0",
     "@expo/config-types": "^42.0.0",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/drawer": "^6.1.8",
@@ -19,6 +20,7 @@
     "expo": "^43.0.2",
     "expo-barcode-scanner": "~11.1.2",
     "expo-cli": "^4.12.12",
+    "expo-font": "~10.0.3",
     "express": "^4.17.1",
     "graphql-ws": "^5.5.0",
     "i18next": "^21.4.0",

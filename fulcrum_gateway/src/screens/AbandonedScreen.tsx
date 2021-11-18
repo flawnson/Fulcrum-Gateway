@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     header: {
         margin: 10,
         fontSize: 40,
-        fontFamily: 'Poppins-Light.otf',
         textAlign: "center",
     },
     subText: {
@@ -48,7 +47,6 @@ const styles = StyleSheet.create({
     },
     linkText: {
         textAlign: "center",
-        fontFamily: 'Poppins-ExtraBold.otf',
         fontWeight: 'bold',
     }
 

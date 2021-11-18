@@ -1,11 +1,9 @@
 import React from "react";
 import {
-    VStack,
-    FormControl,
-    Input,
-    Button,
-    Center
-} from "native-base";
+        VStack, FormControl,
+        Input, Button,
+        Center, Text
+        } from "native-base";
 import {HomeScreenProps} from "../../../types";
 import {CommonActions} from "@react-navigation/native";
 import {useTranslation} from "react-i18next";
@@ -45,6 +43,7 @@ export default function ({navigation}: HomeScreenProps) {
 
     const onSubmit = () => {
         validate() ?  onSuccess() : onFailure();
+        navigation.navigate("QueuerDashboard")
     };
 
     return (
@@ -65,7 +64,9 @@ export default function ({navigation}: HomeScreenProps) {
                 <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>Error Name</FormControl.ErrorMessage>
             </FormControl>
             <Button onPress={onSubmit} mt="5" isLoading={formData.submitted} isLoadingText="Submitting">
-                {t('submit', { ns: 'common' })}
+                <Text bold color={'white'}>
+                    {t('submit', { ns: 'common' })}
+                </Text>
             </Button>
         </VStack>
     );

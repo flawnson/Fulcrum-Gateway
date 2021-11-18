@@ -23,6 +23,8 @@ export default function () {
                 style={styles.switch}
                 onValueChange={toggleTheme}
                 value={isThemeDark}
+                thumbColor={isThemeDark ? '#FFFFFF' : '#FFFFFF'}
+                trackColor={{false: 'gray', true: '#FFFFFF'}}
             />
             <Feather
                 style={styles.switchName}
