@@ -1,14 +1,23 @@
-import React from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import OrganizerDashboard from "./OrganizerDashboard";
 import EnqueuedQueuersPage from "./EnqueuedQueuersPage";
 import ServicedQueuersPage from "./ServicedQueuersPage";
 import AbandonedQueuersPage from "./AbandonedQueuersPage";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
+import { HomeScreenProps } from "../../types";
 
 const Tab = createBottomTabNavigator();
 
 export default function OrganizerDashboardTabs() {
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()
+
+    // Need to hide header for main Navigator so we can show header in Tab Navigator
+    useLayoutEffect(() => {
+        navigation.setOptions({headerShown: false})
+    });
+
     return (
         <Tab.Navigator
             initialRouteName="OrganizerDashboard"

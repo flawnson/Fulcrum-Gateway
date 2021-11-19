@@ -123,7 +123,11 @@ export default function (props: OrganizerCatalogProps) {
                             <Text style={styles.text}>
                                 {props.entity.waited}
                             </Text>
-                            <MaterialCommunityIcons name={summoned ? "bell-circle-outline" : "bell-circle"} size={32} color={"#999999"} onPress={onBellPress}/>
+                            <MaterialCommunityIcons selectable={false}
+                                                    name={summoned ? "bell-circle-outline" : "bell-circle"}
+                                                    size={32}
+                                                    color={"#999999"}
+                                                    onPress={onBellPress}/>
                         </HStack>
                         {props.selected && <View style={styles.overlay} />}
                     </Pressable>

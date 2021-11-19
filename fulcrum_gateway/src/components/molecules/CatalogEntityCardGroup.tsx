@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CatalogEntityCard from "../atoms/CatalogEntityCard";
 import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import {get} from "styled-system";
+import MultiSelectButtons from "../atoms/MultiSelectButtons"
 
 
 type Entity = {
@@ -23,6 +23,14 @@ export default function (props: OrganizerStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
     const [selectedItems, setSelectedItems] = useState<Array<number>>([])
+
+    // To remove header when organizer deselects all queuers
+    useEffect(() => {
+        if (selectedItems.length === 0) {
+            navigation.setOptions({headerRight: undefined})
+        }
+    }, [selectedItems])
+
     const handleOnPress = (item: Entity) => {
         if (selectedItems.length) {
             return selectItems(item)
@@ -34,10 +42,14 @@ export default function (props: OrganizerStatsProps) {
 
     const getSelected = (item: Entity) => selectedItems.includes(item.queuerId)
 
-    const deSelectItems = () => setSelectedItems([])
+    const deSelectItems = () => {
+        setSelectedItems([])
+        navigation.setOptions({headerRight: undefined})
+    }
 
     const selectItems = (item: Entity) => {
-        navigation.setOptions({title: "POOP"})
+        navigation.setOptions({headerRight: (props) => <MultiSelectButtons {...props} /> })
+
         if (selectedItems.includes(item.queuerId)) {
             const newListItems = selectedItems.filter(
                 (listItem: number) => listItem !== item.queuerId,
