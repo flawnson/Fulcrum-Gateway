@@ -12,8 +12,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type OrganizerCatalogProps = {
     'onPress': (event: GestureResponderEvent) => void,
-    'onLongPress': (event: GestureResponderEvent) => void,
-    'selected': boolean,
     'entity': {
         queuerId: number,
         name: string,
@@ -52,43 +50,8 @@ export default function (props: OrganizerCatalogProps) {
         setSummoned(!summoned)
     }
 
-    const onCardPress = function () {
-        navigation.navigate("QueuerDashboard")
-    }
-
-    const pan = useRef(new Animated.ValueXY()).current;
-
-    const panResponder = useRef(
-        PanResponder.create({
-            onMoveShouldSetPanResponder: () => true,
-            onPanResponderMove: Animated.event([
-                null,
-                { dx: pan.x }
-            ], {useNativeDriver: false}),
-            onPanResponderRelease: (evt, gestureState) => {
-                if (gestureState.dx > 200) {
-                    Animated.spring(pan, {
-                        toValue: { x: Dimensions.get('window').width + 100, y: gestureState.dy }, useNativeDriver: false
-                    }).start(() => console.log('hi'))
-                } else if (gestureState.dx < -200) {
-                    Animated.spring(pan, {
-                        toValue: { x: -Dimensions.get('window').width - 100, y: gestureState.dy }, useNativeDriver: false
-                    }).start(() => console.log('bye'))
-                } else {
-                    Animated.spring(pan, {toValue: {x: 0, y: 5}, friction: 5, useNativeDriver: false}).start();
-                }
-            }
-        })
-    ).current;
-
     return (
         <Center>
-            <Animated.View
-                style={{
-                    transform: [{ translateX: pan.x }, { translateY: pan.y }]
-                }}
-                {...panResponder.panHandlers}
-            >
                 <Box
                     maxW="80"
                     rounded="lg"
@@ -109,7 +72,7 @@ export default function (props: OrganizerCatalogProps) {
                     }}
                     style={styles.card}
                 >
-                    <Pressable onPress={props.onPress} delayLongPress={500} onLongPress={props.onLongPress}>
+                    <Pressable onPress={props.onPress}>
                         <HStack space='5' style={styles.group}>
                             <Avatar style={styles.icon} source={require("../../assets/images/generic-user-icon.jpg")}>
                                 <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
@@ -129,10 +92,8 @@ export default function (props: OrganizerCatalogProps) {
                                                     color={"#999999"}
                                                     onPress={onBellPress}/>
                         </HStack>
-                        {props.selected && <View style={styles.overlay} />}
                     </Pressable>
                 </Box>
-            </Animated.View>
         </Center>
     );
 }
