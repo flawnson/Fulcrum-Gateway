@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CatalogEntityCard from "../atoms/CatalogEntityCard";
+import CatalogEntityCard from "../atoms/EnqueuedCatalogCard";
 import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";

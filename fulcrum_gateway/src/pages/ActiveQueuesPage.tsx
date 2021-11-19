@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import CatalogEntityCardGroup from "../components/molecules/CatalogEntityCardGroup";
+import ActiveQueuesCatalogCardGroup from "../components/molecules/ActiveQueuesCatalogCardGroup";
 import {VStack} from "native-base";
 
 export default function () {
@@ -18,6 +18,6 @@ export default function () {
     }
 
     return (
-        <CatalogEntityCardGroup entities={props.entities}/>
+        <ActiveQueuesCatalogCardGroup entities={props.entities}/>
     )
 }
