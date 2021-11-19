@@ -4,7 +4,7 @@ const mainController = require('../controllers/mainController.ts');
 
 const app = require('express')()
 const port = 8080
-const cors = require('cors')
+const cors = require('cors');
 
 app.use(cors())
 

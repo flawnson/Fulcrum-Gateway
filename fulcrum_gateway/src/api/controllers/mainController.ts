@@ -1,20 +1,18 @@
-// TODO: Import Services here
-
-const { graphqlHTTP } = require('express-graphql');
-const { makeExecutableSchema } = require('@graphql-tools/schema')
-const { merge } = require('lodash');
+import { graphqlHTTP } from 'express-graphql';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { merge } from 'lodash';
 
 // import organizer schema and resolvers
-const {
-  typeDef: Organizer,
-  resolvers: organizerResolvers,
-} = require('./organizer.ts');
+import {
+  typeDef as Organizer,
+  resolvers as organizerResolvers,
+} from './organizer';
 
 //import queue schema and resolvers
-const {
-  typeDef: Queue,
-  resolvers: queueResolvers,
-} = require('./queue.ts');
+import {
+  typeDef as Queue,
+  resolvers as queueResolvers,
+} from './queue';
 
 // base query
 const Query = `
@@ -24,7 +22,7 @@ const Query = `
 `;
 
 // base resolver
-const resolvers = {}
+const resolvers = {};
 
 // master schema
 const schema = makeExecutableSchema({
