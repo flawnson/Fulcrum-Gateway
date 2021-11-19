@@ -1,12 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet,
-        Image,
-        Text,
-        View} from 'react-native'
-import {useTranslation} from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native'
+import { Text, Image, Center } from 'native-base'
+import { useTranslation } from "react-i18next";
 
 type ShareData = {
-    currentQueueQR: string | Image,
+    currentQueueQR: string | typeof Image,
     currentQueueID: number,
 }
 
@@ -27,28 +25,27 @@ export default function() {
     }
 
     return (
-        <View>
+        <Center>
             <Text style={styles.header}>
                 {t('message')}
             </Text>
-            <Image source={require("../assets/images/qr-icon-black.png")}/>
+            <Image style={styles.QRcode} source={require("../assets/images/qr-icon-black.png")}/>
             <Text style={styles.subText}>
                 {props.currentQueueID}
             </Text>
-        </View>
+        </Center>
     )
 }
 
 const styles = StyleSheet.create({
     header: {
-            position: "absolute",
-            textAlign: "center",
-            fontSize: 40,
-            fontWeight: "bold"
+        fontSize: 40,
+        fontWeight: "bold"
+    },
+    QRcode: {
+        width: 30,
     },
     subText: {
-        position: "absolute",
-        top: 300,
         textAlign: "center"
     },
 })

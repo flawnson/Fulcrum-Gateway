@@ -76,7 +76,7 @@ export default function ({navigation}: HomeScreenProps) {
         setData({...formData, submitted: true})
         const submissionData = submit()
         console.log(submissionData);
-        navigation.navigate("OrganizerDashboard")
+        navigation.navigate("ActiveQueuesPage")
         setData({...formData, submitted: false})
     }
 

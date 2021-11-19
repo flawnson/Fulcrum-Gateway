@@ -53,12 +53,13 @@ function App() {
           <NativeBaseProvider config={config} theme={theme.nativebase}>
               <NavigationContainer theme={theme.navigation}>
                   <Stack.Navigator initialRouteName="HomePage">
-                      <Stack.Group screenOptions={{ headerShown: false }} >
+                      <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe" }} >
                           {isInQueue && isQueuer ? (
                           <>
-                              <Stack.Screen name="HomePage" component={HomePage} />
+                              <Stack.Screen name="HomePage" component={ActiveQueuesPage} />
                               <Stack.Screen name="LandingPage" component={LandingPage} />
                               <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
+                              <Stack.Screen name="OrganizerDashboardTabs" component={OrganizerDashboardTabs} />
                               <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
                               <Stack.Screen name="ShareScreen" component={ShareScreen} />
                               <Stack.Screen name="SummonScreen" component={SummonScreen} />

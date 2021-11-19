@@ -76,6 +76,12 @@ export default function () {
                     variants: {},
                     sizes: {},
                 },
+                Text: {
+                    defaultProps: {
+                        color: 'black',
+                        selectable: false
+                    }
+                },
             },
             fontConfig: {
                 Poppins: {

@@ -35,9 +35,39 @@ along with some resources I followed (thank you to the creators of said resource
 | Expo | Used for easier cross-platform development. | https://docs.expo.dev/get-started/installation/ | 
 | ExpressJS | Used to write our backend API. | https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way |
 | NodeJS | To support Express for our backend. |  |
-| *database* | N/A | N/A |
+| GraphQL | Used with express JS for cleaner access to API | https://blog.bitsrc.io/migrating-existing-rest-apis-to-graphql-2c5de3db647d |
+| Redis | To cache data and the main backend interface for the frontend | N/A |
+| Postgres | As a persistent database that will communicate primarily with redis for updates | N/A |
 | Jest | Our choice of testing framework for both frontend and backend |  |
 | Winston | Our choice of logging framework |  |
+
+## Structure
+The frontend aesthetic is built to mimic Kahoot, and the directory structure follows atomic design principles.
+The backend design is built with the axiom; all queuers belong to a queue, and all queues belong to an organizer.
+
+## Installation
+Once you've git cloned the repo:
+`git clone repo-name`
+
+you can navigate to the root direcotry:
+`cd root-dir-name`
+
+and run npm install:
+`npm install`
+
+## Usage
+Once dependencies are installed, you can run with either expo:
+`expo start`
+
+or with react native:
+`npx react-native start`
+`npx react-native run-android` or run-ios
+
+To start the backend, navigate to the index.ts file:
+`cd src/api/routes`
+
+and run node:
+`node index.ts`
 
 ## Git structure
 I use 4 branches to work:
@@ -47,12 +77,24 @@ I use 4 branches to work:
 4. `hotfix` is for urgent bug fixes and other immediate issues.
 5. `intl` is for internationalization/localization of the project.
 
-## Directory structure
+## Backend Directory Structure
 ### src/
 All source code lives in this directory
 ### ./api/
 All code associated with the API.
 All backend code lives here, and may one day be sequestered into its own repository to prevent bloat.
+### ./routes/
+All routes are defined in these files, index.js imports all the route files and initializes the backend API.
+### ./controllers/
+Routes are supplied data by controllers which are in charge of calling the appropriate services to build a response.
+### ./services/
+Services are called by controllers. Services can call other services and interact directly with the cache and database.
+### ./db/
+Database layer is for all code that pertains to making queries to the database. Cache is kept separately.
+
+## Frontend Directory structure
+### src/
+All source code lives in this directory
 ### ./assets/
 All asset files not provided by CDNs lives here.
 ### ./components/
