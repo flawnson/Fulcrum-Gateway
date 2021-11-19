@@ -5,21 +5,15 @@ export const typeDef = `
     _empty: String
   }
 
-  type Queue {
+  type User {
     id: ID!
     name: String,
-    queuers: [User]
+    current_queue: ID
   }
 `;
 
 export const resolvers = {
   Query: {
 
-  },
-  Queue: {
-    //resolve queuers field
-    queuers: () => {
-      return [];
-    }
   }
 };

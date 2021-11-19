@@ -14,9 +14,19 @@ import {
   resolvers as queueResolvers,
 } from './queue';
 
-// base query
-const Query = `
+//import user schema and resolvers
+import {
+  typeDef as User,
+  resolvers as userResolvers,
+} from './user';
+
+// base schema
+const Base = `
   type Query {
+    _empty: String
+  }
+
+  type Mutation {
     _empty: String
   }
 `;
@@ -24,10 +34,10 @@ const Query = `
 // base resolver
 const resolvers = {};
 
-// master schema
+// executable schema
 const schema = makeExecutableSchema({
-  typeDefs: [Query, Organizer, Queue],
-  resolvers: merge(resolvers, organizerResolvers, queueResolvers)
+  typeDefs: [Base, Organizer, Queue, User],
+  resolvers: merge(resolvers, organizerResolvers, queueResolvers, userResolvers)
 });
 
 const graphql = graphqlHTTP({
