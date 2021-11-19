@@ -1,6 +1,6 @@
 // @ts-nocheck to get err as uninferable type
 // @ts-ignore
-const graphqlController = require('./controller/graphqlController');
+const mainController = require('../controllers/mainController.ts');
 
 const app = require('express')()
 const port = 8080
@@ -9,9 +9,9 @@ const cors = require('cors')
 app.use(cors())
 
 app.get('/', (req, res) => {
-    res.redirect('/graphql')
+    res.redirect('/api')
 })
-app.use('/graphql', graphqlController)
+app.use('/api', mainController)
 
 app.listen(port, function(err){
     if (err) console.log(err);
