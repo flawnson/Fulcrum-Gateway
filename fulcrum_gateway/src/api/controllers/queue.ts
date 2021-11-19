@@ -5,21 +5,40 @@ export const typeDef = `
     _empty: String
   }
 
+  enum QueueState {
+    ACTIVE
+    PAUSED
+  }
+
   type Queue {
     id: ID!
     name: String,
-    queuers: [User]
+    """The state of the queue: paused, active"""
+    state: QueueState,
+    average_wait_time: Float,
+    enqueued: [User],
+    serviced: [User],
+    deferred: [User],
+    abandoned: [User],
+    noshows: [User]
+
   }
+
+
 `;
 
 export const resolvers = {
   Query: {
-
+    //TODO
   },
   Queue: {
-    //resolve queuers field
-    queuers: () => {
+    //resolve queue fields
+    enqueued: () => {
+      return [];
+    },
+    serviced: () => {
       return [];
     }
+    //TODO
   }
 };

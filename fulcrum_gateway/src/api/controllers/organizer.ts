@@ -2,11 +2,11 @@
 
 export const typeDef = `
   extend type Query {
-    """Get all queues"""
-    queues: [Queue]
+    """Get all queues for an organizer"""
+    queues(organizer_id: ID!): [Queue]
 
-    """Get single queue (can get enqueued, serviced, abandoned)"""
-    queue(id: ID!): Queue
+    """Get a single queue"""
+    queue(queue_id: ID!): Queue
   }
 
   extend type Mutation {
@@ -35,10 +35,10 @@ export const typeDef = `
 
 export const resolvers = {
   Query: {
-
+    //TODO
   },
   Mutation: {
-
+    //TODO
   },
   Organizer: {
     // resolve the queues list field
