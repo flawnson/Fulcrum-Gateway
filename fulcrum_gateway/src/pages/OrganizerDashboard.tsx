@@ -33,9 +33,7 @@ export default function () {
     return (
         <Center style={styles.animationFormat}>
             <Heading style={styles.headingFormat}>Someone's Queue</Heading>
-            <Center>
                 <OrganizerDashboardGroup OrganizerDashboardProps={props}/>
-            </Center>
             <OrganizerDashboardMenu />
         </Center>
     )
