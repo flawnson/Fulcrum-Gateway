@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import CatalogEntityCardGroup from "../components/molecules/CatalogEntityCardGroup";
+import CatalogEntityCardGroup from "../components/molecules/EnqueuedCatalogCardGroup";
 import {VStack} from "native-base";
 import useInterval from "../utilities/useInterval";
 

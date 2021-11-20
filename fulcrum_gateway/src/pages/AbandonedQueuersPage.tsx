@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import CatalogEntityCardGroup from "../components/molecules/CatalogEntityCardGroup";
+import ActiveQueuesCatalogCardGroup from "../components/molecules/ActiveQueuesCatalogCardGroup";
 import {VStack} from "native-base";
 import useInterval from "../utilities/useInterval";
 
@@ -20,6 +20,7 @@ export default function () {
     useInterval(fetchAbandonedData, 5000)
 
     return (
-        <CatalogEntityCardGroup entities={props.entities}/>
+        // Using active queues catalog cards because functionaly matches
+        <ActiveQueuesCatalogCardGroup entities={props.entities}/>
     )
 }

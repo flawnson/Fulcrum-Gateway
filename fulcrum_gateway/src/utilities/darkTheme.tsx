@@ -84,7 +84,8 @@ export default function () {
                 },
                 Text: {
                     defaultProps: {
-                        color: 'white'
+                        color: 'white',
+                        selectable: false
                     }
                 },
                 FormControlHelperText: {
