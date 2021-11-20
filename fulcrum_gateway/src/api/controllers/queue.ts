@@ -2,7 +2,8 @@
 
 export const typeDef = `
   extend type Query {
-    _empty: String
+    """Get a single queue"""
+    queue(queue_id: ID!): Queue
   }
 
   enum QueueState {
@@ -10,21 +11,22 @@ export const typeDef = `
     PAUSED
   }
 
+  type QueueEdit {
+    name: String
+  }
+
   type Queue {
     id: ID!
     name: String,
     """The state of the queue: paused, active"""
-    state: QueueState,
+    state: QueueState!,
     average_wait_time: Float,
-    enqueued: [User],
-    serviced: [User],
-    deferred: [User],
-    abandoned: [User],
-    noshows: [User]
-
+    enqueued: [User]!,
+    serviced: [User]!,
+    deferred: [User]!,
+    abandoned: [User]!,
+    noshows: [User]!
   }
-
-
 `;
 
 export const resolvers = {

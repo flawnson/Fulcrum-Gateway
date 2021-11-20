@@ -1,12 +1,16 @@
 // TODO: Import relevant services here
 
+// import test data
+import {
+  user_table,
+  queue_table,
+  organizer_table
+} from './test_data';
+
 export const typeDef = `
   extend type Query {
-    """Get all queues for an organizer"""
-    queues(organizer_id: ID!): [Queue]
-
-    """Get a single queue"""
-    queue(queue_id: ID!): Queue
+    """Get an organizer"""
+    organizer(organizer_id: ID!): Organizer
   }
 
   extend type Mutation {
@@ -23,7 +27,7 @@ export const typeDef = `
     pause_queue(id: ID!): String
 
     """Edit a queue"""
-    edit_queue(id: ID!, name: String): Queue
+    edit_queue(id: ID!, edits: QueueEdit): Queue
   }
 
   type Organizer {
@@ -35,15 +39,30 @@ export const typeDef = `
 
 export const resolvers = {
   Query: {
-    //TODO
+    queues(obj: any, args: any, context: any, info: any) {
+      const organizer = find(organizer_table, { id: args.organizer_id})
+      return organizer;
+    }
   },
   Mutation: {
     //TODO
   },
   Organizer: {
-    // resolve the queues list field
-    queues: () => {
-      return [];
+    id(obj: any, args: any, context: any, info: any) {
+      return obj.id;
+    },
+    name(obj: any, args: any, context: any, info: any) {
+      return obj.name;
+    },
+    queues(obj: any, args: any, context: any, info: any) {
+      //get organizer's queues from Queue table
+      const organizer_queues = queue_table.filter(function (currentElement) {
+        if (obj.queues.includes(currentElement.id)) {
+          return true;
+        }
+        return false;
+      });
+      return organizer_queues;
     }
   }
 };
