@@ -28,13 +28,11 @@ export default function (props: queuerStat) {
             }}
             style={styles.card}
         >
-            <VStack space='2' divider={<Divider />}>
-                <Box px='4' pt='4'>
-                    <Text>
-                        {props.stat}
-                    </Text>
-                </Box>
-            </VStack>
+            <Box px='8' pt='8'>
+                <Text style={styles.text}>
+                    {props.stat}
+                </Text>
+            </Box>
         </Box>
     );
 }
@@ -43,4 +41,8 @@ export default function (props: queuerStat) {
 const styles = StyleSheet.create({
     card: {
     },
+    text: {
+        textAlign: 'center',
+        alignItems: 'center'
+    }
 })
