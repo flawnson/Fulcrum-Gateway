@@ -17,7 +17,11 @@ export const typeDef = `
 
   extend type Mutation {
     """Create an organizer"""
-    create_organizer(name: String!): Organizer
+    create_organizer(data: OrganizerCreate!): Organizer
+  }
+
+  input OrganizerCreate {
+    name: String
   }
 
   type Organizer {
@@ -35,7 +39,15 @@ export const resolvers = {
     }
   },
   Mutation: {
-    //TODO
+    create_organizer(obj: any, args: any, context: any, info: any) {
+      let new_organizer = {
+        id: Date.now() + "", //assign random unique id for now
+        name: args.data.name,
+        queues: []
+      };
+      organizer_table.push(new_organizer); //add to table
+      return new_organizer;
+    }
   },
   Organizer: {
     //resolve non-scalar organizer fields

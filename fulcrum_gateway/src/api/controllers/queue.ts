@@ -17,16 +17,16 @@ export const typeDef = `
 
   extend type Mutation {
     """Create a queue"""
-    create_queue(name: String): Queue
+    create_queue(data: QueueCreate): Queue
 
     """End a queue"""
-    end_queue(id: ID!): String
+    end_queue(id: ID!): ID
 
     """Pause a queue"""
-    pause_queue(id: ID!): String
+    pause_queue(id: ID!): ID
 
-    """Edit a queue"""
-    edit_queue(id: ID!, edits: QueueEdit): Queue
+    """Edit a queue's properties"""
+    edit_queue(id: ID!, edits: QueueEdit): ID
   }
 
   enum QueueState {
@@ -35,7 +35,12 @@ export const typeDef = `
     INACTIVE
   }
 
+  """May be able to merge QueueEdit and QueueCreate"""
   input QueueEdit {
+    name: String
+  }
+
+  input QueueCreate {
     name: String
   }
 
@@ -82,7 +87,50 @@ export const resolvers = {
     }
   },
   Mutation: {
-    //TODO
+    create_queue(obj: any, args: any, context: any, info: any) {
+      let new_queue = {
+        id: Date.now()+ "", //assign random id for now
+        name: args.data.name,
+        state: "INACTIVE",
+        enqueued: [],
+        serviced: [],
+        deferred: [],
+        abandoned: [],
+        noshows: []
+      };
+      queue_table.push(new_queue);
+      return new_queue;
+    },
+    end_queue(obj: any, args: any, context: any, info: any) {
+      for (let i = 0; i < queue_table.length; i++) {
+        if (queue_table[i].id === args.id) {
+          // TODO: Need to check if there are still users in this queue
+          queue_table.splice(i,1);
+          return args.id;
+        }
+      }
+      return null;
+    },
+    pause_queue(obj: any, args: any, context: any, info: any) {
+      for (let i = 0; i < queue_table.length; i++){
+        if (queue_table[i].id == args.id) {
+          queue_table[i].state = "PAUSED";
+          return args.id;
+        }
+      }
+      return null;
+    },
+    edit_queue(obj: any, args: any, context: any, info: any) {
+      for (let i = 0; i < queue_table.length; i++){
+        if (queue_table[i].id == args.id) {
+          if ("name" in args.edits){
+            queue_table[i].name = args.edits.name;
+          }
+          return queue_table[i].id;
+        }
+      }
+      return null;
+    }
   },
   Queue: {
     //resolve non-scalar queue fields

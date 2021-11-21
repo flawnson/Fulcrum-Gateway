@@ -1,4 +1,4 @@
-query test1 {
+query test_get_organizer {
   organizer(organizer_id: "costco"){
     name
     queues {
@@ -17,4 +17,31 @@ query test1 {
       }
     }
   }
+}
+
+===
+
+mutation test_create_organizer($data: OrganizerCreate!){
+  create_organizer(data: $data) {
+    id
+    name
+  }
+}
+
+# Query variables
+{
+  "data": {
+    "name": "Omicron"
+  }
+}
+
+===
+
+mutation test_delete_queue($id: ID!){
+  end_queue(id: $id)
+}
+
+# Query variables
+{
+  "id": "costco_queue1"
 }
