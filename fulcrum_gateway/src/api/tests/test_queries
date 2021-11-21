@@ -1,0 +1,20 @@
+query test1 {
+  organizer(organizer_id: "costco"){
+    name
+    queues {
+      id
+      name
+      state
+      num_enqueued
+      num_serviced
+      num_deferred
+      num_abandoned
+      num_noshows
+      enqueued {
+        id
+        name
+        current_queue
+      }
+    }
+  }
+}

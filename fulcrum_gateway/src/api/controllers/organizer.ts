@@ -1,11 +1,13 @@
 // TODO: Import relevant services here
 
+import { find, filter } from 'lodash';
+
 // import test data
 import {
   user_table,
   queue_table,
   organizer_table
-} from './test_data';
+} from '../tests/test_data';
 
 export const typeDef = `
   extend type Query {
@@ -16,18 +18,6 @@ export const typeDef = `
   extend type Mutation {
     """Create an organizer"""
     create_organizer(name: String!): Organizer
-
-    """Create a queue"""
-    create_queue(name: String): Queue
-
-    """End a queue"""
-    end_queue(id: ID!): String
-
-    """Pause a queue"""
-    pause_queue(id: ID!): String
-
-    """Edit a queue"""
-    edit_queue(id: ID!, edits: QueueEdit): Queue
   }
 
   type Organizer {
@@ -39,7 +29,7 @@ export const typeDef = `
 
 export const resolvers = {
   Query: {
-    queues(obj: any, args: any, context: any, info: any) {
+    organizer(obj: any, args: any, context: any, info: any) {
       const organizer = find(organizer_table, { id: args.organizer_id})
       return organizer;
     }
@@ -48,20 +38,31 @@ export const resolvers = {
     //TODO
   },
   Organizer: {
-    id(obj: any, args: any, context: any, info: any) {
-      return obj.id;
-    },
-    name(obj: any, args: any, context: any, info: any) {
-      return obj.name;
-    },
+    //resolve non-scalar organizer fields
     queues(obj: any, args: any, context: any, info: any) {
       //get organizer's queues from Queue table
-      const organizer_queues = queue_table.filter(function (currentElement) {
+      let organizer_queues = queue_table.filter(function (currentElement) {
         if (obj.queues.includes(currentElement.id)) {
           return true;
         }
         return false;
       });
+
+      //calculate statistics for each queue
+      //realistically would be a helper function
+      for (let i = 0; i < organizer_queues.length; i++){
+        let stats = {
+          num_enqueued: 37,
+          num_serviced: 23,
+          num_deferred: 8,
+          average_wait_time: 12.5,
+          num_abandoned: 2,
+          num_noshows: 0
+        };
+        // merge these two objects
+        organizer_queues[i] = {...organizer_queues[i], ...stats};
+      }
+
       return organizer_queues;
     }
   }
