@@ -1,6 +1,6 @@
 import { graphqlHTTP } from 'express-graphql';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { merge, find, filter } from 'lodash';
+import { merge } from 'lodash';
 
 // import organizer schema and resolvers
 import {

@@ -1,0 +1,47 @@
+query test_get_organizer {
+  organizer(organizer_id: "costco"){
+    name
+    queues {
+      id
+      name
+      state
+      num_enqueued
+      num_serviced
+      num_deferred
+      num_abandoned
+      num_noshows
+      enqueued {
+        id
+        name
+        current_queue
+      }
+    }
+  }
+}
+
+===
+
+mutation test_create_organizer($data: OrganizerCreate!){
+  create_organizer(data: $data) {
+    id
+    name
+  }
+}
+
+# Query variables
+{
+  "data": {
+    "name": "Omicron"
+  }
+}
+
+===
+
+mutation test_delete_queue($id: ID!){
+  end_queue(id: $id)
+}
+
+# Query variables
+{
+  "id": "costco_queue1"
+}

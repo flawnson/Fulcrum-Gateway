@@ -1,4 +1,4 @@
-export const user_table = [
+export let user_table = [
   {
     id: "user0",
     name: "Kevin Shen",
@@ -11,7 +11,7 @@ export const user_table = [
   }
 ];
 
-export const queue_table = [
+export let queue_table = [
   {
     id: "costco_queue1",
     name: "Queue1",
@@ -39,7 +39,7 @@ export const queue_table = [
 
 ];
 
-export const organizer_table = [
+export let organizer_table = [
   {
     id: "costco",
     name: "Costco",
