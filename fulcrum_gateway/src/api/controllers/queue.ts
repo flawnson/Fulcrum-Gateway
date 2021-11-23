@@ -17,7 +17,7 @@ export const typeDef = `
 
   extend type Mutation {
     """Create a queue"""
-    create_queue(data: QueueCreate): Queue
+    create_queue(data: QueueCreate!): Queue
 
     """End a queue"""
     end_queue(id: ID!): ID
@@ -26,7 +26,7 @@ export const typeDef = `
     pause_queue(id: ID!): ID
 
     """Edit a queue's properties"""
-    edit_queue(id: ID!, edits: QueueEdit): ID
+    edit_queue(id: ID!, edits: QueueEdit!): ID
   }
 
   enum QueueState {
