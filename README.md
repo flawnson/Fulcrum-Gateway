@@ -36,10 +36,10 @@ along with some resources I followed (thank you to the creators of said resource
 | ExpressJS | Used to write our backend API. | https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way |
 | NodeJS | To support Express for our backend. |  |
 | GraphQL | Used with express JS for cleaner access to API | https://blog.bitsrc.io/migrating-existing-rest-apis-to-graphql-2c5de3db647d |
-| Redis | To cache data and the main backend interface for the frontend | N/A |
+| Prisma | Our choice of ORM and database connector working in conjunction with GraphQL | N/A |
 | Postgres | As a persistent database that will communicate primarily with redis for updates | N/A |
-| Jest | Our choice of testing framework for both frontend and backend |  |
-| Winston | Our choice of logging framework |  |
+| Jest | Our choice of testing framework for both frontend and backend | N/A |
+| Winston | Our choice of logging framework | N/A |
 
 ## Structure
 The frontend aesthetic is built to mimic Kahoot, and the directory structure follows atomic design principles.
@@ -66,8 +66,11 @@ or with react native:
 To start the backend, navigate to the index.ts file:
 `cd src/api/routes`
 
+Install ts-node:
+`npm install ts-node -g`
+
 and run node:
-`node index.ts`
+`ts-node index.ts`
 
 ## Git structure
 I use 4 branches to work:
