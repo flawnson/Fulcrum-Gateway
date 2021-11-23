@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import ActiveQueuesCatalogCardGroup from "../components/molecules/ActiveQueuesCatalogCardGroup";
-import {VStack} from "native-base";
 import useInterval from "../utilities/useInterval";
 
 export default function () {

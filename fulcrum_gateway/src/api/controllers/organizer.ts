@@ -54,10 +54,8 @@ export const resolvers = {
     queues(obj: any, args: any, context: any, info: any) {
       //get organizer's queues from Queue table
       let organizer_queues = queue_table.filter(function (currentElement) {
-        if (obj.queues.includes(currentElement.id)) {
-          return true;
-        }
-        return false;
+        return !!obj.queues.includes(currentElement.id);
+
       });
 
       //calculate statistics for each queue

@@ -64,10 +64,8 @@ export default function ({navigation}: HomeScreenProps) {
                 },
                 body: JSON.stringify(formData)
             });
-            // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
-            // enter your logic for when there is an error (ex. error toast)
             return error
         }
     }
