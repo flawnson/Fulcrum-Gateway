@@ -138,10 +138,8 @@ export const resolvers = {
       //get all users in this list of user ids
       const users = user_table.filter(function (currentElement) {
         // check if user's queue id matches that of one of the ids
-        if (obj.enqueued.includes(currentElement.id)) {
-          return true;
-        }
-        return false;
+        return !!obj.enqueued.includes(currentElement.id);
+
       });
       return users;
     },
@@ -149,10 +147,8 @@ export const resolvers = {
       //get all users in this list of user ids
       const users = user_table.filter(function (currentElement) {
         // check if user's queue id matches that of one of the ids
-        if (obj.serviced.includes(currentElement.id)) {
-          return true;
-        }
-        return false;
+        return !!obj.serviced.includes(currentElement.id);
+
       });
       return users;
     },
@@ -160,10 +156,8 @@ export const resolvers = {
       //get all users in this list of user ids
       const users = user_table.filter(function (currentElement) {
         // check if user's queue id matches that of one of the ids
-        if (obj.deferred.includes(currentElement.id)) {
-          return true;
-        }
-        return false;
+        return !!obj.deferred.includes(currentElement.id);
+
       });
       return users;
     },
@@ -171,10 +165,8 @@ export const resolvers = {
       //get all users in this list of user ids
       const users = user_table.filter(function (currentElement) {
         // check if user's queue id matches that of one of the ids
-        if (obj.abandoned.includes(currentElement.id)) {
-          return true;
-        }
-        return false;
+        return !!obj.abandoned.includes(currentElement.id);
+
       });
       return users;
     },
@@ -182,10 +174,8 @@ export const resolvers = {
       //get all users in this list of user ids
       const users = user_table.filter(function (currentElement) {
         // check if user's queue id matches that of one of the ids
-        if (obj.noshows.includes(currentElement.id)) {
-          return true;
-        }
-        return false;
+        return !!obj.noshows.includes(currentElement.id);
+
       });
       return users;
     }
