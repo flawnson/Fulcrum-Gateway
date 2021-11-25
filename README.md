@@ -72,6 +72,9 @@ Install ts-node:
 and run node:
 `ts-node index.ts`
 
+or if you want to use nodemon:
+`nodemon index.ts`
+
 ## Git structure
 I use 4 branches to work:
 1. `main` is a working version of the project ready for demos.

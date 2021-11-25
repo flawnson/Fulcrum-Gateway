@@ -2,12 +2,26 @@ export let user_table = [
   {
     id: "user0",
     name: "Kevin Shen",
-    current_queue: "costco_queue1"
+    queue_id: "costco_queue1",
+    summoned: false,
+    phone_number: "4162922346",
+    party_size: 1,
+    last_online: Date,
+    index: 1,
+    estimated_wait: 3,
+    join_time: Date,
   },
   {
     id: "user1",
     name: "Flawnson Tong",
-    current_queue: "costco_queue2"
+    queue_id: "costco_queue2",
+    summoned: false,
+    phone_number: "4162922346",
+    party_size: 2,
+    last_online: Date,
+    index: 2,
+    estimated_wait: 3,
+    join_time: Date,
   }
 ];
 
