@@ -21,6 +21,7 @@ export const typeDef = `
     id: ID!
     name: String
     queue_id: ID
+    online: Boolean
     summoned: Boolean
     phone_number: String
     party_size: Int

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, {SetStateAction, useEffect, useState} from "react"
 import ActiveQueuesCatalogCardGroup from "../components/molecules/ActiveQueuesCatalogCardGroup"
 import { Fab, Icon } from "native-base"
 import { AntDesign } from "@expo/vector-icons"
@@ -14,11 +14,39 @@ export default function () {
 
     useEffect(() => {fetchQueueData()}, [])
 
+    const query = `
+        query get_organizer($id: ID!) {
+            organizer(organizer_id: $id) {
+                name
+                queues {
+                    name
+                    state
+                }
+            }
+        }
+    `
+    const variables = `{
+        "id": "costco"
+    }`
+
     async function fetchQueueData () {
         try {
-            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues')
-            console.log(response)
-            setProps(await response.json())
+            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            await response.json().then(
+                data => {
+                    data = data.data.queue
+                    const stats: SetStateAction<any> = Object.fromEntries([
+                        "num_enqueued",
+                        "num_serviced",
+                        "num_deferred",
+                        "average_wait_time",
+                        "num_abandoned",
+                        "num_noshows"]
+                            .filter(key => key in data)
+                            .map(key => [key, data[key]]))
+                    setProps(stats)
+                }
+            )
         } catch(error) {
             console.log(error)
         }
