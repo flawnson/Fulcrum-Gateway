@@ -7,10 +7,11 @@ export let user_table = [
     summoned: false,
     phone_number: "4162922346",
     party_size: 1,
-    last_online: Date,
+    last_online: new Date(),
     index: 1,
     estimated_wait: 3,
-    join_time: Date,
+    average_wait: 17,
+    join_time: new Date(),
   },
   {
     id: "user1",
@@ -20,10 +21,11 @@ export let user_table = [
     summoned: false,
     phone_number: "4162922346",
     party_size: 2,
-    last_online: Date,
+    last_online: new Date(),
     index: 2,
     estimated_wait: 3,
-    join_time: Date,
+    average_wait: 13,
+    join_time: new Date(),
   }
 ];
 
@@ -32,6 +34,7 @@ export let queue_table = [
     id: "costco_queue1",
     name: "Queue1",
     state: "ACTIVE",
+    create_time: new Date(),
     enqueued: [
       "user0"
     ],
@@ -44,6 +47,7 @@ export let queue_table = [
     id: "costco_queue2",
     name: "Queue2",
     state: "PAUSED",
+    create_time: new Date(),
     enqueued: [],
     serviced: [
       "user1"

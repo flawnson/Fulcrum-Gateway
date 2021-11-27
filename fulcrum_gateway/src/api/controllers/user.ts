@@ -28,6 +28,7 @@ export const typeDef = `
     last_online: Date
     index: Int
     estimated_wait: Int
+    average_wait: Int
     join_time: Date
   }
 `;

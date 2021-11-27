@@ -6,9 +6,16 @@ import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
 
+type Entity = {
+    queuerId?: number,
+    name: string,
+    lifespan: number,
+    state: boolean,
+}
+
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const [props, setProps] = useState({'entities': []})
+    const [props, setProps] = useState<Entity[]>([])
 
     const [showModal, setShowModal] = useState(false);
 
@@ -17,10 +24,10 @@ export default function () {
     const query = `
         query get_organizer($id: ID!) {
             organizer(organizer_id: $id) {
-                name
                 queues {
                     name
                     state
+                    create_time
                 }
             }
         }
@@ -34,17 +41,23 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
-                    data = data.data.queue
-                    const stats: SetStateAction<any> = Object.fromEntries([
-                        "num_enqueued",
-                        "num_serviced",
-                        "num_deferred",
-                        "average_wait_time",
-                        "num_abandoned",
-                        "num_noshows"]
-                            .filter(key => key in data)
-                            .map(key => [key, data[key]]))
-                    setProps(stats)
+                    data = data.data.organizer.queues
+                    let entities: Entity[] = []
+                    data.forEach((queue_data: any) => {
+                        const now: any = new Date()
+                        const join: any = new Date(queue_data.create_time)
+                        const lifespan = new Date(Math.abs(now - join))
+                        queue_data.lifespan = `${Math.floor(lifespan.getMinutes())}`
+                        const stats: SetStateAction<any> = Object.fromEntries([
+                            "name",
+                            "state",
+                            "lifespan"]
+                            .filter(key => key in queue_data)
+                            .map(key => [key, queue_data[key]]))
+                        entities.push(stats)
+                    })
+                    console.log(entities)
+                    setProps(entities)
                 }
             )
         } catch(error) {
@@ -54,7 +67,7 @@ export default function () {
 
     return (
         <>
-            <ActiveQueuesCatalogCardGroup entities={props.entities}/>
+            <ActiveQueuesCatalogCardGroup entities={props}/>
             <Fab
                 onPress={() => setShowModal(true)}
                 position="absolute"

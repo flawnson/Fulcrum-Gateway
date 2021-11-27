@@ -8,11 +8,10 @@ import MultiSelectButtons from "../atoms/MultiSelectButtons"
 
 
 type Entity = {
-    queuerId: number,
+    queuerId?: number,
     name: string,
-    index: string,
-    waited: string,
-    online: boolean,
+    lifespan: number,
+    state: boolean,
 }
 
 type OrganizerStatsProps = {

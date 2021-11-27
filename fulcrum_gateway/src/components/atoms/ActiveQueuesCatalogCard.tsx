@@ -13,16 +13,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 type OrganizerCatalogProps = {
     'onPress': (event: GestureResponderEvent) => void,
     'entity': {
-        queuerId: number,
+        queuerId?: number,
         name: string,
-        index: string,
-        waited: string,
+        lifespan: number,
+        state: boolean,
     }
 }
 
 export default function (props: OrganizerCatalogProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const [summoned, setSummoned] = useState<boolean>(false)
     const [online, setOnline] = useState<boolean>(true)
 
     async function toggleSummonQueuer (queuerId: number) {
@@ -40,14 +39,6 @@ export default function (props: OrganizerCatalogProps) {
             // enter your logic for when there is an error (ex. error toast)
             return error
         }
-    }
-
-    useEffect(() => {
-        toggleSummonQueuer(props.entity.queuerId).then(null)
-    }, [summoned])
-
-    const onBellPress = function () {
-        setSummoned(!summoned)
     }
 
     return (
@@ -81,16 +72,11 @@ export default function (props: OrganizerCatalogProps) {
                                 {props.entity.name}
                             </Text>
                             <Text style={styles.text}>
-                                {props.entity.index}
+                                {props.entity.state}
                             </Text>
                             <Text style={styles.text}>
-                                {props.entity.waited}
+                                {props.entity.lifespan}
                             </Text>
-                            <MaterialCommunityIcons selectable={false}
-                                                    name={summoned ? "bell-circle-outline" : "bell-circle"}
-                                                    size={32}
-                                                    color={"#999999"}
-                                                    onPress={onBellPress}/>
                         </HStack>
                     </Pressable>
                 </Box>
