@@ -2,20 +2,20 @@ import React, {SetStateAction, useEffect, useState} from "react"
 import ActiveQueuesCatalogCardGroup from "../components/molecules/ActiveQueuesCatalogCardGroup"
 import { Fab, Icon } from "native-base"
 import { AntDesign } from "@expo/vector-icons"
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
 
-type Entity = {
+type QueueStats = {
     queuerId?: number,
     name: string,
     lifespan: number,
-    state: boolean,
+    state: string,
 }
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const [props, setProps] = useState<Entity[]>([])
+    const [props, setProps] = useState<QueueStats[]>([])
 
     const [showModal, setShowModal] = useState(false);
 
@@ -42,7 +42,7 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.organizer.queues
-                    let entities: Entity[] = []
+                    let queue_sats: QueueStats[] = []
                     data.forEach((queue_data: any) => {
                         const now: any = new Date()
                         const join: any = new Date(queue_data.create_time)
@@ -54,10 +54,9 @@ export default function () {
                             "lifespan"]
                             .filter(key => key in queue_data)
                             .map(key => [key, queue_data[key]]))
-                        entities.push(stats)
+                        queue_sats.push(stats)
                     })
-                    console.log(entities)
-                    setProps(entities)
+                    setProps(queue_sats)
                 }
             )
         } catch(error) {
@@ -73,6 +72,7 @@ export default function () {
                 position="absolute"
                 size="sm"
                 icon={<Icon color="white" as={<AntDesign name="plus" />} size="sm" />}
+                renderInPortal={useIsFocused()}
             />
             <CreateQueueModal showModal={showModal} setShowModal={setShowModal} />
         </>

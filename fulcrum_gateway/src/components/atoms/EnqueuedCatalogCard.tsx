@@ -17,8 +17,8 @@ type OrganizerCatalogProps = {
     'entity': {
         queuerId: number,
         name: string,
-        index: string,
-        waited: string,
+        index: number,
+        waited: number,
     }
 }
 

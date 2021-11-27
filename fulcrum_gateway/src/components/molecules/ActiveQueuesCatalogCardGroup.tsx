@@ -4,21 +4,20 @@ import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import MultiSelectButtons from "../atoms/MultiSelectButtons"
 
 
 type Entity = {
     queuerId?: number,
     name: string,
     lifespan: number,
-    state: boolean,
+    state: string,
 }
 
-type OrganizerStatsProps = {
+type ActiveQueuesStatsProps = {
     'entities': Array<Entity>
 }
 
-export default function (props: OrganizerStatsProps) {
+export default function (props: ActiveQueuesStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
     const handleOnPress = () => {

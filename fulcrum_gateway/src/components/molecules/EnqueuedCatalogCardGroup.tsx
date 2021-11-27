@@ -10,16 +10,16 @@ import MultiSelectButtons from "../atoms/MultiSelectButtons"
 type Entity = {
     queuerId: number,
     name: string,
-    index: string,
-    waited: string,
     online: boolean,
+    index: number,
+    waited: number,
 }
 
-type OrganizerStatsProps = {
+type EnqueuedStatsProps = {
     'entities': Array<Entity>
 }
 
-export default function (props: OrganizerStatsProps) {
+export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
     const [selectedItems, setSelectedItems] = useState<Array<number>>([])

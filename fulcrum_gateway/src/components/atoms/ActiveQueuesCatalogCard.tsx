@@ -16,7 +16,7 @@ type OrganizerCatalogProps = {
         queuerId?: number,
         name: string,
         lifespan: number,
-        state: boolean,
+        state: string,
     }
 }
 
@@ -24,22 +24,9 @@ export default function (props: OrganizerCatalogProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [online, setOnline] = useState<boolean>(true)
 
-    async function toggleSummonQueuer (queuerId: number) {
-        try {
-            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/QUEUERID/summon', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({queuerId: queuerId})
-            });
-            // enter you logic when the fetch is successful
-            return await response.json()
-        } catch(error) {
-            // enter your logic for when there is an error (ex. error toast)
-            return error
-        }
-    }
+    useEffect(() => {
+        setOnline(props.entity.state === "ACTIVE")
+    }, [props])
 
     return (
         <Center>
@@ -70,9 +57,6 @@ export default function (props: OrganizerCatalogProps) {
                             </Avatar>
                             <Text suppressHighlighting={true} style={styles.text}>
                                 {props.entity.name}
-                            </Text>
-                            <Text style={styles.text}>
-                                {props.entity.state}
                             </Text>
                             <Text style={styles.text}>
                                 {props.entity.lifespan}
