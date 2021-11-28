@@ -1,3 +1,7 @@
+let nowDate = new Date()
+let pastDate = nowDate.setDate(nowDate.getDate() - 1)
+let laterDate = nowDate.setDate(nowDate.getDate() + 1)
+
 export let user_table = [
   {
     id: "user0",
@@ -7,11 +11,12 @@ export let user_table = [
     summoned: false,
     phone_number: "4162922346",
     party_size: 1,
-    last_online: new Date(),
+    last_online: nowDate,
     index: 1,
     estimated_wait: 3,
     average_wait: 17,
-    join_time: new Date(),
+    join_time: pastDate,
+    reneged_time: laterDate
   },
   {
     id: "user1",
@@ -21,11 +26,12 @@ export let user_table = [
     summoned: false,
     phone_number: "4162922346",
     party_size: 2,
-    last_online: new Date(),
+    last_online: nowDate,
     index: 2,
     estimated_wait: 3,
     average_wait: 13,
-    join_time: new Date(),
+    join_time: pastDate,
+    reneged_time: laterDate
   }
 ];
 
@@ -34,7 +40,7 @@ export let queue_table = [
     id: "costco_queue1",
     name: "Queue1",
     state: "ACTIVE",
-    create_time: new Date(),
+    create_time: nowDate,
     enqueued: [
       "user0"
     ],
@@ -47,7 +53,7 @@ export let queue_table = [
     id: "costco_queue2",
     name: "Queue2",
     state: "PAUSED",
-    create_time: new Date(),
+    create_time: nowDate,
     enqueued: [],
     serviced: [
       "user1"

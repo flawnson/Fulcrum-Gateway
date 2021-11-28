@@ -1,16 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet,
-        Pressable, Animated,
-        PanResponder, Dimensions,
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Pressable,
         GestureResponderEvent } from "react-native";
 import { HStack, Text,
-        Box, View,
-        Center, Avatar } from 'native-base';
-import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps } from "../../../types";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+        Box, Center,
+        Avatar } from 'native-base';
 
-type OrganizerCatalogProps = {
+type QueuesCatalogProps = {
     'onPress': (event: GestureResponderEvent) => void,
     'entity': {
         queuerId?: number,
@@ -20,8 +15,7 @@ type OrganizerCatalogProps = {
     }
 }
 
-export default function (props: OrganizerCatalogProps) {
-    const navigation = useNavigation<HomeScreenProps["navigation"]>()
+export default function (props: QueuesCatalogProps) {
     const [online, setOnline] = useState<boolean>(true)
 
     useEffect(() => {
@@ -65,7 +59,7 @@ export default function (props: OrganizerCatalogProps) {
                     </Pressable>
                 </Box>
         </Center>
-    );
+    )
 }
 
 const styles = StyleSheet.create({

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import EnqueuedEntityCard from "../atoms/EnqueuedCatalogCard";
+import ServicedCatalogCard from "../atoms/ServicedCatalogCard";
 import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -7,19 +7,17 @@ import { HomeScreenProps } from "../../../types";
 import MultiSelectButtons from "../atoms/MultiSelectButtons"
 
 
-type Entity = {
+type ServicedStats = {
     queuerId: number,
     name: string,
-    online: boolean,
-    index: number,
-    waited: number,
+    reneged: number,
 }
 
-type EnqueuedStatsProps = {
-    'entities': Array<Entity>
+type ServicedStatsProps = {
+    'entities': Array<ServicedStats>
 }
 
-export default function (props: EnqueuedStatsProps) {
+export default function (props: ServicedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
     const [selectedItems, setSelectedItems] = useState<Array<number>>([])
@@ -31,7 +29,7 @@ export default function (props: EnqueuedStatsProps) {
         }
     }, [selectedItems])
 
-    const handleOnPress = (item: Entity) => {
+    const handleOnPress = (item: ServicedStats) => {
         if (selectedItems.length) {
             return selectItems(item)
         }
@@ -40,14 +38,14 @@ export default function (props: EnqueuedStatsProps) {
         navigation.navigate("QueuerDashboard")
     }
 
-    const getSelected = (item: Entity) => selectedItems.includes(item.queuerId)
+    const getSelected = (item: ServicedStats) => selectedItems.includes(item.queuerId)
 
     const deSelectItems = () => {
         setSelectedItems([])
         navigation.setOptions({headerRight: undefined})
     }
 
-    const selectItems = (item: Entity) => {
+    const selectItems = (item: ServicedStats) => {
         navigation.setOptions({headerRight: (props) => <MultiSelectButtons {...props} /> })
 
         if (selectedItems.includes(item.queuerId)) {
@@ -60,11 +58,11 @@ export default function (props: EnqueuedStatsProps) {
     }
 
     const OrganizerStatCards = Object.entries(props.entities).map(([key, queuerStat]) =>
-        <EnqueuedEntityCard key={key}
-                            onPress={() => handleOnPress(queuerStat)}
-                            onLongPress={() => selectItems(queuerStat)}
-                            selected={getSelected(queuerStat)}
-                            entity={queuerStat}/>)
+        <ServicedCatalogCard key={key}
+                             onPress={() => handleOnPress(queuerStat)}
+                             onLongPress={() => selectItems(queuerStat)}
+                             selected={getSelected(queuerStat)}
+                             entity={queuerStat}/>)
 
     return (
         <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>
