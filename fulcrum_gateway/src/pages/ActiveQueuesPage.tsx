@@ -68,7 +68,7 @@ export default function () {
         <>
             <ActiveQueuesCatalogCardGroup entities={props}/>
             <Fab
-                onPress={() => setShowModal(true)}
+                onPress={() => setShowModal(!showModal)}
                 position="absolute"
                 size="sm"
                 icon={<Icon color="white" as={<AntDesign name="plus" />} size="sm" />}

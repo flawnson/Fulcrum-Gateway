@@ -29,7 +29,7 @@ export default function () {
         }
     `
     const variables = `{
-        "id": "costco_queue1"
+        "id": "costco_queue2"
     }`
 
     async function fetchServicedData () {
@@ -38,7 +38,7 @@ export default function () {
             await response.json().then(
                 data => {
                     console.log(data)
-                    data = data.data.queue.enqueued
+                    data = data.data.queue.serviced
                     let serviced_stats: ServicedStats[] = []
                     data.forEach((queue_data: any) => {
                         const join_time: any = new Date(queue_data.join_time)

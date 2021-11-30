@@ -30,6 +30,7 @@ export const typeDef = `
     estimated_wait: Int
     average_wait: Int
     join_time: Date
+    reneged_time: Date
   }
 `;
 

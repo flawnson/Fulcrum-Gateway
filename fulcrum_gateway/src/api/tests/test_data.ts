@@ -1,6 +1,6 @@
 let nowDate = new Date()
-let pastDate = nowDate.setDate(nowDate.getDate() - 1)
-let laterDate = nowDate.setDate(nowDate.getDate() + 1)
+let pastDate = new Date(nowDate.setDate(nowDate.getDate() - 1))
+let futureDate = new Date(nowDate.setDate(nowDate.getDate() + 1))
 
 export let user_table = [
   {
@@ -16,7 +16,7 @@ export let user_table = [
     estimated_wait: 3,
     average_wait: 17,
     join_time: pastDate,
-    reneged_time: laterDate
+    reneged_time: futureDate
   },
   {
     id: "user1",
@@ -31,7 +31,7 @@ export let user_table = [
     estimated_wait: 3,
     average_wait: 13,
     join_time: pastDate,
-    reneged_time: laterDate
+    reneged_time: futureDate
   }
 ];
 
