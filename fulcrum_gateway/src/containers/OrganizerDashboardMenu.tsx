@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, {SetStateAction, useState} from 'react'
 import { Button, Menu, Fab, HamburgerIcon } from 'native-base';
-import { useNavigation } from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import EditQueueModal from "./EditQueueModal";
 
-export default function () {
+type OrganizerDashboardMenuProps = {
+    showModal: boolean
+    setShowModal:  React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function (props: OrganizerDashboardMenuProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const [queuePaused, toggleQueuePaused] = useState<boolean>(false)
-    const [showModal, setShowModal] = useState(false);
 
     async function setQueuePaused () {
         try {
@@ -37,12 +41,11 @@ export default function () {
                 )
             }}
         >
-            <Menu.Item onPress={() => setShowModal(!showModal)}>Edit Queue</Menu.Item>
+            <Menu.Item onPress={() => props.setShowModal(!props.showModal)}>Edit Queue</Menu.Item>
             <Menu.Item onPress={() => navigation.navigate("EndScreen")}>End Queue</Menu.Item>
             <Menu.Item onPress={() => pauseQueue}>Pause Queue</Menu.Item>
             <Menu.Item>Announcement</Menu.Item>
             <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>Share Queue</Menu.Item>
-            <EditQueueModal showModal={showModal} setShowModal={setShowModal} />
         </Menu>
     )
 }

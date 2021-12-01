@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Menu, Pressable, HamburgerIcon } from 'native-base';
+import {Button, Menu, Pressable, HamburgerIcon, Fab} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
 import DeferPositionModal from "./DeferPositionModal";
@@ -10,13 +10,19 @@ export default function () {
 
     return (
         <>
-            <Menu w="190" trigger={(triggerProps) => { return (
-                            <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-                                <HamburgerIcon />
-                            </Pressable>
-                            )
-                        }}
-                    >
+            <Menu
+                w="190"
+                trigger={(triggerProps) => {
+                    return (
+                        <Fab
+                            position="absolute"
+                            size='sm'
+                            icon={<HamburgerIcon size="sm" />}
+                            {...triggerProps}
+                        />
+                    )
+                }}
+            >
                 <Menu.Item onPress={() => setDeferModalVisible(true)}>Defer Position</Menu.Item>
                 <Menu.Item onPress={() => navigation.navigate("AbandonedScreen")}>Leave Queue</Menu.Item>
                 <Menu.Item>Get Directions</Menu.Item>

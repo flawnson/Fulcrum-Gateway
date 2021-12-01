@@ -1,15 +1,19 @@
 import React, {SetStateAction, useState} from 'react'
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
 import {StyleSheet} from 'react-native'
 import {Center, Heading, Text, Image} from "native-base";
 import OrganizerDashboardGroup from "../components/organisms/OrganizerDashboardStats";
 import OrganizerDashboardMenu from "../containers/OrganizerDashboardMenu"
 import useInterval from "../utilities/useInterval";
+import EditQueueModal from "../containers/EditQueueModal";
 
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
+    const [showModal, setShowModal] = useState(false);
+
     const tempProps = {
         'enqueued': 35,
         'serviced': 22,
@@ -60,9 +64,11 @@ export default function () {
 
     return (
         <Center style={styles.animationFormat}>
+            {/* Modal must be placed at the Dashboard level to show when menu button is tapped*/}
+            <EditQueueModal showModal={showModal} setShowModal={setShowModal} route={route} navigation={navigation}/>
             <Heading style={styles.headingFormat}>Someone's Queue</Heading>
             <OrganizerDashboardGroup OrganizerDashboardProps={props}/>
-            <OrganizerDashboardMenu />
+            <OrganizerDashboardMenu showModal={showModal} setShowModal={setShowModal}/>
         </Center>
     )
 }
