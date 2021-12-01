@@ -11,15 +11,15 @@ import AbandonedScreen from "./src/screens/AbandonedScreen";
 import QueuerDashboard from "./src/pages/QueuerDashboard";
 import CreateQueuePage from "./src/pages/CreateQueuePage";
 import LandingPage from "./src/screens/LandingPage";
-import {RootStackParamList} from "./types";
-import {nativebaseTheme, navigationTheme} from "./theme";
+import { RootStackParamList } from "./types";
+import { nativebaseTheme, navigationTheme } from "./theme";
 import { registerRootComponent } from 'expo';
 import ActiveQueuesPage from "./src/pages/ActiveQueuesPage";
 import EnqueuedQueuersPage from "./src/pages/EnqueuedQueuersPage";
 import OrganizerDashboardTabs from "./src/pages/OrganizerDashboardTabs"
 import QRCodeScanner from "./src/components/atoms/QRCodeScanner"
 import './i18n';
-import {PreferencesContext} from "./src/utilities/useTheme";
+import { PreferencesContext } from "./src/utilities/useTheme";
 import OrganizerDashboard from "./src/pages/OrganizerDashboard";
 
 const config: object = {
