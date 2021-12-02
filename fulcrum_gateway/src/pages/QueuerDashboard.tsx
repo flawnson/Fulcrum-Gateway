@@ -11,10 +11,13 @@ import useInterval from "../utilities/useInterval";
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const tempProps = {
-        index: 3,
-        eta: 15,
-        waited: 5,
-        avg: 10,
+        name: "Someone",
+        stats: {
+            index: 3,
+            eta: 15,
+            waited: 5,
+            avg: 10,
+        },
     }
     const [props, setProps] = useState(tempProps)
 
@@ -41,19 +44,22 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.user
-                    console.log(data)
                     const now: any = new Date()
                     const join: any = new Date(data.join_time)
                     const waited = new Date(Math.abs(now - join))
                     data.waited = `${Math.floor(waited.getMinutes())}`
-                    const stats: SetStateAction<any> = Object.fromEntries([
+                    const info: SetStateAction<any> = Object.fromEntries([
+                        "name",
                         "index",
                         "waited",
                         "average_wait",
                         "estimated_wait"]
                         .filter(key => key in data)
                         .map(key => [key, data[key]]))
-                    setProps(stats)
+                    setProps({"name": info.name, "stats": {"index": info.index,
+                                                                 "waited": info.waited,
+                                                                 "avg": info.average_wait,
+                                                                 "eta": info.estimated_wait}})
                 }
             )
         } catch(error) {
@@ -63,7 +69,7 @@ export default function () {
 
     return (
         <Center style={styles.animationFormat}>
-            <Heading style={styles.headingFormat}>Someone's Queue</Heading>
+            <Heading style={styles.headingFormat}>{props.name}'s Queue</Heading>
             <Image
                 source={require('../assets/images/queueup.gif')}
                 alt={"Loading..."}
@@ -71,7 +77,7 @@ export default function () {
             />
             <Text style={styles.textFormat}>Almost there!</Text>
             <Center>
-                <QueuerDashboardGroup queuerDashboardProps={props}/>
+                <QueuerDashboardGroup queuerDashboardProps={props.stats}/>
             </Center>
             <QueuerDashboardMenu />
         </Center>

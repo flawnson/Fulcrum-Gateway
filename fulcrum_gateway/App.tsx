@@ -23,7 +23,7 @@ import { PreferencesContext } from "./src/utilities/useTheme";
 import OrganizerDashboard from "./src/pages/OrganizerDashboard";
 
 const config: object = {
-    strictMode: 'error',
+    strictMode: 'off',
 };
 
 function App() {

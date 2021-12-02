@@ -1,6 +1,6 @@
-let nowDate = new Date()
-let pastDate = new Date(nowDate.setDate(nowDate.getDate() - 1))
-let futureDate = new Date(nowDate.setDate(nowDate.getDate() + 1))
+export let nowDate = new Date()
+export let pastDate = new Date(nowDate.setDate(nowDate.getDate() - 1))
+export let futureDate = new Date(nowDate.setDate(nowDate.getDate() + 1))
 
 export let user_table = [
   {

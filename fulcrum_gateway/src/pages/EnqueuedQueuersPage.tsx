@@ -37,7 +37,6 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
-                    console.log(data)
                     data = data.data.queue.enqueued
                     let queuer_stats: EnqueuedStats[] = []
                     data.forEach((queue_data: any) => {
