@@ -13,6 +13,7 @@ datasource db {
 model Organizer {
   id Int @id @default(autoincrement())
   name String
+  password String?
   queues Queue[]
 }
 
