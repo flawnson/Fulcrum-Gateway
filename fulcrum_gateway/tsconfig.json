@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2018",
     "module": "commonjs",
     "lib": [
-      "esnext"
+      "es2018",
+      "esnext.asynciterable"
     ],
     "sourceMap": true,
     "outDir": "dist",
@@ -23,7 +24,9 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules",
