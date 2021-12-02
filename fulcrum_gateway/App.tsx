@@ -50,43 +50,43 @@ function App() {
 
     return (
         <PreferencesContext.Provider value={preferences}>
-          <NativeBaseProvider config={config} theme={theme.nativebase}>
-              <NavigationContainer theme={theme.navigation}>
-                  <Stack.Navigator initialRouteName="HomePage">
-                      <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe" }} >
-                          {isInQueue && isQueuer ? (
-                          <>
-                              <Stack.Screen name="HomePage" component={QueuerDashboard} />
-                              <Stack.Screen name="LandingPage" component={LandingPage} />
-                              <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
-                              <Stack.Screen name="OrganizerDashboardTabs" component={OrganizerDashboardTabs} />
-                              <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
-                              <Stack.Screen name="ShareScreen" component={ShareScreen} />
-                              <Stack.Screen name="SummonScreen" component={SummonScreen} />
-                              <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
-                          </>
-                          ) : isInQueue && isOrganizer ? (
-                              <>
-                                  <Stack.Screen name="HomePage" component={OrganizerDashboardTabs} />
-                                  <Stack.Screen name="LandingPage" component={LandingPage} />
-                                  <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
-                                  <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboardTabs} />
-                                  <Stack.Screen name="EnqueuedQueuersPage" component={EnqueuedQueuersPage} />
-                                  <Stack.Screen name="ActiveQueuesPage" component={ActiveQueuesPage} />
-                                  <Stack.Screen name="ShareScreen" component={ShareScreen} />
-                                  <Stack.Screen name="EndScreen" component={EndScreen} />
-                              </>
-                          ) : (
-                              <>
-                                  <Stack.Screen name="HomePage" component={HomePage} />
-                                  <Stack.Screen name="LandingPage" component={LandingPage} />
-                                  <Stack.Screen name="SignUp" component={AbandonedScreen} />
-                              </>
-                          )}
-                      </Stack.Group>
-                  </Stack.Navigator>
-              </NavigationContainer>
-          </NativeBaseProvider>
+            <NativeBaseProvider config={config} theme={theme.nativebase}>
+                <NavigationContainer theme={theme.navigation}>
+                    <Stack.Navigator initialRouteName="HomePage">
+                        <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe" }} >
+                            {isInQueue && isQueuer ? (
+                            <>
+                                <Stack.Screen name="HomePage" component={ActiveQueuesPage} />
+                                <Stack.Screen name="LandingPage" component={LandingPage} />
+                                <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
+                                <Stack.Screen name="OrganizerDashboardTabs" component={OrganizerDashboardTabs} />
+                                <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
+                                <Stack.Screen name="ShareScreen" component={ShareScreen} />
+                                <Stack.Screen name="SummonScreen" component={SummonScreen} />
+                                <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
+                            </>
+                            ) : isInQueue && isOrganizer ? (
+                                <>
+                                    <Stack.Screen name="HomePage" component={OrganizerDashboardTabs} />
+                                    <Stack.Screen name="LandingPage" component={LandingPage} />
+                                    <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
+                                    <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboardTabs} />
+                                    <Stack.Screen name="EnqueuedQueuersPage" component={EnqueuedQueuersPage} />
+                                    <Stack.Screen name="ActiveQueuesPage" component={ActiveQueuesPage} />
+                                    <Stack.Screen name="ShareScreen" component={ShareScreen} />
+                                    <Stack.Screen name="EndScreen" component={EndScreen} />
+                                </>
+                            ) : (
+                                <>
+                                    <Stack.Screen name="HomePage" component={HomePage} />
+                                    <Stack.Screen name="LandingPage" component={LandingPage} />
+                                    <Stack.Screen name="SignUp" component={AbandonedScreen} />
+                                </>
+                            )}
+                        </Stack.Group>
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </NativeBaseProvider>
         </PreferencesContext.Provider>
 
     );

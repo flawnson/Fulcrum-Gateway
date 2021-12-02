@@ -24,16 +24,26 @@ export default function (props: EnqueuedCatalogProps) {
     const [summoned, setSummoned] = useState<boolean>(false)
     const [online, setOnline] = useState<boolean>(true)
 
+    const query = `
+        mutation summon_user($user_id: ID!){
+            summon_user(user_id: $user_id)
+        }
+    `
+    const variables = `{
+        "user_id": "user0"
+    }`
+
     async function toggleSummonQueuer (queuerId: number) {
         try {
-            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/QUEUERID/summon', {
+            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({queuerId: queuerId})
+                body: JSON.stringify({id: queuerId})
             });
             // enter you logic when the fetch is successful
+            console.log(await response.json())
             return await response.json()
         } catch(error) {
             // enter your logic for when there is an error (ex. error toast)
@@ -117,7 +127,7 @@ export default function (props: EnqueuedCatalogProps) {
                                 {props.entity.waited}
                             </Text>
                             <MaterialCommunityIcons selectable={false}
-                                                    name={summoned ? "bell-circle-outline" : "bell-circle"}
+                                                    name={summoned ? "bell-circle" : "bell-circle-outline"}
                                                     size={32}
                                                     color={"#999999"}
                                                     onPress={onBellPress}/>
