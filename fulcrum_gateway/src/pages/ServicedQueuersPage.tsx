@@ -1,16 +1,61 @@
-import React, {useEffect, useState} from "react";
-import ActiveQueuesCatalogCardGroup from "../components/molecules/ActiveQueuesCatalogCardGroup";
+import React, {SetStateAction, useEffect, useState} from "react";
 import useInterval from "../utilities/useInterval";
+import ServicedCatalogCardGroup from "../components/molecules/ServicedCatalogCardGroup";
+
+
+type ServicedStats = {
+    queuerId: number,
+    name: string,
+    reneged: number,
+}
 
 export default function () {
-    const [props, setProps] = useState({'entities': []})
+    const [props, setProps] = useState<ServicedStats[]>([])
 
     useEffect(() => {fetchServicedData()}, [])
 
+    const query = `
+        query queue($id: ID!){
+            queue(queue_id: $id){
+                serviced {
+                    id
+                    name
+                    index
+                    online
+                    join_time
+                    reneged_time
+                }
+            }
+        }
+    `
+    const variables = `{
+        "id": "costco_queue2"
+    }`
+
     async function fetchServicedData () {
         try {
-            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/serviced')
-            setProps(await response.json())
+            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            await response.json().then(
+                data => {
+                    console.log(data)
+                    data = data.data.queue.serviced
+                    let serviced_stats: ServicedStats[] = []
+                    data.forEach((queue_data: any) => {
+                        const join_time: any = new Date(queue_data.join_time)
+                        const reneged_time: any = new Date(queue_data.reneged_time)
+                        const serviced_time = new Date(Math.abs(reneged_time - join_time))
+                        queue_data.serviced_time = `${Math.floor(serviced_time.getMinutes())}`
+                        const stats: SetStateAction<any> = Object.fromEntries([
+                            "id",
+                            "name",
+                            "waited"]
+                            .filter(key => key in queue_data)
+                            .map(key => [key, queue_data[key]]))
+                        serviced_stats.push(stats)
+                    })
+                    setProps(serviced_stats)
+                }
+            )
         } catch(error) {
             console.log(error)
         }
@@ -20,6 +65,6 @@ export default function () {
 
     return (
         // Using active queues catalog cards because functionaly matches
-        <ActiveQueuesCatalogCardGroup entities={props.entities}/>
+        <ServicedCatalogCardGroup entities={props}/>
     )
 }

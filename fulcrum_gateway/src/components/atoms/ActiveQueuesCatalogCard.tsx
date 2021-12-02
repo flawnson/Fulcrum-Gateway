@@ -1,54 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet,
-        Pressable, Animated,
-        PanResponder, Dimensions,
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Pressable,
         GestureResponderEvent } from "react-native";
 import { HStack, Text,
-        Box, View,
-        Center, Avatar } from 'native-base';
-import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps } from "../../../types";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+        Box, Center,
+        Avatar } from 'native-base';
 
-type OrganizerCatalogProps = {
+type QueuesCatalogProps = {
     'onPress': (event: GestureResponderEvent) => void,
     'entity': {
-        queuerId: number,
+        queuerId?: number,
         name: string,
-        index: string,
-        waited: string,
+        lifespan: number,
+        state: string,
     }
 }
 
-export default function (props: OrganizerCatalogProps) {
-    const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const [summoned, setSummoned] = useState<boolean>(false)
+export default function (props: QueuesCatalogProps) {
     const [online, setOnline] = useState<boolean>(true)
 
-    async function toggleSummonQueuer (queuerId: number) {
-        try {
-            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/QUEUERID/summon', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({queuerId: queuerId})
-            });
-            // enter you logic when the fetch is successful
-            return await response.json()
-        } catch(error) {
-            // enter your logic for when there is an error (ex. error toast)
-            return error
-        }
-    }
-
     useEffect(() => {
-        toggleSummonQueuer(props.entity.queuerId).then(null)
-    }, [summoned])
-
-    const onBellPress = function () {
-        setSummoned(!summoned)
-    }
+        setOnline(props.entity.state === "ACTIVE")
+    }, [props])
 
     return (
         <Center>
@@ -81,21 +53,13 @@ export default function (props: OrganizerCatalogProps) {
                                 {props.entity.name}
                             </Text>
                             <Text style={styles.text}>
-                                {props.entity.index}
+                                {props.entity.lifespan}
                             </Text>
-                            <Text style={styles.text}>
-                                {props.entity.waited}
-                            </Text>
-                            <MaterialCommunityIcons selectable={false}
-                                                    name={summoned ? "bell-circle-outline" : "bell-circle"}
-                                                    size={32}
-                                                    color={"#999999"}
-                                                    onPress={onBellPress}/>
                         </HStack>
                     </Pressable>
                 </Box>
         </Center>
-    );
+    )
 }
 
 const styles = StyleSheet.create({

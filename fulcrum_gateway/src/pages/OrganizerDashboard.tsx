@@ -41,14 +41,15 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.queue
-                    const stats: SetStateAction<any> = Object.fromEntries(["num_enqueued",
-                                                                           "num_serviced",
-                                                                           "num_deferred",
-                                                                           "average_wait_time",
-                                                                           "num_abandoned",
-                                                                           "num_noshows"]
-                                .filter(key => key in data)
-                                .map(key => [key, data[key]]))
+                    const stats: SetStateAction<any> = Object.fromEntries([
+                        "num_enqueued",
+                        "num_serviced",
+                        "num_deferred",
+                        "average_wait_time",
+                        "num_abandoned",
+                        "num_noshows"]
+                            .filter(key => key in data)
+                            .map(key => [key, data[key]]))
                     setProps(stats)
                 }
             )
@@ -60,7 +61,7 @@ export default function () {
     return (
         <Center style={styles.animationFormat}>
             <Heading style={styles.headingFormat}>Someone's Queue</Heading>
-                <OrganizerDashboardGroup OrganizerDashboardProps={props}/>
+            <OrganizerDashboardGroup OrganizerDashboardProps={props}/>
             <OrganizerDashboardMenu />
         </Center>
     )
