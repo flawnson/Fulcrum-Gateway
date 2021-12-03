@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import EnqueuedEntityCard from "../atoms/EnqueuedCatalogCard";
+import QueuesCatalogCard from "../atoms/QueuesCatalogCard";
 import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import MultiSelectButtons from "../atoms/UserMultiSelectButtons"
+import MultiSelectButtons from "../atoms/UserMultiSelectButtons";
 
 
 type Entity = {
     userId: number,
     name: string,
-    online: boolean,
-    index: number,
-    waited: number,
+    lifespan: number,
+    state: string,
 }
 
-type EnqueuedStatsProps = {
+type ActiveQueuesStatsProps = {
     'entities': Array<Entity>
 }
 
-export default function (props: EnqueuedStatsProps) {
+export default function (props: ActiveQueuesStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
     const [selectedItems, setSelectedItems] = useState<Array<number>>([])
@@ -37,7 +36,7 @@ export default function (props: EnqueuedStatsProps) {
         }
 
         // here you can add you code what do you want if user just do single tap
-        navigation.navigate("UserDashboard")
+        navigation.navigate("OrganizerDashboardTabs")
     }
 
     const getSelected = (item: Entity) => selectedItems.includes(item.userId)
@@ -60,18 +59,16 @@ export default function (props: EnqueuedStatsProps) {
     }
 
     const OrganizerStatCards = Object.entries(props.entities).map(([key, userStat]) =>
-        <EnqueuedEntityCard key={key}
-                            onPress={() => handleOnPress(userStat)}
-                            onLongPress={() => selectItems(userStat)}
-                            selected={getSelected(userStat)}
-                            entity={userStat}/>)
+        <QueuesCatalogCard key={key}
+                           onPress={() => handleOnPress(userStat)}
+                           onLongPress={() => selectItems(userStat)}
+                           selected={getSelected(userStat)}
+                           entity={userStat}/>)
 
     return (
-        <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>
-            <VStack style={styles.stats}>
-                {OrganizerStatCards}
-            </VStack>
-        </Pressable>
+        <VStack style={styles.stats}>
+            {OrganizerStatCards}
+        </VStack>
     )
 }
 

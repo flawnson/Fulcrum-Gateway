@@ -4,7 +4,7 @@ import ServicedCatalogCardGroup from "../components/molecules/ServicedCatalogCar
 
 
 type ServicedStats = {
-    queuerId: number,
+    userId: number,
     name: string,
     reneged: number,
 }

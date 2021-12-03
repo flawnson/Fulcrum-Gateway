@@ -1,7 +1,7 @@
 import getETA from './getETA';
 import getWaitedTime from './getWaitedTime';
 import getAverageWait from './getAverageWait';
-import getQueuerIndex from './getQueuerIndex';
+import getQueuerIndex from './getUserIndex';
 
 export default async function (queuerId: number) {
     try {

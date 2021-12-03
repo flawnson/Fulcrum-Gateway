@@ -3,7 +3,7 @@ import CatalogEntityCardGroup from "../components/molecules/AbandonedCatalogCard
 import useInterval from "../utilities/useInterval";
 
 type AbandonedStats = {
-    queuerId: number,
+    userId: number,
     name: string,
     waited: number,
 }

@@ -13,7 +13,7 @@ type EnqueuedCatalogProps = {
     'onLongPress': (event: GestureResponderEvent) => void,
     'selected': boolean,
     'entity': {
-        queuerId: number,
+        userId: number,
         name: string,
         index: number,
         waited: number,
@@ -33,14 +33,14 @@ export default function (props: EnqueuedCatalogProps) {
         "user_id": "user0"
     }`
 
-    async function toggleSummonQueuer (queuerId: number) {
+    async function toggleSummonUser (userId: number) {
         try {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({id: queuerId})
+                body: JSON.stringify({id: userId})
             });
             // enter you logic when the fetch is successful
             console.log(await response.json())
@@ -52,7 +52,7 @@ export default function (props: EnqueuedCatalogProps) {
     }
 
     useEffect(() => {
-        toggleSummonQueuer(props.entity.queuerId).then(null)
+        toggleSummonUser(props.entity.userId).then(null)
     }, [summoned])
 
     const onBellPress = function () {

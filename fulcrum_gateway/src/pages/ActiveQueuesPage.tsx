@@ -1,5 +1,5 @@
 import React, {SetStateAction, useEffect, useState} from "react"
-import ActiveQueuesCatalogCardGroup from "../components/molecules/ActiveQueuesCatalogCardGroup"
+import ActiveQueuesCatalogCardGroup from "../components/molecules/QueuesCatalogCardGroup"
 import { Fab, Icon } from "native-base"
 import { AntDesign } from "@expo/vector-icons"
 import { useNavigation, useIsFocused } from "@react-navigation/native";
@@ -7,7 +7,7 @@ import { HomeScreenProps } from "../../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
 
 type QueueStats = {
-    queuerId?: number,
+    userId: number,
     name: string,
     lifespan: number,
     state: string,
