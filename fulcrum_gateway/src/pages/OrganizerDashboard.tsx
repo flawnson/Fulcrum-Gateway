@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {SetStateAction, useState} from 'react'
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
 import {StyleSheet} from 'react-native'
@@ -6,7 +6,6 @@ import {Center, Heading, Text, Image} from "native-base";
 import OrganizerDashboardGroup from "../components/organisms/OrganizerDashboardStats";
 import OrganizerDashboardMenu from "../containers/OrganizerDashboardMenu"
 import useInterval from "../utilities/useInterval";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 export default function () {
@@ -20,11 +19,40 @@ export default function () {
         'noshows': 0
     }
     const [props, setProps] = useState(tempProps)
+    const query = `
+        query Queue($id: ID!){
+            queue(queue_id: $id){
+                num_enqueued
+                num_serviced
+                num_deferred
+                average_wait_time
+                num_abandoned
+                num_noshows
+            }
+        }
+    `
+    const variables = `{
+        "id": "costco_queue1"
+    }`
 
     useInterval(async () => {
         try {
-            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/stats')
-            setProps(await response.json())
+            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            await response.json().then(
+                data => {
+                    data = data.data.queue
+                    const stats: SetStateAction<any> = Object.fromEntries([
+                        "num_enqueued",
+                        "num_serviced",
+                        "num_deferred",
+                        "average_wait_time",
+                        "num_abandoned",
+                        "num_noshows"]
+                            .filter(key => key in data)
+                            .map(key => [key, data[key]]))
+                    setProps(stats)
+                }
+            )
         } catch(error) {
             console.log(error)
         }
@@ -33,7 +61,7 @@ export default function () {
     return (
         <Center style={styles.animationFormat}>
             <Heading style={styles.headingFormat}>Someone's Queue</Heading>
-                <OrganizerDashboardGroup OrganizerDashboardProps={props}/>
+            <OrganizerDashboardGroup OrganizerDashboardProps={props}/>
             <OrganizerDashboardMenu />
         </Center>
     )

@@ -13,28 +13,22 @@ export default function() {
     const { t, i18n } = useTranslation("abandonedScreen");
 
     return (
-        <View>
-            <Center style={styles.container}>
-                <Text style={styles.header}>
-                    {t('message')}
-                </Text>
-                <Text style={styles.subText}>
-                    {t('footer')}
-                <Text style={styles.linkText} onPress={() => navigation.navigate('LandingPage')}> fiefoe.com</Text>
-                </Text>
-            </Center>
-        </View>
+        <Center style={styles.container}>
+            <Text style={styles.header}>
+                {t('message')}
+            </Text>
+            <Text style={styles.subText}>
+                {t('footer')}
+            <Text style={styles.linkText} onPress={() => navigation.navigate('LandingPage')}> fiefoe.com</Text>
+            </Text>
+        </Center>
     )
 }
 
 
 const styles = StyleSheet.create({
     container: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        marginTop: 200,
-        marginLeft: -100,
+        margin: 200,
     },
     header: {
         margin: 10,

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Button } from 'react-native-paper'
-import { TimePickerModal } from 'react-native-paper-dates'
+import { TimePickerModal } from '../atoms/TimePickerModal'
 
 type GenericTimePickerModalProps = {
     modalVisible: boolean
@@ -30,7 +30,8 @@ export default function (props: GenericTimePickerModalProps) {
                 onConfirm={onConfirm}
                 hours={12} // default: current hours
                 minutes={14} // default: current minutes
-                label="Select time" // optional, default 'Select time'
+                uppercase={false}
+                label="How long would you like to defer for?" // optional, default 'Select time'
                 cancelLabel="Cancel" // optional, default: 'Cancel'
                 confirmLabel="Ok" // optional, default: 'Ok'
                 animationType="fade" // optional, default is 'none'

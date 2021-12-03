@@ -1,29 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Pressable,
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet,
+        Pressable, Animated,
+        PanResponder, Dimensions,
         GestureResponderEvent } from "react-native";
 import { HStack, Text,
-        Box, Center,
-        Avatar } from 'native-base';
+        Box, View,
+        Center, Avatar } from 'native-base';
 
-type QueuesCatalogProps = {
+type ServicedCatalogProps = {
     'onPress': (event: GestureResponderEvent) => void,
+    'onLongPress': (event: GestureResponderEvent) => void,
+    'selected': boolean,
     'entity': {
-        queuerId?: number,
+        queuerId: number,
         name: string,
-        lifespan: number,
-        state: string,
+        waited: number,
     }
 }
 
-export default function (props: QueuesCatalogProps) {
+export default function (props: ServicedCatalogProps) {
     const [online, setOnline] = useState<boolean>(true)
 
-    useEffect(() => {
-        setOnline(props.entity.state === "ACTIVE")
-    }, [props])
+    const pan = useRef(new Animated.ValueXY()).current;
+
+    const panResponder = useRef(
+        PanResponder.create({
+            onMoveShouldSetPanResponder: () => true,
+            onPanResponderMove: Animated.event([
+                null,
+                { dx: pan.x }
+            ], {useNativeDriver: false}),
+            onPanResponderRelease: (evt, gestureState) => {
+                if (gestureState.dx > 200) {
+                    Animated.spring(pan, {
+                        toValue: { x: Dimensions.get('window').width + 100, y: gestureState.dy }, useNativeDriver: false
+                    }).start(() => console.log('hi'))
+                } else if (gestureState.dx < -200) {
+                    Animated.spring(pan, {
+                        toValue: { x: -Dimensions.get('window').width - 100, y: gestureState.dy }, useNativeDriver: false
+                    }).start(() => console.log('bye'))
+                } else {
+                    Animated.spring(pan, {toValue: {x: 0, y: 5}, friction: 5, useNativeDriver: false}).start();
+                }
+            }
+        })
+    ).current;
 
     return (
         <Center>
+            <Animated.View
+                style={{
+                    transform: [{ translateX: pan.x }, { translateY: pan.y }]
+                }}
+                {...panResponder.panHandlers}
+            >
                 <Box
                     maxW="80"
                     rounded="lg"
@@ -44,7 +74,7 @@ export default function (props: QueuesCatalogProps) {
                     }}
                     style={styles.card}
                 >
-                    <Pressable onPress={props.onPress}>
+                    <Pressable onPress={props.onPress} delayLongPress={500} onLongPress={props.onLongPress}>
                         <HStack space='5' style={styles.group}>
                             <Avatar style={styles.icon} source={require("../../assets/images/generic-user-icon.jpg")}>
                                 <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
@@ -53,13 +83,15 @@ export default function (props: QueuesCatalogProps) {
                                 {props.entity.name}
                             </Text>
                             <Text style={styles.text}>
-                                {props.entity.lifespan}
+                                {props.entity.waited}
                             </Text>
                         </HStack>
+                        {props.selected && <View style={styles.overlay} />}
                     </Pressable>
                 </Box>
+            </Animated.View>
         </Center>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
