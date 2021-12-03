@@ -7,9 +7,9 @@ import {useTranslation} from "react-i18next";
 
 
 type SummonData = {
-    name?: string,
-    address?: string,
-    time?: string,
+    queueName?: string,
+    venueAddress?: string,
+    arriveByTime?: string,
 }
 
 
@@ -21,10 +21,33 @@ export default function() {
 
     useEffect(() => {fetchData()}, [])
 
+    const query = `
+        query queue($id: ID!){
+            queue(queue_id: $id){
+                name
+                address
+                grace_period
+            }
+        }
+    `
+    const variables = `{
+        "id": "costco_queue2"
+    }`
+
     const fetchData = async () => {
         try {
-            const response = await fetch('http://localhost:8080/organizer/ORGANIZERID/queues/QUEUEID/QUEUERID/summon')
-            setProps(await response.json())
+            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            await response.json().then(
+                data => {
+                    data = data.data.queue.name
+                    const now: any = new Date()
+                    const join: any = new Date(data.data.queue.grace_period)
+                    const arriveByTime = new Date(Math.abs(now + join))
+                    setProps({"queueName": data.data.queue.name,
+                                    "venueAddress": data.data.queue.address,
+                                    "arriveByTime": arriveByTime.getTime().toString()})
+                }
+            )
         } catch (error) {
             setError([...errors, error])
         }
@@ -38,10 +61,10 @@ export default function() {
                         {t('message')}
                     </Text>
                     <Text style={styles.subHeader}>
-                        {t('reach_by', {props: props.address})}
+                        {t('reach_by', {props: props.venueAddress})}
                     </Text>
                     <Text style={styles.header}>
-                        {props.time}
+                        {props.arriveByTime}
                     </Text>
                     <Text style={styles.subHeader}>
                         {t('reach_by_cont')}

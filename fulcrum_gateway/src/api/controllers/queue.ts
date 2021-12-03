@@ -48,8 +48,13 @@ export const typeDef = `
     id: ID!
     name: String,
     """The state of the queue: paused, active, inactive"""
+    address: String!,
     state: QueueState!,
     create_time: Date,
+    capacity: Int!,
+    grace_period: Int!,
+    max_party_size: Int!,
+    offline_time: Int!,
     average_wait_time: Float,
     num_enqueued: Int!,
     num_serviced: Int!,
@@ -92,8 +97,13 @@ export const resolvers = {
       let new_queue = {
         id: Date.now()+ "", //assign random id for now
         name: args.data.name,
+        address: "here, there, anywhere, everywhere",
         state: "INACTIVE",
         create_time: new Date(),
+        capacity: 10,
+        grace_period: 2,
+        max_party_size: 4,
+        offline_time: 5,
         enqueued: [],
         serviced: [],
         deferred: [],
