@@ -40,17 +40,17 @@ export default function () {
                     console.log(data)
                     data = data.data.queue.serviced
                     let serviced_stats: ServicedStats[] = []
-                    data.forEach((queue_data: any) => {
-                        const join_time: any = new Date(queue_data.join_time)
-                        const reneged_time: any = new Date(queue_data.reneged_time)
+                    data.forEach((serviced_data: any) => {
+                        const join_time: any = new Date(serviced_data.join_time)
+                        const reneged_time: any = new Date(serviced_data.reneged_time)
                         const serviced_time = new Date(Math.abs(reneged_time - join_time))
-                        queue_data.serviced_time = `${Math.floor(serviced_time.getMinutes())}`
+                        serviced_data.serviced_time = `${Math.floor(serviced_time.getMinutes())}`
                         const stats: SetStateAction<any> = Object.fromEntries([
                             "id",
                             "name",
                             "waited"]
-                            .filter(key => key in queue_data)
-                            .map(key => [key, queue_data[key]]))
+                            .filter(key => key in serviced_data)
+                            .map(key => [key, serviced_data[key]]))
                         serviced_stats.push(stats)
                     })
                     setProps(serviced_stats)

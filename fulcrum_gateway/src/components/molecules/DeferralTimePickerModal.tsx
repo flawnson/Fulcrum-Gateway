@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Button } from 'react-native-paper'
-import { TimePickerModal } from '../../containers/TimePickerModal'
+import { TimePickerModal } from '../atoms/TimePickerModal'
 
 type GenericTimePickerModalProps = {
     modalVisible: boolean

@@ -3,13 +3,9 @@ import * as React from 'react'
 import { View, StyleSheet, useWindowDimensions } from 'react-native'
 
 import {
-    inputTypes,
     PossibleClockTypes,
-    toHourInputFormat,
-    toHourOutputFormat,
 } from 'react-native-paper-dates/src/Time/timeUtils'
 
-import AnalogClock from 'react-native-paper-dates/src/Time/AnalogClock'
 import { circleSize } from 'react-native-paper-dates/src/Time/timeUtils'
 import TimeInputs from '../molecules/TimeInputs'
 import { Center } from "native-base";

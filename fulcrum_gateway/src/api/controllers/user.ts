@@ -34,12 +34,12 @@ export const typeDef = `
   
   input UserCreate {
     name: String
-    phone_number: number
+    phone_number: Int
   }
   
   input DeferPosition {
     name: String
-    phone_number: number
+    phone_number: Int
   }
 
   type User {
@@ -74,7 +74,7 @@ export const resolvers = {
           queue_id: "costco_queue1",
           online: true,
           summoned: false,
-          phone_number: "911",
+          phone_number: "6210001000",
           party_size: 1,
           last_online: nowDate,
           index: 1,

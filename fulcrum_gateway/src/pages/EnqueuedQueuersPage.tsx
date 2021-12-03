@@ -1,5 +1,5 @@
 import React, {SetStateAction, useEffect, useState} from "react";
-import CatalogEntityCardGroup from "../components/molecules/EnqueuedCatalogCardGroup";
+import EnqueuedCatalogCardGroup from "../components/molecules/EnqueuedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
 
 type EnqueuedStats = {
@@ -65,6 +65,6 @@ export default function () {
     useInterval(fetchQueuerData, 5000)
 
     return (
-        <CatalogEntityCardGroup entities={props}/>
+        <EnqueuedCatalogCardGroup entities={props}/>
     )
 }

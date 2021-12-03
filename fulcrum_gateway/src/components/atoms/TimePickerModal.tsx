@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import { View, Text } from 'native-base'
 import { Button, overlay, useTheme } from 'react-native-paper'
-import TimePicker from '../components/organisms/TimePicker'
+import TimePicker from '../organisms/TimePicker'
 import {
     clockTypes,
     PossibleClockTypes,
