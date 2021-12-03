@@ -40,9 +40,9 @@ const schema = makeExecutableSchema({
   resolvers: merge(resolvers, organizerResolvers, queueResolvers, userResolvers)
 });
 
-const graphql = graphqlHTTP({
+const graphql = graphqlHTTP(async (req, res, params) => ({
   schema,
   graphiql: true,
-});
+}));
 
 module.exports = graphql;
