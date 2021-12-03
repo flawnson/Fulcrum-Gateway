@@ -1,5 +1,5 @@
 import React, {SetStateAction, useEffect, useState} from "react";
-import CatalogEntityCardGroup from "../components/molecules/EnqueuedCatalogCardGroup";
+import EnqueuedCatalogCardGroup from "../components/molecules/EnqueuedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
 
 type EnqueuedStats = {
@@ -37,7 +37,6 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
-                    console.log(data)
                     data = data.data.queue.enqueued
                     let queuer_stats: EnqueuedStats[] = []
                     data.forEach((queue_data: any) => {
@@ -66,6 +65,6 @@ export default function () {
     useInterval(fetchQueuerData, 5000)
 
     return (
-        <CatalogEntityCardGroup entities={props}/>
+        <EnqueuedCatalogCardGroup entities={props}/>
     )
 }

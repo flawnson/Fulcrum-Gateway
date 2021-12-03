@@ -6,7 +6,6 @@ import {Button, Center,
         Select} from 'native-base'
 import {HomeScreenProps} from "../../../types";
 import {useTranslation} from "react-i18next";
-import {useNavigation} from "@react-navigation/native";
 
 type DefaultData = {
     submitted: boolean,
@@ -21,8 +20,7 @@ type DefaultErrors = {
     nameInvalid: boolean,
 }
 
-export default function () {
-    const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
+export default function ({navigation}: HomeScreenProps) {
     const defaultData = {submitted: false, name: "Sample Queue name", maxSize: 10, gracePeriod: 0, partySize: 1}
     const defaultErrors = {nameInvalid: false}
     const [formData, setData] = useState<DefaultData>(defaultData);

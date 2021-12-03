@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Modal, Center } from 'native-base';
-import GenericTimePickerModal from "../components/atoms/GenericTimePickerModal";
+import DeferralTimePickerModal from "../components/molecules/DeferralTimePickerModal";
 
 type DeferPositionModalProps = {
     modalVisible: boolean,
@@ -9,7 +9,7 @@ type DeferPositionModalProps = {
 
 export default function (props: DeferPositionModalProps) {
     return (
-        <GenericTimePickerModal modalVisible={props.modalVisible} setModalVisible={props.setModalVisible}/>
+        <DeferralTimePickerModal modalVisible={props.modalVisible} setModalVisible={props.setModalVisible}/>
     )
 
 }

@@ -1,6 +1,6 @@
-let nowDate = new Date()
-let pastDate = new Date(nowDate.setDate(nowDate.getDate() - 1))
-let futureDate = new Date(nowDate.setDate(nowDate.getDate() + 1))
+export let nowDate = new Date()
+export let pastDate = new Date(nowDate.setDate(nowDate.getDate() - 1))
+export let futureDate = new Date(nowDate.setDate(nowDate.getDate() + 1))
 
 export let user_table = [
   {
@@ -32,6 +32,21 @@ export let user_table = [
     average_wait: 13,
     join_time: pastDate,
     reneged_time: futureDate
+  },
+  {
+    id: "user2",
+    name: "Joe Mama",
+    queue_id: "costco_queue2",
+    online: true,
+    summoned: false,
+    phone_number: "911",
+    party_size: 2,
+    last_online: nowDate,
+    index: 3,
+    estimated_wait: 420,
+    average_wait: 69,
+    join_time: pastDate,
+    reneged_time: futureDate
   }
 ];
 
@@ -59,7 +74,9 @@ export let queue_table = [
       "user1"
     ],
     deferred: [],
-    abandoned: [],
+    abandoned: [
+      "user2"
+    ],
     noshows: []
   }
 

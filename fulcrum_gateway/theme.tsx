@@ -1,6 +1,6 @@
 import React from 'react'
-import {extendTheme, useColorMode} from "native-base";
-import {DarkTheme, DefaultTheme} from "@react-navigation/native";
+import { extendTheme, useColorMode } from "native-base";
+import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 import darkTheme from "./src/utilities/darkTheme";
 import lightTheme from "./src/utilities/lightTheme";
 
