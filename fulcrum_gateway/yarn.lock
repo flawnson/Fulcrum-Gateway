@@ -2147,7 +2147,7 @@
     "node-gyp" "^7.1.0"
     "read-package-json-fast" "^2.0.1"
 
-"@prisma/client@~3.6.0":
+"@prisma/client@^3.6.0", "@prisma/client@~3.6.0":
   "integrity" "sha512-ycSGY9EZGROtje0iCNsgC5Zqi/ttX2sO7BNMYaLsUMiTlf3F69ZPH+08pRo0hrDfkZzyimXYqeXJlaoYDH1w7A=="
   "resolved" "https://registry.npmjs.org/@prisma/client/-/client-3.6.0.tgz"
   "version" "3.6.0"
