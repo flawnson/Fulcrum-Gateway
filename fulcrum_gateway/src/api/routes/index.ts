@@ -1,19 +1,25 @@
 // @ts-nocheck to get err as uninferable type
 // @ts-ignore
-const mainController = require('../controllers/mainController.ts');
+import "reflect-metadata";
+import mainController from '../controllers/mainController.ts';
+import express from "express";
+import cors from "cors";
 
-const app = require('express')()
-const port = 8080
-const cors = require('cors');
+async function bootstrap(){
+  const app = express();
+  const port = 8080;
 
-app.use(cors())
+  app.use(cors())
 
-app.get('/', (req, res) => {
-    res.redirect('/api')
-})
-app.use('/api', mainController)
+  app.get('/', (req, res) => {
+      res.redirect('/api')
+  })
+  app.use('/api', mainController)
 
-app.listen(port, function(err){
-    if (err) console.log(err);
-    console.log("Server listening on PORT", port);
-});
+  app.listen(port, function(err){
+      if (err) console.log(err);
+      console.log("Server listening on PORT", port);
+  });
+}
+
+bootstrap();
