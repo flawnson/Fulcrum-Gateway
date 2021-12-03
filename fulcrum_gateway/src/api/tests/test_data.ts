@@ -54,8 +54,13 @@ export let queue_table = [
   {
     id: "costco_queue1",
     name: "Queue1",
+    address: "somewhere, someplace",
     state: "ACTIVE",
     create_time: nowDate,
+    capacity: 10,
+    grace_period: 2,
+    max_party_size: 4,
+    offline_time: 5,
     enqueued: [
       "user0"
     ],
@@ -67,8 +72,13 @@ export let queue_table = [
   {
     id: "costco_queue2",
     name: "Queue2",
+    address: "somewhere, someplace",
     state: "PAUSED",
     create_time: nowDate,
+    capacity: 10,
+    grace_period: 2,
+    max_party_size: 4,
+    offline_time: 5,
     enqueued: [],
     serviced: [
       "user1"
