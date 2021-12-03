@@ -5,7 +5,65 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator typegraphql {
+  provider = "typegraphql-prisma"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Organizer {
+  id Int @id @default(autoincrement())
+  name String
+  password String?
+  queues Queue[]
+}
+
+enum QueueState {
+  ACTIVE
+  PAUSED
+  INACTIVE
+}
+
+model Queue {
+  id Int @id @default(autoincrement())
+  organizer_id Int
+  organizer Organizer @relation(fields: [organizer_id], references: [id])
+  join_code String
+  name String
+  address String
+  state QueueState
+  capacity Int
+  max_party_size Int @default(1)
+  grace_period Int?
+  offline_time Int?
+  users User[] @relation("users_in_queue")
+  create_time DateTime
+}
+
+enum UserStatus {
+  ENQUEUED
+  SERVICED
+  DEFERRED
+  ABANDONED
+  NOSHOW
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String
+  queue_id Int
+  queue Queue @relation("users_in_queue", fields: [queue_id], references: [id])
+  summoned Boolean @default(false)
+  password String?
+  phone_number String
+  party_size Int @default(1)
+  last_online DateTime
+  index Int
+  estimated_wait Int
+  join_time DateTime
+  reneged_time DateTime
+  state UserStatus
 }
