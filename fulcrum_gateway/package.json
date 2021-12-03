@@ -48,6 +48,7 @@
     "styled-components": "^5.3.1",
     "styled-system": "^5.1.5",
     "type-graphql": "^1.1.1",
+    "typegraphql-prisma": "^0.18.1",
     "uWebSockets.js": "uNetworking/uWebSockets.js#v19.3.0"
   },
   "devDependencies": {
