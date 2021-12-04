@@ -109,7 +109,7 @@ A component is defined as something that should not be used independently (i.e i
 Components are categorized in accordance with atomic design principles.
 ### ./containers/
 All screen-based AND page-based items can be placed inside containers, which act as wrappers that provide additional functionality.
-Screen overlays, headers, modals, pop-ups, etc. are also stored here.
+Screen overlays, headers, modals, menus, alerts, pop-ups, etc. are also stored here.
 ### ./pages/
 Pages are combinations of components that hold state.
 ### ./screens/

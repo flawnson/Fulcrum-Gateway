@@ -17,7 +17,7 @@ import { registerRootComponent } from 'expo';
 import ActiveQueuesPage from "./src/pages/ActiveQueuesPage";
 import EnqueuedPage from "./src/pages/EnqueuedPage";
 import OrganizerDashboardTabs from "./src/pages/OrganizerDashboardTabs"
-import QRCodeScanner from "./src/components/atoms/QRCodeScanner"
+import QRCodeScanner from "./src/components/organisms/QRCodeScanner"
 import './i18n';
 import { PreferencesContext } from "./src/utilities/useTheme";
 import OrganizerDashboard from "./src/pages/OrganizerDashboard";
