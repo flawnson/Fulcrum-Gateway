@@ -1,6 +1,8 @@
 import { graphqlHTTP } from 'express-graphql';
 import { makeExecutableSchema } from '@graphql-tools/schema';
+import { printSchema } from 'graphql';
 import { merge } from 'lodash';
+import fs from 'fs';
 
 // import organizer schema and resolvers
 import {
@@ -38,6 +40,15 @@ const resolvers = {};
 const schema = makeExecutableSchema({
   typeDefs: [Base, Organizer, Queue, User],
   resolvers: merge(resolvers, organizerResolvers, queueResolvers, userResolvers)
+});
+
+const sdlString = printSchema(schema);
+fs.writeFile(__dirname + '/../schema.graphql', sdlString, error => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log("schema.graphql exported successfully");
+  }
 });
 
 const graphql = graphqlHTTP(async (req, res, params) => ({

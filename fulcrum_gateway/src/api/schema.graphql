@@ -1,0 +1,118 @@
+type Query {
+  _empty: String
+
+  """Get an organizer"""
+  organizer(organizer_id: ID!): Organizer
+
+  """Get a single queue"""
+  queue(queue_id: ID!): Queue
+
+  """Get a single user"""
+  user(user_id: ID!): User
+}
+
+type Mutation {
+  _empty: String
+
+  """Create an organizer"""
+  create_organizer(data: OrganizerCreate!): Organizer
+
+  """Create a queue"""
+  create_queue(data: QueueCreate): Queue
+
+  """End a queue"""
+  end_queue(id: ID!): ID
+
+  """Pause a queue"""
+  pause_queue(id: ID!): ID
+
+  """Edit a queue's properties"""
+  edit_queue(id: ID!, edits: QueueEdit): ID
+
+  """Join a queue"""
+  create_user(data: UserCreate!): User
+
+  """Defer your position"""
+  defer_position(data: DeferPosition!): User
+
+  """Summon a user"""
+  summon_user(user_id: ID!): String
+}
+
+input OrganizerCreate {
+  name: String
+}
+
+type Organizer {
+  id: ID!
+  name: String
+  queues: [Queue]
+}
+
+enum QueueState {
+  ACTIVE
+  PAUSED
+  INACTIVE
+}
+
+"""May be able to merge QueueEdit and QueueCreate"""
+input QueueEdit {
+  name: String
+}
+
+input QueueCreate {
+  name: String
+}
+
+type Queue {
+  id: ID!
+  name: String
+
+  """The state of the queue: paused, active, inactive"""
+  address: String!
+  state: QueueState!
+  create_time: Date
+  capacity: Int!
+  grace_period: Int!
+  max_party_size: Int!
+  offline_time: Int!
+  average_wait_time: Float
+  num_enqueued: Int!
+  num_serviced: Int!
+  num_deferred: Int!
+  num_abandoned: Int!
+  num_noshows: Int!
+  enqueued: [User]!
+  serviced: [User]!
+  deferred: [User]!
+  abandoned: [User]!
+  noshows: [User]!
+}
+
+scalar Date
+
+input UserCreate {
+  name: String
+  phone_number: Int
+}
+
+input DeferPosition {
+  name: String
+  phone_number: Int
+}
+
+type User {
+  id: ID!
+  name: String
+  queue_id: ID
+  online: Boolean
+  summoned: Boolean
+  phone_number: String
+  party_size: Int
+  last_online: Date
+  index: Int
+  estimated_wait: Int
+  average_wait: Int
+  join_time: Date
+  reneged_time: Date
+}
