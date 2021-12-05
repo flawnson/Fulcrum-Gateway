@@ -18,7 +18,7 @@ export default function () {
         query queue($id: ID!){
             queue(queue_id: $id){
                 serviced {
-                    id
+                    userId: id
                     name
                     index
                     online
@@ -37,7 +37,6 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
-                    console.log(data)
                     data = data.data.queue.serviced
                     let serviced_stats: ServicedStats[] = []
                     data.forEach((serviced_data: any) => {
@@ -46,7 +45,7 @@ export default function () {
                         const serviced_time = new Date(Math.abs(reneged_time - join_time))
                         serviced_data.serviced_time = `${Math.floor(serviced_time.getMinutes())}`
                         const stats: SetStateAction<any> = Object.fromEntries([
-                            "id",
+                            "userId",
                             "name",
                             "waited"]
                             .filter(key => key in serviced_data)

@@ -7,7 +7,7 @@ import { HomeScreenProps } from "../../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
 
 type QueueStats = {
-    userId: number,
+    queueId: number,  // Actually a string...
     name: string,
     lifespan: number,
     state: string,
@@ -25,6 +25,7 @@ export default function () {
         query get_organizer($id: ID!) {
             organizer(organizer_id: $id) {
                 queues {
+                    queueId: id
                     name
                     state
                     create_time
@@ -49,6 +50,7 @@ export default function () {
                         const lifespan = new Date(Math.abs(now - join))
                         queue_data.lifespan = `${Math.floor(lifespan.getMinutes())}`
                         const stats: SetStateAction<any> = Object.fromEntries([
+                            "queueId",
                             "name",
                             "state",
                             "lifespan"]

@@ -4,18 +4,18 @@ import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import MultiSelectButtons from "../atoms/UserMultiSelectButtons";
+import MultiSelectButtons from "../atoms/QueueMultiSelectButtons";
 
 
-type Entity = {
-    userId: number,
+type QueueStats = {
+    queueId: number,
     name: string,
     lifespan: number,
     state: string,
 }
 
 type ActiveQueuesStatsProps = {
-    'entities': Array<Entity>
+    'entities': Array<QueueStats>
 }
 
 export default function (props: ActiveQueuesStatsProps) {
@@ -23,52 +23,55 @@ export default function (props: ActiveQueuesStatsProps) {
 
     const [selectedItems, setSelectedItems] = useState<Array<number>>([])
 
-    // To remove header when organizer deselects all users
+    // To remove header when organizer deselects all queues
     useEffect(() => {
         if (selectedItems.length === 0) {
             navigation.setOptions({headerRight: undefined})
         }
     }, [selectedItems])
 
-    const handleOnPress = (item: Entity) => {
+    const handleOnPress = (item: QueueStats) => {
         if (selectedItems.length) {
             return selectItems(item)
         }
 
-        // here you can add you code what do you want if user just do single tap
+        // here you can add you code what do you want if quue just do single tap
         navigation.navigate("OrganizerDashboardTabs")
     }
 
-    const getSelected = (item: Entity) => selectedItems.includes(item.userId)
+    const getSelected = (item: QueueStats) => selectedItems.includes(item.queueId)
 
     const deSelectItems = () => {
         setSelectedItems([])
         navigation.setOptions({headerRight: undefined})
     }
 
-    const selectItems = (item: Entity) => {
+    const selectItems = (item: QueueStats) => {
         navigation.setOptions({headerRight: (props) => <MultiSelectButtons {...props} /> })
+        console.log(item)
 
-        if (selectedItems.includes(item.userId)) {
+        if (selectedItems.includes(item.queueId)) {
             const newListItems = selectedItems.filter(
-                (listItem: number) => listItem !== item.userId,
+                (listItem: number) => listItem !== item.queueId,
             )
             return setSelectedItems([...newListItems])
         }
-        setSelectedItems([...selectedItems, item.userId])
+        setSelectedItems([...selectedItems, item.queueId])
     }
 
-    const OrganizerStatCards = Object.entries(props.entities).map(([key, userStat]) =>
+    const OrganizerStatCards = Object.entries(props.entities).map(([key, queueStat]) =>
         <QueuesCatalogCard key={key}
-                           onPress={() => handleOnPress(userStat)}
-                           onLongPress={() => selectItems(userStat)}
-                           selected={getSelected(userStat)}
-                           entity={userStat}/>)
+                           onPress={() => handleOnPress(queueStat)}
+                           onLongPress={() => selectItems(queueStat)}
+                           selected={getSelected(queueStat)}
+                           entity={queueStat}/>)
 
     return (
-        <VStack style={styles.stats}>
-            {OrganizerStatCards}
-        </VStack>
+        <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>
+            <VStack style={styles.stats}>
+                {OrganizerStatCards}
+            </VStack>
+        </Pressable>
     )
 }
 

@@ -47,6 +47,7 @@ export default function (props: ServicedStatsProps) {
 
     const selectItems = (item: ServicedStats) => {
         navigation.setOptions({headerRight: (props) => <MultiSelectButtons {...props} /> })
+        console.log(selectedItems)
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(

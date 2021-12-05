@@ -1,18 +1,19 @@
 import React, {useState, useEffect, useRef} from 'react';
+import { StyleSheet, Pressable,
+        GestureResponderEvent, Animated,
+        PanResponder, Dimensions } from "react-native";
 import {
-    StyleSheet, Pressable,
-    GestureResponderEvent, Animated, PanResponder, Dimensions
-} from "react-native";
-import { HStack, Text,
-        Box, Center,
-        Avatar } from 'native-base';
+    HStack, Text,
+    Box, Center,
+    Avatar, View
+} from 'native-base';
 
 type QueuesCatalogProps = {
     'onPress': (event: GestureResponderEvent) => void,
     'onLongPress': (event: GestureResponderEvent) => void,
     'selected': boolean,
     'entity': {
-        userId: number,
+        queueId: number,
         name: string,
         lifespan: number,
         state: string,
@@ -79,7 +80,7 @@ export default function (props: QueuesCatalogProps) {
                     }}
                     style={styles.card}
                 >
-                    <Pressable onPress={props.onPress}>
+                    <Pressable onPress={props.onPress} delayLongPress={500} onLongPress={props.onLongPress}>
                         <HStack space='5' style={styles.group}>
                             <Avatar style={styles.icon} source={require("../../assets/images/generic-user-icon.jpg")}>
                                 <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
@@ -91,6 +92,7 @@ export default function (props: QueuesCatalogProps) {
                                 {props.entity.lifespan}
                             </Text>
                         </HStack>
+                        {props.selected && <View style={styles.overlay} />}
                     </Pressable>
                 </Box>
             </Animated.View>

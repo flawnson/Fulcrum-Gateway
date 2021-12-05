@@ -17,7 +17,7 @@ export default function () {
         query queue($id: ID!){
             queue(queue_id: $id){
                 abandoned {
-                    id
+                    userId: id
                     name
                     join_time
                 }
@@ -33,7 +33,6 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
-                    console.log(data)
                     data = data.data.queue.abandoned
                     let abandoned_stats: AbandonedStats[] = []
                     data.forEach((abandoned_data: any) => {
@@ -42,6 +41,7 @@ export default function () {
                         const lifespan = new Date(Math.abs(now - join))
                         abandoned_data.lifespan = `${Math.floor(lifespan.getMinutes())}`
                         const stats: SetStateAction<any> = Object.fromEntries([
+                            "id",
                             "name",
                             "state",
                             "lifespan"]

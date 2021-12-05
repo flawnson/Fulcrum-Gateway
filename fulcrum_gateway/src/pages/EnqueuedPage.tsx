@@ -19,7 +19,7 @@ export default function () {
         query queue($id: ID!){
             queue(queue_id: $id){
                 enqueued {
-                    id
+                    userId: id
                     name
                     index
                     online
@@ -45,7 +45,7 @@ export default function () {
                         const waited = new Date(Math.abs(now - join))
                         queue_data.waited = `${Math.floor(waited.getMinutes())}`
                         const stats: SetStateAction<any> = Object.fromEntries([
-                            "id",
+                            "userId",
                             "name",
                             "index",
                             "online",
