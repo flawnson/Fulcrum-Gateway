@@ -3,7 +3,7 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { BoolFilter } from "../inputs/BoolFilter";
-import { DateTimeFilter } from "../inputs/DateTimeFilter";
+import { DateTimeNullableFilter } from "../inputs/DateTimeNullableFilter";
 import { EnumUserStatusFilter } from "../inputs/EnumUserStatusFilter";
 import { IntFilter } from "../inputs/IntFilter";
 import { QueueRelationFilter } from "../inputs/QueueRelationFilter";
@@ -69,10 +69,10 @@ export class UserWhereInput {
   })
   party_size?: IntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
+  @TypeGraphQL.Field(_type => DateTimeNullableFilter, {
     nullable: true
   })
-  last_online?: DateTimeFilter | undefined;
+  last_online?: DateTimeNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => IntFilter, {
     nullable: true
@@ -84,15 +84,15 @@ export class UserWhereInput {
   })
   estimated_wait?: IntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
+  @TypeGraphQL.Field(_type => DateTimeNullableFilter, {
     nullable: true
   })
-  join_time?: DateTimeFilter | undefined;
+  join_time?: DateTimeNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
+  @TypeGraphQL.Field(_type => DateTimeNullableFilter, {
     nullable: true
   })
-  reneged_time?: DateTimeFilter | undefined;
+  reneged_time?: DateTimeNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => EnumUserStatusFilter, {
     nullable: true

@@ -61,10 +61,10 @@ model User {
   password String?
   phone_number String
   party_size Int @default(1)
-  last_online DateTime
+  last_online DateTime?
   index Int
   estimated_wait Int
-  join_time DateTime
-  reneged_time DateTime
+  join_time DateTime?
+  reneged_time DateTime?
   state UserStatus
 }

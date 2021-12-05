@@ -47,9 +47,9 @@ export class User {
   party_size!: number;
 
   @TypeGraphQL.Field(_type => Date, {
-    nullable: false
+    nullable: true
   })
-  last_online!: Date;
+  last_online?: Date | null;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
@@ -62,14 +62,14 @@ export class User {
   estimated_wait!: number;
 
   @TypeGraphQL.Field(_type => Date, {
-    nullable: false
+    nullable: true
   })
-  join_time!: Date;
+  join_time?: Date | null;
 
   @TypeGraphQL.Field(_type => Date, {
-    nullable: false
+    nullable: true
   })
-  reneged_time!: Date;
+  reneged_time?: Date | null;
 
   @TypeGraphQL.Field(_type => UserStatus, {
     nullable: false

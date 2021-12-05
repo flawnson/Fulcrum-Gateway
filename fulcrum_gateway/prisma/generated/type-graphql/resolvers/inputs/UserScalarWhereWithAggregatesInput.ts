@@ -3,7 +3,7 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { BoolWithAggregatesFilter } from "../inputs/BoolWithAggregatesFilter";
-import { DateTimeWithAggregatesFilter } from "../inputs/DateTimeWithAggregatesFilter";
+import { DateTimeNullableWithAggregatesFilter } from "../inputs/DateTimeNullableWithAggregatesFilter";
 import { EnumUserStatusWithAggregatesFilter } from "../inputs/EnumUserStatusWithAggregatesFilter";
 import { IntWithAggregatesFilter } from "../inputs/IntWithAggregatesFilter";
 import { StringNullableWithAggregatesFilter } from "../inputs/StringNullableWithAggregatesFilter";
@@ -63,10 +63,10 @@ export class UserScalarWhereWithAggregatesInput {
   })
   party_size?: IntWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeWithAggregatesFilter, {
+  @TypeGraphQL.Field(_type => DateTimeNullableWithAggregatesFilter, {
     nullable: true
   })
-  last_online?: DateTimeWithAggregatesFilter | undefined;
+  last_online?: DateTimeNullableWithAggregatesFilter | undefined;
 
   @TypeGraphQL.Field(_type => IntWithAggregatesFilter, {
     nullable: true
@@ -78,15 +78,15 @@ export class UserScalarWhereWithAggregatesInput {
   })
   estimated_wait?: IntWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeWithAggregatesFilter, {
+  @TypeGraphQL.Field(_type => DateTimeNullableWithAggregatesFilter, {
     nullable: true
   })
-  join_time?: DateTimeWithAggregatesFilter | undefined;
+  join_time?: DateTimeNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeWithAggregatesFilter, {
+  @TypeGraphQL.Field(_type => DateTimeNullableWithAggregatesFilter, {
     nullable: true
   })
-  reneged_time?: DateTimeWithAggregatesFilter | undefined;
+  reneged_time?: DateTimeNullableWithAggregatesFilter | undefined;
 
   @TypeGraphQL.Field(_type => EnumUserStatusWithAggregatesFilter, {
     nullable: true

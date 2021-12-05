@@ -3,9 +3,9 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperationsInput";
-import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { EnumUserStatusFieldUpdateOperationsInput } from "../inputs/EnumUserStatusFieldUpdateOperationsInput";
 import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
+import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
@@ -38,10 +38,10 @@ export class UserUpdateWithoutQueueInput {
   })
   party_size?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => NullableDateTimeFieldUpdateOperationsInput, {
     nullable: true
   })
-  last_online?: DateTimeFieldUpdateOperationsInput | undefined;
+  last_online?: NullableDateTimeFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
     nullable: true
@@ -53,15 +53,15 @@ export class UserUpdateWithoutQueueInput {
   })
   estimated_wait?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => NullableDateTimeFieldUpdateOperationsInput, {
     nullable: true
   })
-  join_time?: DateTimeFieldUpdateOperationsInput | undefined;
+  join_time?: NullableDateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => NullableDateTimeFieldUpdateOperationsInput, {
     nullable: true
   })
-  reneged_time?: DateTimeFieldUpdateOperationsInput | undefined;
+  reneged_time?: NullableDateTimeFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => EnumUserStatusFieldUpdateOperationsInput, {
     nullable: true

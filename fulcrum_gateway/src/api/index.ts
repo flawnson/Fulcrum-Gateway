@@ -5,7 +5,6 @@ import express from "express";
 import cors from "cors";
 
 import { graphqlHTTP } from 'express-graphql';
-import { makeExecutableSchema } from '@graphql-tools/schema';
 import { buildSchema } from 'type-graphql';
 import { resolvers } from "../../prisma/generated/type-graphql";
 import { PrismaClient } from "@prisma/client";
