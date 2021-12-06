@@ -3,11 +3,12 @@ import EnqueuedCatalogCardGroup from "../components/molecules/EnqueuedCatalogCar
 import useInterval from "../utilities/useInterval";
 
 type EnqueuedStats = {
-    userId: number,
+    userId: string,
     name: string,
     online: boolean,
     index: number,
     waited: number,
+    state: string
 }
 
 export default function () {
@@ -24,6 +25,7 @@ export default function () {
                     index
                     online
                     join_time
+                    state
                 }
             }
         }
@@ -49,7 +51,8 @@ export default function () {
                             "name",
                             "index",
                             "online",
-                            "waited"]
+                            "waited",
+                            "state"]
                             .filter(key => key in queue_data)
                             .map(key => [key, queue_data[key]]))
                         user_stats.push(stats)

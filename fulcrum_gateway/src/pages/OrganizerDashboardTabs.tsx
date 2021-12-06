@@ -15,7 +15,7 @@ export default function OrganizerDashboardTabs() {
 
     // Need to hide header for main Navigator so we can show header in Tab Navigator
     useLayoutEffect(() => {
-        navigation.setOptions({headerShown: false})
+        navigation.setOptions({headerShown: true})
     });
 
     return (
