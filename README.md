@@ -75,6 +75,28 @@ and run node:
 or if you want to use nodemon:
 `nodemon index.ts`
 
+## Database setup
+You can install postgres any way you want. Using brew or their GUI interface will work.
+But you can also use Docker:
+
+After you've installed Docker, run:
+`docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=some_password --name some_db_name postgres`
+
+This will also forward/expose the port from the Docker VM to your host machine.
+You'll have to go into the VM and create a new database with either:
+`createdb -U username postgres`
+if you're working in bash
+
+`CREATE DATABASE some_db_name TEMPLATE template0`
+if you're inside psql
+
+If you have sample data .sql file, you can copy it from the host machine to the VM with:
+`docker cp path_to_sql_data_file container_id:/path_to_sql_data_file`
+
+Then run:
+`psql some_db_name < input_sql_file`
+to inject the sample data.
+
 ## Git structure
 I use 4 branches to work:
 1. `main` is a working version of the project ready for demos.
