@@ -4,16 +4,16 @@ import {View, SimpleGrid} from "native-base";
 import {StyleSheet} from "react-native";
 
 
-type queuerStatsProps = {
+type userStatsProps = {
     index: number,
     eta: number,
     waited: number,
     avg: number,
 }
 
-export default function (props: queuerStatsProps) {
-    const organizerStatCards = Object.entries(props).map(([key, queuerStat]) =>
-        <DashboardStatsCard key={key} stat={queuerStat}/>)
+export default function (props: userStatsProps) {
+    const organizerStatCards = Object.entries(props).map(([key, userStat]) =>
+        <DashboardStatsCard key={key} stat={userStat}/>)
 
     return (
         <SimpleGrid columns={2} spacingY={8} spacingX={4} style={styles.stats}>

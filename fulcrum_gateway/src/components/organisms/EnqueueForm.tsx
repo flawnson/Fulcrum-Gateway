@@ -32,7 +32,7 @@ export default function ({navigation}: HomeScreenProps) {
 
     const onSuccess = () => {
         setData({...formData, submitted: true})
-        navigation.navigate("QueuerDashboard")
+        navigation.navigate("UserDashboard")
         setData({...formData, submitted: false})  // In case user goes back to home page (probably wrong :P)
     }
 
@@ -43,7 +43,7 @@ export default function ({navigation}: HomeScreenProps) {
 
     const onSubmit = () => {
         validate() ?  onSuccess() : onFailure();
-        navigation.navigate("QueuerDashboard")
+        navigation.navigate("UserDashboard")
     };
 
     return (

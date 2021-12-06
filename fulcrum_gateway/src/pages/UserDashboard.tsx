@@ -3,8 +3,8 @@ import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
 import {StyleSheet} from 'react-native'
 import {Center, Heading, Image, Text} from "native-base";
-import QueuerDashboardGroup from "../components/organisms/QueuerDashboardStats";
-import QueuerDashboardMenu from "../containers/QueuerDashboardMenu"
+import UserDashboardGroup from "../components/organisms/UserDashboardStats";
+import UserDashboardMenu from "../containers/UserDashboardMenu"
 import useInterval from "../utilities/useInterval";
 
 
@@ -77,9 +77,9 @@ export default function () {
             />
             <Text style={styles.textFormat}>Almost there!</Text>
             <Center>
-                <QueuerDashboardGroup queuerDashboardProps={props.stats}/>
+                <UserDashboardGroup userDashboardProps={props.stats}/>
             </Center>
-            <QueuerDashboardMenu />
+            <UserDashboardMenu />
         </Center>
     )
 }

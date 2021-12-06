@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native'
 import { Center, Text } from 'native-base'
-import EnqueueForm from '../atoms/EnqueueForm'
+import EnqueueForm from '../organisms/EnqueueForm'
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps} from "../../../types";
 import {useTranslation} from "react-i18next";

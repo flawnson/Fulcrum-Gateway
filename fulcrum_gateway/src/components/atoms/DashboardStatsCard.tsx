@@ -2,11 +2,11 @@ import React from 'react';
 import { VStack, Box, Divider, Text } from 'native-base';
 import {StyleSheet} from "react-native";
 
-type queuerStat = {
+type userStat = {
     stat: number,
 }
 
-export default function (props: queuerStat) {
+export default function (props: userStat) {
     return (
         <Box
             maxW="80"
