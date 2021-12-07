@@ -21,8 +21,6 @@ export class Queue {
   })
   organizer_id!: number;
 
-  organizer?: Organizer;
-
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
@@ -63,12 +61,14 @@ export class Queue {
   })
   offline_time?: number | null;
 
-  users?: User[];
-
   @TypeGraphQL.Field(_type => Date, {
     nullable: false
   })
   create_time!: Date;
+
+  organizer?: Organizer;
+
+  users?: User[];
 
   @TypeGraphQL.Field(_type => QueueCount, {
     nullable: false

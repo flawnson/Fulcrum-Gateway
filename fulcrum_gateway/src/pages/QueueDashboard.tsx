@@ -3,8 +3,8 @@ import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
 import {StyleSheet} from 'react-native'
 import {Center, Heading, Text, Image} from "native-base";
-import OrganizerDashboardGroup from "../components/organisms/OrganizerDashboardStats";
-import OrganizerDashboardMenu from "../containers/OrganizerDashboardMenu"
+import QueueDashboardGroup from "../components/organisms/QueueDashboardStats";
+import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval";
 
 
@@ -61,8 +61,8 @@ export default function () {
     return (
         <Center style={styles.animationFormat}>
             <Heading style={styles.headingFormat}>Someone's Queue</Heading>
-            <OrganizerDashboardGroup OrganizerDashboardProps={props}/>
-            <OrganizerDashboardMenu />
+            <QueueDashboardGroup QueueDashboardProps={props}/>
+            <QueueDashboardMenu />
         </Center>
     )
 }

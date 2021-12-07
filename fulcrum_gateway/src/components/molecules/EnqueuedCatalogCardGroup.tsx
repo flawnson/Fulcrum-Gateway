@@ -5,8 +5,6 @@ import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
 import UserMultiSelectButtons from "../atoms/UserMultiSelectButtons"
-import { find } from "lodash";
-import {user_table} from "../../api/tests/test_data";
 
 
 type Entity = {

@@ -22,8 +22,8 @@ export default function () {
     useEffect(() => {fetchQueueData()}, [])
 
     const query = `
-        query get_organizer($id: ID!) {
-            organizer(organizer_id: $id) {
+        query get_queue_data($data: OrganizerWhereUniqueInput!) {
+            organizer(where: $data) {
                 queues {
                     queueId: id
                     name
@@ -34,8 +34,10 @@ export default function () {
         }
     `
     const variables = `{
-        "id": "costco"
-    }`
+    "data": {
+                "id": 0
+            }
+        }`
 
     async function fetchQueueData () {
         try {

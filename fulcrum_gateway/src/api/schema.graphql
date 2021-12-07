@@ -68,6 +68,31 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
+input DateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
+input DateTimeNullableWithAggregatesFilter {
+  _count: NestedIntNullableFilter
+  _max: NestedDateTimeNullableFilter
+  _min: NestedDateTimeNullableFilter
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableWithAggregatesFilter
+  notIn: [DateTime!]
+}
+
 input DateTimeWithAggregatesFilter {
   _count: NestedIntFilter
   _max: NestedDateTimeFilter
@@ -231,6 +256,31 @@ input NestedDateTimeFilter {
   lt: DateTime
   lte: DateTime
   not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
+input NestedDateTimeNullableWithAggregatesFilter {
+  _count: NestedIntNullableFilter
+  _max: NestedDateTimeNullableFilter
+  _min: NestedDateTimeNullableFilter
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableWithAggregatesFilter
   notIn: [DateTime!]
 }
 
@@ -418,6 +468,10 @@ input NestedStringWithAggregatesFilter {
   not: NestedStringWithAggregatesFilter
   notIn: [String!]
   startsWith: String
+}
+
+input NullableDateTimeFieldUpdateOperationsInput {
+  set: DateTime
 }
 
 input NullableIntFieldUpdateOperationsInput {
@@ -1197,15 +1251,15 @@ type User {
   estimated_wait: Int!
   id: Int!
   index: Int!
-  join_time: DateTime!
-  last_online: DateTime!
+  join_time: DateTime
+  last_online: DateTime
   name: String!
   party_size: Int!
   password: String
   phone_number: String!
   queue: Queue!
   queue_id: Int!
-  reneged_time: DateTime!
+  reneged_time: DateTime
   state: UserStatus!
   summoned: Boolean!
 }
@@ -1262,14 +1316,14 @@ input UserCountOrderByAggregateInput {
 input UserCreateInput {
   estimated_wait: Int!
   index: Int!
-  join_time: DateTime!
-  last_online: DateTime!
+  join_time: DateTime
+  last_online: DateTime
   name: String!
   party_size: Int
   password: String
   phone_number: String!
   queue: QueueCreateNestedOneWithoutUsersInput!
-  reneged_time: DateTime!
+  reneged_time: DateTime
   state: UserStatus!
   summoned: Boolean
 }
@@ -1278,14 +1332,14 @@ input UserCreateManyInput {
   estimated_wait: Int!
   id: Int
   index: Int!
-  join_time: DateTime!
-  last_online: DateTime!
+  join_time: DateTime
+  last_online: DateTime
   name: String!
   party_size: Int
   password: String
   phone_number: String!
   queue_id: Int!
-  reneged_time: DateTime!
+  reneged_time: DateTime
   state: UserStatus!
   summoned: Boolean
 }
@@ -1294,13 +1348,13 @@ input UserCreateManyQueueInput {
   estimated_wait: Int!
   id: Int
   index: Int!
-  join_time: DateTime!
-  last_online: DateTime!
+  join_time: DateTime
+  last_online: DateTime
   name: String!
   party_size: Int
   password: String
   phone_number: String!
-  reneged_time: DateTime!
+  reneged_time: DateTime
   state: UserStatus!
   summoned: Boolean
 }
@@ -1325,13 +1379,13 @@ input UserCreateOrConnectWithoutQueueInput {
 input UserCreateWithoutQueueInput {
   estimated_wait: Int!
   index: Int!
-  join_time: DateTime!
-  last_online: DateTime!
+  join_time: DateTime
+  last_online: DateTime
   name: String!
   party_size: Int
   password: String
   phone_number: String!
-  reneged_time: DateTime!
+  reneged_time: DateTime
   state: UserStatus!
   summoned: Boolean
 }
@@ -1345,14 +1399,14 @@ type UserGroupBy {
   estimated_wait: Int!
   id: Int!
   index: Int!
-  join_time: DateTime!
-  last_online: DateTime!
+  join_time: DateTime
+  last_online: DateTime
   name: String!
   party_size: Int!
   password: String
   phone_number: String!
   queue_id: Int!
-  reneged_time: DateTime!
+  reneged_time: DateTime
   state: UserStatus!
   summoned: Boolean!
 }
@@ -1492,14 +1546,14 @@ input UserScalarWhereInput {
   estimated_wait: IntFilter
   id: IntFilter
   index: IntFilter
-  join_time: DateTimeFilter
-  last_online: DateTimeFilter
+  join_time: DateTimeNullableFilter
+  last_online: DateTimeNullableFilter
   name: StringFilter
   party_size: IntFilter
   password: StringNullableFilter
   phone_number: StringFilter
   queue_id: IntFilter
-  reneged_time: DateTimeFilter
+  reneged_time: DateTimeNullableFilter
   state: EnumUserStatusFilter
   summoned: BoolFilter
 }
@@ -1511,14 +1565,14 @@ input UserScalarWhereWithAggregatesInput {
   estimated_wait: IntWithAggregatesFilter
   id: IntWithAggregatesFilter
   index: IntWithAggregatesFilter
-  join_time: DateTimeWithAggregatesFilter
-  last_online: DateTimeWithAggregatesFilter
+  join_time: DateTimeNullableWithAggregatesFilter
+  last_online: DateTimeNullableWithAggregatesFilter
   name: StringWithAggregatesFilter
   party_size: IntWithAggregatesFilter
   password: StringNullableWithAggregatesFilter
   phone_number: StringWithAggregatesFilter
   queue_id: IntWithAggregatesFilter
-  reneged_time: DateTimeWithAggregatesFilter
+  reneged_time: DateTimeNullableWithAggregatesFilter
   state: EnumUserStatusWithAggregatesFilter
   summoned: BoolWithAggregatesFilter
 }
@@ -1550,14 +1604,14 @@ input UserSumOrderByAggregateInput {
 input UserUpdateInput {
   estimated_wait: IntFieldUpdateOperationsInput
   index: IntFieldUpdateOperationsInput
-  join_time: DateTimeFieldUpdateOperationsInput
-  last_online: DateTimeFieldUpdateOperationsInput
+  join_time: NullableDateTimeFieldUpdateOperationsInput
+  last_online: NullableDateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   party_size: IntFieldUpdateOperationsInput
   password: NullableStringFieldUpdateOperationsInput
   phone_number: StringFieldUpdateOperationsInput
   queue: QueueUpdateOneRequiredWithoutUsersInput
-  reneged_time: DateTimeFieldUpdateOperationsInput
+  reneged_time: NullableDateTimeFieldUpdateOperationsInput
   state: EnumUserStatusFieldUpdateOperationsInput
   summoned: BoolFieldUpdateOperationsInput
 }
@@ -1565,13 +1619,13 @@ input UserUpdateInput {
 input UserUpdateManyMutationInput {
   estimated_wait: IntFieldUpdateOperationsInput
   index: IntFieldUpdateOperationsInput
-  join_time: DateTimeFieldUpdateOperationsInput
-  last_online: DateTimeFieldUpdateOperationsInput
+  join_time: NullableDateTimeFieldUpdateOperationsInput
+  last_online: NullableDateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   party_size: IntFieldUpdateOperationsInput
   password: NullableStringFieldUpdateOperationsInput
   phone_number: StringFieldUpdateOperationsInput
-  reneged_time: DateTimeFieldUpdateOperationsInput
+  reneged_time: NullableDateTimeFieldUpdateOperationsInput
   state: EnumUserStatusFieldUpdateOperationsInput
   summoned: BoolFieldUpdateOperationsInput
 }
@@ -1603,13 +1657,13 @@ input UserUpdateWithWhereUniqueWithoutQueueInput {
 input UserUpdateWithoutQueueInput {
   estimated_wait: IntFieldUpdateOperationsInput
   index: IntFieldUpdateOperationsInput
-  join_time: DateTimeFieldUpdateOperationsInput
-  last_online: DateTimeFieldUpdateOperationsInput
+  join_time: NullableDateTimeFieldUpdateOperationsInput
+  last_online: NullableDateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   party_size: IntFieldUpdateOperationsInput
   password: NullableStringFieldUpdateOperationsInput
   phone_number: StringFieldUpdateOperationsInput
-  reneged_time: DateTimeFieldUpdateOperationsInput
+  reneged_time: NullableDateTimeFieldUpdateOperationsInput
   state: EnumUserStatusFieldUpdateOperationsInput
   summoned: BoolFieldUpdateOperationsInput
 }
@@ -1627,15 +1681,15 @@ input UserWhereInput {
   estimated_wait: IntFilter
   id: IntFilter
   index: IntFilter
-  join_time: DateTimeFilter
-  last_online: DateTimeFilter
+  join_time: DateTimeNullableFilter
+  last_online: DateTimeNullableFilter
   name: StringFilter
   party_size: IntFilter
   password: StringNullableFilter
   phone_number: StringFilter
   queue: QueueRelationFilter
   queue_id: IntFilter
-  reneged_time: DateTimeFilter
+  reneged_time: DateTimeNullableFilter
   state: EnumUserStatusFilter
   summoned: BoolFilter
 }

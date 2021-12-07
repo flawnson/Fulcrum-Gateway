@@ -16,11 +16,11 @@ import { nativebaseTheme, navigationTheme } from "./theme";
 import { registerRootComponent } from 'expo';
 import QueuesPage from "./src/pages/QueuesPage";
 import EnqueuedPage from "./src/pages/EnqueuedPage";
-import OrganizerDashboardTabs from "./src/pages/OrganizerDashboardTabs"
+import OrganizerDashboardTabs from "./src/pages/QueueDashboardTabs"
 import QRCodeScanner from "./src/components/organisms/QRCodeScanner"
 import './i18n';
 import { PreferencesContext } from "./src/utilities/useTheme";
-import OrganizerDashboard from "./src/pages/OrganizerDashboard";
+import OrganizerDashboard from "./src/pages/QueueDashboard";
 
 const config: object = {
     strictMode: 'off',

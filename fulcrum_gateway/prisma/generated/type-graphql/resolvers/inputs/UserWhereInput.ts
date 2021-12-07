@@ -44,11 +44,6 @@ export class UserWhereInput {
   })
   queue_id?: IntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => QueueRelationFilter, {
-    nullable: true
-  })
-  queue?: QueueRelationFilter | undefined;
-
   @TypeGraphQL.Field(_type => BoolFilter, {
     nullable: true
   })
@@ -98,4 +93,9 @@ export class UserWhereInput {
     nullable: true
   })
   state?: EnumUserStatusFilter | undefined;
+
+  @TypeGraphQL.Field(_type => QueueRelationFilter, {
+    nullable: true
+  })
+  queue?: QueueRelationFilter | undefined;
 }
