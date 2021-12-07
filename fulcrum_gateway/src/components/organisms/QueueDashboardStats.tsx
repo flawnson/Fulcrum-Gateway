@@ -8,8 +8,8 @@ type Props = {
         'serviced': number,
         'deferrals': number,
         'avg': number,
-        'abandonments': number,
-        'noshows': number
+        'abandoned': number,
+        'noshow': number
     }
 }
 

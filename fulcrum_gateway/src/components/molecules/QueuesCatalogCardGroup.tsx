@@ -4,7 +4,7 @@ import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import MultiSelectButtons from "../atoms/QueueMultiSelectButtons";
+import MultiSelectButtons from "../../containers/QueueMultiSelectButtons";
 
 
 type QueueStats = {

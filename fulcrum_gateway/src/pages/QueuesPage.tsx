@@ -5,6 +5,7 @@ import { AntDesign } from "@expo/vector-icons"
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
+import {Queue} from "../../prisma/generated/type-graphql";
 
 type QueueStats = {
     queueId: number,  // Actually a string...
@@ -25,7 +26,7 @@ export default function () {
         query get_queue_data($data: OrganizerWhereUniqueInput!) {
             organizer(where: $data) {
                 queues {
-                    queueId: id
+                    queue_id: id
                     name
                     state
                     create_time
@@ -48,10 +49,10 @@ export default function () {
                     let queue_sats: QueueStats[] = []
                     data.forEach((queue_data: any) => {
                         const now: any = new Date()
-                        const join: any = new Date(queue_data.create_time)
-                        const lifespan = new Date(Math.abs(now - join))
+                        const create: any = new Date(queue_data.create_time)
+                        const lifespan = new Date(Math.abs(now - create))
                         queue_data.lifespan = `${Math.floor(lifespan.getMinutes())}`
-                        const stats: SetStateAction<any> = Object.fromEntries([
+                        const stats: SetStateAction<QueueStats | any> = Object.fromEntries([
                             "queueId",
                             "name",
                             "state",

@@ -6,6 +6,22 @@ import {Center, Heading, Text, Image} from "native-base";
 import QueueDashboardGroup from "../components/organisms/QueueDashboardStats";
 import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval";
+import { zipObject } from "lodash"
+
+type UserData = {
+    user_id: string,
+    join_time: Date,
+    state: string,
+}
+
+type CardStats = {
+    'enqueued': number,
+    'serviced': number,
+    'deferrals': number,
+    'avg': number,
+    'abandoned': number,
+    'noshow': number,
+}
 
 
 export default function () {
@@ -15,24 +31,25 @@ export default function () {
         'serviced': 22,
         'deferrals': 8,
         'avg': 12,
-        'abandonments': 2,
-        'noshows': 0
+        'abandoned': 2,
+        'noshow': 0
     }
     const [props, setProps] = useState(tempProps)
     const query = `
-        query Queue($id: ID!){
-            queue(queue_id: $id){
-                num_enqueued
-                num_serviced
-                num_deferred
-                average_wait_time
-                num_abandoned
-                num_noshows
+        query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
+            queue(where: $queue_id) {
+                users {
+                    user_id: id
+                    join_time
+                    state
+                }
             }
         }
     `
     const variables = `{
-        "id": "costco_queue1"
+    "queue_id": {
+            "id": 1
+        }
     }`
 
     useInterval(async () => {
@@ -40,16 +57,22 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
-                    data = data.data.queue
-                    const stats: SetStateAction<any> = Object.fromEntries([
-                        "num_enqueued",
-                        "num_serviced",
-                        "num_deferred",
-                        "average_wait_time",
-                        "num_abandoned",
-                        "num_noshows"]
-                            .filter(key => key in data)
-                            .map(key => [key, data[key]]))
+                    data = data.data.queue.users
+                    const states = ["ENQUEUED", "SERVICED", "DEFERRED", "ABANDONED", "NOSHOW"]
+                    let counts = []
+                    for (const state of states) {
+                        counts.push(data.filter((user: UserData) => {return user.state === state}).length)
+                    }
+                    const stats: SetStateAction<CardStats | any> = zipObject(states.map(state => state.toLowerCase()), counts)
+                    const now: any = new Date()
+                    let lifespans: Array<number> = []
+                    for (const user of data) {
+                        const join: any = new Date(user.join_time)
+                        const lifespan = new Date(Math.abs(now - join)).getMinutes()
+                        const minutes = Math.floor(lifespan)
+                        lifespans.push(minutes)
+                    }
+                    stats.avg = lifespans.reduce((a,b) => a + b, 0) / lifespans.length
                     setProps(stats)
                 }
             )

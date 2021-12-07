@@ -4,7 +4,7 @@ import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import UserMultiSelectButtons from "../atoms/UserMultiSelectButtons"
+import UserMultiSelectButtons from "../../containers/UserMultiSelectButtons"
 
 
 type Entity = {

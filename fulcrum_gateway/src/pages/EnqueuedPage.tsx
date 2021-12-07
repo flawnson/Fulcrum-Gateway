@@ -17,14 +17,15 @@ export default function () {
     useEffect(() => {fetchUserData()}, [])
 
     const query = `
-        query get_enqueued($queue_id: QueueWhereUniqueInput!) {
+        query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
             queue(where: $queue_id) {
                 users {
-                    userId: id
+                    user_id: id
                     name
                     index
-                    last_online
                     join_time
+                    estimated_wait
+                    last_online
                     state
                 }
             }
@@ -45,15 +46,16 @@ export default function () {
                     let user_stats: EnqueuedStats[] = []
                     data.forEach((queue_data: any) => {
                         const now: any = new Date()
-                        const join: any = new Date(queue_data.create_time)
+                        const join: any = new Date(queue_data.join_time)
                         const waited = new Date(Math.abs(now - join))
                         queue_data.waited = `${Math.floor(waited.getMinutes())}`
+                        queue_data.online = new Date(queue_data.last_online) === new Date()
                         const stats: SetStateAction<any> = Object.fromEntries([
-                            "userId",
+                            "user_id",
                             "name",
                             "index",
-                            "online",
                             "waited",
+                            "online",
                             "state"]
                             .filter(key => key in queue_data)
                             .map(key => [key, queue_data[key]]))
