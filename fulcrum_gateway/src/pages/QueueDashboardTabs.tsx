@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import OrganizerDashboard from "./OrganizerDashboard";
+import QueueDashboard from "./QueueDashboard";
 import EnqueuedQueuersPage from "./EnqueuedPage";
 import ServicedQueuersPage from "./ServicedPage";
 import AbandonedQueuersPage from "./AbandonedPage";
@@ -10,7 +10,7 @@ import { HomeScreenProps } from "../../types";
 
 const Tab = createBottomTabNavigator();
 
-export default function OrganizerDashboardTabs() {
+export default function QueueDashboardTabs() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
     // Need to hide header for main Navigator so we can show header in Tab Navigator
@@ -20,12 +20,12 @@ export default function OrganizerDashboardTabs() {
 
     return (
         <Tab.Navigator
-            initialRouteName="OrganizerDashboard"
+            initialRouteName="QueueDashboard"
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
 
-                    if (route.name === 'OrganizerDashboard') {
+                    if (route.name === 'QueueDashboard') {
                         iconName = focused ? 'view-dashboard' : 'view-dashboard-outline';
                     } else if (route.name === 'Enqueued') {
                         iconName = focused ? 'account-clock' : 'account-clock-outline';
@@ -45,8 +45,8 @@ export default function OrganizerDashboardTabs() {
             })}
         >
             <Tab.Screen
-                name="OrganizerDashboard"
-                component={OrganizerDashboard}
+                name="QueueDashboard"
+                component={QueueDashboard}
                 options={{
                     tabBarLabel: 'Dashboard',
                 }}

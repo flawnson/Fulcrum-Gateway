@@ -39,11 +39,6 @@ export class QueueWhereInput {
   })
   organizer_id?: IntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => OrganizerRelationFilter, {
-    nullable: true
-  })
-  organizer?: OrganizerRelationFilter | undefined;
-
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
@@ -84,13 +79,18 @@ export class QueueWhereInput {
   })
   offline_time?: IntNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => UserListRelationFilter, {
-    nullable: true
-  })
-  users?: UserListRelationFilter | undefined;
-
   @TypeGraphQL.Field(_type => DateTimeFilter, {
     nullable: true
   })
   create_time?: DateTimeFilter | undefined;
+
+  @TypeGraphQL.Field(_type => OrganizerRelationFilter, {
+    nullable: true
+  })
+  organizer?: OrganizerRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => UserListRelationFilter, {
+    nullable: true
+  })
+  users?: UserListRelationFilter | undefined;
 }

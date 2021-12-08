@@ -13,7 +13,7 @@ type QueuesCatalogProps = {
     'onLongPress': (event: GestureResponderEvent) => void,
     'selected': boolean,
     'entity': {
-        queueId: number,
+        queueId: string,
         name: string,
         lifespan: number,
         state: string,

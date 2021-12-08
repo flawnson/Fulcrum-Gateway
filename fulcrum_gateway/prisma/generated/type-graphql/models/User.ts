@@ -24,8 +24,6 @@ export class User {
   })
   queue_id!: number;
 
-  queue?: Queue;
-
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: false
   })
@@ -74,5 +72,7 @@ export class User {
   @TypeGraphQL.Field(_type => UserStatus, {
     nullable: false
   })
-  state!: "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+  state!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+
+  queue?: Queue;
 }

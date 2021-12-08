@@ -4,10 +4,11 @@ import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import UserMultiSelectButtons from "../atoms/UserMultiSelectButtons"
-import { find } from "lodash";
-import {user_table} from "../../api/tests/test_data";
+import UserMultiSelectButtons from "../../containers/UserMultiSelectButtons"
+import {onLeftSwipe} from "../../utilities/swipeAnimation";
 
+
+type State = "ENQUEUED" | "KICKED" | "SERVICED" | "SUMMONED"
 
 type Entity = {
     userId: string,  // Actually a string rn...
@@ -24,17 +25,18 @@ type EnqueuedStatsProps = {
 
 export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-
+    const [action, setAction] = useState<State>("ENQUEUED")
     const [selectedItems, setSelectedItems] = useState<Array<string>>([])
 
-    function onKickedPress () {
-        const entities = props.entities.filter(entity => selectedItems.includes(entity.userId))
-        console.log(selectedItems)
-        console.log(entities)
-        for (let entity of entities) {
-            entity.state = "KICKED"
+    function onActionPress (action: State) {
+        setAction(action)
+    }
+
+    const getModified = (item: Entity) => {
+        if (getSelected(item)) {
+            return action
         }
-        props.entities = entities
+        return "ENQUEUED"
     }
 
     // To remove header when organizer deselects all users
@@ -56,12 +58,13 @@ export default function (props: EnqueuedStatsProps) {
     const getSelected = (item: Entity) => selectedItems.includes(item.userId)
 
     const deSelectItems = () => {
+        setAction("ENQUEUED")
         setSelectedItems([])
         navigation.setOptions({headerRight: undefined})
     }
 
     const selectItems = (item: Entity) => {
-        navigation.setOptions({headerRight: (props) => <UserMultiSelectButtons onKickedPress={onKickedPress} />})
+        navigation.setOptions({headerRight: (props) => <UserMultiSelectButtons onActionPress={onActionPress} />})
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(
@@ -72,17 +75,19 @@ export default function (props: EnqueuedStatsProps) {
         setSelectedItems([...selectedItems, item.userId])
     }
 
-    const OrganizerStatCards = Object.entries(props.entities).map(([key, userStat]) =>
+    const EnqueuedStatCards = Object.entries(props.entities).map(([key, userStat]) =>
         <EnqueuedCatalogCard key={key}
                              onPress={() => handleOnPress(userStat)}
                              onLongPress={() => selectItems(userStat)}
+                             deSelectItems={deSelectItems}
                              selected={getSelected(userStat)}
+                             modified={getModified(userStat)}
                              entity={userStat}/>)
 
     return (
         <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>
             <VStack style={styles.stats}>
-                {OrganizerStatCards}
+                {EnqueuedStatCards}
             </VStack>
         </Pressable>
     )

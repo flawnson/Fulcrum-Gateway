@@ -12,7 +12,7 @@ type ServicedCatalogProps = {
     'onLongPress': (event: GestureResponderEvent) => void,
     'selected': boolean,
     'entity': {
-        userId: number,
+        userId: string,
         name: string,
         waited: number,
     }

@@ -9,8 +9,8 @@ type OrganizerStatsProps = {
     'serviced': number,
     'deferrals': number,
     'avg': number,
-    'abandonments': number,
-    'noshows': number
+    'abandoned': number,
+    'noshow': number
 }
 
 export default function (props: OrganizerStatsProps) {

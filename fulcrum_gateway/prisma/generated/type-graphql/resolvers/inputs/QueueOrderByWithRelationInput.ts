@@ -20,11 +20,6 @@ export class QueueOrderByWithRelationInput {
   })
   organizer_id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => OrganizerOrderByWithRelationInput, {
-    nullable: true
-  })
-  organizer?: OrganizerOrderByWithRelationInput | undefined;
-
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
@@ -65,13 +60,18 @@ export class QueueOrderByWithRelationInput {
   })
   offline_time?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => UserOrderByRelationAggregateInput, {
-    nullable: true
-  })
-  users?: UserOrderByRelationAggregateInput | undefined;
-
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
   create_time?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => OrganizerOrderByWithRelationInput, {
+    nullable: true
+  })
+  organizer?: OrganizerOrderByWithRelationInput | undefined;
+
+  @TypeGraphQL.Field(_type => UserOrderByRelationAggregateInput, {
+    nullable: true
+  })
+  users?: UserOrderByRelationAggregateInput | undefined;
 }

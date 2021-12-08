@@ -1,21 +1,21 @@
 import React from 'react';
-import OrganizerDashboardStatsCardGroup from "../molecules/OrganizerStatsCardGroup";
+import QueueDashboardStatsCardGroup from "../molecules/QueueStatsCardGroup";
 import {SimpleGrid} from "native-base";
 
 type Props = {
-    OrganizerDashboardProps: {
+    QueueDashboardProps: {
         'enqueued': number,
         'serviced': number,
         'deferrals': number,
         'avg': number,
-        'abandonments': number,
-        'noshows': number
+        'abandoned': number,
+        'noshow': number
     }
 }
 
 export default function (props: Props) {
     return (
-        <OrganizerDashboardStatsCardGroup {...props.OrganizerDashboardProps}/>
+        <QueueDashboardStatsCardGroup {...props.QueueDashboardProps}/>
     )
 }
 
