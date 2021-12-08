@@ -12,6 +12,7 @@ import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
 type EnqueuedCatalogProps = {
     onPress: (event: GestureResponderEvent) => void,
     onLongPress: (event: GestureResponderEvent) => void,
+    deSelectItems: Function,
     selected: boolean,
     modified: string,
     entity: {
@@ -30,11 +31,14 @@ export default function (props: EnqueuedCatalogProps) {
     const pan = useRef(new Animated.ValueXY()).current;
 
     useEffect(() => {
-        if (props.modified === "left") {
+        if (props.modified === "KICKED") {
             onLeftSwipe(pan)
-        } else if (props.modified === "right") {
+        } else if (props.modified === "SERVICED") {
             onRightSwipe(pan)
+        } else if (props.modified === "SUMMONED") {
+            onBellPress()
         }
+        props.deSelectItems()
     }, [props.modified])
 
     const query = `

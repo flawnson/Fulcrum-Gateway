@@ -8,6 +8,8 @@ import UserMultiSelectButtons from "../../containers/UserMultiSelectButtons"
 import {onLeftSwipe} from "../../utilities/swipeAnimation";
 
 
+type State = "ENQUEUED" | "KICKED" | "SERVICED" | "SUMMONED"
+
 type Entity = {
     userId: string,  // Actually a string rn...
     name: string,
@@ -23,18 +25,18 @@ type EnqueuedStatsProps = {
 
 export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const [action, setAction] = useState<string>("none")
+    const [action, setAction] = useState<State>("ENQUEUED")
     const [selectedItems, setSelectedItems] = useState<Array<string>>([])
 
-    function onKickedPress () {
-        setAction("left")
+    function onActionPress (action: State) {
+        setAction(action)
     }
 
     const getModified = (item: Entity) => {
         if (getSelected(item)) {
             return action
         }
-        return "none"
+        return "ENQUEUED"
     }
 
     // To remove header when organizer deselects all users
@@ -56,13 +58,13 @@ export default function (props: EnqueuedStatsProps) {
     const getSelected = (item: Entity) => selectedItems.includes(item.userId)
 
     const deSelectItems = () => {
-        setAction("none")
+        setAction("ENQUEUED")
         setSelectedItems([])
         navigation.setOptions({headerRight: undefined})
     }
 
     const selectItems = (item: Entity) => {
-        navigation.setOptions({headerRight: (props) => <UserMultiSelectButtons onKickedPress={onKickedPress} />})
+        navigation.setOptions({headerRight: (props) => <UserMultiSelectButtons onActionPress={onActionPress} />})
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(
@@ -77,6 +79,7 @@ export default function (props: EnqueuedStatsProps) {
         <EnqueuedCatalogCard key={key}
                              onPress={() => handleOnPress(userStat)}
                              onLongPress={() => selectItems(userStat)}
+                             deSelectItems={deSelectItems}
                              selected={getSelected(userStat)}
                              modified={getModified(userStat)}
                              entity={userStat}/>)
