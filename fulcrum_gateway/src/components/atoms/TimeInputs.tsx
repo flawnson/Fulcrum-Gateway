@@ -1,5 +1,4 @@
 // @typescript-eslint/no-unused-vars
-// WORK IN PROGRESS
 
 import * as React from 'react'
 import {

@@ -7,22 +7,35 @@ import { HStack, Text,
         Box, View,
         Center, Avatar } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {onLeftSwipe, onRightSwipe} from "../../utilities/swipeAnimation";
 
 type EnqueuedCatalogProps = {
-    'onPress': (event: GestureResponderEvent) => void,
-    'onLongPress': (event: GestureResponderEvent) => void,
-    'selected': boolean,
-    'entity': {
-        queuerId: number,
+    onPress: (event: GestureResponderEvent) => void,
+    onLongPress: (event: GestureResponderEvent) => void,
+    selected: boolean,
+    entity: {
+        userId: string,
         name: string,
         index: number,
         waited: number,
-    }
+        state: string
+    },
 }
 
 export default function (props: EnqueuedCatalogProps) {
     const [summoned, setSummoned] = useState<boolean>(false)
     const [online, setOnline] = useState<boolean>(true)
+
+    const pan = useRef(new Animated.ValueXY()).current;
+
+    useEffect(() => {
+        console.log(props.entity)
+        if (props.entity.state === "KICKED") {
+            onLeftSwipe(pan)
+        } else if (props.entity.state === "SERVICED") {
+            onRightSwipe(pan)
+        }
+    }, [props.entity.state])
 
     const query = `
         mutation summon_user($user_id: ID!){
@@ -33,14 +46,14 @@ export default function (props: EnqueuedCatalogProps) {
         "user_id": "user0"
     }`
 
-    async function toggleSummonQueuer (queuerId: number) {
+    async function toggleSummonUser (userId: string) {
         try {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({id: queuerId})
+                body: JSON.stringify({id: userId})
             });
             // enter you logic when the fetch is successful
             console.log(await response.json())
@@ -52,14 +65,12 @@ export default function (props: EnqueuedCatalogProps) {
     }
 
     useEffect(() => {
-        toggleSummonQueuer(props.entity.queuerId).then(null)
+        toggleSummonUser(props.entity.userId).then(null)
     }, [summoned])
 
     const onBellPress = function () {
         setSummoned(!summoned)
     }
-
-    const pan = useRef(new Animated.ValueXY()).current;
 
     const panResponder = useRef(
         PanResponder.create({

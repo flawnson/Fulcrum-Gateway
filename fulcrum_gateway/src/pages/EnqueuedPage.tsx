@@ -3,27 +3,29 @@ import EnqueuedCatalogCardGroup from "../components/molecules/EnqueuedCatalogCar
 import useInterval from "../utilities/useInterval";
 
 type EnqueuedStats = {
-    queuerId: number,
+    userId: string,
     name: string,
     online: boolean,
     index: number,
     waited: number,
+    state: string
 }
 
 export default function () {
     const [props, setProps] = useState<EnqueuedStats[]>([])
 
-    useEffect(() => {fetchQueuerData()}, [])
+    useEffect(() => {fetchUserData()}, [])
 
     const query = `
         query queue($id: ID!){
             queue(queue_id: $id){
                 enqueued {
-                    id
+                    userId: id
                     name
                     index
                     online
                     join_time
+                    state
                 }
             }
         }
@@ -32,29 +34,30 @@ export default function () {
         "id": "costco_queue1"
     }`
 
-    async function fetchQueuerData () {
+    async function fetchUserData () {
         try {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
                     data = data.data.queue.enqueued
-                    let queuer_stats: EnqueuedStats[] = []
+                    let user_stats: EnqueuedStats[] = []
                     data.forEach((queue_data: any) => {
                         const now: any = new Date()
                         const join: any = new Date(queue_data.create_time)
                         const waited = new Date(Math.abs(now - join))
                         queue_data.waited = `${Math.floor(waited.getMinutes())}`
                         const stats: SetStateAction<any> = Object.fromEntries([
-                            "id",
+                            "userId",
                             "name",
                             "index",
                             "online",
-                            "waited"]
+                            "waited",
+                            "state"]
                             .filter(key => key in queue_data)
                             .map(key => [key, queue_data[key]]))
-                        queuer_stats.push(stats)
+                        user_stats.push(stats)
                     })
-                    setProps(queuer_stats)
+                    setProps(user_stats)
                 }
             )
         } catch(error) {
@@ -62,7 +65,7 @@ export default function () {
         }
     }
 
-    useInterval(fetchQueuerData, 5000)
+    useInterval(fetchUserData, 5000)
 
     return (
         <EnqueuedCatalogCardGroup entities={props}/>

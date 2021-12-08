@@ -1,30 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import EnqueuedEntityCard from "../atoms/EnqueuedCatalogCard";
+import EnqueuedCatalogCard from "../atoms/EnqueuedCatalogCard";
 import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import MultiSelectButtons from "../atoms/MultiSelectButtons"
+import UserMultiSelectButtons from "../atoms/UserMultiSelectButtons"
+import { find } from "lodash";
+import {user_table} from "../../api/tests/test_data";
 
 
 type Entity = {
-    queuerId: number,
+    userId: string,  // Actually a string rn...
     name: string,
     online: boolean,
     index: number,
     waited: number,
+    state: string
 }
 
 type EnqueuedStatsProps = {
-    'entities': Array<Entity>
+    entities: Array<Entity>
 }
 
 export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
-    const [selectedItems, setSelectedItems] = useState<Array<number>>([])
+    const [selectedItems, setSelectedItems] = useState<Array<string>>([])
 
-    // To remove header when organizer deselects all queuers
+    function onKickedPress () {
+        const entities = props.entities.filter(entity => selectedItems.includes(entity.userId))
+        console.log(selectedItems)
+        console.log(entities)
+        for (let entity of entities) {
+            entity.state = "KICKED"
+        }
+        props.entities = entities
+    }
+
+    // To remove header when organizer deselects all users
     useEffect(() => {
         if (selectedItems.length === 0) {
             navigation.setOptions({headerRight: undefined})
@@ -37,10 +50,10 @@ export default function (props: EnqueuedStatsProps) {
         }
 
         // here you can add you code what do you want if user just do single tap
-        navigation.navigate("QueuerDashboard")
+        navigation.navigate("UserDashboard")
     }
 
-    const getSelected = (item: Entity) => selectedItems.includes(item.queuerId)
+    const getSelected = (item: Entity) => selectedItems.includes(item.userId)
 
     const deSelectItems = () => {
         setSelectedItems([])
@@ -48,23 +61,23 @@ export default function (props: EnqueuedStatsProps) {
     }
 
     const selectItems = (item: Entity) => {
-        navigation.setOptions({headerRight: (props) => <MultiSelectButtons {...props} /> })
+        navigation.setOptions({headerRight: (props) => <UserMultiSelectButtons onKickedPress={onKickedPress} />})
 
-        if (selectedItems.includes(item.queuerId)) {
+        if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(
-                (listItem: number) => listItem !== item.queuerId,
+                (listItem: string) => listItem !== item.userId,
             )
             return setSelectedItems([...newListItems])
         }
-        setSelectedItems([...selectedItems, item.queuerId])
+        setSelectedItems([...selectedItems, item.userId])
     }
 
-    const OrganizerStatCards = Object.entries(props.entities).map(([key, queuerStat]) =>
-        <EnqueuedEntityCard key={key}
-                            onPress={() => handleOnPress(queuerStat)}
-                            onLongPress={() => selectItems(queuerStat)}
-                            selected={getSelected(queuerStat)}
-                            entity={queuerStat}/>)
+    const OrganizerStatCards = Object.entries(props.entities).map(([key, userStat]) =>
+        <EnqueuedCatalogCard key={key}
+                             onPress={() => handleOnPress(userStat)}
+                             onLongPress={() => selectItems(userStat)}
+                             selected={getSelected(userStat)}
+                             entity={userStat}/>)
 
     return (
         <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>

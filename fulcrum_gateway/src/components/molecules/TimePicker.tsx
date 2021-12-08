@@ -7,7 +7,7 @@ import {
 } from 'react-native-paper-dates/src/Time/timeUtils'
 
 import { circleSize } from 'react-native-paper-dates/src/Time/timeUtils'
-import TimeInputs from '../molecules/TimeInputs'
+import TimeInputs from '../atoms/TimeInputs'
 import { Center } from "native-base";
 
 type onChangeFunc = ({
