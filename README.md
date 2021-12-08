@@ -21,18 +21,18 @@ The backend API (Fulcrum) and frontend UI (Gateway) for FieFoe.
 
 # Setup
 This project is written in JavaScript/TypeScript.
-Here's a rough table of the frameworks used in this project roughly in order of highest to lowest level, 
+Here's a rough table of the frameworks used in this project roughly in order of highest to lowest level,
 along with some resources I followed (thank you to the creators of said resources!).
 
 ## Frameworks
-| Framework | Description | Resources | 
+| Framework | Description | Resources |
 | --- | ----------- | ---------- |
 | React Native | Foundation for the frontend stack. We use only functional components and hooks. | https://reactnative.dev/docs/environment-setup |
 | NativeBase | UI and component library built on React Native. | https://docs.nativebase.io/install-expo |
-| React Native for Web | Supported by all frontend frameworks we're using for optimizing mobile web view. |  | 
-| React Navigation | The frontend routing and navigation framework (basically React Router for mobile). | https://reactnavigation.org/docs/getting-started/ | 
+| React Native for Web | Supported by all frontend frameworks we're using for optimizing mobile web view. |  |
+| React Navigation | The frontend routing and navigation framework (basically React Router for mobile). | https://reactnavigation.org/docs/getting-started/ |
 | i18next | Used for multi-language support. | https://brainsandbeards.com/blog/i18n-in-react-native-apps |
-| Expo | Used for easier cross-platform development. | https://docs.expo.dev/get-started/installation/ | 
+| Expo | Used for easier cross-platform development. | https://docs.expo.dev/get-started/installation/ |
 | ExpressJS | Used to write our backend API. | https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way |
 | NodeJS | To support Express for our backend. |  |
 | GraphQL | Used with express JS for cleaner access to API | https://blog.bitsrc.io/migrating-existing-rest-apis-to-graphql-2c5de3db647d |
@@ -81,8 +81,8 @@ But you can also use Docker:
 
 After you've installed Docker, run:
 `docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=some_password --name some_db_name postgres`
-This will also forward/expose the port from the Docker VM to your host machine.
 
+This will also forward/expose the port from the Docker VM to your host machine.
 You'll have to go into the VM and create a new database with either:
 `createdb -U username postgres`
 if you're working in bash
