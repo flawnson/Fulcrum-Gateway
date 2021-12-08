@@ -5,17 +5,20 @@ import express from "express";
 import cors from "cors";
 
 import { graphqlHTTP } from 'express-graphql';
-import { buildSchema } from 'type-graphql';
+import { buildSchema, NonEmptyArray } from 'type-graphql';
 import { resolvers } from "../../prisma/generated/type-graphql";
+import { customResolvers } from "./resolvers";
+
 import { PrismaClient } from "@prisma/client";
 import * as path from 'path';
+
+const combinedResolvers = [...resolvers, ...customResolvers] as unknown as NonEmptyArray<Function>;
 
 async function bootstrap(){
 
   const prisma = new PrismaClient();
-
   const schema = await buildSchema({
-    resolvers,
+    resolvers: combinedResolvers,
     validate: false,
     emitSchemaFile: true,
     emitSchemaFile: __dirname + '/schema.graphql',
