@@ -30,9 +30,9 @@ export default function (props: EnqueuedCatalogProps) {
     const pan = useRef(new Animated.ValueXY()).current;
 
     useEffect(() => {
-        if (props.modified === "KICKED") {
+        if (props.modified === "left") {
             onLeftSwipe(pan)
-        } else if (props.modified === "SERVICED") {
+        } else if (props.modified === "right") {
             onRightSwipe(pan)
         }
     }, [props.modified])

@@ -5,6 +5,7 @@ import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
 import UserMultiSelectButtons from "../../containers/UserMultiSelectButtons"
+import {onLeftSwipe} from "../../utilities/swipeAnimation";
 
 
 type Entity = {
@@ -22,18 +23,18 @@ type EnqueuedStatsProps = {
 
 export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const [modifiedState, setModifiedState] = useState<string>("ENQUEUED")
+    const [action, setAction] = useState<string>("none")
     const [selectedItems, setSelectedItems] = useState<Array<string>>([])
 
     function onKickedPress () {
-        setModifiedState("KICKED")
+        setAction("left")
     }
 
     const getModified = (item: Entity) => {
         if (getSelected(item)) {
-            return modifiedState
+            return action
         }
-        return "ENQUEUED"
+        return "none"
     }
 
     // To remove header when organizer deselects all users
@@ -55,6 +56,7 @@ export default function (props: EnqueuedStatsProps) {
     const getSelected = (item: Entity) => selectedItems.includes(item.userId)
 
     const deSelectItems = () => {
+        setAction("none")
         setSelectedItems([])
         navigation.setOptions({headerRight: undefined})
     }
