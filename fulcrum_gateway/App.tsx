@@ -16,11 +16,11 @@ import { nativebaseTheme, navigationTheme } from "./theme";
 import { registerRootComponent } from 'expo';
 import QueuesPage from "./src/pages/QueuesPage";
 import EnqueuedPage from "./src/pages/EnqueuedPage";
-import OrganizerDashboardTabs from "./src/pages/OrganizerDashboardTabs"
+import QueueDashboardTabs from "./src/pages/QueueDashboardTabs"
 import QRCodeScanner from "./src/components/organisms/QRCodeScanner"
 import './i18n';
 import { PreferencesContext } from "./src/utilities/useTheme";
-import OrganizerDashboard from "./src/pages/OrganizerDashboard";
+import QueueDashboard from "./src/pages/QueueDashboard";
 
 const config: object = {
     strictMode: 'off',
@@ -59,7 +59,7 @@ function App() {
                                 <Stack.Screen name="HomePage" component={QueuesPage} />
                                 <Stack.Screen name="LandingPage" component={LandingPage} />
                                 <Stack.Screen name="UserDashboard" component={UserDashboard} />
-                                <Stack.Screen name="OrganizerDashboardTabs" component={OrganizerDashboardTabs} />
+                                <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                 <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
                                 <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                 <Stack.Screen name="SummonScreen" component={SummonScreen} />
@@ -67,10 +67,10 @@ function App() {
                             </>
                             ) : isInQueue && isOrganizer ? (
                                 <>
-                                    <Stack.Screen name="HomePage" component={OrganizerDashboardTabs} />
+                                    <Stack.Screen name="HomePage" component={QueueDashboardTabs} />
                                     <Stack.Screen name="LandingPage" component={LandingPage} />
                                     <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
-                                    <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboardTabs} />
+                                    <Stack.Screen name="QueueDashboard" component={QueueDashboardTabs} />
                                     <Stack.Screen name="EnqueuedPage" component={EnqueuedPage} />
                                     <Stack.Screen name="QueuesPage" component={QueuesPage} />
                                     <Stack.Screen name="ShareScreen" component={ShareScreen} />

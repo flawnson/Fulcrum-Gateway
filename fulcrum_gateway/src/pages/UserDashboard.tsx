@@ -22,20 +22,21 @@ export default function () {
     const [props, setProps] = useState(tempProps)
 
     const query = `
-        query get_user($user_id: ID!){
-            user(user_id: $user_id) {
-                id
+        query get_stats($user_id: UserWhereUniqueInput!) {
+            user(where: $user_id) {
+                userId: id
                 name
-                queue_id
                 index
                 estimated_wait
-                average_wait
                 join_time
-            }   
+                state
+            }
         }
     `
     const variables = `{
-        "user_id": "user0"
+    "user_id": {
+            "id": 1
+        }
     }`
 
     useInterval(async () => {
@@ -65,7 +66,7 @@ export default function () {
         } catch(error) {
             console.log(error)
         }
-    }, 1000)
+    }, 5000)
 
     return (
         <Center style={styles.animationFormat}>

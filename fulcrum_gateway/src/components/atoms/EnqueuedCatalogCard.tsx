@@ -7,12 +7,14 @@ import { HStack, Text,
         Box, View,
         Center, Avatar } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import {onLeftSwipe, onRightSwipe} from "../../utilities/swipeAnimation";
+import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
 
 type EnqueuedCatalogProps = {
     onPress: (event: GestureResponderEvent) => void,
     onLongPress: (event: GestureResponderEvent) => void,
+    deSelectItems: Function,
     selected: boolean,
+    modified: string,
     entity: {
         userId: string,
         name: string,
@@ -29,13 +31,15 @@ export default function (props: EnqueuedCatalogProps) {
     const pan = useRef(new Animated.ValueXY()).current;
 
     useEffect(() => {
-        console.log(props.entity)
-        if (props.entity.state === "KICKED") {
+        if (props.modified === "KICKED") {
             onLeftSwipe(pan)
-        } else if (props.entity.state === "SERVICED") {
+        } else if (props.modified === "SERVICED") {
             onRightSwipe(pan)
+        } else if (props.modified === "SUMMONED") {
+            onBellPress()
         }
-    }, [props.entity.state])
+        props.deSelectItems()
+    }, [props.modified])
 
     const query = `
         mutation summon_user($user_id: ID!){
