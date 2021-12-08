@@ -11,5 +11,5 @@ export class EnumUserStatusFieldUpdateOperationsInput {
   @TypeGraphQL.Field(_type => UserStatus, {
     nullable: true
   })
-  set?: "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | undefined;
+  set?: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | undefined;
 }

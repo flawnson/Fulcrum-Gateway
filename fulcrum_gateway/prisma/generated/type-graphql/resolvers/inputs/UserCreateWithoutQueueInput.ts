@@ -61,5 +61,5 @@ export class UserCreateWithoutQueueInput {
   @TypeGraphQL.Field(_type => UserStatus, {
     nullable: false
   })
-  state!: "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+  state!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
 }
