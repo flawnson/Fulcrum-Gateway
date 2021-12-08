@@ -8,7 +8,7 @@ import MultiSelectButtons from "../../containers/QueueMultiSelectButtons";
 
 
 type QueueStats = {
-    queueId: number,
+    queueId: string,
     name: string,
     lifespan: number,
     state: string,
@@ -21,7 +21,7 @@ type ActiveQueuesStatsProps = {
 export default function (props: ActiveQueuesStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
-    const [selectedItems, setSelectedItems] = useState<Array<number>>([])
+    const [selectedItems, setSelectedItems] = useState<Array<string>>([])
 
     // To remove header when organizer deselects all queues
     useEffect(() => {
@@ -36,7 +36,7 @@ export default function (props: ActiveQueuesStatsProps) {
         }
 
         // here you can add you code what do you want if quue just do single tap
-        navigation.navigate("OrganizerDashboardTabs")
+        navigation.navigate("QueueDashboardTabs")
     }
 
     const getSelected = (item: QueueStats) => selectedItems.includes(item.queueId)
@@ -48,15 +48,16 @@ export default function (props: ActiveQueuesStatsProps) {
 
     const selectItems = (item: QueueStats) => {
         navigation.setOptions({headerRight: (props) => <MultiSelectButtons {...props} /> })
-        console.log(item)
 
         if (selectedItems.includes(item.queueId)) {
             const newListItems = selectedItems.filter(
-                (listItem: number) => listItem !== item.queueId,
+                (listItem: string) => listItem !== item.queueId,
             )
             return setSelectedItems([...newListItems])
+            console.log(newListItems)
         }
         setSelectedItems([...selectedItems, item.queueId])
+        console.log(selectedItems)
     }
 
     const OrganizerStatCards = Object.entries(props.entities).map(([key, queueStat]) =>

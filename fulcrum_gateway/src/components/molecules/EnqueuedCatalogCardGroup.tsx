@@ -22,17 +22,18 @@ type EnqueuedStatsProps = {
 
 export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-
+    const [modifiedState, setModifiedState] = useState<string>("ENQUEUED")
     const [selectedItems, setSelectedItems] = useState<Array<string>>([])
 
     function onKickedPress () {
-        const entities = props.entities.filter(entity => selectedItems.includes(entity.userId))
-        console.log(selectedItems)
-        console.log(entities)
-        for (let entity of entities) {
-            entity.state = "KICKED"
+        setModifiedState("KICKED")
+    }
+
+    const getModified = (item: Entity) => {
+        if (getSelected(item)) {
+            return modifiedState
         }
-        props.entities = entities
+        return "ENQUEUED"
     }
 
     // To remove header when organizer deselects all users
@@ -70,17 +71,18 @@ export default function (props: EnqueuedStatsProps) {
         setSelectedItems([...selectedItems, item.userId])
     }
 
-    const OrganizerStatCards = Object.entries(props.entities).map(([key, userStat]) =>
+    const EnqueuedStatCards = Object.entries(props.entities).map(([key, userStat]) =>
         <EnqueuedCatalogCard key={key}
                              onPress={() => handleOnPress(userStat)}
                              onLongPress={() => selectItems(userStat)}
                              selected={getSelected(userStat)}
+                             modified={getModified(userStat)}
                              entity={userStat}/>)
 
     return (
         <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>
             <VStack style={styles.stats}>
-                {OrganizerStatCards}
+                {EnqueuedStatCards}
             </VStack>
         </Pressable>
     )

@@ -8,7 +8,7 @@ import CreateQueueModal from "../containers/CreateQueueModal";
 import {Queue} from "../../prisma/generated/type-graphql";
 
 type QueueStats = {
-    queueId: number,  // Actually a string...
+    queueId: string,  // Actually a string...
     name: string,
     lifespan: number,
     state: string,
@@ -26,7 +26,7 @@ export default function () {
         query get_queue_data($data: OrganizerWhereUniqueInput!) {
             organizer(where: $data) {
                 queues {
-                    queue_id: id
+                    queueId: id
                     name
                     state
                     create_time

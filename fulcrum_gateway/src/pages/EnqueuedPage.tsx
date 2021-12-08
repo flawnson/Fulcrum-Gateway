@@ -20,7 +20,7 @@ export default function () {
         query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
             queue(where: $queue_id) {
                 users {
-                    user_id: id
+                    userId: id
                     name
                     index
                     join_time
@@ -51,7 +51,7 @@ export default function () {
                         queue_data.waited = `${Math.floor(waited.getMinutes())}`
                         queue_data.online = new Date(queue_data.last_online) === new Date()
                         const stats: SetStateAction<any> = Object.fromEntries([
-                            "user_id",
+                            "userId",
                             "name",
                             "index",
                             "waited",

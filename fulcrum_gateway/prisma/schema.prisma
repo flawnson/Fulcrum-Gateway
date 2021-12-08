@@ -59,6 +59,7 @@ enum QueueState {
 }
 
 enum UserStatus {
+  KICKED
   ENQUEUED
   SERVICED
   DEFERRED

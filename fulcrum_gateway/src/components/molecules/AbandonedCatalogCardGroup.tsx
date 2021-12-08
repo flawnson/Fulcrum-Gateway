@@ -8,7 +8,7 @@ import MultiSelectButtons from "../../containers/UserMultiSelectButtons"
 
 
 type AbandonedStats = {
-    userId: number,
+    userId: string,
     name: string,
     waited: number,
 }
@@ -20,7 +20,7 @@ type AbandonedStatsProps = {
 export default function (props: AbandonedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
-    const [selectedItems, setSelectedItems] = useState<Array<number>>([])
+    const [selectedItems, setSelectedItems] = useState<Array<string>>([])
 
     // To remove header when organizer deselects all users
     useEffect(() => {
@@ -50,7 +50,7 @@ export default function (props: AbandonedStatsProps) {
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(
-                (listItem: number) => listItem !== item.userId,
+                (listItem: string) => listItem !== item.userId,
             )
             return setSelectedItems([...newListItems])
         }
