@@ -17,7 +17,7 @@ const combinedResolvers = [...resolvers, ...customResolvers] as unknown as NonEm
 async function bootstrap(){
 
   const prisma = new PrismaClient();
-  console.log(combinedResolvers);
+
   const schema = await buildSchema({
     resolvers: combinedResolvers,
     validate: false,

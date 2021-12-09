@@ -704,6 +704,7 @@ type Queue {
   join_code: String!
   max_party_size: Int!
   name: String!
+  num_enqueued: Int!
   offline_time: Int
   organizer: Organizer!
   organizer_id: Int!
