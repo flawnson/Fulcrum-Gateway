@@ -6,16 +6,13 @@ import { StyleSheet,
 import { HStack, Text,
         Box, View,
         Center, Avatar } from 'native-base';
+import { AbandonedStats } from "../../../types";
 
 type ServicedCatalogProps = {
     'onPress': (event: GestureResponderEvent) => void,
     'onLongPress': (event: GestureResponderEvent) => void,
     'selected': boolean,
-    'entity': {
-        userId: string,
-        name: string,
-        waited: number,
-    }
+    'entity': AbandonedStats
 }
 
 export default function (props: ServicedCatalogProps) {

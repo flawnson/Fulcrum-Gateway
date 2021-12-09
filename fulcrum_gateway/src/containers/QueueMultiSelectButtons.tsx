@@ -3,13 +3,14 @@ import { HStack, Button,
         Text } from "native-base";
 
 type MultiSelectButtonType = {
-    tintColor?: string
+    onActionPress: Function
 }
 
 export default function (props: MultiSelectButtonType) {
     return (
         <HStack>
-            <Button><Text>Pause Queues</Text></Button>
+            <Button onPress={() => props.onActionPress("PAUSED")}><Text>Pause Queues</Text></Button>
+            <Button onPress={() => props.onActionPress("INACTIVE")}><Text>Deactivate Queues</Text></Button>
         </HStack>
     )
 }

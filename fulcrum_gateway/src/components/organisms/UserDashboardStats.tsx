@@ -1,13 +1,9 @@
 import React from 'react';
 import UserDashboardStatsCardGroup from "../molecules/UserStatsCardGroup";
+import { UserStats } from "../../../types";
 
 type Props = {
-    userDashboardProps: {
-        index: number,
-        eta: number,
-        waited: number,
-        avg: number,
-    }
+    userDashboardProps: UserStats
 }
 
 export default function (props: Props) {

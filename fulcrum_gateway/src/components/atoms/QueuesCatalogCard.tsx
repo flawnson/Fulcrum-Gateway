@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Pressable,
         GestureResponderEvent, Animated,
         PanResponder, Dimensions } from "react-native";
@@ -7,25 +7,32 @@ import {
     Box, Center,
     Avatar, View
 } from 'native-base';
+import { QueueInfo } from "../../../types";
 
 type QueuesCatalogProps = {
-    'onPress': (event: GestureResponderEvent) => void,
-    'onLongPress': (event: GestureResponderEvent) => void,
-    'selected': boolean,
-    'entity': {
-        queueId: string,
-        name: string,
-        lifespan: number,
-        state: string,
-    }
+    onPress: (event: GestureResponderEvent) => void,
+    onLongPress: (event: GestureResponderEvent) => void,
+    deSelectItems: () => void,
+    selected: boolean,
+    modified: string,
+    entity: QueueInfo
 }
 
 export default function (props: QueuesCatalogProps) {
     const [online, setOnline] = useState<boolean>(true)
 
+    // useEffect(() => {
+    //     setOnline(props.entity.state === "ACTIVE")
+    // }, [props])
+
     useEffect(() => {
-        setOnline(props.entity.state === "ACTIVE")
-    }, [props])
+        if (props.modified === "PAUSED") {
+            setOnline(!online)
+        } else if (props.modified === "INACTIVE") {
+            setOnline(!online)
+        }
+        props.deSelectItems()
+    }, [props.modified])
 
     const pan = useRef(new Animated.ValueXY()).current;
 

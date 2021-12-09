@@ -22,3 +22,56 @@ export type RootStackParamList = {
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'HomePage'>;
 export type HomeNavigationProps = NativeStackNavigationProp<RootStackParamList, 'HomePage'>;
 export type HomeScreenRouteProps = RouteProp<RootStackParamList, 'HomePage'>;
+
+
+/*** ENQUEUED CATALOG PAGE TYPES ***/
+
+export type EnqueuedStats = {
+    userId: string,
+    name: string,
+    online: boolean,
+    index: number,
+    waited: number,
+    state: string
+}
+
+
+/*** USER DASHBOARD TYPES ***/
+
+export type UserStats = {
+    index: number,
+    eta: number,
+    waited: number,
+    avg: number,
+}
+
+
+/*** USER DASHBOARD TYPES ***/
+
+export type AbandonedStats = {
+    userId: string,
+    name: string,
+    waited: number,
+}
+
+
+/*** QUEUE DASHBOARD TYPES ***/
+
+export type QueueStats = {
+    'enqueued': number,
+    'serviced': number,
+    'deferrals': number,
+    'avg': number,
+    'abandoned': number,
+    'noshow': number,
+}
+
+
+/*** QUEUES CATALOG PAGE TYPES ***/
+
+export type QueueInfo = {
+    queueId: string,
+    name: string,
+    lifespan: number,
+    state: string,
+}

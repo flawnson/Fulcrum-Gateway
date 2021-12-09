@@ -8,25 +8,19 @@ import { HStack, Text,
         Center, Avatar } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
+import { EnqueuedStats } from "../../../types";
 
 type EnqueuedCatalogProps = {
     onPress: (event: GestureResponderEvent) => void,
     onLongPress: (event: GestureResponderEvent) => void,
-    deSelectItems: Function,
+    deSelectItems: () => void,
     selected: boolean,
     modified: string,
-    entity: {
-        userId: string,
-        name: string,
-        index: number,
-        waited: number,
-        state: string
-    },
+    entity: EnqueuedStats,
 }
 
 export default function (props: EnqueuedCatalogProps) {
     const [summoned, setSummoned] = useState<boolean>(false)
-    const [online, setOnline] = useState<boolean>(true)
 
     const pan = useRef(new Animated.ValueXY()).current;
 
@@ -130,7 +124,7 @@ export default function (props: EnqueuedCatalogProps) {
                     <Pressable onPress={props.onPress} delayLongPress={500} onLongPress={props.onLongPress}>
                         <HStack space='5' style={styles.group}>
                             <Avatar style={styles.icon} source={require("../../assets/images/generic-user-icon.jpg")}>
-                                <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
+                                <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>
                             </Avatar>
                             <Text suppressHighlighting={true} style={styles.text}>
                                 {props.entity.name}
