@@ -4,7 +4,7 @@ import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import EnqueuedMultiSelectButtons from "../../containers/EnqueuedMultiSelectButtons"
+import UserMultiSelectButtons from "../../containers/EnqueuedMultiSelectButtons"
 import { EnqueuedStats } from "../../../types";
 
 
@@ -16,7 +16,6 @@ type EnqueuedStatsProps = {
 
 export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const parentNavigation = navigation.getParent()
     const [action, setAction] = useState<State>("ENQUEUED")
     const [selectedItems, setSelectedItems] = useState<Array<string>>([])
 
@@ -34,9 +33,7 @@ export default function (props: EnqueuedStatsProps) {
     // To remove header when organizer deselects all users
     useEffect(() => {
         if (selectedItems.length === 0) {
-            if (parentNavigation) {
-                parentNavigation.setOptions({headerRight: undefined})
-            }
+            navigation.setOptions({headerRight: undefined})
         }
     }, [selectedItems])
 
@@ -58,9 +55,7 @@ export default function (props: EnqueuedStatsProps) {
     }
 
     const selectItems = (item: EnqueuedStats) => {
-        if (parentNavigation) {
-            parentNavigation.setOptions({headerRight: () => <EnqueuedMultiSelectButtons onActionPress={onActionPress} />})
-        }
+        navigation.setOptions({headerRight: (props) => <UserMultiSelectButtons onActionPress={onActionPress} />})
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(

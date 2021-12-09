@@ -36,42 +36,22 @@ export type EnqueuedStats = {
 }
 
 
-/*** SERVICED CATALOG PAGE TYPES ***/
+/*** USER DASHBOARD TYPES ***/
 
-export type ServicedStats = {
-    userId: string,
-    name: string,
-    reneged: number,
-    state: string
-}
-
-
-/*** ABANDONED CATALOG PAGE TYPES ***/
-
-export type AbandonedStats = {
-    userId: string,
-    name: string,
+export type UserStats = {
+    index: number,
+    eta: number,
     waited: number,
-    state: string
-}
-
-
-/*** QUEUES CATALOG PAGE TYPES ***/
-
-export type QueueInfo = {
-    queueId: string,
-    name: string,
-    lifespan: number,
-    state: string,
+    avg: number,
 }
 
 
 /*** USER DASHBOARD TYPES ***/
 
-export type UserStat = {
-    "prefix": string,
-    "stat": number,
-    "suffix": string,
+export type AbandonedStats = {
+    userId: string,
+    name: string,
+    waited: number,
 }
 
 
@@ -84,4 +64,14 @@ export type QueueStats = {
     'avg': number,
     'abandoned': number,
     'noshow': number,
+}
+
+
+/*** QUEUES CATALOG PAGE TYPES ***/
+
+export type QueueInfo = {
+    queueId: string,
+    name: string,
+    lifespan: number,
+    state: string,
 }

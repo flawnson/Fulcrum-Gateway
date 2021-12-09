@@ -4,8 +4,13 @@ import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import { ServicedStats } from "../../../types";
 
+
+type ServicedStats = {
+    userId: number,
+    name: string,
+    reneged: number,
+}
 
 type ServicedStatsProps = {
     'entities': Array<ServicedStats>
@@ -14,7 +19,7 @@ type ServicedStatsProps = {
 export default function (props: ServicedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
-    const [selectedItems, setSelectedItems] = useState<Array<string>>([])
+    const [selectedItems, setSelectedItems] = useState<Array<number>>([])
 
     // To remove header when organizer deselects all users
     useEffect(() => {
@@ -43,7 +48,7 @@ export default function (props: ServicedStatsProps) {
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(
-                (listItem: string) => listItem !== item.userId,
+                (listItem: number) => listItem !== item.userId,
             )
             return setSelectedItems([...newListItems])
         }

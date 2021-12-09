@@ -1,7 +1,6 @@
 import React from 'react'
 import { HStack, Button,
         Text } from "native-base";
-import {StyleSheet} from "react-native";
 
 type MultiSelectButtonType = {
     onActionPress: Function
@@ -9,29 +8,10 @@ type MultiSelectButtonType = {
 
 export default function (props: MultiSelectButtonType) {
     return (
-        <Button.Group
-            mx={{
-                base: "auto",
-                md: 0,
-            }}
-        >
-            <Button style={styles.button} onPress={() => props.onActionPress("KICKED")}>
-                <Text bold color={'white'}>Kick Queuers</Text>
-            </Button>
-            <Button style={styles.button} onPress={() => props.onActionPress("SUMMONED")}>
-                <Text bold color={'white'}>Toggle Summon</Text>
-            </Button>
-            <Button style={styles.button} onPress={() => props.onActionPress("SERVICED")}>
-                <Text bold color={'white'}>Service Queuers</Text>
-            </Button>
-        </Button.Group>
+        <HStack>
+            <Button onPress={() => props.onActionPress("KICKED")}><Text>Kick Queuers</Text></Button>
+            <Button onPress={() => props.onActionPress("SUMMONED")}><Text>Summon Queuers</Text></Button>
+            <Button onPress={() => props.onActionPress("SERVICED")}><Text>Service Queuers</Text></Button>
+        </HStack>
     )
 }
-
-
-const styles = StyleSheet.create({
-    button: {
-        marginHorizontal: 10,
-    },
-})
-

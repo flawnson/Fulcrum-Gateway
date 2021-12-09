@@ -8,11 +8,11 @@ import MultiSelectButtons from "../../containers/QueueMultiSelectButtons";
 
 type State = "ACTIVE" | "PAUSED" | "INACTIVE"
 
-type QueuesStatsProps = {
+type ActiveQueuesStatsProps = {
     'entities': Array<QueueInfo>
 }
 
-export default function (props: QueuesStatsProps) {
+export default function (props: ActiveQueuesStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [action, setAction] = useState<State>("ACTIVE")
     const [selectedItems, setSelectedItems] = useState<Array<string>>([])
