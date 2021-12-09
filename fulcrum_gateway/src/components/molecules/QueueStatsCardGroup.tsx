@@ -1,17 +1,11 @@
 import React from 'react';
 import DashboardStatsCard from "../atoms/DashboardStatsCard";
-import {View, SimpleGrid} from "native-base";
-import {StyleSheet} from "react-native";
+import { View, SimpleGrid } from "native-base";
+import { StyleSheet } from "react-native";
+import { QueueStats } from "../../../types";
 
 
-type OrganizerStatsProps = {
-    'enqueued': number,
-    'serviced': number,
-    'deferrals': number,
-    'avg': number,
-    'abandoned': number,
-    'noshow': number
-}
+type OrganizerStatsProps = QueueStats
 
 export default function (props: OrganizerStatsProps) {
     const OrganizerStatCards = Object.entries(props).map(([key, queuerStat]) =>

@@ -2,16 +2,10 @@ import React from 'react';
 import DashboardStatsCard from "../atoms/DashboardStatsCard";
 import {View, SimpleGrid} from "native-base";
 import {StyleSheet} from "react-native";
+import {UserStats} from "../../../types";
 
 
-type userStatsProps = {
-    index: number,
-    eta: number,
-    waited: number,
-    avg: number,
-}
-
-export default function (props: userStatsProps) {
+export default function (props: UserStats) {
     const organizerStatCards = Object.entries(props).map(([key, userStat]) =>
         <DashboardStatsCard key={key} stat={userStat}/>)
 

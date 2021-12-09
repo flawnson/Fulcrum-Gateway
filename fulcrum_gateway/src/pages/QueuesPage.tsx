@@ -1,22 +1,16 @@
-import React, {SetStateAction, useEffect, useState} from "react"
+import React, { SetStateAction, useEffect, useState } from "react"
 import ActiveQueuesCatalogCardGroup from "../components/molecules/QueuesCatalogCardGroup"
 import { Fab, Icon } from "native-base"
 import { AntDesign } from "@expo/vector-icons"
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
-import {Queue} from "../../prisma/generated/type-graphql";
+import { QueueInfo } from "../../types";
 
-type QueueStats = {
-    queueId: string,  // Actually a string...
-    name: string,
-    lifespan: number,
-    state: string,
-}
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const [props, setProps] = useState<QueueStats[]>([])
+    const [props, setProps] = useState<QueueInfo[]>([])
 
     const [showModal, setShowModal] = useState(false);
 
@@ -46,13 +40,13 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.organizer.queues
-                    let queue_sats: QueueStats[] = []
+                    let queue_sats: QueueInfo[] = []
                     data.forEach((queue_data: any) => {
                         const now: any = new Date()
                         const create: any = new Date(queue_data.create_time)
                         const lifespan = new Date(Math.abs(now - create))
                         queue_data.lifespan = `${Math.floor(lifespan.getMinutes())}`
-                        const stats: SetStateAction<QueueStats | any> = Object.fromEntries([
+                        const stats: SetStateAction<QueueInfo | any> = Object.fromEntries([
                             "queueId",
                             "name",
                             "state",
