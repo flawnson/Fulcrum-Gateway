@@ -4,7 +4,6 @@ import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import MultiSelectButtons from "../../containers/UserMultiSelectButtons"
 
 
 type ServicedStats = {
@@ -46,8 +45,6 @@ export default function (props: ServicedStatsProps) {
     }
 
     const selectItems = (item: ServicedStats) => {
-        navigation.setOptions({headerRight: (props) => <MultiSelectButtons {...props} /> })
-        console.log(selectedItems)
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(

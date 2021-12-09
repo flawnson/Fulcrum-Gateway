@@ -13,7 +13,6 @@ const Tab = createBottomTabNavigator();
 export default function QueueDashboardTabs() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
-    // Need to hide header for main Navigator so we can show header in Tab Navigator
     useLayoutEffect(() => {
         navigation.setOptions({headerShown: true})
     });
@@ -40,7 +39,7 @@ export default function QueueDashboardTabs() {
                 },
                 tabBarActiveTintColor: '#8743FF',
                 tabBarInactiveTintColor: 'gray',
-                headerShown: true,
+                headerShown: false,
                 headerBackVisible: true
             })}
         >

@@ -4,23 +4,14 @@ import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import UserMultiSelectButtons from "../../containers/UserMultiSelectButtons"
-import {onLeftSwipe} from "../../utilities/swipeAnimation";
+import UserMultiSelectButtons from "../../containers/EnqueuedMultiSelectButtons"
+import { EnqueuedStats } from "../../../types";
 
 
 type State = "ENQUEUED" | "KICKED" | "SERVICED" | "SUMMONED"
 
-type Entity = {
-    userId: string,  // Actually a string rn...
-    name: string,
-    online: boolean,
-    index: number,
-    waited: number,
-    state: string
-}
-
 type EnqueuedStatsProps = {
-    entities: Array<Entity>
+    entities: Array<EnqueuedStats>
 }
 
 export default function (props: EnqueuedStatsProps) {
@@ -32,7 +23,7 @@ export default function (props: EnqueuedStatsProps) {
         setAction(action)
     }
 
-    const getModified = (item: Entity) => {
+    const getModified = (item: EnqueuedStats) => {
         if (getSelected(item)) {
             return action
         }
@@ -46,7 +37,7 @@ export default function (props: EnqueuedStatsProps) {
         }
     }, [selectedItems])
 
-    const handleOnPress = (item: Entity) => {
+    const handleOnPress = (item: EnqueuedStats) => {
         if (selectedItems.length) {
             return selectItems(item)
         }
@@ -55,7 +46,7 @@ export default function (props: EnqueuedStatsProps) {
         navigation.navigate("UserDashboard")
     }
 
-    const getSelected = (item: Entity) => selectedItems.includes(item.userId)
+    const getSelected = (item: EnqueuedStats) => selectedItems.includes(item.userId)
 
     const deSelectItems = () => {
         setAction("ENQUEUED")
@@ -63,7 +54,7 @@ export default function (props: EnqueuedStatsProps) {
         navigation.setOptions({headerRight: undefined})
     }
 
-    const selectItems = (item: Entity) => {
+    const selectItems = (item: EnqueuedStats) => {
         navigation.setOptions({headerRight: (props) => <UserMultiSelectButtons onActionPress={onActionPress} />})
 
         if (selectedItems.includes(item.userId)) {

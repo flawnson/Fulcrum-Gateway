@@ -7,20 +7,12 @@ import QueueDashboardGroup from "../components/organisms/QueueDashboardStats";
 import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval";
 import { zipObject } from "lodash"
+import { QueueStats } from "../../types";
 
 type UserData = {
     user_id: string,
     join_time: Date,
     state: string,
-}
-
-type CardStats = {
-    'enqueued': number,
-    'serviced': number,
-    'deferrals': number,
-    'avg': number,
-    'abandoned': number,
-    'noshow': number,
 }
 
 
@@ -63,7 +55,7 @@ export default function () {
                     for (const state of states) {
                         counts.push(data.filter((user: UserData) => {return user.state === state}).length)
                     }
-                    const stats: SetStateAction<CardStats | any> = zipObject(states.map(state => state.toLowerCase()), counts)
+                    const stats: SetStateAction<QueueStats | any> = zipObject(states.map(state => state.toLowerCase()), counts)
                     const now: any = new Date()
                     let lifespans: Array<number> = []
                     for (const user of data) {
