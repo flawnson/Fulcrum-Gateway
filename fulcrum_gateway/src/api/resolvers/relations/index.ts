@@ -1,1 +1,1 @@
-export { CustomOrganizerResolver } from "./Organizer/CustomOrganizerResolver";
+export { CustomQueueResolver } from "./Queue/CustomQueueResolver";
