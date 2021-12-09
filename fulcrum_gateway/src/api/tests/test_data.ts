@@ -47,6 +47,21 @@ export let user_table = [
     average_wait: 69,
     join_time: pastDate,
     reneged_time: futureDate
+  },
+  {
+    id: "user3",
+    name: "Funny name",
+    queue_id: "costco_queue1",
+    online: true,
+    summoned: false,
+    phone_number: "4169671111",
+    party_size: 100,
+    last_online: nowDate,
+    index: 4,
+    estimated_wait: -100,
+    average_wait: -10,
+    join_time: pastDate,
+    reneged_time: futureDate
   }
 ];
 
@@ -62,7 +77,8 @@ export let queue_table = [
     max_party_size: 4,
     offline_time: 5,
     enqueued: [
-      "user0"
+      "user0",
+      "user3"
     ],
     serviced: [],
     deferred: [],

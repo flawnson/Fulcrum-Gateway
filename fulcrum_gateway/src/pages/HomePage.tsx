@@ -5,7 +5,7 @@ import {StyleSheet,
         TouchableHighlight} from 'react-native'
 import { View } from 'native-base'
 import EnqueueGroup from "../components/molecules/EnqueueGroup";
-import QRCodeScanner from "../components/atoms/QRCodeScanner";
+import QRCodeScanner from "../components/organisms/QRCodeScanner";
 import { PreferencesContext } from "../utilities/useTheme";
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";

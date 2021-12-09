@@ -5,17 +5,17 @@ import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigati
 export type RootStackParamList = {
     HomePage: undefined;
     LandingPage: undefined;
-    QueuerDashboard: undefined;
-    OrganizerDashboard: undefined;
-    OrganizerDashboardTabs: undefined;
+    UserDashboard: undefined;
+    QueueDashboard: undefined;
+    QueueDashboardTabs: undefined;
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
     ShareScreen: undefined
     SignUp: undefined;
     EndScreen: undefined;
     SummonScreen: undefined;
-    EnqueuedQueuersPage: undefined;
-    ActiveQueuesPage: undefined;
+    EnqueuedPage: undefined;
+    QueuesPage: undefined;
     QRCodeScanner: undefined;
 };
 

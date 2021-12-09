@@ -4,11 +4,11 @@ import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
-import MultiSelectButtons from "../atoms/MultiSelectButtons"
+import MultiSelectButtons from "../../containers/UserMultiSelectButtons"
 
 
 type AbandonedStats = {
-    queuerId: number,
+    userId: string,
     name: string,
     waited: number,
 }
@@ -20,9 +20,9 @@ type AbandonedStatsProps = {
 export default function (props: AbandonedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
-    const [selectedItems, setSelectedItems] = useState<Array<number>>([])
+    const [selectedItems, setSelectedItems] = useState<Array<string>>([])
 
-    // To remove header when organizer deselects all queuers
+    // To remove header when organizer deselects all users
     useEffect(() => {
         if (selectedItems.length === 0) {
             navigation.setOptions({headerRight: undefined})
@@ -35,10 +35,10 @@ export default function (props: AbandonedStatsProps) {
         }
 
         // here you can add you code what do you want if user just do single tap
-        navigation.navigate("QueuerDashboard")
+        navigation.navigate("UserDashboard")
     }
 
-    const getSelected = (item: AbandonedStats) => selectedItems.includes(item.queuerId)
+    const getSelected = (item: AbandonedStats) => selectedItems.includes(item.userId)
 
     const deSelectItems = () => {
         setSelectedItems([])
@@ -48,21 +48,21 @@ export default function (props: AbandonedStatsProps) {
     const selectItems = (item: AbandonedStats) => {
         navigation.setOptions({headerRight: (props) => <MultiSelectButtons {...props} /> })
 
-        if (selectedItems.includes(item.queuerId)) {
+        if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(
-                (listItem: number) => listItem !== item.queuerId,
+                (listItem: string) => listItem !== item.userId,
             )
             return setSelectedItems([...newListItems])
         }
-        setSelectedItems([...selectedItems, item.queuerId])
+        setSelectedItems([...selectedItems, item.userId])
     }
 
-    const OrganizerStatCards = Object.entries(props.entities).map(([key, queuerStat]) =>
+    const OrganizerStatCards = Object.entries(props.entities).map(([key, userStat]) =>
         <AbandonedCatalogCard key={key}
-                              onPress={() => handleOnPress(queuerStat)}
-                              onLongPress={() => selectItems(queuerStat)}
-                              selected={getSelected(queuerStat)}
-                              entity={queuerStat}/>)
+                              onPress={() => handleOnPress(userStat)}
+                              onLongPress={() => selectItems(userStat)}
+                              selected={getSelected(userStat)}
+                              entity={userStat}/>)
 
     return (
         <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>

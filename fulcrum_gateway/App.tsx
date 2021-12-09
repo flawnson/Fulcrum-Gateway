@@ -8,19 +8,19 @@ import SummonScreen from "./src/screens/SummonScreen";
 import EndScreen from "./src/screens/EndScreen"
 import ShareScreen from "./src/screens/ShareScreen"
 import AbandonedScreen from "./src/screens/AbandonedScreen";
-import QueuerDashboard from "./src/pages/QueuerDashboard";
+import UserDashboard from "./src/pages/UserDashboard";
 import CreateQueuePage from "./src/pages/CreateQueuePage";
 import LandingPage from "./src/screens/LandingPage";
 import { RootStackParamList } from "./types";
 import { nativebaseTheme, navigationTheme } from "./theme";
 import { registerRootComponent } from 'expo';
-import ActiveQueuesPage from "./src/pages/ActiveQueuesPage";
-import EnqueuedQueuersPage from "./src/pages/EnqueuedQueuersPage";
-import OrganizerDashboardTabs from "./src/pages/OrganizerDashboardTabs"
-import QRCodeScanner from "./src/components/atoms/QRCodeScanner"
+import QueuesPage from "./src/pages/QueuesPage";
+import EnqueuedPage from "./src/pages/EnqueuedPage";
+import QueueDashboardTabs from "./src/pages/QueueDashboardTabs"
+import QRCodeScanner from "./src/components/organisms/QRCodeScanner"
 import './i18n';
 import { PreferencesContext } from "./src/utilities/useTheme";
-import OrganizerDashboard from "./src/pages/OrganizerDashboard";
+import QueueDashboard from "./src/pages/QueueDashboard";
 
 const config: object = {
     strictMode: 'off',
@@ -56,10 +56,10 @@ function App() {
                         <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe" }} >
                             {isInQueue && isQueuer ? (
                             <>
-                                <Stack.Screen name="HomePage" component={ActiveQueuesPage} />
+                                <Stack.Screen name="HomePage" component={QueuesPage} />
                                 <Stack.Screen name="LandingPage" component={LandingPage} />
-                                <Stack.Screen name="QueuerDashboard" component={QueuerDashboard} />
-                                <Stack.Screen name="OrganizerDashboardTabs" component={OrganizerDashboardTabs} />
+                                <Stack.Screen name="UserDashboard" component={UserDashboard} />
+                                <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                 <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
                                 <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                 <Stack.Screen name="SummonScreen" component={SummonScreen} />
@@ -67,12 +67,12 @@ function App() {
                             </>
                             ) : isInQueue && isOrganizer ? (
                                 <>
-                                    <Stack.Screen name="HomePage" component={OrganizerDashboardTabs} />
+                                    <Stack.Screen name="HomePage" component={QueueDashboardTabs} />
                                     <Stack.Screen name="LandingPage" component={LandingPage} />
                                     <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
-                                    <Stack.Screen name="OrganizerDashboard" component={OrganizerDashboardTabs} />
-                                    <Stack.Screen name="EnqueuedQueuersPage" component={EnqueuedQueuersPage} />
-                                    <Stack.Screen name="ActiveQueuesPage" component={ActiveQueuesPage} />
+                                    <Stack.Screen name="QueueDashboard" component={QueueDashboardTabs} />
+                                    <Stack.Screen name="EnqueuedPage" component={EnqueuedPage} />
+                                    <Stack.Screen name="QueuesPage" component={QueuesPage} />
                                     <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                     <Stack.Screen name="EndScreen" component={EndScreen} />
                                 </>
