@@ -1,12 +1,7 @@
 import React, {SetStateAction, useEffect, useState} from "react";
 import CatalogEntityCardGroup from "../components/molecules/AbandonedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
-
-type AbandonedStats = {
-    userId: number,
-    name: string,
-    waited: number,
-}
+import { AbandonedStats } from "../../types";
 
 export default function () {
     const [props, setProps] = useState<AbandonedStats[]>([])

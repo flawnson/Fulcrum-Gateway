@@ -1,15 +1,8 @@
-import React, {SetStateAction, useEffect, useState} from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import EnqueuedCatalogCardGroup from "../components/molecules/EnqueuedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
+import { EnqueuedStats } from "../../types";
 
-type EnqueuedStats = {
-    userId: string,
-    name: string,
-    online: boolean,
-    index: number,
-    waited: number,
-    state: string
-}
 
 export default function () {
     const [props, setProps] = useState<EnqueuedStats[]>([])

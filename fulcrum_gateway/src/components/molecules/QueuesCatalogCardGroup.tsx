@@ -3,25 +3,30 @@ import QueuesCatalogCard from "../atoms/QueuesCatalogCard";
 import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps } from "../../../types";
+import { HomeScreenProps, QueueInfo } from "../../../types";
 import MultiSelectButtons from "../../containers/QueueMultiSelectButtons";
 
-
-type QueueStats = {
-    queueId: string,
-    name: string,
-    lifespan: number,
-    state: string,
-}
+type State = "ACTIVE" | "PAUSED" | "INACTIVE"
 
 type ActiveQueuesStatsProps = {
-    'entities': Array<QueueStats>
+    'entities': Array<QueueInfo>
 }
 
 export default function (props: ActiveQueuesStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-
+    const [action, setAction] = useState<State>("ACTIVE")
     const [selectedItems, setSelectedItems] = useState<Array<string>>([])
+
+    function onActionPress (action: State) {
+        setAction(action)
+    }
+
+    const getModified = (item: QueueInfo) => {
+        if (getSelected(item)) {
+            return action
+        }
+        return "ACTIVE"
+    }
 
     // To remove header when organizer deselects all queues
     useEffect(() => {
@@ -30,7 +35,7 @@ export default function (props: ActiveQueuesStatsProps) {
         }
     }, [selectedItems])
 
-    const handleOnPress = (item: QueueStats) => {
+    const handleOnPress = (item: QueueInfo) => {
         if (selectedItems.length) {
             return selectItems(item)
         }
@@ -39,32 +44,33 @@ export default function (props: ActiveQueuesStatsProps) {
         navigation.navigate("QueueDashboardTabs")
     }
 
-    const getSelected = (item: QueueStats) => selectedItems.includes(item.queueId)
+    const getSelected = (item: QueueInfo) => selectedItems.includes(item.queueId)
 
     const deSelectItems = () => {
         setSelectedItems([])
+        setAction("ACTIVE")
         navigation.setOptions({headerRight: undefined})
     }
 
-    const selectItems = (item: QueueStats) => {
-        navigation.setOptions({headerRight: (props) => <MultiSelectButtons {...props} /> })
+    const selectItems = (item: QueueInfo) => {
+        navigation.setOptions({headerRight: (props) => <MultiSelectButtons onActionPress={onActionPress} /> })
 
         if (selectedItems.includes(item.queueId)) {
             const newListItems = selectedItems.filter(
                 (listItem: string) => listItem !== item.queueId,
             )
             return setSelectedItems([...newListItems])
-            console.log(newListItems)
         }
         setSelectedItems([...selectedItems, item.queueId])
-        console.log(selectedItems)
     }
 
     const OrganizerStatCards = Object.entries(props.entities).map(([key, queueStat]) =>
         <QueuesCatalogCard key={key}
                            onPress={() => handleOnPress(queueStat)}
                            onLongPress={() => selectItems(queueStat)}
+                           deSelectItems={deSelectItems}
                            selected={getSelected(queueStat)}
+                           modified={getModified(queueStat)}
                            entity={queueStat}/>)
 
     return (

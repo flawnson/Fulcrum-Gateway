@@ -3,15 +3,8 @@ import AbandonedCatalogCard from "../atoms/AbandonedCatalogCard";
 import { View, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps } from "../../../types";
-import MultiSelectButtons from "../../containers/UserMultiSelectButtons"
+import { HomeScreenProps, AbandonedStats } from "../../../types";
 
-
-type AbandonedStats = {
-    userId: string,
-    name: string,
-    waited: number,
-}
 
 type AbandonedStatsProps = {
     'entities': Array<AbandonedStats>
@@ -46,7 +39,6 @@ export default function (props: AbandonedStatsProps) {
     }
 
     const selectItems = (item: AbandonedStats) => {
-        navigation.setOptions({headerRight: (props) => <MultiSelectButtons {...props} /> })
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(
