@@ -29,20 +29,20 @@ export class UserWhereInput {
   })
   NOT?: UserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
+  @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  id?: IntFilter | undefined;
+  id?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
   name?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
+  @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  queue_id?: IntFilter | undefined;
+  queue_id?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => BoolFilter, {
     nullable: true
@@ -98,4 +98,9 @@ export class UserWhereInput {
     nullable: true
   })
   queue?: QueueRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => IntFilter, {
+    nullable: true
+  })
+  total_wait?: IntFilter | undefined;
 }

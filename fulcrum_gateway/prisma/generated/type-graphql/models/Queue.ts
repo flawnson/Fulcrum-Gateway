@@ -11,15 +11,15 @@ import { QueueCount } from "../resolvers/outputs/QueueCount";
   isAbstract: true
 })
 export class Queue {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  id!: number;
+  id!: string;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  organizer_id!: number;
+  organizer_id!: string;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false
@@ -69,6 +69,11 @@ export class Queue {
   organizer?: Organizer;
 
   users?: User[];
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
+  average_wait!: number;
 
   @TypeGraphQL.Field(_type => QueueCount, {
     nullable: false

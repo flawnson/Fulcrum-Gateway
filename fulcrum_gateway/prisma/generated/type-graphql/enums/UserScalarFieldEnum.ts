@@ -13,7 +13,8 @@ export enum UserScalarFieldEnum {
   estimated_wait = "estimated_wait",
   join_time = "join_time",
   reneged_time = "reneged_time",
-  state = "state"
+  state = "state",
+  total_wait = "total_wait"
 }
 TypeGraphQL.registerEnumType(UserScalarFieldEnum, {
   name: "UserScalarFieldEnum",

@@ -27,15 +27,15 @@ export class QueueScalarWhereWithAggregatesInput {
   })
   NOT?: QueueScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => IntWithAggregatesFilter, {
+  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
-  id?: IntWithAggregatesFilter | undefined;
+  id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntWithAggregatesFilter, {
+  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
-  organizer_id?: IntWithAggregatesFilter | undefined;
+  organizer_id?: StringWithAggregatesFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
     nullable: true
@@ -81,4 +81,9 @@ export class QueueScalarWhereWithAggregatesInput {
     nullable: true
   })
   create_time?: DateTimeWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => IntWithAggregatesFilter, {
+    nullable: true
+  })
+  average_wait?: IntWithAggregatesFilter | undefined;
 }

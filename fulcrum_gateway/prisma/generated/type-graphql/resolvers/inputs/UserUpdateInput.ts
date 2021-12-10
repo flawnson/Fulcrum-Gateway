@@ -17,6 +17,11 @@ export class UserUpdateInput {
   @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
     nullable: true
   })
+  id?: StringFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+    nullable: true
+  })
   name?: StringFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => BoolFieldUpdateOperationsInput, {
@@ -68,6 +73,11 @@ export class UserUpdateInput {
     nullable: true
   })
   state?: EnumUserStatusFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  total_wait?: IntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => QueueUpdateOneRequiredWithoutUsersInput, {
     nullable: true

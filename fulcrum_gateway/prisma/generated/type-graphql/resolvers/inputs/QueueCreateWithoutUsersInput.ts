@@ -10,6 +10,11 @@ import { QueueState } from "../../enums/QueueState";
 })
 export class QueueCreateWithoutUsersInput {
   @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  id?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
   join_code!: string;
@@ -53,6 +58,11 @@ export class QueueCreateWithoutUsersInput {
     nullable: false
   })
   create_time!: Date;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
+  average_wait!: number;
 
   @TypeGraphQL.Field(_type => OrganizerCreateNestedOneWithoutQueuesInput, {
     nullable: false

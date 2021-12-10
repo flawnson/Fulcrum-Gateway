@@ -21,7 +21,7 @@ model Organizer {
 
 model Queue {
   id             String        @id @default(uuid())
-  organizer_id   Int
+  organizer_id   String
   join_code      String
   name           String
   address        String
@@ -33,12 +33,13 @@ model Queue {
   create_time    DateTime
   organizer      Organizer  @relation("queues_in_organizer", fields: [organizer_id], references: [id])
   users          User[]     @relation("users_in_queue")
+  average_wait   Int
 }
 
 model User {
   id             String        @id @default(uuid())
   name           String
-  queue_id       Int
+  queue_id       String
   summoned       Boolean    @default(false)
   password       String?
   phone_number   String
@@ -50,6 +51,7 @@ model User {
   reneged_time   DateTime?
   state          UserStatus
   queue          Queue      @relation("users_in_queue", fields: [queue_id], references: [id])
+  total_wait     Int
 }
 
 enum QueueState {

@@ -10,16 +10,6 @@ export class UserAvgAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
     nullable: true
   })
-  id!: number | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
-  })
-  queue_id!: number | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
-  })
   party_size!: number | null;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
@@ -31,4 +21,9 @@ export class UserAvgAggregate {
     nullable: true
   })
   estimated_wait!: number | null;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: true
+  })
+  total_wait!: number | null;
 }
