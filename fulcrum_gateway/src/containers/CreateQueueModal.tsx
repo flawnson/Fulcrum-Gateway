@@ -17,7 +17,15 @@ export default function (props: CreateQueueModalProps) {
 
     return (
         <Modal isOpen={props.showModal} onClose={() => props.setShowModal(false)}>
+            <Modal.Content maxWidth="400px">
+                <Modal.CloseButton />
+                <Modal.Header>Create a Queue</Modal.Header>
+                <Modal.Body>
             <CreateQueueForm route={route} navigation={navigation}/>
+            </Modal.Body>
+            <Modal.Footer>
+            </Modal.Footer>
+            </Modal.Content>
         </Modal>
     )
 }

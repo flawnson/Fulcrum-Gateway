@@ -1,8 +1,8 @@
-import React, {SetStateAction, useState} from 'react'
-import {useNavigation} from "@react-navigation/native";
-import {HomeScreenProps} from "../../types";
-import {StyleSheet} from 'react-native'
-import {Center, Heading, Text, Image} from "native-base";
+import React, { SetStateAction, useState } from 'react'
+import { useNavigation } from "@react-navigation/native";
+import { HomeScreenProps } from "../../types";
+import { StyleSheet } from 'react-native'
+import { Center, Heading, Text, Image } from "native-base";
 import QueueDashboardGroup from "../components/organisms/QueueDashboardStats";
 import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval";
@@ -18,15 +18,15 @@ type UserData = {
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const tempProps = {
-        'enqueued': 35,
-        'serviced': 22,
-        'deferrals': 8,
-        'avg': 12,
-        'abandoned': 2,
+    const defaultProps = {
+        'enqueued': 0,
+        'serviced': 0,
+        'deferrals': 0,
+        'avg': 0,
+        'abandoned': 0,
         'noshow': 0
     }
-    const [props, setProps] = useState(tempProps)
+    const [props, setProps] = useState(defaultProps)
     const query = `
         query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
             queue(where: $queue_id) {
