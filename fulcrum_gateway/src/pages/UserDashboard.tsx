@@ -10,16 +10,16 @@ import useInterval from "../utilities/useInterval";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const tempProps = {
+    const defaultProps = {
         name: "Someone",
         stats: {
-            index: 3,
-            eta: 15,
-            waited: 5,
-            avg: 10,
+            index: 0,
+            eta: 0,
+            waited: 0,
+            avg: 0,
         },
     }
-    const [props, setProps] = useState(tempProps)
+    const [props, setProps] = useState(defaultProps)
 
     const query = `
         query get_stats($user_id: UserWhereUniqueInput!) {
