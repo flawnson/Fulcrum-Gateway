@@ -13,14 +13,14 @@ datasource db {
 }
 
 model Organizer {
-  id       Int     @id @default(autoincrement())
+  id       String     @id @default(uuid())
   name     String
   password String?
-  queues   Queue[]
+  queues   Queue[]  @relation("queues_in_organizer")
 }
 
 model Queue {
-  id             Int        @id @default(autoincrement())
+  id             String        @id @default(uuid())
   organizer_id   Int
   join_code      String
   name           String
@@ -31,12 +31,12 @@ model Queue {
   grace_period   Int?
   offline_time   Int?
   create_time    DateTime
-  organizer      Organizer  @relation(fields: [organizer_id], references: [id])
+  organizer      Organizer  @relation("queues_in_organizer", fields: [organizer_id], references: [id])
   users          User[]     @relation("users_in_queue")
 }
 
 model User {
-  id             Int        @id @default(autoincrement())
+  id             String        @id @default(uuid())
   name           String
   queue_id       Int
   summoned       Boolean    @default(false)
