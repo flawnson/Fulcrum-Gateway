@@ -35,6 +35,110 @@ export class CustomQueueResolver {
     });
 
     return result!.users.length;
+  }
 
+  @FieldResolver(type => Int)
+  async num_serviced(
+    @Root() queue: Queue,
+    @Ctx() { prisma }: Context,
+  ): Promise<number> {
+    const result = await prisma.queue.findUnique({
+      where: {
+        id: queue.id
+      },
+      select: {
+        users: {
+          where: {
+            state: "SERVICED"
+          }
+        }
+      }
+    });
+
+    return result!.users.length;
+  }
+
+  @FieldResolver(type => Int)
+  async num_abandoned(
+    @Root() queue: Queue,
+    @Ctx() { prisma }: Context,
+  ): Promise<number> {
+    const result = await prisma.queue.findUnique({
+      where: {
+        id: queue.id
+      },
+      select: {
+        users: {
+          where: {
+            state: "ABANDONED"
+          }
+        }
+      }
+    });
+
+    return result!.users.length;
+  }
+
+  @FieldResolver(type => Int)
+  async num_kicked(
+    @Root() queue: Queue,
+    @Ctx() { prisma }: Context,
+  ): Promise<number> {
+    const result = await prisma.queue.findUnique({
+      where: {
+        id: queue.id
+      },
+      select: {
+        users: {
+          where: {
+            state: "KICKED"
+          }
+        }
+      }
+    });
+
+    return result!.users.length;
+  }
+
+  @FieldResolver(type => Int)
+  async num_deferred(
+    @Root() queue: Queue,
+    @Ctx() { prisma }: Context,
+  ): Promise<number> {
+    const result = await prisma.queue.findUnique({
+      where: {
+        id: queue.id
+      },
+      select: {
+        users: {
+          where: {
+            state: "DEFERRED"
+          }
+        }
+      }
+    });
+
+    return result!.users.length;
+  }
+
+  @FieldResolver(type => Int)
+  async num_noshow(
+    @Root() queue: Queue,
+    @Ctx() { prisma }: Context,
+  ): Promise<number> {
+    const result = await prisma.queue.findUnique({
+      where: {
+        id: queue.id
+      },
+      select: {
+        users: {
+          where: {
+            state: "NOSHOW"
+          }
+        }
+      }
+    });
+
+    return result!.users.length;
   }
 }
