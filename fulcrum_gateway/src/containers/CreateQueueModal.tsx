@@ -12,17 +12,19 @@ type CreateQueueModalProps = {
 
 
 export default function (props: CreateQueueModalProps) {
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
+    const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
 
     return (
         <Modal isOpen={props.showModal} onClose={() => props.setShowModal(false)}>
-            <Modal.Content maxWidth="500px">
+            <Modal.Content maxWidth="400px">
                 <Modal.CloseButton />
                 <Modal.Header>Create a Queue</Modal.Header>
                 <Modal.Body>
-                    <CreateQueueForm setShowModal={props.setShowModal}/>
-                </Modal.Body>
-                <Modal.Footer>
-                </Modal.Footer>
+            <CreateQueueForm route={route} navigation={navigation}/>
+            </Modal.Body>
+            <Modal.Footer>
+            </Modal.Footer>
             </Modal.Content>
         </Modal>
     )

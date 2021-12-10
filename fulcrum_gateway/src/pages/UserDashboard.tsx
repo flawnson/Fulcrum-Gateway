@@ -1,8 +1,8 @@
-import React, { SetStateAction, useState } from 'react'
-import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps, UserStat } from "../../types";
-import { StyleSheet } from 'react-native'
-import { Center, Heading, Image, Text } from "native-base";
+import React, {SetStateAction, useState} from 'react'
+import {useNavigation} from "@react-navigation/native";
+import {HomeScreenProps} from "../../types";
+import {StyleSheet} from 'react-native'
+import {Center, Heading, Image, Text} from "native-base";
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
 import UserDashboardMenu from "../containers/UserDashboardMenu"
 import useInterval from "../utilities/useInterval";
@@ -12,13 +12,13 @@ export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const defaultProps = {
         name: "Someone",
-        stats: [
-                {prefix: "You're", stat: 0, suffix: "n/a"},
-                {prefix: "You've waited", stat: 0, suffix: "m"},
-                {prefix: "Average wait", stat: 0, suffix: "m"},
-                {prefix: "ETA", stat: 0, suffix: "m"}
-            ],
-        }
+        stats: {
+            index: 0,
+            eta: 0,
+            waited: 0,
+            avg: 0,
+        },
+    }
     const [props, setProps] = useState(defaultProps)
 
     const query = `
@@ -57,15 +57,10 @@ export default function () {
                         "estimated_wait"]
                         .filter(key => key in data)
                         .map(key => [key, data[key]]))
-                    const terminalDigit = parseInt(info.index.toString().charAt(info.index.toString().length - 1))
-                    const suffix = terminalDigit === 1 ? "st"
-                                   : terminalDigit === 2 ? "nd"
-                                   : terminalDigit === 3 ? "rd"
-                                   : "st"
-                    setProps({"name": info.name, "stats": [{"prefix": "You're", "stat": info.index, "suffix": suffix},
-                                                                 {"prefix": "You've waited", "stat": info.waited, "suffix": "m"},
-                                                                 {"prefix": "Average wait", "stat": info.average_wait, "suffix": "m"},
-                                                                 {"prefix": "ETA", "stat": info.estimated_wait, "suffix": "m"}]})
+                    setProps({"name": info.name, "stats": {"index": info.index,
+                                                                 "waited": info.waited,
+                                                                 "avg": info.average_wait,
+                                                                 "eta": info.estimated_wait}})
                 }
             )
         } catch(error) {
@@ -83,7 +78,7 @@ export default function () {
             />
             <Text style={styles.textFormat}>Almost there!</Text>
             <Center>
-                <UserDashboardGroup {...props.stats}/>
+                <UserDashboardGroup userDashboardProps={props.stats}/>
             </Center>
             <UserDashboardMenu />
         </Center>
