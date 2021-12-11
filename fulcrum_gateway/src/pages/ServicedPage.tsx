@@ -1,8 +1,14 @@
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, {SetStateAction, useEffect, useState} from "react";
 import useInterval from "../utilities/useInterval";
 import ServicedCatalogCardGroup from "../components/molecules/ServicedCatalogCardGroup";
-import { ServicedStats } from "../../types";
+import {EnqueuedStats} from "../../types";
 
+
+type ServicedStats = {
+    userId: number,
+    name: string,
+    reneged: number,
+}
 
 export default function () {
     const [props, setProps] = useState<ServicedStats[]>([])
@@ -34,7 +40,7 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.queue.users
-                    data = data.filter((d: ServicedStats) => d.state === "SERVICED")
+                    data = data.filter((d: EnqueuedStats) => d.state === "SERVICED")
                     let serviced_stats: ServicedStats[] = []
                     data.forEach((serviced_data: any) => {
                         const join_time: any = new Date(serviced_data.join_time)
