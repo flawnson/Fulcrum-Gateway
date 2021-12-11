@@ -19,14 +19,17 @@ export default function() {
     useEffect(() => {fetchData()}, [])
 
     const query = `
-        query queue($id: ID!){
-            queue(queue_id: $id){
+        query get_queue_stats($queueId: QueueWhereUniqueInput!) {
+            queue(where: $queueId) {
                 name
             }
         }
     `
     const variables = `{
-        "id": "costco_queue2"
+        "queueId":
+        {
+            "id": 2
+        }
     }`
 
     const fetchData = async () => {

@@ -1,6 +1,7 @@
 import React, {SetStateAction, useEffect, useState} from "react";
 import useInterval from "../utilities/useInterval";
 import ServicedCatalogCardGroup from "../components/molecules/ServicedCatalogCardGroup";
+import {EnqueuedStats} from "../../types";
 
 
 type ServicedStats = {
@@ -15,21 +16,22 @@ export default function () {
     useEffect(() => {fetchServicedData()}, [])
 
     const query = `
-        query queue($id: ID!){
-            queue(queue_id: $id){
-                serviced {
+        query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
+            queue(where: $queue_id) {
+                users {
                     userId: id
                     name
-                    index
-                    online
                     join_time
-                    reneged_time
+                    last_online
+                    state
                 }
             }
         }
     `
     const variables = `{
-        "id": "costco_queue2"
+    "queue_id": {
+            "id": 1
+        }
     }`
 
     async function fetchServicedData () {
@@ -37,7 +39,8 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
-                    data = data.data.queue.serviced
+                    data = data.data.queue.users
+                    data = data.filter((d: EnqueuedStats) => d.state === "SERVICED")
                     let serviced_stats: ServicedStats[] = []
                     data.forEach((serviced_data: any) => {
                         const join_time: any = new Date(serviced_data.join_time)
