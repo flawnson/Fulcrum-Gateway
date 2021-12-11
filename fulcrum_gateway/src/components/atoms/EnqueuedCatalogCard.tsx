@@ -36,8 +36,11 @@ export default function (props: EnqueuedCatalogProps) {
     }, [props.modified])
 
     const query = `
-        mutation summon_user($user_id: ID!){
-            summon_user(user_id: $user_id)
+        mutation summon_user($userId: UserWhereUniqueInput!, $data: UserUpdateInput!) {
+            updateUser(where: $userId, data: $data) {
+                name
+                summoned
+            }
         }
     `
     const variables = `{

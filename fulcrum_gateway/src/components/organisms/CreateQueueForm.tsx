@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from 'react'
-import {Button, Center,
+import React, { useEffect, useState } from 'react'
+import { Button, Center,
         FormControl, Input,
         Slider, Stack,
         Text, VStack,
-        Select} from 'native-base'
-import {HomeScreenProps} from "../../../types";
-import {useTranslation} from "react-i18next";
+        Select } from 'native-base'
+import { HomeScreenProps } from "../../../types";
+import { useTranslation } from "react-i18next";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {RootStackParamList} from "../../../types";
 
 type DefaultData = {
     submitted: boolean,
@@ -20,8 +22,16 @@ type DefaultErrors = {
     nameInvalid: boolean,
 }
 
-export default function ({navigation}: HomeScreenProps) {
-    const defaultData = {submitted: false, name: "Sample Queue name", maxSize: 10, gracePeriod: 0, partySize: 1}
+type CreateQueueFormType = {
+    setShowModal: Function
+}
+
+export default function (props: CreateQueueFormType) {
+    const defaultData = {submitted: false,
+                         name: "Sample Queue name",
+                         maxSize: 10,
+                         gracePeriod: 0,
+                         partySize: 1}
     const defaultErrors = {nameInvalid: false}
     const [formData, setData] = useState<DefaultData>(defaultData);
     const [errors, setError] = useState<DefaultErrors>(defaultErrors);
@@ -74,7 +84,7 @@ export default function ({navigation}: HomeScreenProps) {
         setData({...formData, submitted: true})
         const submissionData = submit()
         console.log(submissionData);
-        navigation.navigate("QueuesPage")
+        props.setShowModal(false)
         setData({...formData, submitted: false})
     }
 
@@ -85,7 +95,6 @@ export default function ({navigation}: HomeScreenProps) {
     const onSubmit = () => {
         setData({...formData, submitted: true})
         check() ? onSuccess() : onFailure();
-
     };
 
     return (
@@ -174,9 +183,21 @@ export default function ({navigation}: HomeScreenProps) {
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Part size error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
-            <Button onPress={onSubmit} mt="5" colorScheme="cyan" isLoading={formData.submitted} isLoadingText="Submitting">
-                Submit
-            </Button>
+            <Button.Group space={2}>
+                <Button
+                    mt="5"
+                    variant="ghost"
+                    colorScheme="blueGray"
+                    onPress={() => {
+                        props.setShowModal(false)
+                    }}
+                >
+                    Cancel
+                </Button>
+                <Button onPress={onSubmit} mt="5" colorScheme="cyan" isLoading={formData.submitted} isLoadingText="Submitting">
+                    Submit
+                </Button>
+            </Button.Group>
         </VStack>
     )
 }
