@@ -25,8 +25,15 @@ export default function () {
         }
     `
     const variables = `{
-    "queue_id": {
+        "userId":
+        {
             "id": 1
+        },
+        "data": 
+        {
+            "summoned": {
+                "set": true
+            }
         }
     }`
 
@@ -36,6 +43,7 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.queue.users
+                    data = data.filter((d: EnqueuedStats) => d.state === "ENQUEUED")
                     let user_stats: EnqueuedStats[] = []
                     data.forEach((queue_data: any) => {
                         const now: any = new Date()

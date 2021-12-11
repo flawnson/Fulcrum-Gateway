@@ -1,7 +1,7 @@
 import React, {SetStateAction, useEffect, useState} from "react";
 import CatalogEntityCardGroup from "../components/molecules/AbandonedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
-import { AbandonedStats } from "../../types";
+import {AbandonedStats, EnqueuedStats} from "../../types";
 
 export default function () {
     const [props, setProps] = useState<AbandonedStats[]>([])
@@ -9,18 +9,22 @@ export default function () {
     useEffect(() => {fetchAbandonedData()}, [])
 
     const query = `
-        query queue($id: ID!){
-            queue(queue_id: $id){
-                abandoned {
+        query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
+            queue(where: $queue_id) {
+                users {
                     userId: id
                     name
                     join_time
+                    last_online
+                    state
                 }
             }
         }
     `
     const variables = `{
-        "id": "costco_queue2"
+    "queue_id": {
+            "id": 1
+        }
     }`
 
     async function fetchAbandonedData () {
@@ -28,7 +32,8 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
-                    data = data.data.queue.abandoned
+                    data = data.data.queue.users
+                    data = data.filter((d: EnqueuedStats) => d.state === "ABANDONED")
                     let abandoned_stats: AbandonedStats[] = []
                     data.forEach((abandoned_data: any) => {
                         const now: any = new Date()

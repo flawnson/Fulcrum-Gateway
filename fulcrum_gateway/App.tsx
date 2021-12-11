@@ -69,7 +69,6 @@ function App() {
                                 <>
                                     <Stack.Screen name="HomePage" component={QueueDashboardTabs} />
                                     <Stack.Screen name="LandingPage" component={LandingPage} />
-                                    <Stack.Screen name="CreateQueuePage" component={CreateQueuePage} />
                                     <Stack.Screen name="QueueDashboard" component={QueueDashboardTabs} />
                                     <Stack.Screen name="EnqueuedPage" component={EnqueuedPage} />
                                     <Stack.Screen name="QueuesPage" component={QueuesPage} />
