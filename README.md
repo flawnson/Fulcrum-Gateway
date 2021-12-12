@@ -80,9 +80,19 @@ You can install postgres any way you want. Using brew or their GUI interface wil
 But you can also use Docker:
 
 After you've installed Docker, run:
-`docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=some_password --name some_db_name postgres`
+`docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=some_password --name some_container_name postgres`
 
 This will also forward/expose the port from the Docker VM to your host machine.
+Accessing the docker VM can be done through Docker Desktop and clicking the container's CLI icon or running:
+`docker exec -it some_container_name`
+
+Inside the container's command line run:
+`su postgres`
+to switch to the postgres user. Then you can run:
+`psql`
+or alternatively you can combine the above two commands by just running:
+`psql -U postgres`
+
 You'll have to go into the VM and create a new database with either:
 `createdb -U username postgres`
 if you're working in bash
