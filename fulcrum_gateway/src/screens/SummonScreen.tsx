@@ -22,8 +22,9 @@ export default function() {
     useEffect(() => {fetchData()}, [])
 
     const query = `
-        query queue($id: ID!){
-            queue(queue_id: $id){
+        query get_queue_stats($queueId: QueueWhereUniqueInput!) {
+            queue(where: $queueId) {
+                state
                 name
                 address
                 grace_period
@@ -31,7 +32,10 @@ export default function() {
         }
     `
     const variables = `{
-        "id": "costco_queue2"
+        "queueId":
+        {
+            "id": 1
+        }
     }`
 
     const fetchData = async () => {
