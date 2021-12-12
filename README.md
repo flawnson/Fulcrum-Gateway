@@ -56,7 +56,8 @@ and run npm install:
 `npm install`
 
 ## Usage
-Once dependencies are installed, you can run with either expo:
+Once dependencies are installed, you can install then run with either expo:
+`npm install --global expo-cli`
 `expo start`
 
 or with react native:
@@ -91,7 +92,7 @@ Inside the container's command line run:
 to switch to the postgres user. Then you can run:
 `psql`
 or alternatively you can combine the above two commands by just running:
-`psql -U postgres`
+`psql -U postgres` if you want to directly go into psql mode.
 
 You'll have to go into the VM and create a new database with either:
 `createdb -U username postgres`
@@ -100,19 +101,14 @@ if you're working in bash
 `CREATE DATABASE some_db_name TEMPLATE template0`
 if you're inside psql
 
-If you have sample data .sql file, you can copy it from the host machine to the VM with:
-`docker cp path_to_sql_data_file container_id:/path_to_sql_data_file`
-
-Then run:
-`psql some_db_name < input_sql_file`
-to inject the sample data.
-
 You'll need a .env file in the root dir of your project with the following inside:
 `DATABASE_URL="postgresql://db_username:db_password@exposed_ip:exposed_host_port/name_of_db`
 
+The ip and port should just be localhost:5432 and the db username by default should be "postgres".
+
 Finally, run:
-`npx prisma db pull`
-and Prisma should
+`npx prisma db push`
+and Prisma should push the prisma schemas to the PostgreSQL database and populate tables.
 
 ## Git structure
 I use 4 branches to work:
