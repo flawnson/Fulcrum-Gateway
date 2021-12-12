@@ -6,6 +6,7 @@ import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperati
 import { EnumUserStatusFieldUpdateOperationsInput } from "../inputs/EnumUserStatusFieldUpdateOperationsInput";
 import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
 import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
+import { NullableIntFieldUpdateOperationsInput } from "../inputs/NullableIntFieldUpdateOperationsInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 import { QueueUpdateOneRequiredWithoutUsersInput } from "../inputs/QueueUpdateOneRequiredWithoutUsersInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
@@ -74,10 +75,10 @@ export class UserUpdateInput {
   })
   state?: EnumUserStatusFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => NullableIntFieldUpdateOperationsInput, {
     nullable: true
   })
-  total_wait?: IntFieldUpdateOperationsInput | undefined;
+  total_wait?: NullableIntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => QueueUpdateOneRequiredWithoutUsersInput, {
     nullable: true

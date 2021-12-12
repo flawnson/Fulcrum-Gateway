@@ -74,7 +74,7 @@ export class UserCreateManyInput {
   state!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
+    nullable: true
   })
-  total_wait!: number;
+  total_wait?: number | undefined;
 }

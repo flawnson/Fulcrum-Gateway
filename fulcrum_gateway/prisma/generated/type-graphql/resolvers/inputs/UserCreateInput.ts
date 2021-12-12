@@ -70,9 +70,9 @@ export class UserCreateInput {
   state!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
+    nullable: true
   })
-  total_wait!: number;
+  total_wait?: number | undefined;
 
   @TypeGraphQL.Field(_type => QueueCreateNestedOneWithoutUsersInput, {
     nullable: false

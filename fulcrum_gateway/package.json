@@ -9,6 +9,9 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@expo-google-fonts/poppins": "^0.2.0",
     "@expo/config-types": "^42.0.0",

@@ -77,7 +77,7 @@ export class User {
   queue?: Queue;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
+    nullable: true
   })
-  total_wait!: number;
+  total_wait?: number | null;
 }

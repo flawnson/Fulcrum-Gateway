@@ -51,7 +51,7 @@ model User {
   reneged_time   DateTime?
   state          UserStatus
   queue          Queue      @relation("users_in_queue", fields: [queue_id], references: [id])
-  total_wait     Int
+  total_wait     Int?
 }
 
 enum QueueState {

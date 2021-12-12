@@ -108,7 +108,11 @@ The ip and port should just be localhost:5432 and the db username by default sho
 
 Finally, run:
 `npx prisma db push`
-and Prisma should push the prisma schemas to the PostgreSQL database and populate tables.
+and Prisma should push the prisma schemas to the PostgreSQL database and create
+the necessary tables.
+
+To populate the database with initial test data:
+`npx prisma db seed` which will run fulcrum_gateway/prisma/seed.ts
 
 ## Git structure
 I use 4 branches to work:

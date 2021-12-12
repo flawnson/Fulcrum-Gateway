@@ -6,6 +6,7 @@ import { BoolFilter } from "../inputs/BoolFilter";
 import { DateTimeNullableFilter } from "../inputs/DateTimeNullableFilter";
 import { EnumUserStatusFilter } from "../inputs/EnumUserStatusFilter";
 import { IntFilter } from "../inputs/IntFilter";
+import { IntNullableFilter } from "../inputs/IntNullableFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
@@ -93,8 +94,8 @@ export class UserScalarWhereInput {
   })
   state?: EnumUserStatusFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
+  @TypeGraphQL.Field(_type => IntNullableFilter, {
     nullable: true
   })
-  total_wait?: IntFilter | undefined;
+  total_wait?: IntNullableFilter | undefined;
 }
