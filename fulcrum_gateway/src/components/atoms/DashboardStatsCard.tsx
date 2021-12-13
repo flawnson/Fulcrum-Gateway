@@ -1,10 +1,10 @@
 import React from 'react';
 import { VStack, Box, Divider, Text } from 'native-base';
 import { StyleSheet } from "react-native";
-import { UserStat } from "../../../types";
+import { DashboardStat } from "../../../types";
 
 type Props = {
-    userStat: UserStat
+    stat: DashboardStat
 }
 
 
@@ -32,13 +32,9 @@ export default function (props: Props) {
         >
             <Box px='8' pt='8'>
                 <Text style={styles.text}>
-                    {props.userStat.prefix}
-                </Text>
-                <Text style={styles.text}>
-                    {props.userStat.stat}
-                </Text>
-                <Text style={styles.text}>
-                    {props.userStat.suffix}
+                    {props.stat.prefix}
+                    <Text style={styles.statText}> {props.stat.stat} </Text>
+                    {props.stat.suffix}
                 </Text>
             </Box>
         </Box>
@@ -53,5 +49,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'center',
         alignItems: 'center'
+    },
+    statText: {
+        fontSize: 42,
     }
 })
