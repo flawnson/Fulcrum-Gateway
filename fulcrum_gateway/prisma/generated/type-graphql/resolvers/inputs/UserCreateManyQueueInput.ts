@@ -8,10 +8,10 @@ import { UserStatus } from "../../enums/UserStatus";
   isAbstract: true
 })
 export class UserCreateManyQueueInput {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  id?: number | undefined;
+  id?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false
@@ -67,4 +67,9 @@ export class UserCreateManyQueueInput {
     nullable: false
   })
   state!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: true
+  })
+  total_wait?: number | undefined;
 }

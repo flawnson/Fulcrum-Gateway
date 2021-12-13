@@ -56,7 +56,8 @@ and run npm install:
 `npm install`
 
 ## Usage
-Once dependencies are installed, you can run with either expo:
+Once dependencies are installed, you can install then run with either expo:
+`npm install --global expo-cli`
 `expo start`
 
 or with react native:
@@ -80,9 +81,19 @@ You can install postgres any way you want. Using brew or their GUI interface wil
 But you can also use Docker:
 
 After you've installed Docker, run:
-`docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=some_password --name some_db_name postgres`
+`docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=some_password --name some_container_name postgres`
 
 This will also forward/expose the port from the Docker VM to your host machine.
+Accessing the docker VM can be done through Docker Desktop and clicking the container's CLI icon or running:
+`docker exec -it some_container_name`
+
+Inside the container's command line run:
+`su postgres`
+to switch to the postgres user. Then you can run:
+`psql`
+or alternatively you can combine the above two commands by just running:
+`psql -U postgres` if you want to directly go into psql mode.
+
 You'll have to go into the VM and create a new database with either:
 `createdb -U username postgres`
 if you're working in bash
@@ -90,19 +101,18 @@ if you're working in bash
 `CREATE DATABASE some_db_name TEMPLATE template0`
 if you're inside psql
 
-If you have sample data .sql file, you can copy it from the host machine to the VM with:
-`docker cp path_to_sql_data_file container_id:/path_to_sql_data_file`
-
-Then run:
-`psql some_db_name < input_sql_file`
-to inject the sample data.
-
 You'll need a .env file in the root dir of your project with the following inside:
 `DATABASE_URL="postgresql://db_username:db_password@exposed_ip:exposed_host_port/name_of_db`
 
+The ip and port should just be localhost:5432 and the db username by default should be "postgres".
+
 Finally, run:
-`npx prisma db pull`
-and Prisma should
+`npx prisma db push`
+and Prisma should push the prisma schemas to the PostgreSQL database and create
+the necessary tables.
+
+To populate the database with initial test data:
+`npx prisma db seed` which will run fulcrum_gateway/prisma/seed.ts
 
 ## Git structure
 I use 4 branches to work:

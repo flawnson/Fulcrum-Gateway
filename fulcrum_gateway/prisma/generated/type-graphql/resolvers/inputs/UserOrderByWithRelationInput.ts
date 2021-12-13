@@ -78,4 +78,9 @@ export class UserOrderByWithRelationInput {
     nullable: true
   })
   queue?: QueueOrderByWithRelationInput | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  total_wait?: "asc" | "desc" | undefined;
 }

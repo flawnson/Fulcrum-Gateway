@@ -10,16 +10,6 @@ export class QueueSumAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true
   })
-  id!: number | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
-  })
-  organizer_id!: number | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
-  })
   capacity!: number | null;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
@@ -36,4 +26,9 @@ export class QueueSumAggregate {
     nullable: true
   })
   offline_time!: number | null;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: true
+  })
+  average_wait!: number | null;
 }
