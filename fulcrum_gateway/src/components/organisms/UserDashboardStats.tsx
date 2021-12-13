@@ -1,9 +1,9 @@
 import React from 'react';
 import UserDashboardStatsCardGroup from "../molecules/UserStatsCardGroup";
-import { UserStat } from "../../../types";
+import { DashboardStat } from "../../../types";
 
 
-export default function (props: UserStat[]) {
+export default function (props: DashboardStat[]) {
     return (
         <UserDashboardStatsCardGroup {...props}/>
     )

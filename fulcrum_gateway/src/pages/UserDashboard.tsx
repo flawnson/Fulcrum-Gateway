@@ -1,6 +1,6 @@
 import React, { SetStateAction, useState } from 'react'
 import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps, UserStat } from "../../types";
+import { HomeScreenProps, DashboardStat } from "../../types";
 import { StyleSheet } from 'react-native'
 import { Center, Heading, Image, Text } from "native-base";
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
@@ -35,7 +35,7 @@ export default function () {
     `
     const variables = `{
     "user_id": {
-            "id": 1
+            "id": "userID"
         }
     }`
 

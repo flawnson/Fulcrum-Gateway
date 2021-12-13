@@ -47,7 +47,7 @@ model User {
   last_online    DateTime?
   index          Int
   estimated_wait Int
-  join_time      DateTime?
+  join_time      DateTime
   reneged_time   DateTime?
   state          UserStatus
   queue          Queue      @relation("users_in_queue", fields: [queue_id], references: [id])

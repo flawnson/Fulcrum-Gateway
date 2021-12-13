@@ -68,20 +68,20 @@ export type QueueInfo = {
 
 /*** USER DASHBOARD TYPES ***/
 
-export type UserStat = {
+export type DashboardStat = {
     "prefix": string,
     "stat": number,
     "suffix": string,
 }
 
 
-/*** QUEUE DASHBOARD TYPES ***/
-
-export type QueueStats = {
-    'enqueued': number,
-    'serviced': number,
-    'deferrals': number,
-    'avg': number,
-    'abandoned': number,
-    'noshow': number,
-}
+// /*** QUEUE DASHBOARD TYPES ***/
+//
+// export type QueueStats = {
+//     'enqueued': number,
+//     'serviced': number,
+//     'deferrals': number,
+//     'avg': number,
+//     'abandoned': number,
+//     'noshow': number,
+// }
