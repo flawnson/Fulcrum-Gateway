@@ -8,10 +8,10 @@ import { QueueState } from "../../enums/QueueState";
   isAbstract: true
 })
 export class QueueCreateManyOrganizerInput {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  id?: number | undefined;
+  id?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false
@@ -57,4 +57,9 @@ export class QueueCreateManyOrganizerInput {
     nullable: false
   })
   create_time!: Date;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
+  average_wait!: number;
 }

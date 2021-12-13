@@ -17,10 +17,10 @@ const combinedResolvers = [...resolvers, ...customResolvers] as unknown as NonEm
 async function bootstrap(){
 
   const prisma = new PrismaClient();
+
   const schema = await buildSchema({
     resolvers: combinedResolvers,
     validate: false,
-    emitSchemaFile: true,
     emitSchemaFile: __dirname + '/schema.graphql',
   });
 

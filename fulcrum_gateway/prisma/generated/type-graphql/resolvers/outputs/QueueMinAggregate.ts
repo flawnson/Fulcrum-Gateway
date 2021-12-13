@@ -8,15 +8,15 @@ import { QueueState } from "../../enums/QueueState";
   isAbstract: true
 })
 export class QueueMinAggregate {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  id!: number | null;
+  id!: string | null;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  organizer_id!: number | null;
+  organizer_id!: string | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true
@@ -62,4 +62,9 @@ export class QueueMinAggregate {
     nullable: true
   })
   create_time!: Date | null;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: true
+  })
+  average_wait!: number | null;
 }

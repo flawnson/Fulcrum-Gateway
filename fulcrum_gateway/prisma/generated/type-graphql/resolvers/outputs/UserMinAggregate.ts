@@ -8,20 +8,20 @@ import { UserStatus } from "../../enums/UserStatus";
   isAbstract: true
 })
 export class UserMinAggregate {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  id!: number | null;
+  id!: string | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
   name!: string | null;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  queue_id!: number | null;
+  queue_id!: string | null;
 
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: true
@@ -72,4 +72,9 @@ export class UserMinAggregate {
     nullable: true
   })
   state!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | null;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: true
+  })
+  total_wait!: number | null;
 }
