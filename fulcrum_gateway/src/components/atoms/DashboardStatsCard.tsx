@@ -1,12 +1,14 @@
 import React from 'react';
 import { VStack, Box, Divider, Text } from 'native-base';
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
+import { UserStat } from "../../../types";
 
-type userStat = {
-    stat: number,
+type Props = {
+    userStat: UserStat
 }
 
-export default function (props: userStat) {
+
+export default function (props: Props) {
     return (
         <Box
             maxW="80"
@@ -30,7 +32,13 @@ export default function (props: userStat) {
         >
             <Box px='8' pt='8'>
                 <Text style={styles.text}>
-                    {props.stat}
+                    {props.userStat.prefix}
+                </Text>
+                <Text style={styles.text}>
+                    {props.userStat.stat}
+                </Text>
+                <Text style={styles.text}>
+                    {props.userStat.suffix}
                 </Text>
             </Box>
         </Box>
@@ -42,6 +50,7 @@ const styles = StyleSheet.create({
     card: {
     },
     text: {
+        fontSize: 14,
         textAlign: 'center',
         alignItems: 'center'
     }
