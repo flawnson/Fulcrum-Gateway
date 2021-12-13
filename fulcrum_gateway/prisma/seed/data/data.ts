@@ -1,13 +1,11 @@
-import { PrismaClient, QueueState, UserStatus } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { QueueState, UserStatus } from "@prisma/client";
 
 const nowDate = new Date()
 const pastDate = new Date(nowDate.setDate(nowDate.getDate() - 1))
 const futureDate = new Date(nowDate.setDate(nowDate.getDate() + 1))
 
 
-const user_table = [
+export const user_table = [
   {
     id: "user0",
     name: "Kevin Shen",
@@ -68,7 +66,7 @@ const user_table = [
 ];
 
 
-const queue_table = [
+export const queue_table = [
   {
     id: "costco_queue1",
     organizer_id: "costco_toronto",
@@ -99,42 +97,9 @@ const queue_table = [
   }
 ];
 
-const organizer_table = [
+export const organizer_table = [
   {
     id: "costco_toronto",
     name: "Costco In Toronto"
   }
 ];
-
-async function main() {
-  await prisma.$connect();
-
-  // delete in order of user -> queue -> organizer to avoid foreign key conflicts
-  await prisma.user.deleteMany({});
-  await prisma.queue.deleteMany({});
-  await prisma.organizer.deleteMany({});
-
-
-  // make sure to create in order of organizer -> queue -> user to avoid foreign key conflicts
-  const createOrganizers = await prisma.organizer.createMany({
-    data: organizer_table
-  });
-
-  const createQueues = await prisma.queue.createMany({
-    data: queue_table
-  });
-
-  const createUsers = await prisma.user.createMany({
-    data: user_table
-  });
-
-}
-
-main()
-  .catch((e) => {
-    console.error(e)
-    process.exit(1)
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
