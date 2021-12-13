@@ -72,4 +72,9 @@ export class UserCountOrderByAggregateInput {
     nullable: true
   })
   state?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  total_wait?: "asc" | "desc" | undefined;
 }

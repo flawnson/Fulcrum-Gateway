@@ -7,10 +7,10 @@ import { DecimalJSScalar } from "../../scalars";
   isAbstract: true
 })
 export class OrganizerMaxAggregate {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  id!: number | null;
+  id!: string | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true

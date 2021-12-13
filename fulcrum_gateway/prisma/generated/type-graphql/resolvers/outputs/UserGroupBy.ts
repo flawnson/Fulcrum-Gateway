@@ -13,20 +13,20 @@ import { UserStatus } from "../../enums/UserStatus";
   isAbstract: true
 })
 export class UserGroupBy {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  id!: number;
+  id!: string;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  queue_id!: number;
+  queue_id!: string;
 
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: false
@@ -77,6 +77,11 @@ export class UserGroupBy {
     nullable: false
   })
   state!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: true
+  })
+  total_wait!: number | null;
 
   @TypeGraphQL.Field(_type => UserCountAggregate, {
     nullable: true

@@ -9,6 +9,11 @@ import { UserStatus } from "../../enums/UserStatus";
 })
 export class UserCreateWithoutQueueInput {
   @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  id?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
   name!: string;
@@ -62,4 +67,9 @@ export class UserCreateWithoutQueueInput {
     nullable: false
   })
   state!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: true
+  })
+  total_wait?: number | undefined;
 }

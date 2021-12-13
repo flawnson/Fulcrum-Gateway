@@ -11,16 +11,6 @@ export class UserSumOrderByAggregateInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  id?: "asc" | "desc" | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
-  queue_id?: "asc" | "desc" | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
   party_size?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
@@ -32,4 +22,9 @@ export class UserSumOrderByAggregateInput {
     nullable: true
   })
   estimated_wait?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  total_wait?: "asc" | "desc" | undefined;
 }
