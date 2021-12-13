@@ -29,15 +29,15 @@ export class QueueWhereInput {
   })
   NOT?: QueueWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
+  @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  id?: IntFilter | undefined;
+  id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
+  @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  organizer_id?: IntFilter | undefined;
+  organizer_id?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
@@ -93,4 +93,9 @@ export class QueueWhereInput {
     nullable: true
   })
   users?: UserListRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => IntFilter, {
+    nullable: true
+  })
+  average_wait?: IntFilter | undefined;
 }

@@ -10,16 +10,6 @@ export class QueueAvgAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
     nullable: true
   })
-  id!: number | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
-  })
-  organizer_id!: number | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
-  })
   capacity!: number | null;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
@@ -36,4 +26,9 @@ export class QueueAvgAggregate {
     nullable: true
   })
   offline_time!: number | null;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: true
+  })
+  average_wait!: number | null;
 }

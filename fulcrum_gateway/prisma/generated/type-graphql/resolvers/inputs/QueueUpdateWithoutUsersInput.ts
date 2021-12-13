@@ -16,6 +16,11 @@ export class QueueUpdateWithoutUsersInput {
   @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
     nullable: true
   })
+  id?: StringFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+    nullable: true
+  })
   join_code?: StringFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
@@ -57,6 +62,11 @@ export class QueueUpdateWithoutUsersInput {
     nullable: true
   })
   create_time?: DateTimeFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  average_wait?: IntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => OrganizerUpdateOneRequiredWithoutQueuesInput, {
     nullable: true

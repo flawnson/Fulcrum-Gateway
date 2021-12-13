@@ -40,7 +40,6 @@ export { NestedStringWithAggregatesFilter } from "./NestedStringWithAggregatesFi
 export { NullableDateTimeFieldUpdateOperationsInput } from "./NullableDateTimeFieldUpdateOperationsInput";
 export { NullableIntFieldUpdateOperationsInput } from "./NullableIntFieldUpdateOperationsInput";
 export { NullableStringFieldUpdateOperationsInput } from "./NullableStringFieldUpdateOperationsInput";
-export { OrganizerAvgOrderByAggregateInput } from "./OrganizerAvgOrderByAggregateInput";
 export { OrganizerCountOrderByAggregateInput } from "./OrganizerCountOrderByAggregateInput";
 export { OrganizerCreateInput } from "./OrganizerCreateInput";
 export { OrganizerCreateManyInput } from "./OrganizerCreateManyInput";
@@ -53,7 +52,6 @@ export { OrganizerOrderByWithAggregationInput } from "./OrganizerOrderByWithAggr
 export { OrganizerOrderByWithRelationInput } from "./OrganizerOrderByWithRelationInput";
 export { OrganizerRelationFilter } from "./OrganizerRelationFilter";
 export { OrganizerScalarWhereWithAggregatesInput } from "./OrganizerScalarWhereWithAggregatesInput";
-export { OrganizerSumOrderByAggregateInput } from "./OrganizerSumOrderByAggregateInput";
 export { OrganizerUpdateInput } from "./OrganizerUpdateInput";
 export { OrganizerUpdateManyMutationInput } from "./OrganizerUpdateManyMutationInput";
 export { OrganizerUpdateOneRequiredWithoutQueuesInput } from "./OrganizerUpdateOneRequiredWithoutQueuesInput";

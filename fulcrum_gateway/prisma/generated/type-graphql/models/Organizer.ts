@@ -9,10 +9,10 @@ import { OrganizerCount } from "../resolvers/outputs/OrganizerCount";
   isAbstract: true
 })
 export class Organizer {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+  @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  id!: number;
+  id!: string;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false
