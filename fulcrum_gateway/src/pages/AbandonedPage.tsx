@@ -1,7 +1,7 @@
-import React, {SetStateAction, useEffect, useState} from "react";
+import React, { SetStateAction , useEffect, useState} from "react";
 import CatalogEntityCardGroup from "../components/molecules/AbandonedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
-import {AbandonedStats, EnqueuedStats} from "../../types";
+import { AbandonedStats } from "../../types";
 
 export default function () {
     const [props, setProps] = useState<AbandonedStats[]>([])
@@ -33,7 +33,7 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.queue.users
-                    data = data.filter((d: EnqueuedStats) => d.state === "ABANDONED")
+                    data = data.filter((d: AbandonedStats) => d.state === "ABANDONED")
                     let abandoned_stats: AbandonedStats[] = []
                     data.forEach((abandoned_data: any) => {
                         const now: any = new Date()

@@ -1,14 +1,11 @@
 import React from 'react';
 import UserDashboardStatsCardGroup from "../molecules/UserStatsCardGroup";
-import { UserStats } from "../../../types";
+import { UserStat } from "../../../types";
 
-type Props = {
-    userDashboardProps: UserStats
-}
 
-export default function (props: Props) {
+export default function (props: UserStat[]) {
     return (
-        <UserDashboardStatsCardGroup {...props.userDashboardProps}/>
+        <UserDashboardStatsCardGroup {...props}/>
     )
 }
 

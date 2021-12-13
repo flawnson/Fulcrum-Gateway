@@ -1,12 +1,9 @@
 import React from "react";
-import {
-        VStack, FormControl,
+import { VStack, FormControl,
         Input, Button,
-        Center, Text
-        } from "native-base";
-import {HomeScreenProps} from "../../../types";
-import {CommonActions} from "@react-navigation/native";
-import {useTranslation} from "react-i18next";
+        Center, Text } from "native-base";
+import { HomeScreenProps } from "../../../types";
+import { useTranslation } from "react-i18next";
 
 
 export default function ({navigation}: HomeScreenProps) {
