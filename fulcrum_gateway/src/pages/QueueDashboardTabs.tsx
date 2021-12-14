@@ -4,17 +4,35 @@ import QueueDashboard from "./QueueDashboard";
 import EnqueuedQueuersPage from "./EnqueuedPage";
 import ServicedQueuersPage from "./ServicedPage";
 import AbandonedQueuersPage from "./AbandonedPage";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {Feather, MaterialCommunityIcons} from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
+import {StyleSheet, Switch} from "react-native";
+import {PreferencesContext} from "../utilities/useTheme";
 
 const Tab = createBottomTabNavigator();
 
 export default function QueueDashboardTabs() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
 
     useLayoutEffect(() => {
-        navigation.setOptions({headerShown: true})
+        navigation.setOptions({headerShown: true, headerRight: (props) =>
+                <>
+                    <Feather
+                        style={styles.switchName}
+                        name={isThemeDark ? 'sun' : 'moon'}
+                        size={32}
+                        color={isThemeDark ? 'white': 'black'}
+                    />
+                    <Switch
+                        style={styles.switch}
+                        onValueChange={toggleTheme}
+                        value={isThemeDark}
+                        thumbColor={isThemeDark ? '#FFFFFF' : '#FFFFFF'}
+                        trackColor={{false: 'gray', true: '#FFFFFF'}}
+                    />
+                </>})
     });
 
     return (
@@ -74,3 +92,17 @@ export default function QueueDashboardTabs() {
         </Tab.Navigator>
     );
 }
+
+
+const styles = StyleSheet.create({
+    switch: {
+        position: "absolute",
+        right: "15px",
+    },
+    switchName: {
+        position: "absolute",
+        right: "60px",
+    },
+});
+
+

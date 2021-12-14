@@ -27,7 +27,7 @@ export default function () {
     const variables = `{
         "userId":
         {
-            "id": 1
+            "id": queueID
         },
         "data": 
         {

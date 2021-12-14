@@ -683,6 +683,7 @@ type Queue {
   average_wait: Int!
   capacity: Int!
   create_time: DateTime!
+  estimated_wait: Int!
   grace_period: Int
   id: String!
   join_code: String!
