@@ -1,14 +1,11 @@
 import React from 'react';
 import QueueDashboardStatsCardGroup from "../molecules/QueueStatsCardGroup";
-import { QueueStats } from "../../../types";
+import { DashboardStat } from "../../../types";
 
-type Props = {
-    QueueDashboardProps: QueueStats
-}
 
-export default function (props: Props) {
+export default function (props: DashboardStat[]) {
     return (
-        <QueueDashboardStatsCardGroup {...props.QueueDashboardProps}/>
+        <QueueDashboardStatsCardGroup {...props}/>
     )
 }
 

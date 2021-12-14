@@ -16,11 +16,13 @@ export default function() {
     const [errors, setError] = useState<any>([]);
     const { t, i18n } = useTranslation("shareScreen");
 
-    useEffect(() => {fetchData()}, [])
+    useEffect(() => {fetchData().then(null)}, [])
+    useEffect(() => {fetchQRCode().then(null)}, [])
 
     const query = `
         query get_queue_stats($queueId: QueueWhereUniqueInput!) {
             queue(where: $queueId) {
+                queueId: id
                 name
             }
         }
@@ -28,7 +30,7 @@ export default function() {
     const variables = `{
         "queueId":
         {
-            "id": 2
+            "id": "queueId"
         }
     }`
 
@@ -46,15 +48,28 @@ export default function() {
         }
     }
 
+    const fetchQRCode = async () => {
+        try {
+            const response = await fetch(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=www.youtube.com`)
+            await response.json().then(
+                data => {
+                    setProps({...props, "currentQueueQR": data})
+                }
+            )
+        } catch (error) {
+            setError([...errors, error])
+        }
+    }
+
     return (
-        <Center>
+        <Center style={styles.container}>
             <Text style={styles.header}>
                 {props.currentQueueName}
             </Text>
             <Text style={styles.message}>
                 {t('message')}
             </Text>
-            <Image style={styles.QRcode} source={require("../assets/images/qr-icon-black.png")}/>
+            <Image style={styles.QRcode} source={{uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=www.youtube.com`}} alt={"QRCode"}/>
             <Text style={styles.subText}>
                 {props.currentQueueID}
             </Text>
@@ -63,17 +78,26 @@ export default function() {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        justifyContent: "center",
+        flex: 1,
+        bottom: 50,
+    },
     header: {
         fontSize: 40,
         fontWeight: "bold"
     },
     message: {
         fontSize: 20,
+        margin: 20
     },
     QRcode: {
-        width: 30,
+        width: 300,
+        height: 300,
     },
     subText: {
-        textAlign: "center"
+        textAlign: "center",
+        fontSze: 70,
+        margin: 20
     },
 })

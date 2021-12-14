@@ -14,6 +14,10 @@ export default (props: LeaveQueueAlertProps) => {
 
     const onClose = () => {
         props.setIsAlertOpen(false)
+    }
+
+    const onLeave = () => {
+        props.setIsAlertOpen(false)
         navigation.navigate("AbandonedScreen")
     }
 
@@ -42,7 +46,7 @@ export default (props: LeaveQueueAlertProps) => {
                             >
                                 Cancel
                             </Button>
-                            <Button colorScheme="danger" onPress={onClose}>
+                            <Button colorScheme="danger" onPress={onLeave}>
                                 Leave
                             </Button>
                         </Button.Group>

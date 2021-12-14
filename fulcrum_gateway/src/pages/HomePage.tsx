@@ -10,15 +10,20 @@ import { PreferencesContext } from "../utilities/useTheme";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import MultiSelectButtons from "../containers/QueueMultiSelectButtons";
 
 
 export default function () {
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-
-    return (
-        <View style={styles.container}>
-            <EnqueueGroup/>
+    navigation.setOptions({headerRight: (props) =>
+        <>
+            <Feather
+                style={styles.switchName}
+                name={isThemeDark ? 'sun' : 'moon'}
+                size={32}
+                color={isThemeDark ? 'white': 'black'}
+            />
             <Switch
                 style={styles.switch}
                 onValueChange={toggleTheme}
@@ -26,12 +31,12 @@ export default function () {
                 thumbColor={isThemeDark ? '#FFFFFF' : '#FFFFFF'}
                 trackColor={{false: 'gray', true: '#FFFFFF'}}
             />
-            <Feather
-                style={styles.switchName}
-                name={isThemeDark ? 'sun' : 'moon'}
-                size={32}
-                color={isThemeDark ? 'white': 'black'}
-            />
+        </>
+    })
+
+    return (
+        <View style={styles.container}>
+            <EnqueueGroup/>
             <TouchableHighlight style={styles.qrButton} onPress={() => navigation.navigate("QRCodeScanner")}>
                 <MaterialCommunityIcons
                     name={'qrcode-scan'}
@@ -51,12 +56,11 @@ const styles = StyleSheet.create({
     },
     switch: {
         position: "absolute",
-        top: "15px",
-        left: "37px",
+        right: "15px",
     },
     switchName: {
         position: "absolute",
-        top: "8px",
+        right: "60px",
     },
     qrButton: {
         position: "absolute",
