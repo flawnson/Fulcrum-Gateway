@@ -105,12 +105,6 @@ input DateTimeWithAggregatesFilter {
   notIn: [DateTime!]
 }
 
-"""Data needed to defer user"""
-input DeferData {
-  id: String!
-  time: String!
-}
-
 input EnumQueueStateFieldUpdateOperationsInput {
   set: QueueState
 }
@@ -216,13 +210,14 @@ input IntWithAggregatesFilter {
 }
 
 type Mutation {
+  changeStatus(id: String!, status: String!): User
   createManyOrganizer(data: [OrganizerCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyQueue(data: [QueueCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUser(data: [UserCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createOrganizer(data: OrganizerCreateInput!): Organizer!
   createQueue(data: QueueCreateInput!): Queue!
   createUser(data: UserCreateInput!): User!
-  defer_position(data: DeferData!): User!
+  deferPosition(id: String!, time: String!): User
   deleteManyOrganizer(where: OrganizerWhereInput): AffectedRowsOutput!
   deleteManyQueue(where: QueueWhereInput): AffectedRowsOutput!
   deleteManyUser(where: UserWhereInput): AffectedRowsOutput!
