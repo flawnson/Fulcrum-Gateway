@@ -105,12 +105,6 @@ input DateTimeWithAggregatesFilter {
   notIn: [DateTime!]
 }
 
-"""Data needed to defer user"""
-input DeferData {
-  id: String!
-  time: String!
-}
-
 input EnumQueueStateFieldUpdateOperationsInput {
   set: QueueState
 }
@@ -216,13 +210,14 @@ input IntWithAggregatesFilter {
 }
 
 type Mutation {
+  changeStatus: User
   createManyOrganizer(data: [OrganizerCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyQueue(data: [QueueCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUser(data: [UserCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createOrganizer(data: OrganizerCreateInput!): Organizer!
   createQueue(data: QueueCreateInput!): Queue!
   createUser(data: UserCreateInput!): User!
-  defer_position(data: DeferData!): User!
+  deferPosition(id: String!, time: String!): User
   deleteManyOrganizer(where: OrganizerWhereInput): AffectedRowsOutput!
   deleteManyQueue(where: QueueWhereInput): AffectedRowsOutput!
   deleteManyUser(where: UserWhereInput): AffectedRowsOutput!
@@ -1273,7 +1268,7 @@ type User {
   estimated_wait: Int!
   id: String!
   index: Int!
-  join_time: DateTime
+  join_time: DateTime!
   last_online: DateTime
   name: String!
   party_size: Int!
@@ -1340,7 +1335,7 @@ input UserCreateInput {
   estimated_wait: Int!
   id: String
   index: Int!
-  join_time: DateTime
+  join_time: DateTime!
   last_online: DateTime
   name: String!
   party_size: Int
@@ -1357,7 +1352,7 @@ input UserCreateManyInput {
   estimated_wait: Int!
   id: String
   index: Int!
-  join_time: DateTime
+  join_time: DateTime!
   last_online: DateTime
   name: String!
   party_size: Int
@@ -1374,7 +1369,7 @@ input UserCreateManyQueueInput {
   estimated_wait: Int!
   id: String
   index: Int!
-  join_time: DateTime
+  join_time: DateTime!
   last_online: DateTime
   name: String!
   party_size: Int
@@ -1407,7 +1402,7 @@ input UserCreateWithoutQueueInput {
   estimated_wait: Int!
   id: String
   index: Int!
-  join_time: DateTime
+  join_time: DateTime!
   last_online: DateTime
   name: String!
   party_size: Int
@@ -1428,7 +1423,7 @@ type UserGroupBy {
   estimated_wait: Int!
   id: String!
   index: Int!
-  join_time: DateTime
+  join_time: DateTime!
   last_online: DateTime
   name: String!
   party_size: Int!
@@ -1583,7 +1578,7 @@ input UserScalarWhereInput {
   estimated_wait: IntFilter
   id: StringFilter
   index: IntFilter
-  join_time: DateTimeNullableFilter
+  join_time: DateTimeFilter
   last_online: DateTimeNullableFilter
   name: StringFilter
   party_size: IntFilter
@@ -1603,7 +1598,7 @@ input UserScalarWhereWithAggregatesInput {
   estimated_wait: IntWithAggregatesFilter
   id: StringWithAggregatesFilter
   index: IntWithAggregatesFilter
-  join_time: DateTimeNullableWithAggregatesFilter
+  join_time: DateTimeWithAggregatesFilter
   last_online: DateTimeNullableWithAggregatesFilter
   name: StringWithAggregatesFilter
   party_size: IntWithAggregatesFilter
@@ -1643,7 +1638,7 @@ input UserUpdateInput {
   estimated_wait: IntFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   index: IntFieldUpdateOperationsInput
-  join_time: NullableDateTimeFieldUpdateOperationsInput
+  join_time: DateTimeFieldUpdateOperationsInput
   last_online: NullableDateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   party_size: IntFieldUpdateOperationsInput
@@ -1660,7 +1655,7 @@ input UserUpdateManyMutationInput {
   estimated_wait: IntFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   index: IntFieldUpdateOperationsInput
-  join_time: NullableDateTimeFieldUpdateOperationsInput
+  join_time: DateTimeFieldUpdateOperationsInput
   last_online: NullableDateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   party_size: IntFieldUpdateOperationsInput
@@ -1700,7 +1695,7 @@ input UserUpdateWithoutQueueInput {
   estimated_wait: IntFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   index: IntFieldUpdateOperationsInput
-  join_time: NullableDateTimeFieldUpdateOperationsInput
+  join_time: DateTimeFieldUpdateOperationsInput
   last_online: NullableDateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   party_size: IntFieldUpdateOperationsInput
@@ -1725,7 +1720,7 @@ input UserWhereInput {
   estimated_wait: IntFilter
   id: StringFilter
   index: IntFilter
-  join_time: DateTimeNullableFilter
+  join_time: DateTimeFilter
   last_online: DateTimeNullableFilter
   name: StringFilter
   party_size: IntFilter

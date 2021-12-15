@@ -54,15 +54,12 @@ export class User {
   })
   index!: number;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
-  })
-  estimated_wait!: number;
+  estimated_wait?: number;
 
   @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+    nullable: false
   })
-  join_time?: Date | null;
+  join_time!: Date;
 
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
