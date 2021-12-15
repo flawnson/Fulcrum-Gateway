@@ -44,7 +44,16 @@ export default function (props: EnqueuedCatalogProps) {
         }
     `
     const variables = `{
-        "user_id": "user0"
+        "userId":
+        {
+            "id": "userID"
+        },
+        "data": 
+        {
+            "summoned": {
+                "set": true
+            }
+        }
     }`
 
     async function toggleSummonUser (userId: string) {
