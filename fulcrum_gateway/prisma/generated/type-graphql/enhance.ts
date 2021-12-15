@@ -278,7 +278,7 @@ function applyTypeClassEnhanceConfig<
 const modelsInfo = {
   Organizer: ["id", "name", "password"],
   Queue: ["id", "organizer_id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "average_wait"],
-  User: ["id", "name", "queue_id", "summoned", "password", "phone_number", "party_size", "last_online", "index", "estimated_wait", "join_time", "reneged_time", "state", "total_wait"]
+  User: ["id", "name", "queue_id", "summoned", "password", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "state", "total_wait"]
 };
 
 type ModelNames = keyof typeof models;

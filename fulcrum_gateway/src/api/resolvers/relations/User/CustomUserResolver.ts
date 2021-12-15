@@ -42,20 +42,4 @@ export class CustomUserResolver {
     return 111;
   }
 
-  @Mutation(type => User)
-  async defer_position(@Root() user: User,
-                       @Arg("data") deferData: DeferData,
-                       @Ctx() {prisma}: Context): Promise<User> {
-    const new_wait = await this.estimated_wait(user, {prisma})
-    const result = await prisma.user.update({
-      where: {
-        id: user.id
-      },
-      data: {
-        state: "DEFERRED",
-        estimated_wait: new_wait
-      }
-    })
-    return result
-  }
 }

@@ -46,6 +46,7 @@ model User {
   party_size     Int        @default(1)
   last_online    DateTime?
   index          Int
+  /// @TypeGraphQL.omit(output: true)
   estimated_wait Int
   join_time      DateTime
   reneged_time   DateTime?
