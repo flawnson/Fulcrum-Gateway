@@ -18,7 +18,7 @@ export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const parentNavigation = navigation.getParent()
     const [action, setAction] = useState<State>("ENQUEUED")
-    const [selectedItems, setSelectedItems] = useState<Array<string>>([])
+    const [selectedItems, setSelectedItems] = useState<Array<EnqueuedStats["userId"]>>([])
 
     function onActionPress (action: State) {
         setAction(action)
@@ -64,7 +64,7 @@ export default function (props: EnqueuedStatsProps) {
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(
-                (listItem: string) => listItem !== item.userId,
+                (listItem: EnqueuedStats["userId"]) => listItem !== item.userId,
             )
             return setSelectedItems([...newListItems])
         }

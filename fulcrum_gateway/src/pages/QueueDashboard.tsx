@@ -48,7 +48,7 @@ export default function () {
         }
     }`
 
-    useInterval(async () => {
+    const fetchQueueData = async () => {
         try {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
@@ -85,7 +85,9 @@ export default function () {
         } catch(error) {
             console.log(error)
         }
-    }, 5000)
+    }
+
+    useInterval(fetchQueueData, 5000)
 
     return (
         <Center style={styles.animationFormat}>

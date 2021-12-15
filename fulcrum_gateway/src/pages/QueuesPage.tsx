@@ -29,10 +29,11 @@ export default function () {
         }
     `
     const variables = `{
-    "data": {
-                "id": 0
-            }
-        }`
+        "data":
+        {
+            "id": "organizerID"
+        }
+    }`
 
     async function fetchQueueData () {
         try {
@@ -41,7 +42,7 @@ export default function () {
                 data => {
                     data = data.data.organizer.queues
                     let queue_sats: QueueInfo[] = []
-                    data.forEach((queue_data: any) => {
+                    data.forEach((queue_data: {[key: string]: string | number}) => {
                         const now: any = new Date()
                         const create: any = new Date(queue_data.create_time)
                         const lifespan = new Date(Math.abs(now - create))
