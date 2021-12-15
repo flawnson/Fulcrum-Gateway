@@ -29,15 +29,15 @@ export class CustomUserResolver {
       @Root() user: User,
       @Ctx() {prisma}: Context,
   ): Promise<number> {
-    const result = await prisma.user.update({
-      where: {
-        id: user.id
-      },
-      data: {
-        state: "DEFERRED",
-        estimated_wait: 3
-      }
-    });
+    // const result = await prisma.user.update({
+    //   where: {
+    //     id: user.id
+    //   },
+    //   data: {
+    //     state: "DEFERRED",
+    //     estimated_wait: 3
+    //   }
+    // });
 
     return 111;
   }
@@ -46,16 +46,17 @@ export class CustomUserResolver {
   async defer_position(@Root() user: User,
                        @Arg("data") deferData: DeferData,
                        @Ctx() {prisma}: Context): Promise<User> {
-    const new_wait = await this.estimated_wait(user, {prisma})
-    const result = await prisma.user.update({
-      where: {
-        id: user.id
-      },
-      data: {
-        state: "DEFERRED",
-        estimated_wait: new_wait
-      }
-    })
-    return result
+    // const new_wait = await this.estimated_wait(user, {prisma})
+    // const result = await prisma.user.update({
+    //   where: {
+    //     id: user.id
+    //   },
+    //   data: {
+    //     state: "DEFERRED",
+    //     estimated_wait: new_wait
+    //   }
+    // })
+
+    return user
   }
 }

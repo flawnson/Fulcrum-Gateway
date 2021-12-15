@@ -25,15 +25,9 @@ export default function () {
         }
     `
     const variables = `{
-        "userId":
+        "queue_id":
         {
-            "id": queueID
-        },
-        "data": 
-        {
-            "summoned": {
-                "set": true
-            }
+            "id": "queueID"
         }
     }`
 
@@ -43,7 +37,7 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.queue.users
-                    data = data.filter((d: EnqueuedStats) => d.state === "ENQUEUED")
+                    data = data.filter((d: EnqueuedStats) => d.state === "ENQUEUED" || d.state === "DEFERRED")
                     let user_stats: EnqueuedStats[] = []
                     data.forEach((queue_data: {[key: string]: any}) => {
                         const now: any = new Date()

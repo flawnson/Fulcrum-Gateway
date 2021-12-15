@@ -29,10 +29,11 @@ export default function () {
         }
     `
     const variables = `{
-    "data": {
-                "id": 0
-            }
-        }`
+        "data":
+        {
+            "id": "organizerID"
+        }
+    }`
 
     async function fetchQueueData () {
         try {
