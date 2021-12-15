@@ -33,7 +33,7 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.queue.users
-                    data = data.filter((d: EnqueuedStats) => d.state === "ABANDONED")
+                    data = data.filter((d: AbandonedStats) => d.state === "ABANDONED")
                     let abandoned_stats: AbandonedStats[] = []
                     data.forEach((abandoned_data: any) => {
                         const now: any = new Date()

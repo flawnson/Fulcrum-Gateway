@@ -45,7 +45,7 @@ export default function () {
                     data = data.data.queue.users
                     data = data.filter((d: EnqueuedStats) => d.state === "ENQUEUED")
                     let user_stats: EnqueuedStats[] = []
-                    data.forEach((queue_data: any) => {
+                    data.forEach((queue_data: {[key: string]: any}) => {
                         const now: any = new Date()
                         const join: any = new Date(queue_data.join_time)
                         const waited = new Date(Math.abs(now - join))

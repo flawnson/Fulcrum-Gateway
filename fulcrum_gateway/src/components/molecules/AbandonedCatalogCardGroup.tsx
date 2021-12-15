@@ -13,7 +13,7 @@ type AbandonedStatsProps = {
 export default function (props: AbandonedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
 
-    const [selectedItems, setSelectedItems] = useState<Array<string>>([])
+    const [selectedItems, setSelectedItems] = useState<Array<AbandonedStats["userId"]>>([])
 
     // To remove header when organizer deselects all users
     useEffect(() => {
@@ -42,7 +42,7 @@ export default function (props: AbandonedStatsProps) {
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(
-                (listItem: string) => listItem !== item.userId,
+                (listItem: AbandonedStats["userId"]) => listItem !== item.userId,
             )
             return setSelectedItems([...newListItems])
         }
