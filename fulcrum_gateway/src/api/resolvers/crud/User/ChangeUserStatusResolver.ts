@@ -13,7 +13,7 @@ interface Context {
 }
 
 @ArgsType()
-class StatusChangeArgs {
+class ChangeStatusArgs {
   @Field({
     nullable: false
   })
@@ -32,7 +32,7 @@ export class ChangeUserStatusResolver {
   @Mutation(returns => User, {
     nullable: true
   })
-  async changeStatus(@Ctx() { prisma }: Context, @Args() args: StatusChangeArgs): Promise<User | null> {
+  async changeStatus(@Ctx() { prisma }: Context, @Args() args: ChangeStatusArgs): Promise<User | null> {
 
     // update the user's status
     const user = await prisma.user.update({
