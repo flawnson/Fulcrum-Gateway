@@ -210,7 +210,7 @@ input IntWithAggregatesFilter {
 }
 
 type Mutation {
-  changeStatus: User
+  changeStatus(id: String!, status: String!): User
   createManyOrganizer(data: [OrganizerCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyQueue(data: [QueueCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!
   createManyUser(data: [UserCreateManyInput!]!, skipDuplicates: Boolean): AffectedRowsOutput!

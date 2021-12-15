@@ -13,7 +13,7 @@ interface Context {
 }
 
 @ArgsType()
-class DeferData implements Partial<User> {
+class DeferDataArgs implements Partial<User> {
   @Field()
   id?: string;
 
@@ -27,7 +27,7 @@ export class DeferUserResolver {
   @Mutation(returns => User, {
     nullable: true
   })
-  async deferPosition(@Args() args: DeferData, @Ctx() { prisma }: Context): Promise<User | null> {
+  async deferPosition(@Ctx() { prisma }: Context, @Args() args: DeferDataArgs): Promise<User | null> {
     // May need to import CustomUserResolver to access estimated_wait()
 
     // const new_wait = await this.estimated_wait(user, {prisma})
