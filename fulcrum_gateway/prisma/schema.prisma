@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 generator typegraphql {
@@ -22,7 +23,7 @@ model Organizer {
 model Queue {
   id             String        @id @default(uuid())
   organizer_id   String
-  join_code      String
+  join_code      String     @unique
   name           String
   address        String
   state          QueueState @default(ACTIVE)

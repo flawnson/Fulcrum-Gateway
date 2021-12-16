@@ -386,7 +386,7 @@ const inputsInfo = {
   OrganizerScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "name", "password"],
   QueueWhereInput: ["AND", "OR", "NOT", "id", "organizer_id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "organizer", "users"],
   QueueOrderByWithRelationInput: ["id", "organizer_id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "organizer", "users"],
-  QueueWhereUniqueInput: ["id"],
+  QueueWhereUniqueInput: ["id", "join_code"],
   QueueOrderByWithAggregationInput: ["id", "organizer_id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "_count", "_avg", "_max", "_min", "_sum"],
   QueueScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "organizer_id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time"],
   UserWhereInput: ["AND", "OR", "NOT", "id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "status", "queue_id", "queue", "total_wait"],
