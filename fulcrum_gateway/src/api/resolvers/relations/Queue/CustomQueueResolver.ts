@@ -16,6 +16,43 @@ interface Context {
 @Resolver(of => Queue)
 export class CustomQueueResolver {
 
+  @FieldResolver(type => Int, { nullable: true })
+  async average_wait(@Root() queue: Queue, @Ctx() { prisma }: Context): Promise<number | null> {
+    // get users of queue
+    const results = await prisma.queue.findUnique({
+      where: {
+        id: queue.id
+      },
+      select: {
+        users: true
+      }
+    }) || { "users": [] };
+
+    // loop through users to calculate the average wait
+    let averageWaitTime = 0;
+    let numUsersCount = 0;
+    for (let i = 0; i < results.users.length; i++){
+      if (results.users[i] != null){
+        if (results.users[i].total_wait != null){
+          averageWaitTime += results.users[i].total_wait!; // possibly null if no "!" is used
+          numUsersCount++;
+        }
+      }
+    }
+
+    if (numUsersCount == 0){
+      return null;
+    }
+
+    averageWaitTime /= numUsersCount;
+
+    //update average_wait in Queue
+
+
+    return averageWaitTime;
+
+  }
+
   @FieldResolver(type => Int)
   async num_enqueued(
     @Root() queue: Queue,

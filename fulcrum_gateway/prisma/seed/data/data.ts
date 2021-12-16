@@ -18,7 +18,7 @@ export const user_table = [
     estimated_wait: 300,
     join_time: pastDate,
     reneged_time: futureDate,
-    state: UserStatus.ENQUEUED
+    status: UserStatus.ENQUEUED
   },
   {
     id: "user1",
@@ -32,7 +32,7 @@ export const user_table = [
     estimated_wait: 300,
     join_time: pastDate,
     reneged_time: futureDate,
-    state: UserStatus.SERVICED,
+    status: UserStatus.SERVICED,
     total_wait: 700
   },
   {
@@ -47,7 +47,7 @@ export const user_table = [
     estimated_wait: 300,
     join_time: pastDate,
     reneged_time: futureDate,
-    state: UserStatus.ENQUEUED
+    status: UserStatus.ENQUEUED
   },
   {
     id: "user3",
@@ -61,7 +61,7 @@ export const user_table = [
     estimated_wait: 300,
     join_time: pastDate,
     reneged_time: futureDate,
-    state: UserStatus.ENQUEUED
+    status: UserStatus.ENQUEUED
   }
 ];
 
