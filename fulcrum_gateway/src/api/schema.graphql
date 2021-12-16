@@ -1239,7 +1239,7 @@ input StringWithAggregatesFilter {
 }
 
 type User {
-  estimated_wait: Int!
+  estimated_wait: Int
   id: String!
   index: Int!
   join_time: DateTime!

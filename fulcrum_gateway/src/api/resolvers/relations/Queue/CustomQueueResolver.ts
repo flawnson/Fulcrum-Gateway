@@ -20,9 +20,7 @@ export class CustomQueueResolver {
   @FieldResolver(type => Int, { nullable: true })
   async average_wait(@Root() queue: Queue, @Ctx() { prisma }: Context): Promise<number | null> {
     const averageWaitTime = helpers.calculateAverageWait(queue.id);
-
     return averageWaitTime;
-
   }
 
   @FieldResolver(type => Int)
