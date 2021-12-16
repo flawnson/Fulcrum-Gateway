@@ -35,5 +35,5 @@ export class OrganizerQueuesArgs {
   @TypeGraphQL.Field(_type => [QueueScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "organizer_id" | "join_code" | "name" | "address" | "state" | "capacity" | "max_party_size" | "grace_period" | "offline_time" | "create_time" | "average_wait"> | undefined;
+  distinct?: Array<"id" | "organizer_id" | "join_code" | "name" | "address" | "state" | "capacity" | "max_party_size" | "grace_period" | "offline_time" | "create_time"> | undefined;
 }

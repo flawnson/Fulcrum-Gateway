@@ -9,7 +9,6 @@ import { EnumUserStatusFilter } from "../inputs/EnumUserStatusFilter";
 import { IntFilter } from "../inputs/IntFilter";
 import { IntNullableFilter } from "../inputs/IntNullableFilter";
 import { StringFilter } from "../inputs/StringFilter";
-import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
 @TypeGraphQL.InputType("UserScalarWhereInput", {
   isAbstract: true
@@ -40,20 +39,10 @@ export class UserScalarWhereInput {
   })
   name?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
-  })
-  queue_id?: StringFilter | undefined;
-
   @TypeGraphQL.Field(_type => BoolFilter, {
     nullable: true
   })
   summoned?: BoolFilter | undefined;
-
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
-    nullable: true
-  })
-  password?: StringNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
@@ -75,11 +64,6 @@ export class UserScalarWhereInput {
   })
   index?: IntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
-    nullable: true
-  })
-  estimated_wait?: IntFilter | undefined;
-
   @TypeGraphQL.Field(_type => DateTimeFilter, {
     nullable: true
   })
@@ -93,7 +77,12 @@ export class UserScalarWhereInput {
   @TypeGraphQL.Field(_type => EnumUserStatusFilter, {
     nullable: true
   })
-  state?: EnumUserStatusFilter | undefined;
+  status?: EnumUserStatusFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  queue_id?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => IntNullableFilter, {
     nullable: true

@@ -8,6 +8,7 @@ import {
 } from "type-graphql";
 import { Queue } from "../../../../../prisma/generated/type-graphql/models/Queue";
 import { PrismaClient } from "@prisma/client";
+import * as helpers from "../../../helpers";
 
 interface Context {
   prisma: PrismaClient;
@@ -18,36 +19,7 @@ export class CustomQueueResolver {
 
   @FieldResolver(type => Int, { nullable: true })
   async average_wait(@Root() queue: Queue, @Ctx() { prisma }: Context): Promise<number | null> {
-    // get users of queue
-    const results = await prisma.queue.findUnique({
-      where: {
-        id: queue.id
-      },
-      select: {
-        users: true
-      }
-    }) || { "users": [] };
-
-    // loop through users to calculate the average wait
-    let averageWaitTime = 0;
-    let numUsersCount = 0;
-    for (let i = 0; i < results.users.length; i++){
-      if (results.users[i] != null){
-        if (results.users[i].total_wait != null){
-          averageWaitTime += results.users[i].total_wait!; // possibly null if no "!" is used
-          numUsersCount++;
-        }
-      }
-    }
-
-    if (numUsersCount == 0){
-      return null;
-    }
-
-    averageWaitTime /= numUsersCount;
-
-    //update average_wait in Queue
-
+    const averageWaitTime = helpers.calculateAverageWait(queue.id);
 
     return averageWaitTime;
 
@@ -65,11 +37,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "ENQUEUED"
+            status: "ENQUEUED"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }
@@ -86,11 +58,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "SERVICED"
+            status: "SERVICED"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }
@@ -107,11 +79,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "ABANDONED"
+            status: "ABANDONED"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }
@@ -128,11 +100,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "KICKED"
+            status: "KICKED"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }
@@ -149,11 +121,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "DEFERRED"
+            status: "DEFERRED"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }
@@ -170,11 +142,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "NOSHOW"
+            status: "NOSHOW"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }

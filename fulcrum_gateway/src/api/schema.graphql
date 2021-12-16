@@ -682,7 +682,7 @@ enum QueryMode {
 type Queue {
   _count: QueueCount!
   address: String!
-  average_wait: Int!
+  average_wait: Int
   capacity: Int!
   create_time: DateTime!
   grace_period: Int
@@ -704,7 +704,6 @@ type Queue {
 }
 
 type QueueAvgAggregate {
-  average_wait: Float
   capacity: Float
   grace_period: Float
   max_party_size: Float
@@ -712,7 +711,6 @@ type QueueAvgAggregate {
 }
 
 input QueueAvgOrderByAggregateInput {
-  average_wait: SortOrder
   capacity: SortOrder
   grace_period: SortOrder
   max_party_size: SortOrder
@@ -726,7 +724,6 @@ type QueueCount {
 type QueueCountAggregate {
   _all: Int!
   address: Int!
-  average_wait: Int!
   capacity: Int!
   create_time: Int!
   grace_period: Int!
@@ -741,7 +738,6 @@ type QueueCountAggregate {
 
 input QueueCountOrderByAggregateInput {
   address: SortOrder
-  average_wait: SortOrder
   capacity: SortOrder
   create_time: SortOrder
   grace_period: SortOrder
@@ -756,7 +752,6 @@ input QueueCountOrderByAggregateInput {
 
 input QueueCreateInput {
   address: String!
-  average_wait: Int!
   capacity: Int!
   create_time: DateTime!
   grace_period: Int
@@ -766,13 +761,12 @@ input QueueCreateInput {
   name: String!
   offline_time: Int
   organizer: OrganizerCreateNestedOneWithoutQueuesInput!
-  state: QueueState!
+  state: QueueState
   users: UserCreateNestedManyWithoutQueueInput
 }
 
 input QueueCreateManyInput {
   address: String!
-  average_wait: Int!
   capacity: Int!
   create_time: DateTime!
   grace_period: Int
@@ -782,12 +776,11 @@ input QueueCreateManyInput {
   name: String!
   offline_time: Int
   organizer_id: String!
-  state: QueueState!
+  state: QueueState
 }
 
 input QueueCreateManyOrganizerInput {
   address: String!
-  average_wait: Int!
   capacity: Int!
   create_time: DateTime!
   grace_period: Int
@@ -796,7 +789,7 @@ input QueueCreateManyOrganizerInput {
   max_party_size: Int
   name: String!
   offline_time: Int
-  state: QueueState!
+  state: QueueState
 }
 
 input QueueCreateManyOrganizerInputEnvelope {
@@ -829,7 +822,6 @@ input QueueCreateOrConnectWithoutUsersInput {
 
 input QueueCreateWithoutOrganizerInput {
   address: String!
-  average_wait: Int!
   capacity: Int!
   create_time: DateTime!
   grace_period: Int
@@ -838,13 +830,12 @@ input QueueCreateWithoutOrganizerInput {
   max_party_size: Int
   name: String!
   offline_time: Int
-  state: QueueState!
+  state: QueueState
   users: UserCreateNestedManyWithoutQueueInput
 }
 
 input QueueCreateWithoutUsersInput {
   address: String!
-  average_wait: Int!
   capacity: Int!
   create_time: DateTime!
   grace_period: Int
@@ -854,7 +845,7 @@ input QueueCreateWithoutUsersInput {
   name: String!
   offline_time: Int
   organizer: OrganizerCreateNestedOneWithoutQueuesInput!
-  state: QueueState!
+  state: QueueState
 }
 
 type QueueGroupBy {
@@ -864,7 +855,6 @@ type QueueGroupBy {
   _min: QueueMinAggregate
   _sum: QueueSumAggregate
   address: String!
-  average_wait: Int!
   capacity: Int!
   create_time: DateTime!
   grace_period: Int
@@ -885,7 +875,6 @@ input QueueListRelationFilter {
 
 type QueueMaxAggregate {
   address: String
-  average_wait: Int
   capacity: Int
   create_time: DateTime
   grace_period: Int
@@ -900,7 +889,6 @@ type QueueMaxAggregate {
 
 input QueueMaxOrderByAggregateInput {
   address: SortOrder
-  average_wait: SortOrder
   capacity: SortOrder
   create_time: SortOrder
   grace_period: SortOrder
@@ -915,7 +903,6 @@ input QueueMaxOrderByAggregateInput {
 
 type QueueMinAggregate {
   address: String
-  average_wait: Int
   capacity: Int
   create_time: DateTime
   grace_period: Int
@@ -930,7 +917,6 @@ type QueueMinAggregate {
 
 input QueueMinOrderByAggregateInput {
   address: SortOrder
-  average_wait: SortOrder
   capacity: SortOrder
   create_time: SortOrder
   grace_period: SortOrder
@@ -954,7 +940,6 @@ input QueueOrderByWithAggregationInput {
   _min: QueueMinOrderByAggregateInput
   _sum: QueueSumOrderByAggregateInput
   address: SortOrder
-  average_wait: SortOrder
   capacity: SortOrder
   create_time: SortOrder
   grace_period: SortOrder
@@ -969,7 +954,6 @@ input QueueOrderByWithAggregationInput {
 
 input QueueOrderByWithRelationInput {
   address: SortOrder
-  average_wait: SortOrder
   capacity: SortOrder
   create_time: SortOrder
   grace_period: SortOrder
@@ -991,7 +975,6 @@ input QueueRelationFilter {
 
 enum QueueScalarFieldEnum {
   address
-  average_wait
   capacity
   create_time
   grace_period
@@ -1009,7 +992,6 @@ input QueueScalarWhereInput {
   NOT: [QueueScalarWhereInput!]
   OR: [QueueScalarWhereInput!]
   address: StringFilter
-  average_wait: IntFilter
   capacity: IntFilter
   create_time: DateTimeFilter
   grace_period: IntNullableFilter
@@ -1027,7 +1009,6 @@ input QueueScalarWhereWithAggregatesInput {
   NOT: [QueueScalarWhereWithAggregatesInput!]
   OR: [QueueScalarWhereWithAggregatesInput!]
   address: StringWithAggregatesFilter
-  average_wait: IntWithAggregatesFilter
   capacity: IntWithAggregatesFilter
   create_time: DateTimeWithAggregatesFilter
   grace_period: IntNullableWithAggregatesFilter
@@ -1047,7 +1028,6 @@ enum QueueState {
 }
 
 type QueueSumAggregate {
-  average_wait: Int
   capacity: Int
   grace_period: Int
   max_party_size: Int
@@ -1055,7 +1035,6 @@ type QueueSumAggregate {
 }
 
 input QueueSumOrderByAggregateInput {
-  average_wait: SortOrder
   capacity: SortOrder
   grace_period: SortOrder
   max_party_size: SortOrder
@@ -1064,7 +1043,6 @@ input QueueSumOrderByAggregateInput {
 
 input QueueUpdateInput {
   address: StringFieldUpdateOperationsInput
-  average_wait: IntFieldUpdateOperationsInput
   capacity: IntFieldUpdateOperationsInput
   create_time: DateTimeFieldUpdateOperationsInput
   grace_period: NullableIntFieldUpdateOperationsInput
@@ -1080,7 +1058,6 @@ input QueueUpdateInput {
 
 input QueueUpdateManyMutationInput {
   address: StringFieldUpdateOperationsInput
-  average_wait: IntFieldUpdateOperationsInput
   capacity: IntFieldUpdateOperationsInput
   create_time: DateTimeFieldUpdateOperationsInput
   grace_period: NullableIntFieldUpdateOperationsInput
@@ -1126,7 +1103,6 @@ input QueueUpdateWithWhereUniqueWithoutOrganizerInput {
 
 input QueueUpdateWithoutOrganizerInput {
   address: StringFieldUpdateOperationsInput
-  average_wait: IntFieldUpdateOperationsInput
   capacity: IntFieldUpdateOperationsInput
   create_time: DateTimeFieldUpdateOperationsInput
   grace_period: NullableIntFieldUpdateOperationsInput
@@ -1141,7 +1117,6 @@ input QueueUpdateWithoutOrganizerInput {
 
 input QueueUpdateWithoutUsersInput {
   address: StringFieldUpdateOperationsInput
-  average_wait: IntFieldUpdateOperationsInput
   capacity: IntFieldUpdateOperationsInput
   create_time: DateTimeFieldUpdateOperationsInput
   grace_period: NullableIntFieldUpdateOperationsInput
@@ -1170,7 +1145,6 @@ input QueueWhereInput {
   NOT: [QueueWhereInput!]
   OR: [QueueWhereInput!]
   address: StringFilter
-  average_wait: IntFilter
   capacity: IntFilter
   create_time: DateTimeFilter
   grace_period: IntNullableFilter
@@ -1272,25 +1246,22 @@ type User {
   last_online: DateTime
   name: String!
   party_size: Int!
-  password: String
   phone_number: String!
   queue: Queue!
   queue_id: String!
   reneged_time: DateTime
-  state: UserStatus!
+  status: UserStatus!
   summoned: Boolean!
   total_wait: Int
 }
 
 type UserAvgAggregate {
-  estimated_wait: Float
   index: Float
   party_size: Float
   total_wait: Float
 }
 
 input UserAvgOrderByAggregateInput {
-  estimated_wait: SortOrder
   index: SortOrder
   party_size: SortOrder
   total_wait: SortOrder
@@ -1298,85 +1269,75 @@ input UserAvgOrderByAggregateInput {
 
 type UserCountAggregate {
   _all: Int!
-  estimated_wait: Int!
   id: Int!
   index: Int!
   join_time: Int!
   last_online: Int!
   name: Int!
   party_size: Int!
-  password: Int!
   phone_number: Int!
   queue_id: Int!
   reneged_time: Int!
-  state: Int!
+  status: Int!
   summoned: Int!
   total_wait: Int!
 }
 
 input UserCountOrderByAggregateInput {
-  estimated_wait: SortOrder
   id: SortOrder
   index: SortOrder
   join_time: SortOrder
   last_online: SortOrder
   name: SortOrder
   party_size: SortOrder
-  password: SortOrder
   phone_number: SortOrder
   queue_id: SortOrder
   reneged_time: SortOrder
-  state: SortOrder
+  status: SortOrder
   summoned: SortOrder
   total_wait: SortOrder
 }
 
 input UserCreateInput {
-  estimated_wait: Int!
   id: String
-  index: Int!
-  join_time: DateTime!
+  index: Int
+  join_time: DateTime
   last_online: DateTime
   name: String!
   party_size: Int
-  password: String
   phone_number: String!
   queue: QueueCreateNestedOneWithoutUsersInput!
   reneged_time: DateTime
-  state: UserStatus!
+  status: UserStatus
   summoned: Boolean
   total_wait: Int
 }
 
 input UserCreateManyInput {
-  estimated_wait: Int!
   id: String
-  index: Int!
-  join_time: DateTime!
+  index: Int
+  join_time: DateTime
   last_online: DateTime
   name: String!
   party_size: Int
-  password: String
   phone_number: String!
   queue_id: String!
   reneged_time: DateTime
-  state: UserStatus!
+  status: UserStatus
   summoned: Boolean
   total_wait: Int
 }
 
 input UserCreateManyQueueInput {
-  estimated_wait: Int!
   id: String
-  index: Int!
-  join_time: DateTime!
+  index: Int
+  join_time: DateTime
   last_online: DateTime
   name: String!
   party_size: Int
-  password: String
   phone_number: String!
   reneged_time: DateTime
-  state: UserStatus!
+  status: UserStatus
   summoned: Boolean
   total_wait: Int
 }
@@ -1399,17 +1360,15 @@ input UserCreateOrConnectWithoutQueueInput {
 }
 
 input UserCreateWithoutQueueInput {
-  estimated_wait: Int!
   id: String
-  index: Int!
-  join_time: DateTime!
+  index: Int
+  join_time: DateTime
   last_online: DateTime
   name: String!
   party_size: Int
-  password: String
   phone_number: String!
   reneged_time: DateTime
-  state: UserStatus!
+  status: UserStatus
   summoned: Boolean
   total_wait: Int
 }
@@ -1420,18 +1379,16 @@ type UserGroupBy {
   _max: UserMaxAggregate
   _min: UserMinAggregate
   _sum: UserSumAggregate
-  estimated_wait: Int!
   id: String!
   index: Int!
   join_time: DateTime!
   last_online: DateTime
   name: String!
   party_size: Int!
-  password: String
   phone_number: String!
   queue_id: String!
   reneged_time: DateTime
-  state: UserStatus!
+  status: UserStatus!
   summoned: Boolean!
   total_wait: Int
 }
@@ -1443,69 +1400,61 @@ input UserListRelationFilter {
 }
 
 type UserMaxAggregate {
-  estimated_wait: Int
   id: String
   index: Int
   join_time: DateTime
   last_online: DateTime
   name: String
   party_size: Int
-  password: String
   phone_number: String
   queue_id: String
   reneged_time: DateTime
-  state: UserStatus
+  status: UserStatus
   summoned: Boolean
   total_wait: Int
 }
 
 input UserMaxOrderByAggregateInput {
-  estimated_wait: SortOrder
   id: SortOrder
   index: SortOrder
   join_time: SortOrder
   last_online: SortOrder
   name: SortOrder
   party_size: SortOrder
-  password: SortOrder
   phone_number: SortOrder
   queue_id: SortOrder
   reneged_time: SortOrder
-  state: SortOrder
+  status: SortOrder
   summoned: SortOrder
   total_wait: SortOrder
 }
 
 type UserMinAggregate {
-  estimated_wait: Int
   id: String
   index: Int
   join_time: DateTime
   last_online: DateTime
   name: String
   party_size: Int
-  password: String
   phone_number: String
   queue_id: String
   reneged_time: DateTime
-  state: UserStatus
+  status: UserStatus
   summoned: Boolean
   total_wait: Int
 }
 
 input UserMinOrderByAggregateInput {
-  estimated_wait: SortOrder
   id: SortOrder
   index: SortOrder
   join_time: SortOrder
   last_online: SortOrder
   name: SortOrder
   party_size: SortOrder
-  password: SortOrder
   phone_number: SortOrder
   queue_id: SortOrder
   reneged_time: SortOrder
-  state: SortOrder
+  status: SortOrder
   summoned: SortOrder
   total_wait: SortOrder
 }
@@ -1520,53 +1469,47 @@ input UserOrderByWithAggregationInput {
   _max: UserMaxOrderByAggregateInput
   _min: UserMinOrderByAggregateInput
   _sum: UserSumOrderByAggregateInput
-  estimated_wait: SortOrder
   id: SortOrder
   index: SortOrder
   join_time: SortOrder
   last_online: SortOrder
   name: SortOrder
   party_size: SortOrder
-  password: SortOrder
   phone_number: SortOrder
   queue_id: SortOrder
   reneged_time: SortOrder
-  state: SortOrder
+  status: SortOrder
   summoned: SortOrder
   total_wait: SortOrder
 }
 
 input UserOrderByWithRelationInput {
-  estimated_wait: SortOrder
   id: SortOrder
   index: SortOrder
   join_time: SortOrder
   last_online: SortOrder
   name: SortOrder
   party_size: SortOrder
-  password: SortOrder
   phone_number: SortOrder
   queue: QueueOrderByWithRelationInput
   queue_id: SortOrder
   reneged_time: SortOrder
-  state: SortOrder
+  status: SortOrder
   summoned: SortOrder
   total_wait: SortOrder
 }
 
 enum UserScalarFieldEnum {
-  estimated_wait
   id
   index
   join_time
   last_online
   name
   party_size
-  password
   phone_number
   queue_id
   reneged_time
-  state
+  status
   summoned
   total_wait
 }
@@ -1575,18 +1518,16 @@ input UserScalarWhereInput {
   AND: [UserScalarWhereInput!]
   NOT: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
-  estimated_wait: IntFilter
   id: StringFilter
   index: IntFilter
   join_time: DateTimeFilter
   last_online: DateTimeNullableFilter
   name: StringFilter
   party_size: IntFilter
-  password: StringNullableFilter
   phone_number: StringFilter
   queue_id: StringFilter
   reneged_time: DateTimeNullableFilter
-  state: EnumUserStatusFilter
+  status: EnumUserStatusFilter
   summoned: BoolFilter
   total_wait: IntNullableFilter
 }
@@ -1595,18 +1536,16 @@ input UserScalarWhereWithAggregatesInput {
   AND: [UserScalarWhereWithAggregatesInput!]
   NOT: [UserScalarWhereWithAggregatesInput!]
   OR: [UserScalarWhereWithAggregatesInput!]
-  estimated_wait: IntWithAggregatesFilter
   id: StringWithAggregatesFilter
   index: IntWithAggregatesFilter
   join_time: DateTimeWithAggregatesFilter
   last_online: DateTimeNullableWithAggregatesFilter
   name: StringWithAggregatesFilter
   party_size: IntWithAggregatesFilter
-  password: StringNullableWithAggregatesFilter
   phone_number: StringWithAggregatesFilter
   queue_id: StringWithAggregatesFilter
   reneged_time: DateTimeNullableWithAggregatesFilter
-  state: EnumUserStatusWithAggregatesFilter
+  status: EnumUserStatusWithAggregatesFilter
   summoned: BoolWithAggregatesFilter
   total_wait: IntNullableWithAggregatesFilter
 }
@@ -1621,48 +1560,42 @@ enum UserStatus {
 }
 
 type UserSumAggregate {
-  estimated_wait: Int
   index: Int
   party_size: Int
   total_wait: Int
 }
 
 input UserSumOrderByAggregateInput {
-  estimated_wait: SortOrder
   index: SortOrder
   party_size: SortOrder
   total_wait: SortOrder
 }
 
 input UserUpdateInput {
-  estimated_wait: IntFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   index: IntFieldUpdateOperationsInput
   join_time: DateTimeFieldUpdateOperationsInput
   last_online: NullableDateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   party_size: IntFieldUpdateOperationsInput
-  password: NullableStringFieldUpdateOperationsInput
   phone_number: StringFieldUpdateOperationsInput
   queue: QueueUpdateOneRequiredWithoutUsersInput
   reneged_time: NullableDateTimeFieldUpdateOperationsInput
-  state: EnumUserStatusFieldUpdateOperationsInput
+  status: EnumUserStatusFieldUpdateOperationsInput
   summoned: BoolFieldUpdateOperationsInput
   total_wait: NullableIntFieldUpdateOperationsInput
 }
 
 input UserUpdateManyMutationInput {
-  estimated_wait: IntFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   index: IntFieldUpdateOperationsInput
   join_time: DateTimeFieldUpdateOperationsInput
   last_online: NullableDateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   party_size: IntFieldUpdateOperationsInput
-  password: NullableStringFieldUpdateOperationsInput
   phone_number: StringFieldUpdateOperationsInput
   reneged_time: NullableDateTimeFieldUpdateOperationsInput
-  state: EnumUserStatusFieldUpdateOperationsInput
+  status: EnumUserStatusFieldUpdateOperationsInput
   summoned: BoolFieldUpdateOperationsInput
   total_wait: NullableIntFieldUpdateOperationsInput
 }
@@ -1692,17 +1625,15 @@ input UserUpdateWithWhereUniqueWithoutQueueInput {
 }
 
 input UserUpdateWithoutQueueInput {
-  estimated_wait: IntFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   index: IntFieldUpdateOperationsInput
   join_time: DateTimeFieldUpdateOperationsInput
   last_online: NullableDateTimeFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   party_size: IntFieldUpdateOperationsInput
-  password: NullableStringFieldUpdateOperationsInput
   phone_number: StringFieldUpdateOperationsInput
   reneged_time: NullableDateTimeFieldUpdateOperationsInput
-  state: EnumUserStatusFieldUpdateOperationsInput
+  status: EnumUserStatusFieldUpdateOperationsInput
   summoned: BoolFieldUpdateOperationsInput
   total_wait: NullableIntFieldUpdateOperationsInput
 }
@@ -1717,19 +1648,17 @@ input UserWhereInput {
   AND: [UserWhereInput!]
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
-  estimated_wait: IntFilter
   id: StringFilter
   index: IntFilter
   join_time: DateTimeFilter
   last_online: DateTimeNullableFilter
   name: StringFilter
   party_size: IntFilter
-  password: StringNullableFilter
   phone_number: StringFilter
   queue: QueueRelationFilter
   queue_id: StringFilter
   reneged_time: DateTimeNullableFilter
-  state: EnumUserStatusFilter
+  status: EnumUserStatusFilter
   summoned: BoolFilter
   total_wait: IntNullableFilter
 }

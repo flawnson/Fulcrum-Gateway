@@ -63,11 +63,6 @@ export class QueueUpdateWithoutOrganizerInput {
   })
   create_time?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
-    nullable: true
-  })
-  average_wait?: IntFieldUpdateOperationsInput | undefined;
-
   @TypeGraphQL.Field(_type => UserUpdateManyWithoutQueueInput, {
     nullable: true
   })

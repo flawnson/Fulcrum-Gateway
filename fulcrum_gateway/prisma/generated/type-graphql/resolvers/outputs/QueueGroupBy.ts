@@ -68,11 +68,6 @@ export class QueueGroupBy {
   })
   create_time!: Date;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
-  })
-  average_wait!: number;
-
   @TypeGraphQL.Field(_type => QueueCountAggregate, {
     nullable: true
   })

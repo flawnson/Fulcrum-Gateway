@@ -29,15 +29,14 @@ export class CustomUserResolver {
       @Root() user: User,
       @Ctx() {prisma}: Context,
   ): Promise<number> {
-    const result = await prisma.user.update({
-      where: {
-        id: user.id
-      },
-      data: {
-        state: "DEFERRED",
-        estimated_wait: 3
-      }
-    });
+    // const result = await prisma.user.update({
+    //   where: {
+    //     id: user.id
+    //   },
+    //   data: {
+    //     status: "DEFERRED"
+    //   }
+    // });
 
     return 111;
   }

@@ -18,20 +18,10 @@ export class UserCreateManyInput {
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
-  })
-  queue_id!: string;
-
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: true
   })
   summoned?: boolean | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  password?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false
@@ -49,19 +39,14 @@ export class UserCreateManyInput {
   last_online?: Date | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
+    nullable: true
   })
-  index!: number;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
-  })
-  estimated_wait!: number;
+  index?: number | undefined;
 
   @TypeGraphQL.Field(_type => Date, {
-    nullable: false
+    nullable: true
   })
-  join_time!: Date;
+  join_time?: Date | undefined;
 
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
@@ -69,9 +54,14 @@ export class UserCreateManyInput {
   reneged_time?: Date | undefined;
 
   @TypeGraphQL.Field(_type => UserStatus, {
+    nullable: true
+  })
+  status?: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  state!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+  queue_id!: string;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true

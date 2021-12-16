@@ -31,9 +31,9 @@ export class QueueCreateInput {
   address!: string;
 
   @TypeGraphQL.Field(_type => QueueState, {
-    nullable: false
+    nullable: true
   })
-  state!: "ACTIVE" | "PAUSED" | "INACTIVE";
+  state?: "ACTIVE" | "PAUSED" | "INACTIVE" | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
@@ -59,11 +59,6 @@ export class QueueCreateInput {
     nullable: false
   })
   create_time!: Date;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
-  })
-  average_wait!: number;
 
   @TypeGraphQL.Field(_type => OrganizerCreateNestedOneWithoutQueuesInput, {
     nullable: false
