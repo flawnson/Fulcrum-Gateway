@@ -42,6 +42,7 @@ import {
 import { customResolvers } from "./resolvers";
 
 import { PrismaClient } from "@prisma/client";
+import prisma from './prismaClient';
 import * as path from 'path';
 
 const pregeneratedCrudResolvers = [
@@ -81,7 +82,7 @@ const combinedResolvers = [...pregeneratedCrudResolvers, ...relationResolvers, .
 
 async function bootstrap(){
 
-  const prisma = new PrismaClient();
+  //const prisma = new PrismaClient();
 
   const schema = await buildSchema({
     resolvers: combinedResolvers,
