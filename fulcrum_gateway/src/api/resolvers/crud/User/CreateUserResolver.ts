@@ -13,7 +13,7 @@ interface Context {
 }
 
 @ArgsType()
-class JoinQueueArgs {
+class CreateUserArgs {
   @Field({
     nullable: false
   })
@@ -31,12 +31,12 @@ class JoinQueueArgs {
 }
 
 @Resolver(of => User)
-export class JoinQueueResolver {
+export class CreateUserResolver {
 
   @Mutation(returns => User, {
     nullable: true
   })
-  async joinQueue(@Ctx() { prisma }: Context, @Args() args: JoinQueueArgs): Promise<User | null> {
+  async createUser(@Ctx() { prisma }: Context, @Args() args: CreateUserArgs): Promise<User | null> {
     return await prisma.$transaction(async (prisma) => {
       //check if theres a queue with that join code
       const results = await prisma.queue.findUnique({
