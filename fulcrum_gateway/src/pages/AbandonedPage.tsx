@@ -23,7 +23,7 @@ export default function () {
     `
     const variables = `{
     "queue_id": {
-            "id": "queueID"
+            "id": "queue1D"
         }
     }`
 
