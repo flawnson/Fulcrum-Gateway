@@ -21,6 +21,7 @@ import QRCodeScanner from "./src/components/organisms/QRCodeScanner"
 import './i18n';
 import { PreferencesContext } from "./src/utilities/useTheme";
 import QueueDashboard from "./src/pages/QueueDashboard";
+import DarkModeToggle from "./src/components/atoms/DarkModeToggle";
 
 const config: object = {
     strictMode: 'off',
@@ -53,10 +54,10 @@ function App() {
             <NativeBaseProvider config={config} theme={theme.nativebase}>
                 <NavigationContainer theme={theme.navigation}>
                     <Stack.Navigator initialRouteName="HomePage">
-                        <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe" }} >
+                        <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe", headerRight: DarkModeToggle()}} >
                             {isInQueue && isQueuer ? (
                             <>
-                                <Stack.Screen name="HomePage" component={QueuesPage} />
+                                <Stack.Screen name="HomePage" component={HomePage} />
                                 <Stack.Screen name="LandingPage" component={LandingPage} />
                                 <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                 <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />

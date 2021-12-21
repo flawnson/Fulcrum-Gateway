@@ -4,15 +4,6 @@ import useInterval from "../utilities/useInterval";
 import {AbandonedStats, EnqueuedStats} from "../../types";
 
 export default function () {
-    const defaultProps = {
-        name: "Someone",
-        stats: [
-            {prefix: "You're", stat: 0, suffix: "n/a"},
-            {prefix: "You've waited", stat: 0, suffix: "m"},
-            {prefix: "Average wait", stat: 0, suffix: "m"},
-            {prefix: "ETA", stat: 0, suffix: "m"}
-        ],
-    }
     const [props, setProps] = useState<AbandonedStats[]>([])
 
     useEffect(() => {fetchAbandonedData()}, [])

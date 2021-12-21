@@ -30,7 +30,7 @@ export default function (props: Props) {
             style={styles.card}
         >
             <HStack style={styles.container} space='3'>
-                <Text style={styles.statPrefix}>
+                <Text variant="darkModeButton" style={styles.statPrefix}>
                     {props.stat.prefix.split(" ").join("\n")}
                 </Text>
                 <Text style={styles.statText}>

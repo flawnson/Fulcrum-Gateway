@@ -13,9 +13,9 @@ export default function () {
     const defaultProps = {
         name: "Someone",
         stats: [
-                {prefix: "You're", stat: 0, suffix: "n/a"},
-                {prefix: "You've \n waited", stat: 0, suffix: "m"},
-                {prefix: "Average \n wait", stat: 0, suffix: "m"},
+                {prefix: "You're", stat: 0, suffix: ""},
+                {prefix: "You've waited", stat: 0, suffix: "m"},
+                {prefix: "Average wait", stat: 0, suffix: "m"},
                 {prefix: "ETA", stat: 0, suffix: "m"}
             ],
         }
