@@ -62,9 +62,4 @@ export class QueueMinAggregate {
     nullable: true
   })
   create_time!: Date | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
-  })
-  average_wait!: number | null;
 }

@@ -81,9 +81,4 @@ export class QueueScalarWhereInput {
     nullable: true
   })
   create_time?: DateTimeFilter | undefined;
-
-  @TypeGraphQL.Field(_type => IntFilter, {
-    nullable: true
-  })
-  average_wait?: IntFilter | undefined;
 }

@@ -18,20 +18,10 @@ export class UserMinAggregate {
   })
   name!: string | null;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  queue_id!: string | null;
-
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: true
   })
   summoned!: boolean | null;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  password!: string | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true
@@ -53,11 +43,6 @@ export class UserMinAggregate {
   })
   index!: number | null;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
-  })
-  estimated_wait!: number | null;
-
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
   })
@@ -71,7 +56,12 @@ export class UserMinAggregate {
   @TypeGraphQL.Field(_type => UserStatus, {
     nullable: true
   })
-  state!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | null;
+  status!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  queue_id!: string | null;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true

@@ -21,10 +21,5 @@ export class UserAvgOrderByAggregateInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  estimated_wait?: "asc" | "desc" | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
   total_wait?: "asc" | "desc" | undefined;
 }

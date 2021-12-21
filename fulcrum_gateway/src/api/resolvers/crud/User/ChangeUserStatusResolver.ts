@@ -40,14 +40,14 @@ export class ChangeUserStatusResolver {
         id: args.id
       },
       data: {
-        state: args.status
+        status: args.status
       },
     });
 
     if (user != null){
-      // if it's a leave state, update the total_wait
-      const leaveStates = ["SERVICED", "ABANDONED", "NOSHOW", "KICKED"];
-      if (leaveStates.includes(args.status)){
+      // if it's a leave status, update the total_wait
+      const leaveStatus = ["SERVICED", "ABANDONED", "NOSHOW", "KICKED"];
+      if (leaveStatus.includes(args.status)){
 
         // total_wait = time of leave - join_time (in seconds)
         const leaveTime = new Date();

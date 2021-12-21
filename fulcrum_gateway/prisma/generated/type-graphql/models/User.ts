@@ -19,20 +19,10 @@ export class User {
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
-  })
-  queue_id!: string;
-
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: false
   })
   summoned!: boolean;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  password?: string | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: false
@@ -54,8 +44,6 @@ export class User {
   })
   index!: number;
 
-  estimated_wait?: number;
-
   @TypeGraphQL.Field(_type => Date, {
     nullable: false
   })
@@ -69,7 +57,12 @@ export class User {
   @TypeGraphQL.Field(_type => UserStatus, {
     nullable: false
   })
-  state!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+  status!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  queue_id!: string;
 
   queue?: Queue;
 

@@ -8,6 +8,7 @@ import {
 } from "type-graphql";
 import { Queue } from "../../../../../prisma/generated/type-graphql/models/Queue";
 import { PrismaClient } from "@prisma/client";
+import * as helpers from "../../../helpers";
 
 interface Context {
   prisma: PrismaClient;
@@ -15,6 +16,12 @@ interface Context {
 
 @Resolver(of => Queue)
 export class CustomQueueResolver {
+
+  @FieldResolver(type => Int, { nullable: true })
+  async average_wait(@Root() queue: Queue, @Ctx() { prisma }: Context): Promise<number | null> {
+    const averageWaitTime = await helpers.calculateAverageWait(queue.id);
+    return averageWaitTime;
+  }
 
   @FieldResolver(type => Int)
   async num_enqueued(
@@ -28,11 +35,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "ENQUEUED"
+            status: "ENQUEUED"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }
@@ -49,11 +56,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "SERVICED"
+            status: "SERVICED"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }
@@ -70,11 +77,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "ABANDONED"
+            status: "ABANDONED"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }
@@ -91,11 +98,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "KICKED"
+            status: "KICKED"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }
@@ -112,11 +119,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "DEFERRED"
+            status: "DEFERRED"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }
@@ -133,11 +140,11 @@ export class CustomQueueResolver {
       select: {
         users: {
           where: {
-            state: "NOSHOW"
+            status: "NOSHOW"
           }
         }
       }
-    });
+    }) || { "users": [] };
 
     return result!.users.length;
   }
