@@ -70,11 +70,6 @@ export class Queue {
 
   users?: User[];
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
-  })
-  average_wait!: number;
-
   @TypeGraphQL.Field(_type => QueueCount, {
     nullable: false
   })

@@ -27,9 +27,4 @@ export class QueueSumOrderByAggregateInput {
     nullable: true
   })
   offline_time?: "asc" | "desc" | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
-  average_wait?: "asc" | "desc" | undefined;
 }

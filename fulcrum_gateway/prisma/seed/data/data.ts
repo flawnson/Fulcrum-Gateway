@@ -15,10 +15,10 @@ export const user_table = [
     party_size: 1,
     last_online: nowDate,
     index: 1,
-    estimated_wait: 300,
     join_time: pastDate,
     reneged_time: futureDate,
-    state: UserStatus.ENQUEUED
+    status: UserStatus.ABANDONED,
+    total_wait: 1000
   },
   {
     id: "user1",
@@ -29,10 +29,9 @@ export const user_table = [
     party_size: 1,
     last_online: nowDate,
     index: 1,
-    estimated_wait: 300,
     join_time: pastDate,
     reneged_time: futureDate,
-    state: UserStatus.SERVICED,
+    status: UserStatus.SERVICED,
     total_wait: 700
   },
   {
@@ -44,10 +43,10 @@ export const user_table = [
     party_size: 1,
     last_online: nowDate,
     index: 1,
-    estimated_wait: 300,
     join_time: pastDate,
     reneged_time: futureDate,
-    state: UserStatus.ENQUEUED
+    status: UserStatus.SERVICED,
+    total_wait: 800
   },
   {
     id: "user3",
@@ -58,10 +57,9 @@ export const user_table = [
     party_size: 1,
     last_online: nowDate,
     index: 1,
-    estimated_wait: 300,
     join_time: pastDate,
     reneged_time: futureDate,
-    state: UserStatus.ENQUEUED
+    status: UserStatus.ENQUEUED
   }
 ];
 
@@ -78,8 +76,7 @@ export const queue_table = [
     capacity: 10,
     grace_period: 2,
     max_party_size: 4,
-    offline_time: 5,
-    average_wait: 900
+    offline_time: 5
   },
   {
     id: "costco_queue2",
@@ -92,8 +89,7 @@ export const queue_table = [
     capacity: 10,
     grace_period: 2,
     max_party_size: 4,
-    offline_time: 5,
-    average_wait: 1000
+    offline_time: 5
   }
 ];
 

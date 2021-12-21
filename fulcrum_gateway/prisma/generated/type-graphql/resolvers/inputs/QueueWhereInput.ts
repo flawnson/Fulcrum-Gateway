@@ -93,9 +93,4 @@ export class QueueWhereInput {
     nullable: true
   })
   users?: UserListRelationFilter | undefined;
-
-  @TypeGraphQL.Field(_type => IntFilter, {
-    nullable: true
-  })
-  average_wait?: IntFilter | undefined;
 }

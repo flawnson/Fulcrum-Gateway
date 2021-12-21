@@ -26,9 +26,4 @@ export class QueueAvgAggregate {
     nullable: true
   })
   offline_time!: number | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
-  })
-  average_wait!: number | null;
 }

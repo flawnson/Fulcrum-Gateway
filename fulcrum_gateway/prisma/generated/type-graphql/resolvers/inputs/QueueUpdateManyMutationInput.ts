@@ -61,9 +61,4 @@ export class QueueUpdateManyMutationInput {
     nullable: true
   })
   create_time?: DateTimeFieldUpdateOperationsInput | undefined;
-
-  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
-    nullable: true
-  })
-  average_wait?: IntFieldUpdateOperationsInput | undefined;
 }

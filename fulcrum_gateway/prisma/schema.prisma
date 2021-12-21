@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 generator typegraphql {
@@ -22,10 +23,10 @@ model Organizer {
 model Queue {
   id             String        @id @default(uuid())
   organizer_id   String
-  join_code      String
+  join_code      String     @unique
   name           String
   address        String
-  state          QueueState
+  state          QueueState @default(ACTIVE)
   capacity       Int
   max_party_size Int        @default(1)
   grace_period   Int?
@@ -33,24 +34,20 @@ model Queue {
   create_time    DateTime
   organizer      Organizer  @relation("queues_in_organizer", fields: [organizer_id], references: [id])
   users          User[]     @relation("users_in_queue")
-  average_wait   Int
 }
 
 model User {
   id             String        @id @default(uuid())
   name           String
-  queue_id       String
   summoned       Boolean    @default(false)
-  password       String?
   phone_number   String
   party_size     Int        @default(1)
   last_online    DateTime?
-  index          Int
-  /// @TypeGraphQL.omit(output: true)
-  estimated_wait Int
-  join_time      DateTime
+  index          Int        @default(0)
+  join_time      DateTime   @default(now())
   reneged_time   DateTime?
-  state          UserStatus
+  status         UserStatus @default(ENQUEUED)
+  queue_id       String
   queue          Queue      @relation("users_in_queue", fields: [queue_id], references: [id])
   total_wait     Int?
 }
