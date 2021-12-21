@@ -14,8 +14,8 @@ export default function () {
         name: "Someone",
         stats: [
                 {prefix: "You're", stat: 0, suffix: "n/a"},
-                {prefix: "You've waited", stat: 0, suffix: "m"},
-                {prefix: "Average wait", stat: 0, suffix: "m"},
+                {prefix: "You've \n waited", stat: 0, suffix: "m"},
+                {prefix: "Average \n wait", stat: 0, suffix: "m"},
                 {prefix: "ETA", stat: 0, suffix: "m"}
             ],
         }
@@ -27,7 +27,7 @@ export default function () {
                 userId: id
                 name
                 index
-                estimated_wait
+                estimated_waiub
                 join_time
                 state
             }
