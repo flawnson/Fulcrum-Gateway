@@ -73,7 +73,7 @@ export default function (props: ServicedCatalogProps) {
                 >
                     <Pressable onPress={props.onPress} delayLongPress={500} onLongPress={props.onLongPress}>
                         <HStack space='5' style={styles.group}>
-                            <Avatar style={styles.icon} source={require("../../assets/images/generic-user-icon.jpg")}>
+                            <Avatar style={styles.avatar} source={require("../../assets/images/generic-user-icon.jpg")}>
                                 <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
                             </Avatar>
                             <Text suppressHighlighting={true} style={styles.text}>
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     group: {
         width: 500,
     },
-    icon: {
+    avatar: {
         margin: 10,
         borderRadius: 10,
         width: 50,

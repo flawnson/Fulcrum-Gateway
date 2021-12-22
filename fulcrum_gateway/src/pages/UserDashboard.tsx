@@ -2,7 +2,7 @@ import React, { SetStateAction, useState } from 'react'
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps, DashboardStat } from "../../types";
 import { StyleSheet } from 'react-native'
-import { Center, Heading, Image, Text } from "native-base";
+import { Avatar, HStack, Center, Heading, Image, Text} from "native-base";
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
 import UserDashboardMenu from "../containers/UserDashboardMenu"
 import useInterval from "../utilities/useInterval";
@@ -20,10 +20,14 @@ export default function () {
             ],
         }
     const [props, setProps] = useState(defaultProps)
+    const [state, setState] = useState("ACTIVE")
 
     const query = `
-        query get_stats($user_id: UserWhereUniqueInput!) {
-            user(where: $user_id) {
+        query get_stats($userId: UserWhereUniqueInput! $queueId: QueueWhereUniqueInput!) {
+            queue(where: $queueId) {
+                state
+            }
+            user(where: $userId) {
                 userId: id
                 name
                 index
@@ -34,8 +38,11 @@ export default function () {
         }
     `
     const variables = `{
-    "user_id": {
-            "id": "userID"
+    "userId": {
+            "id": "user1"
+        }
+    "queueId": {
+            "id": "costco_queue1"
         }
     }`
 
@@ -45,6 +52,7 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.user
+                    setState(data.data.queue.state)
                     const now: any = new Date()
                     const join: any = new Date(data.join_time)
                     const waited = new Date(Math.abs(now - join))
@@ -76,11 +84,16 @@ export default function () {
     return (
         <Center style={styles.animationFormat}>
             <Heading style={styles.headingFormat}>{props.name}'s Queue</Heading>
-            <Image
-                source={require('../assets/images/queueup.gif')}
-                alt={"Loading..."}
-                style={styles.animation}
-            />
+            <HStack space={3} style={styles.container}>
+                <Image
+                    source={require('../assets/images/queueup.gif')}
+                    alt={"Loading..."}
+                    style={styles.animation}
+                />
+                <Avatar style={styles.avatar} size='xl' source={require("../assets/images/generic-user-icon.jpg")}>
+                    <Avatar.Badge bg={state === "ACTIVE" ? "green.500" : "red.500"}/>
+                </Avatar>
+            </HStack>
             <Text style={styles.textFormat}>Almost there!</Text>
             <Center>
                 <UserDashboardGroup {...props.stats}/>
@@ -91,14 +104,25 @@ export default function () {
 }
 
 const styles = StyleSheet.create({
-    animationFormat: {
-        position: 'relative',
+    container: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
     },
     animation: {
+        flex: 1,
         marginTop: 25,
         marginBottom: 25,
         width: 309,
         height: 93,
+    },
+    avatar: {
+        flex: 1,
+        borderRadius: 10,
+    },
+    animationFormat: {
+        position: 'relative',
     },
     headingFormat: {
         marginTop: 25,

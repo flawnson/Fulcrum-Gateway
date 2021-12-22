@@ -19,7 +19,7 @@ export default function () {
                     join_time
                     estimated_wait
                     last_online
-                    state
+                    status
                 }
             }
         }
@@ -27,7 +27,7 @@ export default function () {
     const variables = `{
         "queue_id":
         {
-            "id": "queue1D"
+            "id": "costco_queue1"
         }
     }`
 
@@ -37,7 +37,7 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.queue.users
-                    data = data.filter((d: EnqueuedStats) => d.state === "ENQUEUED" || d.state === "DEFERRED")
+                    data = data.filter((d: EnqueuedStats) => d.status === "ENQUEUED" || d.status === "DEFERRED")
                     let user_stats: EnqueuedStats[] = []
                     data.forEach((queue_data: {[key: string]: any}) => {
                         const now: any = new Date()

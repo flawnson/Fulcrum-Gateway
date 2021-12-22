@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet} from 'react-native'
-import {Text, View, Center, VStack} from "native-base";
-import {useNavigation} from "@react-navigation/native";
-import {HomeScreenProps} from "../../types";
-import {useTranslation} from "react-i18next";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet } from 'react-native'
+import { Text, View, Center, VStack } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import { HomeScreenProps } from "../../types";
+import { useTranslation } from "react-i18next";
 
 
 type SummonData = {

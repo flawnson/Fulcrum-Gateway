@@ -9,7 +9,6 @@ import EndScreen from "./src/screens/EndScreen"
 import ShareScreen from "./src/screens/ShareScreen"
 import AbandonedScreen from "./src/screens/AbandonedScreen";
 import UserDashboard from "./src/pages/UserDashboard";
-import CreateQueuePage from "./src/pages/CreateQueuePage";
 import LandingPage from "./src/screens/LandingPage";
 import { RootStackParamList } from "./types";
 import { nativebaseTheme, navigationTheme } from "./theme";
@@ -57,7 +56,7 @@ function App() {
                         <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe", headerRight: DarkModeToggle()}} >
                             {isInQueue && isQueuer ? (
                             <>
-                                <Stack.Screen name="HomePage" component={HomePage} />
+                                <Stack.Screen name="HomePage" component={UserDashboard} />
                                 <Stack.Screen name="LandingPage" component={LandingPage} />
                                 <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                 <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
