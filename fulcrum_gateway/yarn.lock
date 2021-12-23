@@ -8517,9 +8517,9 @@
     "lodash.get" "^4.4.2"
 
 "graphql-scalars@^1.13.6":
-  "integrity" "sha512-jetz3kAsAC2dNkw/fMbsT0XR+sd2rOtnOuW+6v5BjLcPR2QGgvL64tNINVRrzVuGHvDRgvoAvzwE+Z68zCsi4Q=="
-  "resolved" "https://registry.npmjs.org/graphql-scalars/-/graphql-scalars-1.13.6.tgz"
-  "version" "1.13.6"
+  "integrity" "sha512-IrJ2SI9IkCmWHyr7yIvtPNGWTWF3eTS+iNnw1DQMmEtsOgs1dUmT0ge+8M1+1xm+q3/5ZqB95yUYyThDyOTE+Q=="
+  "resolved" "https://registry.npmjs.org/graphql-scalars/-/graphql-scalars-1.14.1.tgz"
+  "version" "1.14.1"
   dependencies:
     "tslib" "~2.3.0"
 
@@ -9104,9 +9104,9 @@
   "version" "5.1.9"
 
 "ignore@^5.1.4":
-  "integrity" "sha512-2zeMQpbKz5dhZ9IwL0gbxSW5w0NK/MSAMtNuhgIHEPmaU3vPdKPL0UdvUCXs5SS4JAwsBxysK5sFMW8ocFiVjQ=="
-  "resolved" "https://registry.npmjs.org/ignore/-/ignore-5.1.9.tgz"
-  "version" "5.1.9"
+  "integrity" "sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ=="
+  "resolved" "https://registry.npmjs.org/ignore/-/ignore-5.2.0.tgz"
+  "version" "5.2.0"
 
 "image-size@^0.6.0":
   "integrity" "sha512-47xSUiQioGaB96nqtp5/q55m0aBQSQdyIloMOc/x+QVTDZLNmXE892IIDrJ0hM1A5vcNUDD5tDffkSP5lCaIIA=="
@@ -16264,10 +16264,10 @@
   "resolved" "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   "version" "0.0.6"
 
-"typegraphql-prisma@^0.18.1":
-  "integrity" "sha512-ZLPvmvbg9dE4tkbjcuZyM+MqL+yPTOeg5fzk8QX2wC/+46BhH16BHy3VfderDCtcT4aUyuRMg9mPwDaipYBAEA=="
-  "resolved" "https://registry.npmjs.org/typegraphql-prisma/-/typegraphql-prisma-0.18.1.tgz"
-  "version" "0.18.1"
+"typegraphql-prisma@^0.18.2":
+  "integrity" "sha512-CDMkxcHIJCvWH+udxTcOPTbc0RcM0j6Vyws0WcaiL/XtW3UVzC0oPzyXF9viqp+bNAONhEuCyeFsf8dMrTpDXA=="
+  "resolved" "https://registry.npmjs.org/typegraphql-prisma/-/typegraphql-prisma-0.18.2.tgz"
+  "version" "0.18.2"
   dependencies:
     "@prisma/generator-helper" "~3.6.0"
     "@prisma/sdk" "~3.6.0"
