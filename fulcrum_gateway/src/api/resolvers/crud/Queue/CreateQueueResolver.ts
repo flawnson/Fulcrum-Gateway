@@ -31,21 +31,24 @@ class CreateQueueArgs {
   })
   organizerId!: string;
 
-  @Field({
+  @Field(type => Int, {
     nullable: false
   })
+  @Min(0)
   capacity!: number;
 
-  @Field(type => Int, { defaultValue: 1 })
+  @Field(type => Int, {
+    defaultValue: 1
+  })
   @Min(1)
   maxPartySize?: number;
 
-  @Field({
+  @Field(type => Int, {
     nullable: true
   })
   gracePeriod?: number;
 
-  @Field({
+  @Field(type => Int, {
     nullable: true
   })
   offlineTime?: number;
@@ -71,7 +74,7 @@ export class CreateQueueResolver {
             join_code: joinCode,
           }
         });
-        console.log(results);
+
         if (results == null) {
           // join code is available
           break;

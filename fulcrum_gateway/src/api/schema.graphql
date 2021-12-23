@@ -102,7 +102,7 @@ input IntNullableFilter {
 type Mutation {
   changeStatus(id: String!, status: String!): User
   createOrganizer(data: OrganizerCreateInput!): Organizer!
-  createQueue(address: String!, capacity: Float!, gracePeriod: Float, maxPartySize: Int = 1, name: String!, offlineTime: Float, organizerId: String!): Queue
+  createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, organizerId: String!): Queue
   createUser(joinCode: String!, name: String!, phoneNumber: String!): User
   deferPosition(id: String!, time: String!): User
   deleteManyQueue(where: QueueWhereInput): AffectedRowsOutput!
