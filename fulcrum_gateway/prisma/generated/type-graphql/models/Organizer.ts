@@ -27,7 +27,7 @@ export class Organizer {
   queues?: Queue[];
 
   @TypeGraphQL.Field(_type => OrganizerCount, {
-    nullable: false
+    nullable: true
   })
-  _count!: OrganizerCount;
+  _count?: OrganizerCount | null;
 }

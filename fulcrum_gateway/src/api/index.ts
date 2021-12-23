@@ -82,8 +82,6 @@ const combinedResolvers = [...pregeneratedCrudResolvers, ...relationResolvers, .
 
 async function bootstrap(){
 
-  //const prisma = new PrismaClient();
-
   const schema = await buildSchema({
     resolvers: combinedResolvers,
     validate: false,
