@@ -46,7 +46,7 @@ export default function () {
                 <Menu.Item onPress={() => setShowModal(!showModal)}>Edit Queue</Menu.Item>
                 <Menu.Item onPress={() => navigation.navigate("EndScreen")}>End Queue</Menu.Item>
                 <Menu.Item onPress={() => pauseQueue}>Pause Queue</Menu.Item>
-                <Menu.Item>Announcement</Menu.Item>
+                {/*<Menu.Item>Announcement</Menu.Item>*/}
                 <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>Share Queue</Menu.Item>
             </Menu>
             <EditQueueModal showModal={showModal} setShowModal={setShowModal} route={route} navigation={navigation}/>

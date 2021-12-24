@@ -21,10 +21,6 @@ type QueuesCatalogProps = {
 export default function (props: QueuesCatalogProps) {
     const [online, setOnline] = useState<boolean>(true)
 
-    // useEffect(() => {
-    //     setOnline(props.entity.state === "ACTIVE")
-    // }, [props])
-
     useEffect(() => {
         if (props.modified === "PAUSED") {
             setOnline(!online)
@@ -68,7 +64,6 @@ export default function (props: QueuesCatalogProps) {
                 {...panResponder.panHandlers}
             >
                 <Box
-                    maxW="80"
                     rounded="lg"
                     borderRadius="lg"
                     overflow="hidden"
@@ -88,14 +83,15 @@ export default function (props: QueuesCatalogProps) {
                     style={styles.card}
                 >
                     <Pressable onPress={props.onPress} delayLongPress={500} onLongPress={props.onLongPress}>
-                        <HStack space='5' style={styles.group}>
-                            <Avatar style={styles.icon} source={require("../../assets/images/generic-user-icon.jpg")}>
+                        <HStack style={styles.group}>
+                            <Text>   </Text>  {/* Needed for spacing*/}
+                            <Avatar style={styles.avatar} source={require("../../assets/images/generic-user-icon.jpg")}>
                                 <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
                             </Avatar>
-                            <Text suppressHighlighting={true} style={styles.text}>
+                            <Text suppressHighlighting={true} style={styles.name}>
                                 {props.entity.name}
                             </Text>
-                            <Text style={styles.text}>
+                            <Text style={styles.lifespan}>
                                 {props.entity.lifespan}
                             </Text>
                         </HStack>
@@ -113,15 +109,22 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     group: {
-        width: 500,
+        display: 'flex',
+        height: 70,
+        width: 300,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexDirection: 'row'
     },
-    icon: {
-        margin: 10,
+    avatar: {
         borderRadius: 10,
-        width: 50,
-        height: 50,
     },
-    text: {
+    name: {
+        margin: 10,
+        flex: 1,
+    },
+    lifespan: {
+        margin: 10,
     },
     overlay: {
         position: 'absolute',

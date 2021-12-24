@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack, Box, Divider, Text } from 'native-base';
+import { HStack, Box, Divider, Text } from 'native-base';
 import { StyleSheet } from "react-native";
 import { DashboardStat } from "../../../types";
 
@@ -11,7 +11,6 @@ type Props = {
 export default function (props: Props) {
     return (
         <Box
-            maxW="80"
             rounded="lg"
             borderRadius="lg"
             overflow="hidden"
@@ -30,13 +29,17 @@ export default function (props: Props) {
             }}
             style={styles.card}
         >
-            <Box px='8' pt='8'>
-                <Text style={styles.text}>
-                    {props.stat.prefix}
-                    <Text style={styles.statText}> {props.stat.stat} </Text>
+            <HStack style={styles.container} space='3'>
+                <Text variant="darkModeButton" style={styles.statPrefix}>
+                    {props.stat.prefix.split(" ").join("\n")}
+                </Text>
+                <Text style={styles.statText}>
+                    {props.stat.stat}
+                </Text>
+                <Text style={styles.statSuffix}>
                     {props.stat.suffix}
                 </Text>
-            </Box>
+            </HStack>
         </Box>
     );
 }
@@ -44,13 +47,26 @@ export default function (props: Props) {
 
 const styles = StyleSheet.create({
     card: {
+        width: 200,
+        height: 100
     },
-    text: {
+    container: {
+        margin: 20,
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'baseline',
+        flexDirection: 'row'
+    },
+    statPrefix: {
+        flex: 1,
         fontSize: 14,
-        textAlign: 'center',
-        alignItems: 'center'
+        alignSelf: 'center'
     },
     statText: {
         fontSize: 42,
-    }
+
+    },
+    statSuffix: {
+        fontSize: 14,
+    },
 })
