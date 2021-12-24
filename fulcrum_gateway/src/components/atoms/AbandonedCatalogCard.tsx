@@ -73,7 +73,7 @@ export default function (props: ServicedCatalogProps) {
                 >
                     <Pressable onPress={props.onPress} delayLongPress={500} onLongPress={props.onLongPress}>
                         <HStack space='5' style={styles.group}>
-                            <Avatar style={styles.avatar} source={require("../../assets/images/generic-user-icon.jpg")}>
+                            <Avatar style={styles.avatar} source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
                                 <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
                             </Avatar>
                             <Text suppressHighlighting={true} style={styles.text}>

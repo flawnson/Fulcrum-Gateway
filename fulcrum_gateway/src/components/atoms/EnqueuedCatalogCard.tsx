@@ -68,7 +68,6 @@ export default function (props: EnqueuedCatalogProps) {
                 body: JSON.stringify({id: userId})
             });
             // enter you logic when the fetch is successful
-            console.log(await response.json())
             return await response.json()
         } catch(error) {
             // enter your logic for when there is an error (ex. error toast)
@@ -136,7 +135,7 @@ export default function (props: EnqueuedCatalogProps) {
                 >
                     <Pressable onPress={props.onPress} delayLongPress={500} onLongPress={props.onLongPress}>
                         <HStack space='5' style={styles.group}>
-                            <Avatar style={styles.avatar} source={require("../../assets/images/generic-user-icon.jpg")}>
+                            <Avatar style={styles.avatar} source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
                                 <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>
                             </Avatar>
                             <Text style={styles.text}>

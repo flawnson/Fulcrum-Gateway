@@ -6,6 +6,7 @@ import { Avatar, HStack, Center, Heading, Image, Text} from "native-base";
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
 import UserDashboardMenu from "../containers/UserDashboardMenu"
 import useInterval from "../utilities/useInterval";
+import { uniqueId } from "lodash"
 
 
 export default function () {
@@ -90,7 +91,7 @@ export default function () {
                     alt={"Loading..."}
                     style={styles.animation}
                 />
-                <Avatar style={styles.avatar} size='xl' source={require("../assets/images/generic-user-icon.jpg")}>
+                <Avatar style={styles.avatar} size='xl' source={{uri: `https://avatars.dicebear.com/api/jdenticon/${uniqueId()}.svg?mood[]=happy`}}>
                     <Avatar.Badge bg={state === "ACTIVE" ? "green.500" : "red.500"}/>
                 </Avatar>
             </HStack>
