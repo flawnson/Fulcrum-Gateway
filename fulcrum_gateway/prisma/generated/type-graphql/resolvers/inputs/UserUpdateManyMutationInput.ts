@@ -68,4 +68,9 @@ export class UserUpdateManyMutationInput {
     nullable: true
   })
   total_wait?: NullableIntFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => NullableDateTimeFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  summoned_time?: NullableDateTimeFieldUpdateOperationsInput | undefined;
 }

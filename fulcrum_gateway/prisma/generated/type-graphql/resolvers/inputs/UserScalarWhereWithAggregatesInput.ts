@@ -88,4 +88,9 @@ export class UserScalarWhereWithAggregatesInput {
     nullable: true
   })
   total_wait?: IntNullableWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => DateTimeNullableWithAggregatesFilter, {
+    nullable: true
+  })
+  summoned_time?: DateTimeNullableWithAggregatesFilter | undefined;
 }

@@ -67,4 +67,9 @@ export class UserCountOrderByAggregateInput {
     nullable: true
   })
   total_wait?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  summoned_time?: "asc" | "desc" | undefined;
 }

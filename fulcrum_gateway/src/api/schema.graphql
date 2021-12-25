@@ -109,6 +109,7 @@ type Mutation {
   deleteOrganizer(where: OrganizerWhereUniqueInput!): Organizer
   deleteQueue(id: String!): Queue
   deleteUser(where: UserWhereUniqueInput!): User
+  summon(id: String!): User
   updateManyOrganizer(data: OrganizerUpdateManyMutationInput!, where: OrganizerWhereInput): AffectedRowsOutput!
   updateManyQueue(data: QueueUpdateManyMutationInput!, where: QueueWhereInput): AffectedRowsOutput!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): AffectedRowsOutput!
@@ -833,8 +834,9 @@ type User {
   queue: Queue!
   queue_id: String!
   reneged_time: DateTime
-  status: UserStatus!
+  status: String!
   summoned: Boolean!
+  summoned_time: DateTime
   total_wait: Int
 }
 
@@ -850,6 +852,7 @@ input UserCreateInput {
   reneged_time: DateTime
   status: UserStatus
   summoned: Boolean
+  summoned_time: DateTime
   total_wait: Int
 }
 
@@ -864,6 +867,7 @@ input UserCreateManyQueueInput {
   reneged_time: DateTime
   status: UserStatus
   summoned: Boolean
+  summoned_time: DateTime
   total_wait: Int
 }
 
@@ -895,6 +899,7 @@ input UserCreateWithoutQueueInput {
   reneged_time: DateTime
   status: UserStatus
   summoned: Boolean
+  summoned_time: DateTime
   total_wait: Int
 }
 
@@ -921,6 +926,7 @@ input UserOrderByWithRelationInput {
   reneged_time: SortOrder
   status: SortOrder
   summoned: SortOrder
+  summoned_time: SortOrder
   total_wait: SortOrder
 }
 
@@ -936,6 +942,7 @@ enum UserScalarFieldEnum {
   reneged_time
   status
   summoned
+  summoned_time
   total_wait
 }
 
@@ -954,6 +961,7 @@ input UserScalarWhereInput {
   reneged_time: DateTimeNullableFilter
   status: EnumUserStatusFilter
   summoned: BoolFilter
+  summoned_time: DateTimeNullableFilter
   total_wait: IntNullableFilter
 }
 
@@ -978,6 +986,7 @@ input UserUpdateInput {
   reneged_time: NullableDateTimeFieldUpdateOperationsInput
   status: EnumUserStatusFieldUpdateOperationsInput
   summoned: BoolFieldUpdateOperationsInput
+  summoned_time: NullableDateTimeFieldUpdateOperationsInput
   total_wait: NullableIntFieldUpdateOperationsInput
 }
 
@@ -992,6 +1001,7 @@ input UserUpdateManyMutationInput {
   reneged_time: NullableDateTimeFieldUpdateOperationsInput
   status: EnumUserStatusFieldUpdateOperationsInput
   summoned: BoolFieldUpdateOperationsInput
+  summoned_time: NullableDateTimeFieldUpdateOperationsInput
   total_wait: NullableIntFieldUpdateOperationsInput
 }
 
@@ -1030,6 +1040,7 @@ input UserUpdateWithoutQueueInput {
   reneged_time: NullableDateTimeFieldUpdateOperationsInput
   status: EnumUserStatusFieldUpdateOperationsInput
   summoned: BoolFieldUpdateOperationsInput
+  summoned_time: NullableDateTimeFieldUpdateOperationsInput
   total_wait: NullableIntFieldUpdateOperationsInput
 }
 
@@ -1055,6 +1066,7 @@ input UserWhereInput {
   reneged_time: DateTimeNullableFilter
   status: EnumUserStatusFilter
   summoned: BoolFilter
+  summoned_time: DateTimeNullableFilter
   total_wait: IntNullableFilter
 }
 

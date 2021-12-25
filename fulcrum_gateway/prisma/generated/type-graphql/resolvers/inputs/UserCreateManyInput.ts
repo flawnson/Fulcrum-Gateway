@@ -67,4 +67,9 @@ export class UserCreateManyInput {
     nullable: true
   })
   total_wait?: number | undefined;
+
+  @TypeGraphQL.Field(_type => Date, {
+    nullable: true
+  })
+  summoned_time?: Date | undefined;
 }
