@@ -114,6 +114,11 @@ the necessary tables.
 To populate the database with initial test data:
 `npx prisma db seed` which will run fulcrum_gateway/prisma/seed.ts
 
+To simply re-generate the prisma client and typegraphql integration run:
+`npx prisma generate`.
+This is useful if you want to re-generate the client during development but don't want to push
+changes to the PostgreSQL database structure yet (which will be done with prisma db push).
+
 ## Git structure
 I use 4 branches to work:
 1. `main` is a working version of the project ready for demos.
