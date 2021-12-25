@@ -1,38 +1,20 @@
 import React from 'react';
-import { StyleSheet,
-        Image,
-        Switch,
-        TouchableHighlight } from 'react-native'
+import { StyleSheet, TouchableHighlight } from 'react-native'
 import { View } from 'native-base'
 import EnqueueGroup from "../components/molecules/EnqueueGroup";
 import QRCodeScanner from "../components/organisms/QRCodeScanner";
 import { PreferencesContext } from "../utilities/useTheme";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
-import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons} from '@expo/vector-icons';
 import MultiSelectButtons from "../containers/QueueMultiSelectButtons";
+import DarkModeToggle from "../components/atoms/DarkModeToggle";
 
 
 export default function () {
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    navigation.setOptions({headerRight: (props) =>
-        <>
-            <Feather
-                style={styles.switchName}
-                name={isThemeDark ? 'sun' : 'moon'}
-                size={32}
-                color={isThemeDark ? 'white': 'black'}
-            />
-            <Switch
-                style={styles.switch}
-                onValueChange={toggleTheme}
-                value={isThemeDark}
-                thumbColor={isThemeDark ? '#FFFFFF' : '#FFFFFF'}
-                trackColor={{false: 'gray', true: '#FFFFFF'}}
-            />
-        </>
-    })
+    navigation.setOptions({headerRight: DarkModeToggle()})
 
     return (
         <View style={styles.container}>

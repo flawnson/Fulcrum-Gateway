@@ -17,14 +17,14 @@ export default function () {
                     name
                     join_time
                     last_online
-                    state
+                    status
                 }
             }
         }
     `
     const variables = `{
     "queue_id": {
-            "id": "queueID"
+            "id": "costco_queue1"
         }
     }`
 

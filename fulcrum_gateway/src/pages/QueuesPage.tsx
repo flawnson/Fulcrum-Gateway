@@ -31,7 +31,7 @@ export default function () {
     const variables = `{
         "data":
         {
-            "id": "organizerID"
+            "id": "costco_toronto"
         }
     }`
 

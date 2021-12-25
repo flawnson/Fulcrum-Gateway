@@ -37,14 +37,14 @@ export default function () {
                 users {
                     user_id: id
                     join_time
-                    state
+                    status
                 }
             }
         }
     `
     const variables = `{
     "queue_id": {
-            "id": "queueID"
+            "id": "costco_queue1"
         }
     }`
 

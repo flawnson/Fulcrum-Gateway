@@ -32,7 +32,7 @@ export type EnqueuedStats = {
     online: boolean,
     index: number,
     waited: number,
-    state: string
+    status: string
 }
 
 
