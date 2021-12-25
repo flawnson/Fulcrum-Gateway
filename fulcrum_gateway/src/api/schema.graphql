@@ -109,6 +109,7 @@ type Mutation {
   deleteOrganizer(where: OrganizerWhereUniqueInput!): Organizer
   deleteQueue(id: String!): Queue
   deleteUser(where: UserWhereUniqueInput!): User
+  summon(id: String!): User
   updateManyOrganizer(data: OrganizerUpdateManyMutationInput!, where: OrganizerWhereInput): AffectedRowsOutput!
   updateManyQueue(data: QueueUpdateManyMutationInput!, where: QueueWhereInput): AffectedRowsOutput!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): AffectedRowsOutput!

@@ -36,21 +36,7 @@ export async function updateUserStatus(userId: string, newStatus: UserStatus){
       });
 
     }
-    else if (user.summoned){
-      const currentTime = new Date();
 
-      // set user summoned_time
-      const setSummonTime = await prisma.user.update({
-        where: {
-          id: userId
-        },
-        data: {
-          summoned_time: currentTime,
-          summoned: true
-        }
-      });
-
-    }
   }
 
   return user;
