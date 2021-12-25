@@ -94,4 +94,9 @@ export class UserWhereInput {
     nullable: true
   })
   total_wait?: IntNullableFilter | undefined;
+
+  @TypeGraphQL.Field(_type => DateTimeNullableFilter, {
+    nullable: true
+  })
+  summoned_time?: DateTimeNullableFilter | undefined;
 }
