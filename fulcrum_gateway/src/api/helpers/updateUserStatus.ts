@@ -23,7 +23,6 @@ export async function updateUserStatus(userId: string, newStatus: UserStatus){
       const joinTime = user.join_time;
       const totalWait = parseInt("" + ((leaveTime.valueOf() - joinTime.valueOf()) / 1000));
 
-      // set user's index to 0 as a default value
       // also set summoned to false, summoned_time to null
       const updateUser = await prisma.user.update({
         where: {
@@ -32,35 +31,28 @@ export async function updateUserStatus(userId: string, newStatus: UserStatus){
         data: {
           total_wait: totalWait,
           summoned: false,
-          summoned_time: null,
-          index: 0
+          summoned_time: null
         }
       });
-
-      // also update all users in the queue behind them with their index - 1 (move up in the queue)
-      const originalUserIndex = user.index;
-      const userQueueId = user.queue_id;
-      const updateOtherUsers = await prisma.user.updateMany({
-        where: {
-          index : {
-            gt: originalUserIndex,
-          },
-          queue_id: userQueueId
-        },
-        data: {
-          index: {
-            increment: -1
-          }
-        }
-      });
-
-      return updateUser;
-
 
     }
+    else if (user.summoned){
+      const currentTime = new Date();
 
+      // set user summoned_time
+      const setSummonTime = await prisma.user.update({
+        where: {
+          id: userId
+        },
+        data: {
+          summoned_time: currentTime,
+          summoned: true
+        }
+      });
+
+    }
   }
 
-  return null;
+  return user;
 
 }

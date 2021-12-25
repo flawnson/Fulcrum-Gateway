@@ -16,14 +16,6 @@ input BoolFilter {
   not: NestedBoolFilter
 }
 
-input BoolWithAggregatesFilter {
-  _count: NestedIntFilter
-  _max: NestedBoolFilter
-  _min: NestedBoolFilter
-  equals: Boolean
-  not: NestedBoolWithAggregatesFilter
-}
-
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -108,31 +100,29 @@ input IntNullableFilter {
 }
 
 type Mutation {
-  changeStatus(status: String!, userId: String!): User
-  createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, password: String!): Queue
+  changeStatus(id: String!, status: String!): User
+  createOrganizer(data: OrganizerCreateInput!): Organizer!
+  createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, organizerId: String!): Queue
   createUser(joinCode: String!, name: String!, phoneNumber: String!): User
-  deferPosition(time: String!, userId: String): User
+  deferPosition(id: String!, time: String!): User
   deleteManyUser(where: UserWhereInput): AffectedRowsOutput!
-  deleteQueue: Queue
+  deleteOrganizer(where: OrganizerWhereUniqueInput!): Organizer
+  deleteQueue(id: String!): Queue
   deleteUser(where: UserWhereUniqueInput!): User
-  loginQueue(joinCode: String!, password: String!): Queue
-  summon(userId: String!): User
+  updateManyOrganizer(data: OrganizerUpdateManyMutationInput!, where: OrganizerWhereInput): AffectedRowsOutput!
+  updateManyQueue(data: QueueUpdateManyMutationInput!, where: QueueWhereInput): AffectedRowsOutput!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): AffectedRowsOutput!
+  updateOrganizer(data: OrganizerUpdateInput!, where: OrganizerWhereUniqueInput!): Organizer
+  updateQueue(data: QueueUpdateInput!, where: QueueWhereUniqueInput!): Queue
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  upsertOrganizer(create: OrganizerCreateInput!, update: OrganizerUpdateInput!, where: OrganizerWhereUniqueInput!): Organizer!
+  upsertQueue(create: QueueCreateInput!, update: QueueUpdateInput!, where: QueueWhereUniqueInput!): Queue!
   upsertUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
 }
 
 input NestedBoolFilter {
   equals: Boolean
   not: NestedBoolFilter
-}
-
-input NestedBoolWithAggregatesFilter {
-  _count: NestedIntFilter
-  _max: NestedBoolFilter
-  _min: NestedBoolFilter
-  equals: Boolean
-  not: NestedBoolWithAggregatesFilter
 }
 
 input NestedDateTimeFilter {
@@ -207,6 +197,37 @@ input NestedStringFilter {
   startsWith: String
 }
 
+input NestedStringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input NestedStringNullableWithAggregatesFilter {
+  _count: NestedIntNullableFilter
+  _max: NestedStringNullableFilter
+  _min: NestedStringNullableFilter
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableWithAggregatesFilter
+  notIn: [String!]
+  startsWith: String
+}
+
 input NestedStringWithAggregatesFilter {
   _count: NestedIntFilter
   _max: NestedStringFilter
@@ -236,11 +257,15 @@ input NullableIntFieldUpdateOperationsInput {
   set: Int
 }
 
+input NullableStringFieldUpdateOperationsInput {
+  set: String
+}
+
 type Organizer {
   _count: OrganizerCount
-  email: String!
   id: String!
   name: String!
+  password: String
   queues(cursor: QueueWhereUniqueInput, distinct: [QueueScalarFieldEnum!], orderBy: [QueueOrderByWithRelationInput!], skip: Int, take: Int, where: QueueWhereInput): [Queue!]!
 }
 
@@ -250,19 +275,22 @@ type OrganizerCount {
 
 type OrganizerCountAggregate {
   _all: Int!
-  confirmed: Int!
-  email: Int!
   id: Int!
   name: Int!
   password: Int!
 }
 
 input OrganizerCountOrderByAggregateInput {
-  confirmed: SortOrder
-  email: SortOrder
   id: SortOrder
   name: SortOrder
   password: SortOrder
+}
+
+input OrganizerCreateInput {
+  id: String
+  name: String!
+  password: String
+  queues: QueueCreateNestedManyWithoutOrganizerInput
 }
 
 input OrganizerCreateNestedOneWithoutQueuesInput {
@@ -277,51 +305,39 @@ input OrganizerCreateOrConnectWithoutQueuesInput {
 }
 
 input OrganizerCreateWithoutQueuesInput {
-  confirmed: Boolean!
-  email: String!
   id: String
   name: String!
-  password: String!
+  password: String
 }
 
 type OrganizerGroupBy {
   _count: OrganizerCountAggregate
   _max: OrganizerMaxAggregate
   _min: OrganizerMinAggregate
-  confirmed: Boolean!
-  email: String!
   id: String!
   name: String!
-  password: String!
+  password: String
 }
 
 type OrganizerMaxAggregate {
-  confirmed: Boolean
-  email: String
   id: String
   name: String
   password: String
 }
 
 input OrganizerMaxOrderByAggregateInput {
-  confirmed: SortOrder
-  email: SortOrder
   id: SortOrder
   name: SortOrder
   password: SortOrder
 }
 
 type OrganizerMinAggregate {
-  confirmed: Boolean
-  email: String
   id: String
   name: String
   password: String
 }
 
 input OrganizerMinOrderByAggregateInput {
-  confirmed: SortOrder
-  email: SortOrder
   id: SortOrder
   name: SortOrder
   password: SortOrder
@@ -331,16 +347,12 @@ input OrganizerOrderByWithAggregationInput {
   _count: OrganizerCountOrderByAggregateInput
   _max: OrganizerMaxOrderByAggregateInput
   _min: OrganizerMinOrderByAggregateInput
-  confirmed: SortOrder
-  email: SortOrder
   id: SortOrder
   name: SortOrder
   password: SortOrder
 }
 
 input OrganizerOrderByWithRelationInput {
-  confirmed: SortOrder
-  email: SortOrder
   id: SortOrder
   name: SortOrder
   password: SortOrder
@@ -353,8 +365,6 @@ input OrganizerRelationFilter {
 }
 
 enum OrganizerScalarFieldEnum {
-  confirmed
-  email
   id
   name
   password
@@ -364,11 +374,22 @@ input OrganizerScalarWhereWithAggregatesInput {
   AND: [OrganizerScalarWhereWithAggregatesInput!]
   NOT: [OrganizerScalarWhereWithAggregatesInput!]
   OR: [OrganizerScalarWhereWithAggregatesInput!]
-  confirmed: BoolWithAggregatesFilter
-  email: StringWithAggregatesFilter
   id: StringWithAggregatesFilter
   name: StringWithAggregatesFilter
-  password: StringWithAggregatesFilter
+  password: StringNullableWithAggregatesFilter
+}
+
+input OrganizerUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  queues: QueueUpdateManyWithoutOrganizerInput
+}
+
+input OrganizerUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
 }
 
 input OrganizerUpdateOneRequiredWithoutQueuesInput {
@@ -380,11 +401,9 @@ input OrganizerUpdateOneRequiredWithoutQueuesInput {
 }
 
 input OrganizerUpdateWithoutQueuesInput {
-  confirmed: BoolFieldUpdateOperationsInput
-  email: StringFieldUpdateOperationsInput
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
-  password: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
 }
 
 input OrganizerUpsertWithoutQueuesInput {
@@ -396,24 +415,25 @@ input OrganizerWhereInput {
   AND: [OrganizerWhereInput!]
   NOT: [OrganizerWhereInput!]
   OR: [OrganizerWhereInput!]
-  confirmed: BoolFilter
-  email: StringFilter
   id: StringFilter
   name: StringFilter
-  password: StringFilter
+  password: StringNullableFilter
   queues: QueueListRelationFilter
 }
 
 input OrganizerWhereUniqueInput {
-  email: String
   id: String
 }
 
 type Query {
+  findFirstOrganizer(cursor: OrganizerWhereUniqueInput, distinct: [OrganizerScalarFieldEnum!], orderBy: [OrganizerOrderByWithRelationInput!], skip: Int, take: Int, where: OrganizerWhereInput): Organizer
+  findFirstQueue(cursor: QueueWhereUniqueInput, distinct: [QueueScalarFieldEnum!], orderBy: [QueueOrderByWithRelationInput!], skip: Int, take: Int, where: QueueWhereInput): Queue
   findFirstUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): User
-  getQueue(queueId: String): Queue
-  getUser(userId: String): User
   groupByOrganizer(by: [OrganizerScalarFieldEnum!]!, having: OrganizerScalarWhereWithAggregatesInput, orderBy: [OrganizerOrderByWithAggregationInput!], skip: Int, take: Int, where: OrganizerWhereInput): [OrganizerGroupBy!]!
+  organizer(where: OrganizerWhereUniqueInput!): Organizer
+  organizers(cursor: OrganizerWhereUniqueInput, distinct: [OrganizerScalarFieldEnum!], orderBy: [OrganizerOrderByWithRelationInput!], skip: Int, take: Int, where: OrganizerWhereInput): [Organizer!]!
+  queue(where: QueueWhereUniqueInput!): Queue
+  queues(cursor: QueueWhereUniqueInput, distinct: [QueueScalarFieldEnum!], orderBy: [QueueOrderByWithRelationInput!], skip: Int, take: Int, where: QueueWhereInput): [Queue!]!
   user(where: UserWhereUniqueInput!): User
   users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
 }
@@ -443,7 +463,6 @@ type Queue {
   offline_time: Int
   organizer: Organizer!
   organizer_id: String!
-  password: String!
   state: QueueState!
   users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
 }
@@ -452,15 +471,74 @@ type QueueCount {
   users: Int!
 }
 
+input QueueCreateInput {
+  address: String!
+  capacity: Int!
+  create_time: DateTime!
+  grace_period: Int
+  id: String
+  join_code: String!
+  max_party_size: Int
+  name: String!
+  offline_time: Int
+  organizer: OrganizerCreateNestedOneWithoutQueuesInput!
+  state: QueueState
+  users: UserCreateNestedManyWithoutQueueInput
+}
+
+input QueueCreateManyOrganizerInput {
+  address: String!
+  capacity: Int!
+  create_time: DateTime!
+  grace_period: Int
+  id: String
+  join_code: String!
+  max_party_size: Int
+  name: String!
+  offline_time: Int
+  state: QueueState
+}
+
+input QueueCreateManyOrganizerInputEnvelope {
+  data: [QueueCreateManyOrganizerInput!]!
+  skipDuplicates: Boolean
+}
+
+input QueueCreateNestedManyWithoutOrganizerInput {
+  connect: [QueueWhereUniqueInput!]
+  connectOrCreate: [QueueCreateOrConnectWithoutOrganizerInput!]
+  create: [QueueCreateWithoutOrganizerInput!]
+  createMany: QueueCreateManyOrganizerInputEnvelope
+}
+
 input QueueCreateNestedOneWithoutUsersInput {
   connect: QueueWhereUniqueInput
   connectOrCreate: QueueCreateOrConnectWithoutUsersInput
   create: QueueCreateWithoutUsersInput
 }
 
+input QueueCreateOrConnectWithoutOrganizerInput {
+  create: QueueCreateWithoutOrganizerInput!
+  where: QueueWhereUniqueInput!
+}
+
 input QueueCreateOrConnectWithoutUsersInput {
   create: QueueCreateWithoutUsersInput!
   where: QueueWhereUniqueInput!
+}
+
+input QueueCreateWithoutOrganizerInput {
+  address: String!
+  capacity: Int!
+  create_time: DateTime!
+  grace_period: Int
+  id: String
+  join_code: String!
+  max_party_size: Int
+  name: String!
+  offline_time: Int
+  state: QueueState
+  users: UserCreateNestedManyWithoutQueueInput
 }
 
 input QueueCreateWithoutUsersInput {
@@ -474,7 +552,6 @@ input QueueCreateWithoutUsersInput {
   name: String!
   offline_time: Int
   organizer: OrganizerCreateNestedOneWithoutQueuesInput!
-  password: String!
   state: QueueState
 }
 
@@ -500,7 +577,6 @@ input QueueOrderByWithRelationInput {
   offline_time: SortOrder
   organizer: OrganizerOrderByWithRelationInput
   organizer_id: SortOrder
-  password: SortOrder
   state: SortOrder
   users: UserOrderByRelationAggregateInput
 }
@@ -521,8 +597,24 @@ enum QueueScalarFieldEnum {
   name
   offline_time
   organizer_id
-  password
   state
+}
+
+input QueueScalarWhereInput {
+  AND: [QueueScalarWhereInput!]
+  NOT: [QueueScalarWhereInput!]
+  OR: [QueueScalarWhereInput!]
+  address: StringFilter
+  capacity: IntFilter
+  create_time: DateTimeFilter
+  grace_period: IntNullableFilter
+  id: StringFilter
+  join_code: StringFilter
+  max_party_size: IntFilter
+  name: StringFilter
+  offline_time: IntNullableFilter
+  organizer_id: StringFilter
+  state: EnumQueueStateFilter
 }
 
 enum QueueState {
@@ -531,12 +623,78 @@ enum QueueState {
   PAUSED
 }
 
+input QueueUpdateInput {
+  address: StringFieldUpdateOperationsInput
+  capacity: IntFieldUpdateOperationsInput
+  create_time: DateTimeFieldUpdateOperationsInput
+  grace_period: NullableIntFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  join_code: StringFieldUpdateOperationsInput
+  max_party_size: IntFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  offline_time: NullableIntFieldUpdateOperationsInput
+  organizer: OrganizerUpdateOneRequiredWithoutQueuesInput
+  state: EnumQueueStateFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutQueueInput
+}
+
+input QueueUpdateManyMutationInput {
+  address: StringFieldUpdateOperationsInput
+  capacity: IntFieldUpdateOperationsInput
+  create_time: DateTimeFieldUpdateOperationsInput
+  grace_period: NullableIntFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  join_code: StringFieldUpdateOperationsInput
+  max_party_size: IntFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  offline_time: NullableIntFieldUpdateOperationsInput
+  state: EnumQueueStateFieldUpdateOperationsInput
+}
+
+input QueueUpdateManyWithWhereWithoutOrganizerInput {
+  data: QueueUpdateManyMutationInput!
+  where: QueueScalarWhereInput!
+}
+
+input QueueUpdateManyWithoutOrganizerInput {
+  connect: [QueueWhereUniqueInput!]
+  connectOrCreate: [QueueCreateOrConnectWithoutOrganizerInput!]
+  create: [QueueCreateWithoutOrganizerInput!]
+  createMany: QueueCreateManyOrganizerInputEnvelope
+  delete: [QueueWhereUniqueInput!]
+  deleteMany: [QueueScalarWhereInput!]
+  disconnect: [QueueWhereUniqueInput!]
+  set: [QueueWhereUniqueInput!]
+  update: [QueueUpdateWithWhereUniqueWithoutOrganizerInput!]
+  updateMany: [QueueUpdateManyWithWhereWithoutOrganizerInput!]
+  upsert: [QueueUpsertWithWhereUniqueWithoutOrganizerInput!]
+}
+
 input QueueUpdateOneRequiredWithoutUsersInput {
   connect: QueueWhereUniqueInput
   connectOrCreate: QueueCreateOrConnectWithoutUsersInput
   create: QueueCreateWithoutUsersInput
   update: QueueUpdateWithoutUsersInput
   upsert: QueueUpsertWithoutUsersInput
+}
+
+input QueueUpdateWithWhereUniqueWithoutOrganizerInput {
+  data: QueueUpdateWithoutOrganizerInput!
+  where: QueueWhereUniqueInput!
+}
+
+input QueueUpdateWithoutOrganizerInput {
+  address: StringFieldUpdateOperationsInput
+  capacity: IntFieldUpdateOperationsInput
+  create_time: DateTimeFieldUpdateOperationsInput
+  grace_period: NullableIntFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  join_code: StringFieldUpdateOperationsInput
+  max_party_size: IntFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  offline_time: NullableIntFieldUpdateOperationsInput
+  state: EnumQueueStateFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutQueueInput
 }
 
 input QueueUpdateWithoutUsersInput {
@@ -550,8 +708,13 @@ input QueueUpdateWithoutUsersInput {
   name: StringFieldUpdateOperationsInput
   offline_time: NullableIntFieldUpdateOperationsInput
   organizer: OrganizerUpdateOneRequiredWithoutQueuesInput
-  password: StringFieldUpdateOperationsInput
   state: EnumQueueStateFieldUpdateOperationsInput
+}
+
+input QueueUpsertWithWhereUniqueWithoutOrganizerInput {
+  create: QueueCreateWithoutOrganizerInput!
+  update: QueueUpdateWithoutOrganizerInput!
+  where: QueueWhereUniqueInput!
 }
 
 input QueueUpsertWithoutUsersInput {
@@ -574,7 +737,6 @@ input QueueWhereInput {
   offline_time: IntNullableFilter
   organizer: OrganizerRelationFilter
   organizer_id: StringFilter
-  password: StringFilter
   state: EnumQueueStateFilter
   users: UserListRelationFilter
 }
@@ -604,6 +766,39 @@ input StringFilter {
   lte: String
   mode: QueryMode
   not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input StringNullableWithAggregatesFilter {
+  _count: NestedIntNullableFilter
+  _max: NestedStringNullableFilter
+  _min: NestedStringNullableFilter
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringNullableWithAggregatesFilter
   notIn: [String!]
   startsWith: String
 }
@@ -660,6 +855,53 @@ input UserCreateInput {
   total_wait: Int
 }
 
+input UserCreateManyQueueInput {
+  id: String
+  index: Int
+  join_time: DateTime
+  last_online: DateTime
+  name: String!
+  party_size: Int
+  phone_number: String!
+  reneged_time: DateTime
+  status: UserStatus
+  summoned: Boolean
+  summoned_time: DateTime
+  total_wait: Int
+}
+
+input UserCreateManyQueueInputEnvelope {
+  data: [UserCreateManyQueueInput!]!
+  skipDuplicates: Boolean
+}
+
+input UserCreateNestedManyWithoutQueueInput {
+  connect: [UserWhereUniqueInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutQueueInput!]
+  create: [UserCreateWithoutQueueInput!]
+  createMany: UserCreateManyQueueInputEnvelope
+}
+
+input UserCreateOrConnectWithoutQueueInput {
+  create: UserCreateWithoutQueueInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateWithoutQueueInput {
+  id: String
+  index: Int
+  join_time: DateTime
+  last_online: DateTime
+  name: String!
+  party_size: Int
+  phone_number: String!
+  reneged_time: DateTime
+  status: UserStatus
+  summoned: Boolean
+  summoned_time: DateTime
+  total_wait: Int
+}
+
 input UserListRelationFilter {
   every: UserWhereInput
   none: UserWhereInput
@@ -703,6 +945,25 @@ enum UserScalarFieldEnum {
   total_wait
 }
 
+input UserScalarWhereInput {
+  AND: [UserScalarWhereInput!]
+  NOT: [UserScalarWhereInput!]
+  OR: [UserScalarWhereInput!]
+  id: StringFilter
+  index: IntFilter
+  join_time: DateTimeFilter
+  last_online: DateTimeNullableFilter
+  name: StringFilter
+  party_size: IntFilter
+  phone_number: StringFilter
+  queue_id: StringFilter
+  reneged_time: DateTimeNullableFilter
+  status: EnumUserStatusFilter
+  summoned: BoolFilter
+  summoned_time: DateTimeNullableFilter
+  total_wait: IntNullableFilter
+}
+
 enum UserStatus {
   ABANDONED
   DEFERRED
@@ -743,6 +1004,51 @@ input UserUpdateManyMutationInput {
   total_wait: NullableIntFieldUpdateOperationsInput
 }
 
+input UserUpdateManyWithWhereWithoutQueueInput {
+  data: UserUpdateManyMutationInput!
+  where: UserScalarWhereInput!
+}
+
+input UserUpdateManyWithoutQueueInput {
+  connect: [UserWhereUniqueInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutQueueInput!]
+  create: [UserCreateWithoutQueueInput!]
+  createMany: UserCreateManyQueueInputEnvelope
+  delete: [UserWhereUniqueInput!]
+  deleteMany: [UserScalarWhereInput!]
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutQueueInput!]
+  updateMany: [UserUpdateManyWithWhereWithoutQueueInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutQueueInput!]
+}
+
+input UserUpdateWithWhereUniqueWithoutQueueInput {
+  data: UserUpdateWithoutQueueInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserUpdateWithoutQueueInput {
+  id: StringFieldUpdateOperationsInput
+  index: IntFieldUpdateOperationsInput
+  join_time: DateTimeFieldUpdateOperationsInput
+  last_online: NullableDateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  party_size: IntFieldUpdateOperationsInput
+  phone_number: StringFieldUpdateOperationsInput
+  reneged_time: NullableDateTimeFieldUpdateOperationsInput
+  status: EnumUserStatusFieldUpdateOperationsInput
+  summoned: BoolFieldUpdateOperationsInput
+  summoned_time: NullableDateTimeFieldUpdateOperationsInput
+  total_wait: NullableIntFieldUpdateOperationsInput
+}
+
+input UserUpsertWithWhereUniqueWithoutQueueInput {
+  create: UserCreateWithoutQueueInput!
+  update: UserUpdateWithoutQueueInput!
+  where: UserWhereUniqueInput!
+}
+
 input UserWhereInput {
   AND: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -765,5 +1071,4 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: String
-  phone_number: String
 }

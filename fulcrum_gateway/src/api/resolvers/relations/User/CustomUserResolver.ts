@@ -3,19 +3,28 @@ import {
   FieldResolver, Ctx,
   Root, Int,
   Mutation, Arg,
-  InputType, Field,
-  Authorized
+  InputType, Field
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
-import { UserStatus } from "@prisma/client";
+import { PrismaClient, UserStatus} from "@prisma/client";
 import * as helpers from "../../../helpers";
-import { Context } from "../../../context.interface";
 
+interface Context {
+  prisma: PrismaClient;
+}
+
+@InputType({ description: "Data needed to defer user" })
+class DeferData implements Partial<User> {
+  @Field()
+  id?: string;
+
+  @Field()
+  time?: string;
+}
 
 @Resolver(of => User)
 export class CustomUserResolver {
 
-  @Authorized()
   @FieldResolver(type => Int, { nullable: true })
   async estimated_wait(@Root() user: User, @Ctx() {prisma}: Context): Promise<number | null> {
     // calculate average wait time
@@ -38,7 +47,6 @@ export class CustomUserResolver {
     return estimatedWait;
   }
 
-  @Authorized(["ORGANIZER", "ASSISTANT"])
   @FieldResolver(type => String, { nullable: false })
   async status(@Root() user: User, @Ctx() {prisma}: Context): Promise<string | null> {
     // if user is summoned

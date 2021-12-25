@@ -75,6 +75,11 @@ export class UserUpdateInput {
   })
   summoned_time?: NullableDateTimeFieldUpdateOperationsInput | undefined;
 
+  @TypeGraphQL.Field(_type => NullableDateTimeFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  summoned_time?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+
   @TypeGraphQL.Field(_type => QueueUpdateOneRequiredWithoutUsersInput, {
     nullable: true
   })

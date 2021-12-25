@@ -10,10 +10,10 @@ export enum UserScalarFieldEnum {
   index = "index",
   join_time = "join_time",
   reneged_time = "reneged_time",
-  total_wait = "total_wait",
   status = "status",
-  summoned_time = "summoned_time",
-  queue_id = "queue_id"
+  queue_id = "queue_id",
+  total_wait = "total_wait",
+  summoned_time = "summoned_time"
 }
 TypeGraphQL.registerEnumType(UserScalarFieldEnum, {
   name: "UserScalarFieldEnum",
