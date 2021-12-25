@@ -71,7 +71,7 @@ export class Queue {
   users?: User[];
 
   @TypeGraphQL.Field(_type => QueueCount, {
-    nullable: false
+    nullable: true
   })
-  _count!: QueueCount;
+  _count?: QueueCount | null;
 }

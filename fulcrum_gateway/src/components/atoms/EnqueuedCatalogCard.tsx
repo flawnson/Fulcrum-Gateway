@@ -3,9 +3,11 @@ import { StyleSheet,
         Pressable, Animated,
         PanResponder, Dimensions,
         GestureResponderEvent } from "react-native";
-import { HStack, Text,
-        Box, View,
-        Center, Avatar } from 'native-base';
+import {
+    HStack, Text,
+    Box, View,
+    Center, Avatar, VStack
+} from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
 import { EnqueuedStats } from "../../../types";
@@ -46,7 +48,7 @@ export default function (props: EnqueuedCatalogProps) {
     const variables = `{
         "userId":
         {
-            "id": "userID"
+            "id": "user0"
         },
         "data": 
         {
@@ -66,7 +68,6 @@ export default function (props: EnqueuedCatalogProps) {
                 body: JSON.stringify({id: userId})
             });
             // enter you logic when the fetch is successful
-            console.log(await response.json())
             return await response.json()
         } catch(error) {
             // enter your logic for when there is an error (ex. error toast)
@@ -114,7 +115,6 @@ export default function (props: EnqueuedCatalogProps) {
                 {...panResponder.panHandlers}
             >
                 <Box
-                    maxW="80"
                     rounded="lg"
                     borderRadius="lg"
                     overflow="hidden"
@@ -135,23 +135,26 @@ export default function (props: EnqueuedCatalogProps) {
                 >
                     <Pressable onPress={props.onPress} delayLongPress={500} onLongPress={props.onLongPress}>
                         <HStack space='5' style={styles.group}>
-                            <Avatar style={styles.icon} source={require("../../assets/images/generic-user-icon.jpg")}>
+                            <Avatar style={styles.avatar} source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
                                 <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>
                             </Avatar>
-                            <Text suppressHighlighting={true} style={styles.text}>
-                                {props.entity.name}
-                            </Text>
                             <Text style={styles.text}>
                                 {props.entity.index}
                             </Text>
-                            <Text style={styles.text}>
-                                {props.entity.waited}
+                            <Text suppressHighlighting={true} style={styles.text}>
+                                {props.entity.name}
                             </Text>
-                            <MaterialCommunityIcons selectable={false}
-                                                    name={summoned ? "bell-circle" : "bell-circle-outline"}
-                                                    size={32}
-                                                    color={"#999999"}
-                                                    onPress={onBellPress}/>
+                            <VStack style={styles.text}>
+                                <Text>
+                                    {props.entity.waited}
+                                </Text>
+                                <MaterialCommunityIcons selectable={false}
+                                                        name={summoned ? "bell-circle" : "bell-circle-outline"}
+                                                        size={32}
+                                                        color={"#999999"}
+                                                        style={styles.icon}
+                                                        onPress={onBellPress}/>
+                            </VStack>
                         </HStack>
                         {props.selected && <View style={styles.overlay} />}
                     </Pressable>
@@ -167,15 +170,20 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     group: {
-        width: 500,
+        display: 'flex',
+        height: 70,
+        width: 300,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexDirection: 'row'
     },
-    icon: {
-        margin: 10,
+    avatar: {
         borderRadius: 10,
-        width: 50,
-        height: 50,
     },
     text: {
+        flex: 1,
+    },
+    icon: {
     },
     overlay: {
         position: 'absolute',

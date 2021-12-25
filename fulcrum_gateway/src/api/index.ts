@@ -18,8 +18,6 @@ import {
   UpdateOrganizerResolver,
   UpsertOrganizerResolver,
 
-  DeleteManyQueueResolver,
-  DeleteQueueResolver,
   FindFirstQueueResolver,
   FindManyQueueResolver,
   FindUniqueQueueResolver,
@@ -57,8 +55,6 @@ const pregeneratedCrudResolvers = [
   UpdateOrganizerResolver,
   UpsertOrganizerResolver,
 
-  DeleteManyQueueResolver,
-  DeleteQueueResolver,
   FindFirstQueueResolver,
   FindManyQueueResolver,
   FindUniqueQueueResolver,
@@ -81,8 +77,6 @@ const pregeneratedCrudResolvers = [
 const combinedResolvers = [...pregeneratedCrudResolvers, ...relationResolvers, ...customResolvers] as unknown as NonEmptyArray<Function>;
 
 async function bootstrap(){
-
-  //const prisma = new PrismaClient();
 
   const schema = await buildSchema({
     resolvers: combinedResolvers,

@@ -17,12 +17,14 @@ interface Context {
 @Resolver(of => Queue)
 export class CustomQueueResolver {
 
+  // average wait statistics
   @FieldResolver(type => Int, { nullable: true })
   async average_wait(@Root() queue: Queue, @Ctx() { prisma }: Context): Promise<number | null> {
     const averageWaitTime = await helpers.calculateAverageWait(queue.id);
     return averageWaitTime;
   }
 
+  // queue user count statistics
   @FieldResolver(type => Int)
   async num_enqueued(
     @Root() queue: Queue,
