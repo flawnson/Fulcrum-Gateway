@@ -18,8 +18,6 @@ import {
   UpdateOrganizerResolver,
   UpsertOrganizerResolver,
 
-  DeleteManyQueueResolver,
-  DeleteQueueResolver,
   FindFirstQueueResolver,
   FindManyQueueResolver,
   FindUniqueQueueResolver,
@@ -57,8 +55,6 @@ const pregeneratedCrudResolvers = [
   UpdateOrganizerResolver,
   UpsertOrganizerResolver,
 
-  DeleteManyQueueResolver,
-  DeleteQueueResolver,
   FindFirstQueueResolver,
   FindManyQueueResolver,
   FindUniqueQueueResolver,

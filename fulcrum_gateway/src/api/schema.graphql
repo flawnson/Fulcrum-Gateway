@@ -105,10 +105,9 @@ type Mutation {
   createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, organizerId: String!): Queue
   createUser(joinCode: String!, name: String!, phoneNumber: String!): User
   deferPosition(id: String!, time: String!): User
-  deleteManyQueue(where: QueueWhereInput): AffectedRowsOutput!
   deleteManyUser(where: UserWhereInput): AffectedRowsOutput!
   deleteOrganizer(where: OrganizerWhereUniqueInput!): Organizer
-  deleteQueue(where: QueueWhereUniqueInput!): Queue
+  deleteQueue(id: String!): Queue
   deleteUser(where: UserWhereUniqueInput!): User
   updateManyOrganizer(data: OrganizerUpdateManyMutationInput!, where: OrganizerWhereInput): AffectedRowsOutput!
   updateManyQueue(data: QueueUpdateManyMutationInput!, where: QueueWhereInput): AffectedRowsOutput!
