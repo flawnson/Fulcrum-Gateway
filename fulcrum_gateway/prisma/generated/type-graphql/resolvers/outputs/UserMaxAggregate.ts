@@ -67,4 +67,9 @@ export class UserMaxAggregate {
     nullable: true
   })
   total_wait!: number | null;
+
+  @TypeGraphQL.Field(_type => Date, {
+    nullable: true
+  })
+  summoned_time!: Date | null;
 }
