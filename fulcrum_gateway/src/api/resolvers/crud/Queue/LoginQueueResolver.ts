@@ -7,20 +7,8 @@ import {
 } from "type-graphql";
 
 import { Queue } from "../../../../../prisma/generated/type-graphql/models/Queue";
-import { PrismaClient } from "@prisma/client";
-import { Session, SessionData } from "express-session";
-import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-
-interface Context {
-  req: Request & { session: Session & Partial<SessionData> & {
-    test?: string,
-    queueId?: string 
-  }},
-  // res: Response
-  // redis: typeof Redis
-  prisma: PrismaClient;
-}
+import { Context } from "../../../context.interface";
 
 @ArgsType()
 class LoginQueueArgs {
@@ -38,8 +26,8 @@ class LoginQueueArgs {
 @Resolver()
 export class LoginQueueResolver {
   @Mutation(() => Queue, { nullable: true })
-  async loginQueue(@Ctx() ctx: Context, @Args() args: LoginQueueArgs): Promise<Queue | null> {
-    const queue = await ctx.prisma.queue.findUnique({
+  async loginQueue(@Ctx() { req, prisma }: Context, @Args() args: LoginQueueArgs): Promise<Queue | null> {
+    const queue = await prisma.queue.findUnique({
       where: {
         join_code: args.joinCode
       }
@@ -55,7 +43,7 @@ export class LoginQueueResolver {
       return null;
     }
 
-    ctx.req.session!.queueId = queue.id;
+    req.session!.queueId = queue.id;
 
     return queue;
   }

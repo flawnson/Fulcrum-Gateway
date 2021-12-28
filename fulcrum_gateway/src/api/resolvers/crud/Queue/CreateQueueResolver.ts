@@ -6,19 +6,11 @@ import {
   InputType, Field
 } from "type-graphql";
 import { Queue } from "../../../../../prisma/generated/type-graphql/models/Queue";
-import { PrismaClient } from "@prisma/client";
 import { Min, Max } from "class-validator";
 import Redis from "redis";
-import { Session, SessionData } from "express-session";
-import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
+import { Context } from "../../../context.interface";
 
-interface Context {
-  req: Request & { session: Session & Partial<SessionData> & { test?: string } }
-  // res: Response
-  // redis: typeof Redis
-  prisma: PrismaClient;
-}
 
 @ArgsType()
 class CreateQueueArgs {
@@ -121,7 +113,7 @@ export class CreateQueueResolver {
           users: true,
         },
       });
-      req.session.test = createQueue.id
+      req.session!.queueId = createQueue.id
       return createQueue;
 
     })
