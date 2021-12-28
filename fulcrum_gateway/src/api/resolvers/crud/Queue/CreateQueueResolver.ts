@@ -8,8 +8,14 @@ import {
 import { Queue } from "../../../../../prisma/generated/type-graphql/models/Queue";
 import { PrismaClient } from "@prisma/client";
 import { Min, Max } from "class-validator";
+import Redis from "redis";
+import { Session, SessionData } from "express-session"
+import { Request, Response } from "express"
 
 interface Context {
+  req: Request & { session: Session & Partial<SessionData> & { test?: string } }
+  // res: Response
+  // redis: typeof Redis
   prisma: PrismaClient;
 }
 
@@ -61,7 +67,7 @@ export class CreateQueueResolver {
   @Mutation(returns => Queue, {
     nullable: true
   })
-  async createQueue(@Ctx() { prisma }: Context, @Args() args: CreateQueueArgs): Promise<Queue | null> {
+  async createQueue(@Ctx() { req, prisma }: Context, @Args() args: CreateQueueArgs): Promise<Queue | null> {
 
     return await prisma.$transaction(async (prisma) => {
       // generate 6 digit join code
@@ -105,6 +111,7 @@ export class CreateQueueResolver {
           users: true,
         },
       });
+      req.session.test = createQueue.id
       return createQueue;
 
     })
