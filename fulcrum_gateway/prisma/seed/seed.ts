@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 import { user_table, queue_table, organizer_table} from "./data/data"
 
 const prisma = new PrismaClient();
@@ -12,6 +13,11 @@ async function main() {
   await prisma.queue.deleteMany({});
   await prisma.organizer.deleteMany({});
 
+  // generate an insert password into queue table (hash needs await)
+  const password = await bcrypt.hash("password123", 12);
+  for (let i = 0; i < queue_table.length; i++){
+    queue_table[i]["password"] = password;
+  }
 
   // make sure to create in order of organizer -> queue -> user to avoid foreign key conflicts
   const createOrganizers = await prisma.organizer.createMany({

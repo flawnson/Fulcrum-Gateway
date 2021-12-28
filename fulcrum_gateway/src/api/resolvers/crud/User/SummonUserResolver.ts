@@ -21,7 +21,7 @@ class SummonUserArgs {
 }
 
 
-@Resolver(of => User)
+@Resolver()
 export class SummonUserResolver {
 
   @Mutation(returns => User, {

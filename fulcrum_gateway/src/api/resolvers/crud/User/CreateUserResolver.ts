@@ -30,7 +30,7 @@ class CreateUserArgs {
   name!: string;
 }
 
-@Resolver(of => User)
+@Resolver()
 export class CreateUserResolver {
 
   @Mutation(returns => User, {

@@ -20,7 +20,7 @@ class DeleteQueueArgs {
   id!: string;
 }
 
-@Resolver(of => Queue)
+@Resolver()
 export class DeleteQueueResolver {
 
   @Mutation(returns => Queue, {

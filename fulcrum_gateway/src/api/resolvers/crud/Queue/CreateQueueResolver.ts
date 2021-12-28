@@ -59,7 +59,7 @@ class CreateQueueArgs {
 
 }
 
-@Resolver(of => Queue)
+@Resolver()
 export class CreateQueueResolver {
 
   @Mutation(returns => Queue, {

@@ -25,7 +25,7 @@ class DeferUserArgs {
   time!: string;
 }
 
-@Resolver(of => User)
+@Resolver()
 export class DeferUserResolver {
 
   @Mutation(returns => User, {

@@ -27,7 +27,7 @@ class ChangeStatusArgs {
 }
 
 
-@Resolver(of => User)
+@Resolver()
 export class ChangeUserStatusResolver {
 
   @Mutation(returns => User, {
