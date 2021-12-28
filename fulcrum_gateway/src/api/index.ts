@@ -3,6 +3,9 @@
 import "reflect-metadata";
 import express from "express";
 import cors from "cors";
+import { createClient } from 'redis'
+import session from 'express-session'
+import connectRedis from 'connect-redis'
 
 import { graphqlHTTP } from 'express-graphql';
 import { buildSchema, NonEmptyArray } from 'type-graphql';
@@ -90,12 +93,34 @@ async function bootstrap(){
 
   app.use(cors())
 
+  const RedisStore = connectRedis(session)
+  const redisClient = createClient()
+
+  app.use(
+      session({
+        name: 'qid',
+        store: new RedisStore({
+          client: redisClient,
+          disableTouch: true,
+        }),
+        cookie: {
+          maxAge: 10000000000, //long time
+          httpOnly: true,
+          secure: false,  //cookie only works in https (we are developing)
+          sameSite: 'lax'
+        },
+        saveUninitialized: false,
+        secret: 'qiwroasdjlasddde', //you would want to hide this in production
+        resave: false
+      })
+  )
+
   app.get('/', (req, res) => {
       res.redirect('/api')
   })
   app.use('/api', graphqlHTTP(async (req, res, params) => ({
     schema,
-    context: { prisma },
+    context: { req, prisma },
     graphiql: true,
   })));
 

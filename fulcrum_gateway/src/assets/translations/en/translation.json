@@ -34,13 +34,17 @@
     "footer": "Create your own virtual queue at"
   },
   "createQueuePage": {
-    "business_name_label": "What's your name?",
+    "business_name_label": "Queue name",
     "business_name_helper": "What's the name of your business, event, or venue?",
-    "queue_cap_label": "Cap the queue at {{onChangeValue}} queuers",
-    "queue_cap_helper": "There is a maximum of 1000 queuers allowed",
-    "grace_period_label": "Wait for {{gracePeriod}} minutes when summoning a queuer",
-    "grace_period_helper": "Set a grace period for summoned queuers to reach your venue",
-    "party_size_label": "A queuer can represent {{partySize}} people.",
-    "party_size_helper": "Set a maximum party size that a queuer can represent"
+    "queue_cap_label": "Max capacity",
+    "queue_cap_helper": "Set a maximum line capacity. We will turn away anyone if your venue is at capacity.",
+    "grace_period_label": "Grace period",
+    "grace_period_helper": "Set a grace period for summoned queuers to reach your venue.",
+    "party_size_label": "Party size",
+    "party_size_helper": "Set a maximum party size that a queuer can represent",
+    "offline_time_label": "Offline limit",
+    "offline_time_helper": "Set a maximum time limit that a queuer can be offline for.",
+    "address_label": "Address",
+    "address_helper": "Set your address so that queuers can find your venue."
   }
 }
