@@ -2,7 +2,7 @@ import React, { SetStateAction, useState } from 'react'
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { StyleSheet } from 'react-native'
-import { Center, Heading, Text, Image } from "native-base";
+import { Center, Heading } from "native-base";
 import QueueDashboardGroup from "../components/organisms/QueueDashboardStats";
 import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval";

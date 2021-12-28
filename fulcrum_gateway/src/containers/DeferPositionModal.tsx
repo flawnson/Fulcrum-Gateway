@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Button } from 'react-native-paper'
 import { TimePickerModal } from '../components/organisms/TimePickerModal'
+import { useTranslation } from "react-i18next";
 
 type GenericTimePickerModalProps = {
     modalVisible: boolean
@@ -9,6 +9,7 @@ type GenericTimePickerModalProps = {
 
 export default function (props: GenericTimePickerModalProps) {
     const [visible, setVisible] = React.useState(false)
+    const { t, i18n } = useTranslation(["deferPositionModal", "common"]);
     const onDismiss = React.useCallback(() => {
         props.setModalVisible(false)
     }, [setVisible])
@@ -30,11 +31,10 @@ export default function (props: GenericTimePickerModalProps) {
             hours={12} // default: current hours
             minutes={14} // default: current minutes
             uppercase={false}
-            label="How long would you like to defer for?" // optional, default 'Select time'
-            cancelLabel="Cancel" // optional, default: 'Cancel'
-            confirmLabel="Ok" // optional, default: 'Ok'
+            label={t("label")} // optional, default 'Select time'
+            cancelLabel={t("cancel", {ns: "common"})} // optional, default: 'Cancel'
+            confirmLabel={t("ok", {ns: "common"})} // optional, default: 'Ok'
             animationType="fade" // optional, default is 'none'
-            locale="en" // optional, default is automatically detected by your system
         />
     )
 }

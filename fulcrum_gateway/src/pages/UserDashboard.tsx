@@ -2,15 +2,19 @@ import React, { SetStateAction, useState } from 'react'
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { StyleSheet } from 'react-native'
-import { Avatar, HStack, Center, Heading, Image, Text} from "native-base";
+import { Avatar, HStack,
+        Center, Heading,
+        Image, Text } from "native-base";
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
 import UserDashboardMenu from "../containers/UserDashboardMenu"
 import useInterval from "../utilities/useInterval";
 import { uniqueId } from "lodash"
+import { useTranslation } from "react-i18next";
 
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const { t, i18n } = useTranslation(["userDashboard"]);
     const defaultProps = {
         name: "Someone",
         stats: [
@@ -97,7 +101,7 @@ export default function () {
                     <Avatar.Badge bg={state === "ACTIVE" ? "green.500" : "red.500"}/>
                 </Avatar>
             </HStack>
-            <Text style={styles.textFormat}>Almost there!</Text>
+            <Text style={styles.textFormat}>{t("status_text")}</Text>
             <Center>
                 <UserDashboardGroup {...props.stats}/>
             </Center>

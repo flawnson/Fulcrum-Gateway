@@ -5,7 +5,7 @@ import { NavigationProp, useNavigation, useRoute } from "@react-navigation/nativ
 import { HomeScreenProps } from "../../types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
-import {Route} from "@react-navigation/native";
+import { Route } from "@react-navigation/native";
 
 
 type EditQueueModalProps = {

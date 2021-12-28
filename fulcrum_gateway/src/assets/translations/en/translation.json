@@ -1,8 +1,9 @@
 {
   "common": {
-    "test": "success",
-    "hello": "there",
-    "submit": "Submit"
+    "cancel": "Cancel",
+    "ok": "Ok",
+    "submit": "Submit",
+    "confirm": "Confirm"
   },
   "landingPage": {
     "title": "Virtual lines that save time.",
@@ -46,5 +47,38 @@
     "offline_time_helper": "Set a maximum time limit that a queuer can be offline for.",
     "address_label": "Address",
     "address_helper": "Set your address so that queuers can find your venue."
+  },
+  "userDashboard": {
+    "status_text": "Almost there!"
+  },
+  "createQueueModal": {
+    "title": "Create a Queue"
+  },
+  "deferPositionModal": {
+    "label": "How long would you like to defer for?"
+  },
+  "enqueuedMultiSelectButtons": {
+    "kick": "Kick Queuers",
+    "summon": "Toggle Summon",
+    "service": "Service Queuers"
+  },
+  "leaveQueueAlert": {
+    "header": "Leave Queue",
+    "dialog": "Are you sure you want to abandon your position in line? You will have to enter the code again and start from the end of the line if you choose to rejoin."
+  },
+  "queueDashboardMenu": {
+    "edit": "Edit Queue",
+    "end": "End Queue",
+    "pause": "Pause Queue",
+    "share": "Share Queue"
+  },
+  "queueMultiSelectButtons": {
+    "pause": "Pause Queues",
+    "end": "End Queues"
+  },
+  "userDashboardMenu": {
+    "defer": "Defer Position",
+    "leave": "Leave Queue",
+    "share": "Share Queue"
   }
 }
