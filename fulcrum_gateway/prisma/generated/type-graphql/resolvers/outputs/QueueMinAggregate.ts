@@ -62,4 +62,9 @@ export class QueueMinAggregate {
     nullable: true
   })
   create_time!: Date | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  password!: string | null;
 }

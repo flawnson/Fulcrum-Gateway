@@ -20,11 +20,6 @@ export class OrganizerGroupBy {
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  password!: string | null;
-
   @TypeGraphQL.Field(_type => OrganizerCountAggregate, {
     nullable: true
   })

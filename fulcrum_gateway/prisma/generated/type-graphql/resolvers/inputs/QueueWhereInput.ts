@@ -93,4 +93,9 @@ export class QueueWhereInput {
     nullable: true
   })
   users?: UserListRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  password?: StringFilter | undefined;
 }

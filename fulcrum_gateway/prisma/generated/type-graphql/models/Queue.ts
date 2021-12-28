@@ -70,6 +70,11 @@ export class Queue {
 
   users?: User[];
 
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  password!: string;
+
   @TypeGraphQL.Field(_type => QueueCount, {
     nullable: true
   })

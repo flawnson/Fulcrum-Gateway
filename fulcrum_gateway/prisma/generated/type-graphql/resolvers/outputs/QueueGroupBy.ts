@@ -68,6 +68,11 @@ export class QueueGroupBy {
   })
   create_time!: Date;
 
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  password!: string;
+
   @TypeGraphQL.Field(_type => QueueCountAggregate, {
     nullable: true
   })

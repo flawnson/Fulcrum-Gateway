@@ -59,6 +59,11 @@ export class QueueCreateWithoutOrganizerInput {
   })
   create_time!: Date;
 
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  password!: string;
+
   @TypeGraphQL.Field(_type => UserCreateNestedManyWithoutQueueInput, {
     nullable: true
   })

@@ -81,4 +81,9 @@ export class QueueScalarWhereInput {
     nullable: true
   })
   create_time?: DateTimeFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  password?: StringFilter | undefined;
 }
