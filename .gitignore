@@ -214,3 +214,6 @@ fulcrum_gateway/yarn-error.log*
 
 # Pycharm
 .idea/
+
+# Redis
+fulcrum_gateway/dump.rdb

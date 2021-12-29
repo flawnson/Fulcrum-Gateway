@@ -75,10 +75,11 @@ export default function () {
                                    : terminalDigit === 2 ? "nd"
                                    : terminalDigit === 3 ? "rd"
                                    : "st"
-                    setProps({"name": info.name, "stats": [{"prefix": "You're", "stat": info.index, "suffix": suffix},
-                                                                 {"prefix": "You've waited", "stat": info.waited, "suffix": "m"},
-                                                                 {"prefix": "Average wait", "stat": info.average_wait, "suffix": "m"},
-                                                                 {"prefix": "ETA", "stat": info.estimated_wait, "suffix": "m"}]})
+                    setProps({"name": info.name,
+                                    "stats": [{"prefix": "You're", "stat": info.index, "suffix": suffix},
+                                              {"prefix": "You've waited", "stat": info.waited, "suffix": "m"},
+                                              {"prefix": "Average wait", "stat": info.average_wait, "suffix": "m"},
+                                              {"prefix": "ETA", "stat": info.estimated_wait, "suffix": "m"}]})
                 }
             )
         } catch(error) {

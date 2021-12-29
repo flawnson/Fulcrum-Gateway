@@ -13,6 +13,7 @@ type CreateQueueModalProps = {
 
 
 export default function (props: CreateQueueModalProps) {
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const { t, i18n } = useTranslation(["createQueueModal"]);
 
     return (
@@ -21,7 +22,7 @@ export default function (props: CreateQueueModalProps) {
                 <Modal.CloseButton />
                 <Modal.Header>{t("title")}</Modal.Header>
                 <Modal.Body>
-                    <CreateQueueForm setShowModal={props.setShowModal}/>
+                    <CreateQueueForm navigation={navigation} setShowModal={props.setShowModal}/>
                 </Modal.Body>
                 <Modal.Footer>
                 </Modal.Footer>

@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { TimePickerModal } from '../components/organisms/TimePickerModal'
 import { useTranslation } from "react-i18next";
+import { useNavigation } from "@react-navigation/native";
+import { HomeScreenProps } from "../../types";
 
 type GenericTimePickerModalProps = {
     modalVisible: boolean
@@ -8,16 +10,47 @@ type GenericTimePickerModalProps = {
 }
 
 export default function (props: GenericTimePickerModalProps) {
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const [visible, setVisible] = React.useState(false)
     const { t, i18n } = useTranslation(["deferPositionModal", "common"]);
     const onDismiss = React.useCallback(() => {
         props.setModalVisible(false)
     }, [setVisible])
 
+    const query = `
+        mutation defer_user($id: String! $time: String!) {
+            deferPosition(id: $id time: $time) {
+                userId: id
+                status
+            }
+        }
+    `
+    const variables = `{
+        "id": "user3",
+        "time": "1970-01-01T00:00:00.000Z"
+    }`
+
+    async function deferPosition (userId: string) {
+        try {
+            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: userId})
+            });
+            return await response.json()
+        } catch(error) {
+            return error
+        }
+    }
+
     const onConfirm = React.useCallback(
         ({ hours, minutes }) => {
             props.setModalVisible(false);
             console.log({ hours, minutes });
+            // deferPosition()
+            navigation.navigate("UserDashboard")
         },
         [setVisible]
     );

@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const { t, i18n } = useTranslation(["enqueuedMultiSelectButtons"]);
+    const { t, i18n } = useTranslation(["userDashboardMenu"]);
     const [deferModalVisible, setDeferModalVisible] = React.useState(false)
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
 

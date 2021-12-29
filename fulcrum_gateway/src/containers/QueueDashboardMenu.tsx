@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, {SetStateAction, useState} from 'react'
 import { Button, Menu, Fab, HamburgerIcon, Alert } from 'native-base';
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { HomeScreenProps } from "../../types";
+import {DashboardStat, HomeScreenProps} from "../../types";
 import EditQueueModal from "./EditQueueModal";
 import { useTranslation } from "react-i18next";
+import {zipObject} from "lodash";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
@@ -26,8 +27,37 @@ export default function () {
         setQueuePaused()
     }
 
-    function onEndScreenPress () {
+    const query = `
+        mutation deleteQueue($id: String!) {
+            deleteQueue(id: $id) {
+            id
+            }
+        }
+    `
+    const variables = `{
+    "queue_id": {
+            "id": "costco_queue1"
+        }
+    }`
 
+    const deleteQueue = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            // enter you logic when the fetch is successful
+            return await response.json()
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    function onEndScreenPress () {
+        deleteQueue()
+        navigation.navigate("EndScreen")
     }
 
     return (
@@ -46,9 +76,8 @@ export default function () {
                 }}
             >
                 <Menu.Item onPress={() => setShowModal(!showModal)}>{t("edit")}</Menu.Item>
-                <Menu.Item onPress={() => navigation.navigate("EndScreen")}>{t("end")}</Menu.Item>
+                <Menu.Item onPress={() => onEndScreenPress}>{t("end")}</Menu.Item>
                 <Menu.Item onPress={() => pauseQueue}>{t("pause")}</Menu.Item>
-                {/*<Menu.Item>Announcement</Menu.Item>*/}
                 <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>{t("share")}</Menu.Item>
             </Menu>
             <EditQueueModal showModal={showModal} setShowModal={setShowModal} route={route} navigation={navigation}/>

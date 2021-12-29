@@ -18,6 +18,35 @@ export default (props: LeaveQueueAlertProps) => {
         props.setIsAlertOpen(false)
     }
 
+    const query = `
+        mutation leave_queue($id: String!, $status: String!) {
+            changeStatus(where: $id, status: $status) {
+                name
+                status
+            }
+        }
+    `
+    const variables = `{
+        "id": "user3",
+        "status": "ABANDONED"
+    }`
+
+    async function leaveQueue (userId: string) {
+        try {
+            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: userId})
+            });
+            return await response.json()
+        } catch(error) {
+            return error
+        }
+    }
+
+
     const onLeave = () => {
         props.setIsAlertOpen(false)
         navigation.navigate("AbandonedScreen")

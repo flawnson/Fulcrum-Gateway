@@ -56,7 +56,7 @@ function App() {
                         <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe", headerRight: DarkModeToggle()}} >
                             {isInQueue && isQueuer ? (
                             <>
-                                <Stack.Screen name="HomePage" component={UserDashboard} />
+                                <Stack.Screen name="HomePage" component={QueuesPage} />
                                 <Stack.Screen name="LandingPage" component={LandingPage} />
                                 <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                 <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
@@ -64,6 +64,7 @@ function App() {
                                 <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                 <Stack.Screen name="SummonScreen" component={SummonScreen} />
                                 <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
+                                <Stack.Screen name="QueuesPage" component={QueuesPage} />
                             </>
                             ) : isInQueue && isOrganizer ? (
                                 <>

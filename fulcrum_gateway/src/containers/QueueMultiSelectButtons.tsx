@@ -9,7 +9,7 @@ type MultiSelectButtonType = {
 }
 
 export default function (props: MultiSelectButtonType) {
-    const { t, i18n } = useTranslation(["enqueuedMultiSelectButtons"]);
+    const { t, i18n } = useTranslation(["queueMultiSelectButtons"]);
     return (
         <Button.Group
             mx={{
