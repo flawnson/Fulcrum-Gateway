@@ -27,7 +27,7 @@ export let user_table = [
     phone_number: "4167777777",
     party_size: 1,
     last_online: nowDate,
-    index: 1,
+    index: 0,
     join_time: pastDate,
     reneged_time: futureDate,
     status: UserStatus.SERVICED,
@@ -44,7 +44,7 @@ export let user_table = [
     index: 1,
     join_time: pastDate,
     reneged_time: futureDate,
-    status: UserStatus.SERVICED,
+    status: UserStatus.ENQUEUED,
     total_wait: 800
   },
   {
