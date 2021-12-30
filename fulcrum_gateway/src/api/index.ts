@@ -86,7 +86,7 @@ const pregeneratedCrudResolvers = [
 
 const combinedResolvers = [...pregeneratedCrudResolvers, ...relationResolvers, ...customResolvers] as unknown as NonEmptyArray<Function>;
 
-// apply the config (it will apply decorators on the model class and its properties)
+// apply the config (it will apply decorators on the generated model class and its properties)
 applyModelsEnhanceMap(modelsEnhanceMap);
 
 async function bootstrap(){
