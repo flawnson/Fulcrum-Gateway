@@ -39,11 +39,13 @@ export async function updateUserStatus(userId: string, newStatus: UserStatus){
 
       // also update all users in the queue behind them with their index - 1 (move up in the queue)
       const originalUserIndex = user.index;
+      const userQueueId = user.queue_id;
       const updateOtherUsers = await prisma.user.updateMany({
         where: {
           index : {
             gt: originalUserIndex,
           },
+          queue_id: userQueueId
         },
         data: {
           index: {
