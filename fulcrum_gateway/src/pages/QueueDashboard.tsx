@@ -20,17 +20,17 @@ type UserData = {
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { t, i18n } = useTranslation(["createQueueModal"]);
+    const { t, i18n } = useTranslation(["queueDashboard"]);
 
     const defaultProps = {
         name: "Some Queue",
         stats: [
-            {prefix: "Enqueued", stat: 0, suffix: ""},
-            {prefix: "Serviced", stat: 0, suffix: ""},
-            {prefix: "Deferrals", stat: 0, suffix: ""},
-            {prefix: "Average wait", stat: 0, suffix: "m"},
-            {prefix: "Abandoned", stat: 0, suffix: ""},
-            {prefix: "No shows", stat: 0, suffix: ""}
+            {prefix: t("enqueued_prefix"), stat: 0, suffix: ""},
+            {prefix: t("serviced_prefix"), stat: 0, suffix: ""},
+            {prefix: t("deferred_prefix"), stat: 0, suffix: ""},
+            {prefix: t("average_prefix"), stat: 0, suffix: "m"},
+            {prefix: t("abandoned_prefix"), stat: 0, suffix: ""},
+            {prefix: t("noshows_prefix"), stat: 0, suffix: ""}
         ],
     }
     const [props, setProps] = useState(defaultProps)
@@ -75,12 +75,12 @@ export default function () {
                     }
                     stats.avg = lifespans.reduce((a,b) => a + b, 0) / lifespans.length
                     stats = {name: name, stats: [
-                        {prefix: "Enqueued", stat: stats.enqueued, suffix: ""},
-                        {prefix: "Serviced", stat: stats.serviced, suffix: ""},
-                        {prefix: "Deferrals", stat: stats.deferrals, suffix: ""},
-                        {prefix: "Average wait", stat: stats.avg, suffix: "m"},
-                        {prefix: "Abandoned", stat: stats.abandoned, suffix: ""},
-                        {prefix: "No shows", stat: stats.noshows, suffix: ""}
+                        {prefix: t("enqueued_prefix"), stat: stats.enqueued, suffix: ""},
+                        {prefix: t("serviced_prefix"), stat: stats.serviced, suffix: ""},
+                        {prefix: t("deferred_prefix"), stat: stats.deferred, suffix: ""},
+                        {prefix: t("average_prefix"), stat: stats.avg, suffix: "m"},
+                        {prefix: t("abandoned_prefix"), stat: stats.abandoned, suffix: ""},
+                        {prefix: t("noshows_prefix"), stat: stats.noshows, suffix: ""}
                         ]
                     }
                     setProps(stats)

@@ -49,7 +49,11 @@
     "address_helper": "Set your address so that queuers can find your venue."
   },
   "userDashboard": {
-    "status_text": "Almost there!"
+    "status_text": "Almost there!",
+    "index_prefix": "You're",
+    "waited_prefix": "You've waited",
+    "average_prefix": "Average wait",
+    "eta_prefix": "ETA"
   },
   "createQueueModal": {
     "title": "Create a Queue"
@@ -80,5 +84,20 @@
     "defer": "Defer Position",
     "leave": "Leave Queue",
     "share": "Share Queue"
+  },
+  "queueDashboard": {
+    "enqueued_prefix": "Enqueued",
+    "serviced_prefix": "Serviced",
+    "deferred_prefix": "Deferred",
+    "average_prefix": "Average Wait",
+    "abandoned_prefix": "Abandoned",
+    "noshows_prefix": "No Shows"
+  },
+  "QRCodeScanner": {
+    "message": "We are going live in July!",
+    "confirmation": "Bar code with type {{type}} and data {{data}} has been scanned!",
+    "requesting": "Requesting for camera permission",
+    "no_access": "No access to camera",
+    "scan_again": "Tap to Scan Again"
   }
 }

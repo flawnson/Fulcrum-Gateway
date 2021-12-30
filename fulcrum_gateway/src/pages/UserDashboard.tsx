@@ -21,10 +21,10 @@ export default function () {
     const defaultProps = {
         name: "Someone",
         stats: [
-                {prefix: "You're", stat: 0, suffix: ""},
-                {prefix: "You've waited", stat: 0, suffix: "m"},
-                {prefix: "Average wait", stat: 0, suffix: "m"},
-                {prefix: "ETA", stat: 0, suffix: "m"}
+                {prefix: t("index_prefix"), stat: 0, suffix: ""},
+                {prefix: t("waited_prefix"), stat: 0, suffix: "m"},
+                {prefix: t("average_prefix"), stat: 0, suffix: "m"},
+                {prefix: t("eta_prefix"), stat: 0, suffix: "m"}
             ],
         }
     const [props, setProps] = useState(defaultProps)
@@ -77,12 +77,12 @@ export default function () {
                     const suffix = terminalDigit === 1 ? "st"
                                    : terminalDigit === 2 ? "nd"
                                    : terminalDigit === 3 ? "rd"
-                                   : "st"
+                                   : "th"
                     setProps({"name": info.name,
-                                    "stats": [{"prefix": "You're", "stat": info.index, "suffix": suffix},
-                                              {"prefix": "You've waited", "stat": info.waited, "suffix": "m"},
-                                              {"prefix": "Average wait", "stat": info.average_wait, "suffix": "m"},
-                                              {"prefix": "ETA", "stat": info.estimated_wait, "suffix": "m"}]})
+                                    "stats": [{"prefix": t("index_prefix"), "stat": info.index, "suffix": suffix},
+                                              {"prefix": t("waited_prefix"), "stat": info.waited, "suffix": "m"},
+                                              {"prefix": t("average_prefix"), "stat": info.average_wait, "suffix": "m"},
+                                              {"prefix": t("eta_prefix"), "stat": info.estimated_wait, "suffix": "m"}]})
                 }
             )
         } catch(error) {
