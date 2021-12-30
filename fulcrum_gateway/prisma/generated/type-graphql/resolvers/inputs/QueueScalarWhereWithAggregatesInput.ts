@@ -81,4 +81,9 @@ export class QueueScalarWhereWithAggregatesInput {
     nullable: true
   })
   create_time?: DateTimeWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+    nullable: true
+  })
+  password?: StringWithAggregatesFilter | undefined;
 }

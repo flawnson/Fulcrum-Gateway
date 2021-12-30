@@ -6,11 +6,7 @@ import {
   InputType, Field
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
-import { PrismaClient } from "@prisma/client";
-
-interface Context {
-  prisma: PrismaClient;
-}
+import { Context } from "../../../context.interface";
 
 @ArgsType()
 class DeferUserArgs {
@@ -25,7 +21,7 @@ class DeferUserArgs {
   time!: string;
 }
 
-@Resolver(of => User)
+@Resolver()
 export class DeferUserResolver {
 
   @Mutation(returns => User, {

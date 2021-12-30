@@ -6,21 +6,10 @@ import {
   InputType, Field
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
-import { PrismaClient, UserStatus} from "@prisma/client";
+import { UserStatus } from "@prisma/client";
 import * as helpers from "../../../helpers";
+import { Context } from "../../../context.interface";
 
-interface Context {
-  prisma: PrismaClient;
-}
-
-@InputType({ description: "Data needed to defer user" })
-class DeferData implements Partial<User> {
-  @Field()
-  id?: string;
-
-  @Field()
-  time?: string;
-}
 
 @Resolver(of => User)
 export class CustomUserResolver {

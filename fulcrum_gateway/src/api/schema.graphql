@@ -102,13 +102,14 @@ input IntNullableFilter {
 type Mutation {
   changeStatus(id: String!, status: String!): User
   createOrganizer(data: OrganizerCreateInput!): Organizer!
-  createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, organizerId: String!): Queue
+  createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, organizerId: String!, password: String!): Queue
   createUser(joinCode: String!, name: String!, phoneNumber: String!): User
   deferPosition(id: String!, time: String!): User
   deleteManyUser(where: UserWhereInput): AffectedRowsOutput!
   deleteOrganizer(where: OrganizerWhereUniqueInput!): Organizer
   deleteQueue(id: String!): Queue
   deleteUser(where: UserWhereUniqueInput!): User
+  loginQueue(joinCode: String!, password: String!): Queue
   summon(id: String!): User
   updateManyOrganizer(data: OrganizerUpdateManyMutationInput!, where: OrganizerWhereInput): AffectedRowsOutput!
   updateManyQueue(data: QueueUpdateManyMutationInput!, where: QueueWhereInput): AffectedRowsOutput!
@@ -198,37 +199,6 @@ input NestedStringFilter {
   startsWith: String
 }
 
-input NestedStringNullableFilter {
-  contains: String
-  endsWith: String
-  equals: String
-  gt: String
-  gte: String
-  in: [String!]
-  lt: String
-  lte: String
-  not: NestedStringNullableFilter
-  notIn: [String!]
-  startsWith: String
-}
-
-input NestedStringNullableWithAggregatesFilter {
-  _count: NestedIntNullableFilter
-  _max: NestedStringNullableFilter
-  _min: NestedStringNullableFilter
-  contains: String
-  endsWith: String
-  equals: String
-  gt: String
-  gte: String
-  in: [String!]
-  lt: String
-  lte: String
-  not: NestedStringNullableWithAggregatesFilter
-  notIn: [String!]
-  startsWith: String
-}
-
 input NestedStringWithAggregatesFilter {
   _count: NestedIntFilter
   _max: NestedStringFilter
@@ -258,15 +228,10 @@ input NullableIntFieldUpdateOperationsInput {
   set: Int
 }
 
-input NullableStringFieldUpdateOperationsInput {
-  set: String
-}
-
 type Organizer {
   _count: OrganizerCount
   id: String!
   name: String!
-  password: String
   queues(cursor: QueueWhereUniqueInput, distinct: [QueueScalarFieldEnum!], orderBy: [QueueOrderByWithRelationInput!], skip: Int, take: Int, where: QueueWhereInput): [Queue!]!
 }
 
@@ -278,19 +243,16 @@ type OrganizerCountAggregate {
   _all: Int!
   id: Int!
   name: Int!
-  password: Int!
 }
 
 input OrganizerCountOrderByAggregateInput {
   id: SortOrder
   name: SortOrder
-  password: SortOrder
 }
 
 input OrganizerCreateInput {
   id: String
   name: String!
-  password: String
   queues: QueueCreateNestedManyWithoutOrganizerInput
 }
 
@@ -308,7 +270,6 @@ input OrganizerCreateOrConnectWithoutQueuesInput {
 input OrganizerCreateWithoutQueuesInput {
   id: String
   name: String!
-  password: String
 }
 
 type OrganizerGroupBy {
@@ -317,31 +278,26 @@ type OrganizerGroupBy {
   _min: OrganizerMinAggregate
   id: String!
   name: String!
-  password: String
 }
 
 type OrganizerMaxAggregate {
   id: String
   name: String
-  password: String
 }
 
 input OrganizerMaxOrderByAggregateInput {
   id: SortOrder
   name: SortOrder
-  password: SortOrder
 }
 
 type OrganizerMinAggregate {
   id: String
   name: String
-  password: String
 }
 
 input OrganizerMinOrderByAggregateInput {
   id: SortOrder
   name: SortOrder
-  password: SortOrder
 }
 
 input OrganizerOrderByWithAggregationInput {
@@ -350,13 +306,11 @@ input OrganizerOrderByWithAggregationInput {
   _min: OrganizerMinOrderByAggregateInput
   id: SortOrder
   name: SortOrder
-  password: SortOrder
 }
 
 input OrganizerOrderByWithRelationInput {
   id: SortOrder
   name: SortOrder
-  password: SortOrder
   queues: QueueOrderByRelationAggregateInput
 }
 
@@ -368,7 +322,6 @@ input OrganizerRelationFilter {
 enum OrganizerScalarFieldEnum {
   id
   name
-  password
 }
 
 input OrganizerScalarWhereWithAggregatesInput {
@@ -377,20 +330,17 @@ input OrganizerScalarWhereWithAggregatesInput {
   OR: [OrganizerScalarWhereWithAggregatesInput!]
   id: StringWithAggregatesFilter
   name: StringWithAggregatesFilter
-  password: StringNullableWithAggregatesFilter
 }
 
 input OrganizerUpdateInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
-  password: NullableStringFieldUpdateOperationsInput
   queues: QueueUpdateManyWithoutOrganizerInput
 }
 
 input OrganizerUpdateManyMutationInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
-  password: NullableStringFieldUpdateOperationsInput
 }
 
 input OrganizerUpdateOneRequiredWithoutQueuesInput {
@@ -404,7 +354,6 @@ input OrganizerUpdateOneRequiredWithoutQueuesInput {
 input OrganizerUpdateWithoutQueuesInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
-  password: NullableStringFieldUpdateOperationsInput
 }
 
 input OrganizerUpsertWithoutQueuesInput {
@@ -418,7 +367,6 @@ input OrganizerWhereInput {
   OR: [OrganizerWhereInput!]
   id: StringFilter
   name: StringFilter
-  password: StringNullableFilter
   queues: QueueListRelationFilter
 }
 
@@ -464,6 +412,7 @@ type Queue {
   offline_time: Int
   organizer: Organizer!
   organizer_id: String!
+  password: String!
   state: QueueState!
   users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
 }
@@ -483,6 +432,7 @@ input QueueCreateInput {
   name: String!
   offline_time: Int
   organizer: OrganizerCreateNestedOneWithoutQueuesInput!
+  password: String!
   state: QueueState
   users: UserCreateNestedManyWithoutQueueInput
 }
@@ -497,6 +447,7 @@ input QueueCreateManyOrganizerInput {
   max_party_size: Int
   name: String!
   offline_time: Int
+  password: String!
   state: QueueState
 }
 
@@ -538,6 +489,7 @@ input QueueCreateWithoutOrganizerInput {
   max_party_size: Int
   name: String!
   offline_time: Int
+  password: String!
   state: QueueState
   users: UserCreateNestedManyWithoutQueueInput
 }
@@ -553,6 +505,7 @@ input QueueCreateWithoutUsersInput {
   name: String!
   offline_time: Int
   organizer: OrganizerCreateNestedOneWithoutQueuesInput!
+  password: String!
   state: QueueState
 }
 
@@ -578,6 +531,7 @@ input QueueOrderByWithRelationInput {
   offline_time: SortOrder
   organizer: OrganizerOrderByWithRelationInput
   organizer_id: SortOrder
+  password: SortOrder
   state: SortOrder
   users: UserOrderByRelationAggregateInput
 }
@@ -598,6 +552,7 @@ enum QueueScalarFieldEnum {
   name
   offline_time
   organizer_id
+  password
   state
 }
 
@@ -615,6 +570,7 @@ input QueueScalarWhereInput {
   name: StringFilter
   offline_time: IntNullableFilter
   organizer_id: StringFilter
+  password: StringFilter
   state: EnumQueueStateFilter
 }
 
@@ -635,6 +591,7 @@ input QueueUpdateInput {
   name: StringFieldUpdateOperationsInput
   offline_time: NullableIntFieldUpdateOperationsInput
   organizer: OrganizerUpdateOneRequiredWithoutQueuesInput
+  password: StringFieldUpdateOperationsInput
   state: EnumQueueStateFieldUpdateOperationsInput
   users: UserUpdateManyWithoutQueueInput
 }
@@ -649,6 +606,7 @@ input QueueUpdateManyMutationInput {
   max_party_size: IntFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   offline_time: NullableIntFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
   state: EnumQueueStateFieldUpdateOperationsInput
 }
 
@@ -694,6 +652,7 @@ input QueueUpdateWithoutOrganizerInput {
   max_party_size: IntFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   offline_time: NullableIntFieldUpdateOperationsInput
+  password: StringFieldUpdateOperationsInput
   state: EnumQueueStateFieldUpdateOperationsInput
   users: UserUpdateManyWithoutQueueInput
 }
@@ -709,6 +668,7 @@ input QueueUpdateWithoutUsersInput {
   name: StringFieldUpdateOperationsInput
   offline_time: NullableIntFieldUpdateOperationsInput
   organizer: OrganizerUpdateOneRequiredWithoutQueuesInput
+  password: StringFieldUpdateOperationsInput
   state: EnumQueueStateFieldUpdateOperationsInput
 }
 
@@ -738,6 +698,7 @@ input QueueWhereInput {
   offline_time: IntNullableFilter
   organizer: OrganizerRelationFilter
   organizer_id: StringFilter
+  password: StringFilter
   state: EnumQueueStateFilter
   users: UserListRelationFilter
 }
@@ -767,39 +728,6 @@ input StringFilter {
   lte: String
   mode: QueryMode
   not: NestedStringFilter
-  notIn: [String!]
-  startsWith: String
-}
-
-input StringNullableFilter {
-  contains: String
-  endsWith: String
-  equals: String
-  gt: String
-  gte: String
-  in: [String!]
-  lt: String
-  lte: String
-  mode: QueryMode
-  not: NestedStringNullableFilter
-  notIn: [String!]
-  startsWith: String
-}
-
-input StringNullableWithAggregatesFilter {
-  _count: NestedIntNullableFilter
-  _max: NestedStringNullableFilter
-  _min: NestedStringNullableFilter
-  contains: String
-  endsWith: String
-  equals: String
-  gt: String
-  gte: String
-  in: [String!]
-  lt: String
-  lte: String
-  mode: QueryMode
-  not: NestedStringNullableWithAggregatesFilter
   notIn: [String!]
   startsWith: String
 }

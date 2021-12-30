@@ -18,11 +18,6 @@ export class OrganizerCreateInput {
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  password?: string | undefined;
-
   @TypeGraphQL.Field(_type => QueueCreateNestedManyWithoutOrganizerInput, {
     nullable: true
   })

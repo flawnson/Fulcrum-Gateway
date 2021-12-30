@@ -62,4 +62,9 @@ export class QueueCreateManyInput {
     nullable: false
   })
   create_time!: Date;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  password!: string;
 }

@@ -6,18 +6,11 @@ import {
   InputType, Field
 } from "type-graphql";
 import { Queue } from "../../../../../prisma/generated/type-graphql/models/Queue";
-import { PrismaClient } from "@prisma/client";
 import { Min, Max } from "class-validator";
 import Redis from "redis";
-import { Session, SessionData } from "express-session"
-import { Request, Response } from "express"
+import bcrypt from "bcryptjs";
+import { Context } from "../../../context.interface";
 
-interface Context {
-  req: Request & { session: Session & Partial<SessionData> & { test?: string } }
-  // res: Response
-  // redis: typeof Redis
-  prisma: PrismaClient;
-}
 
 @ArgsType()
 class CreateQueueArgs {
@@ -59,9 +52,14 @@ class CreateQueueArgs {
   })
   offlineTime?: number;
 
+  @Field({
+    nullable: false
+  })
+  password!: string;
+
 }
 
-@Resolver(of => Queue)
+@Resolver()
 export class CreateQueueResolver {
 
   @Mutation(returns => Queue, {
@@ -91,6 +89,9 @@ export class CreateQueueResolver {
       }
 
       // create a new queue
+      // hash password
+      const hashedPassword = await bcrypt.hash(args.password, 12);
+
       const createTime = new Date();
       const createQueue = await prisma.queue.create({
         data: {
@@ -103,6 +104,7 @@ export class CreateQueueResolver {
           grace_period: args.gracePeriod,
           offline_time: args.offlineTime,
           create_time: createTime,
+          password: hashedPassword,
           users: {
             create: []
           },
@@ -111,7 +113,7 @@ export class CreateQueueResolver {
           users: true,
         },
       });
-      req.session.test = createQueue.id
+      req.session!.queueId = createQueue.id
       return createQueue;
 
     })

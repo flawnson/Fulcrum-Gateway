@@ -6,12 +6,10 @@ import {
   InputType, Field
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
-import { PrismaClient, UserStatus } from "@prisma/client";
+import { UserStatus } from "@prisma/client";
 import * as helpers from "../../../helpers";
 
-interface Context {
-  prisma: PrismaClient;
-}
+import { Context } from "../../../context.interface";
 
 @ArgsType()
 class ChangeStatusArgs {
@@ -27,7 +25,7 @@ class ChangeStatusArgs {
 }
 
 
-@Resolver(of => User)
+@Resolver()
 export class ChangeUserStatusResolver {
 
   @Mutation(returns => User, {
