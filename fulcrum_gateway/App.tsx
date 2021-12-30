@@ -3,6 +3,7 @@ import React from 'react';
 import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {Button} from 'native-base'
 import HomePage from './src/pages/HomePage'
 import SummonScreen from "./src/screens/SummonScreen";
 import EndScreen from "./src/screens/EndScreen"
@@ -48,12 +49,18 @@ function App() {
         [toggleTheme, isThemeDark]
     );
 
+    function buttonMaker () {
+        return (
+            <Button onPress={() => console.log("fuck")}/>
+        )
+    }
+
     return (
         <PreferencesContext.Provider value={preferences}>
             <NativeBaseProvider config={config} theme={theme.nativebase}>
                 <NavigationContainer theme={theme.navigation}>
                     <Stack.Navigator initialRouteName="HomePage">
-                        <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe", headerRight: DarkModeToggle()}} >
+                        <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe"}} >
                             {isInQueue && isQueuer ? (
                             <>
                                 <Stack.Screen name="HomePage" component={QueuesPage} />

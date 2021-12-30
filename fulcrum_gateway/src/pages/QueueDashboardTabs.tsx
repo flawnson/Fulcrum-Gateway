@@ -14,7 +14,7 @@ const Tab = createBottomTabNavigator();
 
 export default function QueueDashboardTabs() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    navigation.setOptions({headerShown: true, headerRight: DarkModeToggle()})
+    navigation.setOptions({headerRight: DarkModeToggle()})
 
     return (
         <Tab.Navigator

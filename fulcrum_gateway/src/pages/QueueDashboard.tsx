@@ -1,5 +1,5 @@
-import React, { SetStateAction, useState } from 'react'
-import { useNavigation } from "@react-navigation/native";
+import React, { SetStateAction, useEffect, useState } from 'react'
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { StyleSheet } from 'react-native'
 import { Center, Heading } from "native-base";
@@ -8,6 +8,8 @@ import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval";
 import { zipObject } from "lodash"
 import { DashboardStat } from "../../types";
+import DarkModeToggle from "../components/atoms/DarkModeToggle";
+import {useTranslation} from "react-i18next";
 
 type UserData = {
     user_id: string,
@@ -18,6 +20,8 @@ type UserData = {
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const { t, i18n } = useTranslation(["createQueueModal"]);
+
     const defaultProps = {
         name: "Some Queue",
         stats: [
@@ -48,7 +52,7 @@ export default function () {
         }
     }`
 
-    const fetchQueueData = async () => {
+    async function fetchQueueData () {
         try {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
@@ -87,6 +91,10 @@ export default function () {
         }
     }
 
+    // Run on first render
+    useEffect(() => {fetchQueueData()}, [])
+    // Poll only if user is currently on this screen
+    // if (useIsFocused()) {useInterval(fetchQueueData, 5000)}
     useInterval(fetchQueueData, 5000)
 
     return (

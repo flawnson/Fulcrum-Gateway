@@ -70,7 +70,7 @@ To start the backend, navigate to the index.ts file:
 Install ts-node:
 `npm install ts-node -g`
 
-and run node:
+and run node (Before you actually run though you'll want to set up the database in the following section):
 `ts-node index.ts`
 
 or if you want to use nodemon:
@@ -105,6 +105,14 @@ You'll need a .env file in the root dir of your project with the following insid
 `DATABASE_URL="postgresql://db_username:db_password@exposed_ip:exposed_host_port/name_of_db`
 
 The ip and port should just be localhost:5432 and the db username by default should be "postgres".
+
+We also use Redis as our caching and authentication solution:
+`brew install redis@3.1.2`
+
+Then you can start Redis
+`redis-server`
+
+## Prisma setup
 
 Finally, run:
 `npx prisma db push`

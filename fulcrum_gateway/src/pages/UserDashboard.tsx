@@ -1,5 +1,5 @@
-import React, { SetStateAction, useState } from 'react'
-import { useNavigation } from "@react-navigation/native";
+import React, {SetStateAction, useEffect, useState} from 'react'
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { StyleSheet } from 'react-native'
 import { Avatar, HStack,
@@ -10,11 +10,14 @@ import UserDashboardMenu from "../containers/UserDashboardMenu"
 import useInterval from "../utilities/useInterval";
 import { uniqueId } from "lodash"
 import { useTranslation } from "react-i18next";
+import DarkModeToggle from "../components/atoms/DarkModeToggle";
 
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const { t, i18n } = useTranslation(["userDashboard"]);
+    navigation.setOptions({headerRight: DarkModeToggle()})
+
     const defaultProps = {
         name: "Someone",
         stats: [
@@ -38,14 +41,14 @@ export default function () {
                 index
                 estimated_wait
                 join_time
-                state
+                status
             }
         }
     `
     const variables = `{
     "userId": {
             "id": "user1"
-        }
+        },
     "queueId": {
             "id": "costco_queue2"
         }
@@ -87,7 +90,10 @@ export default function () {
         }
     }
 
-    useInterval(fetchUserStats, 5000)
+    // Run on first render
+    useEffect(() => {fetchUserStats()}, [])
+    // Poll only if user is currently on this screen
+    if (useIsFocused()) {useInterval(fetchUserStats, 5000)}
 
     return (
         <Center style={styles.animationFormat}>
