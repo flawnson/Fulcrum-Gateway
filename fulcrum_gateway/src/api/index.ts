@@ -40,6 +40,12 @@ import {
   UpsertUserResolver,
   relationResolvers
 } from "../../prisma/generated/type-graphql";
+
+import {
+  applyModelsEnhanceMap
+} from "../../prisma/generated/type-graphql";
+import { modelsEnhanceMap } from "./modelsEnhanceMap";
+
 import { customResolvers } from "./resolvers";
 
 import * as path from 'path';
@@ -80,6 +86,8 @@ const pregeneratedCrudResolvers = [
 
 const combinedResolvers = [...pregeneratedCrudResolvers, ...relationResolvers, ...customResolvers] as unknown as NonEmptyArray<Function>;
 
+// apply the config (it will apply decorators on the model class and its properties)
+applyModelsEnhanceMap(modelsEnhanceMap);
 
 async function bootstrap(){
 
