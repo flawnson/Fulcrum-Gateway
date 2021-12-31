@@ -107,6 +107,7 @@ export class CreateQueueResolver {
           users: true,
         },
       });
+
       req.session!.queueId = createQueue.id
       return createQueue;
 

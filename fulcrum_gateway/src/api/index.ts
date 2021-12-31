@@ -12,15 +12,6 @@ dotenv.config();
 import { graphqlHTTP } from 'express-graphql';
 import { buildSchema, NonEmptyArray } from 'type-graphql';
 import {
-
-  FindFirstQueueResolver,
-  FindManyQueueResolver,
-  FindUniqueQueueResolver,
-  GroupByOrganizerResolver,
-  UpdateManyQueueResolver,
-  UpdateQueueResolver,
-  UpsertQueueResolver,
-
   DeleteManyUserResolver,
   DeleteUserResolver,
   FindFirstUserResolver,
@@ -46,13 +37,6 @@ import prisma from './prismaClient';
 import { authChecker } from "./authChecker";
 
 const pregeneratedCrudResolvers = [
-  FindFirstQueueResolver,
-  FindManyQueueResolver,
-  FindUniqueQueueResolver,
-  GroupByOrganizerResolver,
-  UpdateManyQueueResolver,
-  UpdateQueueResolver,
-  UpsertQueueResolver,
 
   DeleteManyUserResolver,
   DeleteUserResolver,

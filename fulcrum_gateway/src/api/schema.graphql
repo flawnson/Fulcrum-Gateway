@@ -103,17 +103,14 @@ type Mutation {
   changeStatus(status: String!, userId: String!): User
   createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, password: String!): Queue
   createUser(joinCode: String!, name: String!, phoneNumber: String!): User
-  deferPosition(time: String!, userId: String!): User
+  deferPosition(time: String!, userId: String): User
   deleteManyUser(where: UserWhereInput): AffectedRowsOutput!
   deleteQueue: Queue
   deleteUser(where: UserWhereUniqueInput!): User
   loginQueue(joinCode: String!, password: String!): Queue
   summon(userId: String!): User
-  updateManyQueue(data: QueueUpdateManyMutationInput!, where: QueueWhereInput): AffectedRowsOutput!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): AffectedRowsOutput!
-  updateQueue(data: QueueUpdateInput!, where: QueueWhereUniqueInput!): Queue
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  upsertQueue(create: QueueCreateInput!, update: QueueUpdateInput!, where: QueueWhereUniqueInput!): Queue!
   upsertUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
 }
 
@@ -207,10 +204,9 @@ input NullableIntFieldUpdateOperationsInput {
 }
 
 type Query {
-  findFirstQueue(cursor: QueueWhereUniqueInput, distinct: [QueueScalarFieldEnum!], orderBy: [QueueOrderByWithRelationInput!], skip: Int, take: Int, where: QueueWhereInput): Queue
   findFirstUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): User
-  queue(where: QueueWhereUniqueInput!): Queue
-  queues(cursor: QueueWhereUniqueInput, distinct: [QueueScalarFieldEnum!], orderBy: [QueueOrderByWithRelationInput!], skip: Int, take: Int, where: QueueWhereInput): [Queue!]!
+  getQueue: Queue
+  getUser(userId: String): User
   user(where: UserWhereUniqueInput!): User
   users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
 }
@@ -245,21 +241,6 @@ type Queue {
 
 type QueueCount {
   users: Int!
-}
-
-input QueueCreateInput {
-  address: String!
-  capacity: Int!
-  create_time: DateTime!
-  grace_period: Int
-  id: String
-  join_code: String!
-  max_party_size: Int
-  name: String!
-  offline_time: Int
-  password: String!
-  state: QueueState
-  users: UserCreateNestedManyWithoutQueueInput
 }
 
 input QueueCreateNestedOneWithoutUsersInput {
@@ -307,53 +288,10 @@ input QueueRelationFilter {
   isNot: QueueWhereInput
 }
 
-enum QueueScalarFieldEnum {
-  address
-  capacity
-  create_time
-  grace_period
-  id
-  join_code
-  max_party_size
-  name
-  offline_time
-  password
-  state
-}
-
 enum QueueState {
   ACTIVE
   INACTIVE
   PAUSED
-}
-
-input QueueUpdateInput {
-  address: StringFieldUpdateOperationsInput
-  capacity: IntFieldUpdateOperationsInput
-  create_time: DateTimeFieldUpdateOperationsInput
-  grace_period: NullableIntFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  join_code: StringFieldUpdateOperationsInput
-  max_party_size: IntFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
-  offline_time: NullableIntFieldUpdateOperationsInput
-  password: StringFieldUpdateOperationsInput
-  state: EnumQueueStateFieldUpdateOperationsInput
-  users: UserUpdateManyWithoutQueueInput
-}
-
-input QueueUpdateManyMutationInput {
-  address: StringFieldUpdateOperationsInput
-  capacity: IntFieldUpdateOperationsInput
-  create_time: DateTimeFieldUpdateOperationsInput
-  grace_period: NullableIntFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  join_code: StringFieldUpdateOperationsInput
-  max_party_size: IntFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
-  offline_time: NullableIntFieldUpdateOperationsInput
-  password: StringFieldUpdateOperationsInput
-  state: EnumQueueStateFieldUpdateOperationsInput
 }
 
 input QueueUpdateOneRequiredWithoutUsersInput {
@@ -464,53 +402,6 @@ input UserCreateInput {
   total_wait: Int
 }
 
-input UserCreateManyQueueInput {
-  id: String
-  index: Int
-  join_time: DateTime
-  last_online: DateTime
-  name: String!
-  party_size: Int
-  phone_number: String!
-  reneged_time: DateTime
-  status: UserStatus
-  summoned: Boolean
-  summoned_time: DateTime
-  total_wait: Int
-}
-
-input UserCreateManyQueueInputEnvelope {
-  data: [UserCreateManyQueueInput!]!
-  skipDuplicates: Boolean
-}
-
-input UserCreateNestedManyWithoutQueueInput {
-  connect: [UserWhereUniqueInput!]
-  connectOrCreate: [UserCreateOrConnectWithoutQueueInput!]
-  create: [UserCreateWithoutQueueInput!]
-  createMany: UserCreateManyQueueInputEnvelope
-}
-
-input UserCreateOrConnectWithoutQueueInput {
-  create: UserCreateWithoutQueueInput!
-  where: UserWhereUniqueInput!
-}
-
-input UserCreateWithoutQueueInput {
-  id: String
-  index: Int
-  join_time: DateTime
-  last_online: DateTime
-  name: String!
-  party_size: Int
-  phone_number: String!
-  reneged_time: DateTime
-  status: UserStatus
-  summoned: Boolean
-  summoned_time: DateTime
-  total_wait: Int
-}
-
 input UserListRelationFilter {
   every: UserWhereInput
   none: UserWhereInput
@@ -554,25 +445,6 @@ enum UserScalarFieldEnum {
   total_wait
 }
 
-input UserScalarWhereInput {
-  AND: [UserScalarWhereInput!]
-  NOT: [UserScalarWhereInput!]
-  OR: [UserScalarWhereInput!]
-  id: StringFilter
-  index: IntFilter
-  join_time: DateTimeFilter
-  last_online: DateTimeNullableFilter
-  name: StringFilter
-  party_size: IntFilter
-  phone_number: StringFilter
-  queue_id: StringFilter
-  reneged_time: DateTimeNullableFilter
-  status: EnumUserStatusFilter
-  summoned: BoolFilter
-  summoned_time: DateTimeNullableFilter
-  total_wait: IntNullableFilter
-}
-
 enum UserStatus {
   ABANDONED
   DEFERRED
@@ -611,51 +483,6 @@ input UserUpdateManyMutationInput {
   summoned: BoolFieldUpdateOperationsInput
   summoned_time: NullableDateTimeFieldUpdateOperationsInput
   total_wait: NullableIntFieldUpdateOperationsInput
-}
-
-input UserUpdateManyWithWhereWithoutQueueInput {
-  data: UserUpdateManyMutationInput!
-  where: UserScalarWhereInput!
-}
-
-input UserUpdateManyWithoutQueueInput {
-  connect: [UserWhereUniqueInput!]
-  connectOrCreate: [UserCreateOrConnectWithoutQueueInput!]
-  create: [UserCreateWithoutQueueInput!]
-  createMany: UserCreateManyQueueInputEnvelope
-  delete: [UserWhereUniqueInput!]
-  deleteMany: [UserScalarWhereInput!]
-  disconnect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
-  update: [UserUpdateWithWhereUniqueWithoutQueueInput!]
-  updateMany: [UserUpdateManyWithWhereWithoutQueueInput!]
-  upsert: [UserUpsertWithWhereUniqueWithoutQueueInput!]
-}
-
-input UserUpdateWithWhereUniqueWithoutQueueInput {
-  data: UserUpdateWithoutQueueInput!
-  where: UserWhereUniqueInput!
-}
-
-input UserUpdateWithoutQueueInput {
-  id: StringFieldUpdateOperationsInput
-  index: IntFieldUpdateOperationsInput
-  join_time: DateTimeFieldUpdateOperationsInput
-  last_online: NullableDateTimeFieldUpdateOperationsInput
-  name: StringFieldUpdateOperationsInput
-  party_size: IntFieldUpdateOperationsInput
-  phone_number: StringFieldUpdateOperationsInput
-  reneged_time: NullableDateTimeFieldUpdateOperationsInput
-  status: EnumUserStatusFieldUpdateOperationsInput
-  summoned: BoolFieldUpdateOperationsInput
-  summoned_time: NullableDateTimeFieldUpdateOperationsInput
-  total_wait: NullableIntFieldUpdateOperationsInput
-}
-
-input UserUpsertWithWhereUniqueWithoutQueueInput {
-  create: UserCreateWithoutQueueInput!
-  update: UserUpdateWithoutQueueInput!
-  where: UserWhereUniqueInput!
 }
 
 input UserWhereInput {
