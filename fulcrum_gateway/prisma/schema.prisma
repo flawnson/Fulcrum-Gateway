@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["interactiveTransactions"]
 }
 
@@ -14,13 +14,14 @@ datasource db {
 }
 
 model Organizer {
-  id       String     @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
-  queues   Queue[]  @relation("queues_in_organizer")
+  password String?
+  queues   Queue[] @relation("queues_in_organizer")
 }
 
 model Queue {
-  id             String        @id @default(uuid())
+  id             String     @id @default(uuid())
   organizer_id   String
   join_code      String     @unique
   name           String
@@ -37,21 +38,21 @@ model Queue {
 }
 
 model User {
-  id             String        @id @default(uuid())
-  name           String
-  summoned       Boolean    @default(false)
-  phone_number   String
-  party_size     Int        @default(1)
-  last_online    DateTime?
-  index          Int        @default(0)
-  join_time      DateTime   @default(now())
-  reneged_time   DateTime?
+  id            String     @id @default(uuid())
+  name          String
+  queue_id      String
+  summoned      Boolean    @default(false)
+  phone_number  String
+  party_size    Int        @default(1)
+  last_online   DateTime?
+  index         Int        @default(0)
+  join_time     DateTime   @default(now())
+  reneged_time  DateTime?
+  total_wait    Int?
   /// @TypeGraphQL.omit(output: true)
-  status         UserStatus @default(ENQUEUED)
-  queue_id       String
-  queue          Queue      @relation("users_in_queue", fields: [queue_id], references: [id])
-  total_wait     Int?
-  summoned_time  DateTime?
+  status        UserStatus @default(ENQUEUED)
+  summoned_time DateTime?
+  queue         Queue      @relation("users_in_queue", fields: [queue_id], references: [id])
 }
 
 enum QueueState {

@@ -6,8 +6,6 @@ import {AbandonedStats, EnqueuedStats} from "../../types";
 export default function () {
     const [props, setProps] = useState<AbandonedStats[]>([])
 
-    useEffect(() => {fetchAbandonedData()}, [])
-
     const query = `
         query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
             queue(where: $queue_id) {
@@ -59,6 +57,10 @@ export default function () {
         }
     }
 
+    // Run on first render
+    useEffect(() => {fetchAbandonedData()}, [])
+    // Poll only if user is currently on this screen
+    // if (useIsFocused()) {useInterval(fetchAbandonedData, 5000)}
     useInterval(fetchAbandonedData, 5000)
 
     return (

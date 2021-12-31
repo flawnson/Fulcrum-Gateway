@@ -2,12 +2,11 @@ import React, { SetStateAction, useEffect, useState } from "react";
 import EnqueuedCatalogCardGroup from "../components/molecules/EnqueuedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
 import { EnqueuedStats } from "../../types";
+import { useIsFocused } from "@react-navigation/native";
 
 
 export default function () {
     const [props, setProps] = useState<EnqueuedStats[]>([])
-
-    useEffect(() => {fetchUserData()}, [])
 
     const query = `
         query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
@@ -64,6 +63,10 @@ export default function () {
         }
     }
 
+    // Run on first render
+    useEffect(() => {fetchUserData()}, [])
+    // Poll only if user is currently on this screen
+    // if (useIsFocused()) {useInterval(fetchUserData, 5000)}
     useInterval(fetchUserData, 5000)
 
     return (

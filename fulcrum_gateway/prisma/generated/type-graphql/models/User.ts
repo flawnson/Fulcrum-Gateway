@@ -19,6 +19,11 @@ export class User {
   })
   name!: string;
 
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  queue_id!: string;
+
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: false
   })
@@ -54,22 +59,17 @@ export class User {
   })
   reneged_time?: Date | null;
 
-  status?: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
-  })
-  queue_id!: string;
-
-  queue?: Queue;
-
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true
   })
   total_wait?: number | null;
 
+  status?: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
   })
   summoned_time?: Date | null;
+
+  queue?: Queue;
 }

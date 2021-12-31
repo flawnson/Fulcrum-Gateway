@@ -1,13 +1,15 @@
-import React, { SetStateAction, useState } from 'react'
-import { useNavigation } from "@react-navigation/native";
+import React, { SetStateAction, useEffect, useState } from 'react'
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { StyleSheet } from 'react-native'
-import { Center, Heading, Text, Image } from "native-base";
+import { Center, Heading } from "native-base";
 import QueueDashboardGroup from "../components/organisms/QueueDashboardStats";
 import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval";
 import { zipObject } from "lodash"
 import { DashboardStat } from "../../types";
+import DarkModeToggle from "../components/atoms/DarkModeToggle";
+import {useTranslation} from "react-i18next";
 
 type UserData = {
     user_id: string,
@@ -18,15 +20,17 @@ type UserData = {
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const { t, i18n } = useTranslation(["queueDashboard"]);
+
     const defaultProps = {
         name: "Some Queue",
         stats: [
-            {prefix: "Enqueued", stat: 0, suffix: ""},
-            {prefix: "Serviced", stat: 0, suffix: ""},
-            {prefix: "Deferrals", stat: 0, suffix: ""},
-            {prefix: "Average wait", stat: 0, suffix: "m"},
-            {prefix: "Abandoned", stat: 0, suffix: ""},
-            {prefix: "No shows", stat: 0, suffix: ""}
+            {prefix: t("enqueued_prefix"), stat: 0, suffix: ""},
+            {prefix: t("serviced_prefix"), stat: 0, suffix: ""},
+            {prefix: t("deferred_prefix"), stat: 0, suffix: ""},
+            {prefix: t("average_prefix"), stat: 0, suffix: "m"},
+            {prefix: t("abandoned_prefix"), stat: 0, suffix: ""},
+            {prefix: t("noshows_prefix"), stat: 0, suffix: ""}
         ],
     }
     const [props, setProps] = useState(defaultProps)
@@ -48,7 +52,7 @@ export default function () {
         }
     }`
 
-    const fetchQueueData = async () => {
+    async function fetchQueueData () {
         try {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
@@ -71,12 +75,12 @@ export default function () {
                     }
                     stats.avg = lifespans.reduce((a,b) => a + b, 0) / lifespans.length
                     stats = {name: name, stats: [
-                        {prefix: "Enqueued", stat: stats.enqueued, suffix: ""},
-                        {prefix: "Serviced", stat: stats.serviced, suffix: ""},
-                        {prefix: "Deferrals", stat: stats.deferrals, suffix: ""},
-                        {prefix: "Average wait", stat: stats.avg, suffix: "m"},
-                        {prefix: "Abandoned", stat: stats.abandoned, suffix: ""},
-                        {prefix: "No shows", stat: stats.noshows, suffix: ""}
+                        {prefix: t("enqueued_prefix"), stat: stats.enqueued, suffix: ""},
+                        {prefix: t("serviced_prefix"), stat: stats.serviced, suffix: ""},
+                        {prefix: t("deferred_prefix"), stat: stats.deferred, suffix: ""},
+                        {prefix: t("average_prefix"), stat: stats.avg, suffix: "m"},
+                        {prefix: t("abandoned_prefix"), stat: stats.abandoned, suffix: ""},
+                        {prefix: t("noshows_prefix"), stat: stats.noshows, suffix: ""}
                         ]
                     }
                     setProps(stats)
@@ -87,6 +91,10 @@ export default function () {
         }
     }
 
+    // Run on first render
+    useEffect(() => {fetchQueueData()}, [])
+    // Poll only if user is currently on this screen
+    // if (useIsFocused()) {useInterval(fetchQueueData, 5000)}
     useInterval(fetchQueueData, 5000)
 
     return (

@@ -6,13 +6,13 @@ import { useTranslation } from "react-i18next";
 type ShareData = {
     currentQueueName: string,
     currentQueueQR: string | typeof Image,
-    currentQueueID: number,
+    currentQueueJoinCode: string,
 }
 
 export default function() {
     const [props, setProps] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                              currentQueueQR: 'Image address',
-                                                             currentQueueID: 1234567890})
+                                                             currentQueueJoinCode: "1234567890"})
     const [errors, setError] = useState<any>([]);
     const { t, i18n } = useTranslation("shareScreen");
 
@@ -20,9 +20,9 @@ export default function() {
     useEffect(() => {fetchQRCode().then(null)}, [])
 
     const query = `
-        query get_queue_stats($queueId: QueueWhereUniqueInput!) {
+        query get_share_data($queueId: QueueWhereUniqueInput!) {
             queue(where: $queueId) {
-                queueId: id
+                joinCode
                 name
             }
         }
@@ -71,7 +71,7 @@ export default function() {
             </Text>
             <Image style={styles.QRcode} source={{uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=www.youtube.com`}} alt={"QRCode"}/>
             <Text style={styles.subText}>
-                {props.currentQueueID}
+                {props.currentQueueJoinCode}
             </Text>
         </Center>
     )

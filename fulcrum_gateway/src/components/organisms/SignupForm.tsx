@@ -45,7 +45,7 @@ export default function ({navigation}: HomeScreenProps) {
 
     const onSuccess = () => {
         setData({...formData, submitted: true})
-        navigation.navigate("OrganizerDashboard")
+        navigation.navigate("QueueDashboard")
         setData({...formData, submitted: false})
     }
 

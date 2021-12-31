@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import {StyleSheet, Image,
-        TouchableHighlight} from 'react-native'
-import {Text, View,
-    Button, Alert,
-    VStack, HStack,
-    IconButton, CloseIcon,
-    Box} from 'native-base'
+import { StyleSheet, Image,
+        TouchableHighlight } from 'react-native'
+import { Text, View,
+        Button, Alert,
+        VStack, HStack,
+        IconButton, CloseIcon,
+        Box } from 'native-base'
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { useTranslation } from "react-i18next";
 
 export default function () {
     const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     const [scanned, setScanned] = useState<boolean>(false);
+    const { t, i18n } = useTranslation(["QRCodeScanner"]);
 
     useEffect(() => {
         (async () => {
@@ -33,7 +35,7 @@ export default function () {
                         <HStack flexShrink={1} space={2} alignItems="center">
                             <Alert.Icon />
                             <Text fontSize="md" fontWeight="medium" color="coolGray.800">
-                                We are going live in July!
+                                {t("message")}
                             </Text>
                         </HStack>
                         <IconButton
@@ -47,7 +49,7 @@ export default function () {
                             color: "coolGray.600",
                         }}
                     >
-                        {`Bar code with type ${type} and data ${data} has been scanned!`}
+                        {t("confirmation", {type: type, data: data})}
                     </Box>
                 </VStack>
             </Alert>
@@ -55,10 +57,10 @@ export default function () {
     };
 
     if (hasPermission === null) {
-        return <Text>Requesting for camera permission</Text>;
+        return <Text>{t("requesting")}</Text>;
     }
     if (!hasPermission) {
-        return <Text>No access to camera</Text>;
+        return <Text>{t("no_access")}</Text>;
     }
     return (
         <View style={styles.container}>
@@ -66,7 +68,7 @@ export default function () {
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={StyleSheet.absoluteFillObject}
             />
-            {scanned && <Button onPress={() => setScanned(false)}>Tap to Scan Again</Button>}
+            {scanned && <Button onPress={() => setScanned(false)}>{t("scan_again")}</Button>}
         </View>
     )
 }
