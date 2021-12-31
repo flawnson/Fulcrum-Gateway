@@ -6,6 +6,7 @@ import { HomeScreenProps } from "../../types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
 import { Route } from "@react-navigation/native";
+import {useTranslation} from "react-i18next";
 
 
 type EditQueueModalProps = {
@@ -17,10 +18,19 @@ type EditQueueModalProps = {
 
 
 export default function (props: EditQueueModalProps) {
+    const { t, i18n } = useTranslation(["editQueueModal"]);
 
     return (
         <Modal isOpen={props.showModal} onClose={() => props.setShowModal(false)}>
-            <EditQueueForm route={props.route} navigation={props.navigation}/>
+            <Modal.Content maxWidth="500px">
+                <Modal.CloseButton />
+                <Modal.Header>{t("title")}</Modal.Header>
+                <Modal.Body>
+                    <EditQueueForm route={props.route} navigation={props.navigation} setShowModal={props.setShowModal}/>
+                </Modal.Body>
+                <Modal.Footer>
+                </Modal.Footer>
+            </Modal.Content>
         </Modal>
     )
 }

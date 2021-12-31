@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react'
-import {Button, Center,
-        FormControl, Input,
+import React, { useEffect, useState } from 'react'
+import { Button, FormControl,
         Slider, Stack,
         Text, VStack,
-        Select} from 'native-base'
-import {HomeScreenProps} from "../../../types";
-import {useTranslation} from "react-i18next";
+        Select, Input } from 'native-base'
+import { HomeScreenProps, RootStackParamList } from "../../../types";
+import { useTranslation } from "react-i18next";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Route } from "@react-navigation/native";
 
 type DefaultData = {
     submitted: boolean,
@@ -20,7 +21,13 @@ type DefaultErrors = {
     nameInvalid: boolean,
 }
 
-export default function ({navigation}: HomeScreenProps) {
+type CreateQueueFormType = {
+    setShowModal: Function
+    route: Route<"HomePage", undefined>,
+    navigation: NativeStackScreenProps<RootStackParamList, 'HomePage'>['navigation']
+}
+
+export default function ({navigation, setShowModal}: CreateQueueFormType) {
     const defaultData = {submitted: false, name: "Sample Queue name", maxSize: 10, gracePeriod: 0, partySize: 1}
     const defaultErrors = {nameInvalid: false}
     const [formData, setData] = useState<DefaultData>(defaultData);
@@ -74,6 +81,7 @@ export default function ({navigation}: HomeScreenProps) {
         setData({...formData, submitted: true})
         const submissionData = submit()
         console.log(submissionData);
+        setShowModal(false)
         navigation.navigate("QueuesPage")
         setData({...formData, submitted: false})
     }
@@ -92,14 +100,10 @@ export default function ({navigation}: HomeScreenProps) {
         <VStack width="90%" mx="3">
             <FormControl isRequired isInvalid={errors.nameInvalid}>
                 <Stack>
-                    <Center>
-                        <FormControl.Label _text={{bold: true}}>{t("business_name_label")}</FormControl.Label>
-                    </Center>
-                    <Center>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>{t("business_name_helper")}</Text>
-                        </FormControl.HelperText>
-                    </Center>
+                    <FormControl.Label _text={{bold: true}}>{t("business_name_label")}</FormControl.Label>
+                    <FormControl.HelperText _text={{fontSize: 'xs'}}>
+                        <Text>{t("business_name_helper")}</Text>
+                    </FormControl.HelperText>
                     <Input
                         placeholder={"Bob's Burgers"}
                         onChangeText={(value) => setData({ ...formData, name: value })}
@@ -109,14 +113,10 @@ export default function ({navigation}: HomeScreenProps) {
             </FormControl>
             <FormControl isRequired>
                 <Stack>
-                    <Center>
-                        <FormControl.Label _text={{bold: true}}>{t("queue_cap_label", {onChangeValue: onChangeValue})}</FormControl.Label>
-                    </Center>
-                    <Center>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>{t("queue_cap_helper")}</Text>
-                        </FormControl.HelperText>
-                    </Center>
+                    <FormControl.Label _text={{bold: true}}>{t("queue_cap_label", {onChangeValue: onChangeValue})}</FormControl.Label>
+                    <FormControl.HelperText _text={{fontSize: 'xs'}}>
+                        <Text>{t("queue_cap_helper")}</Text>
+                    </FormControl.HelperText>
                     <Slider
                         defaultValue={500}
                         colorScheme="cyan"
@@ -140,14 +140,10 @@ export default function ({navigation}: HomeScreenProps) {
             </FormControl>
             <FormControl isRequired>
                 <Stack>
-                    <Center>
-                        <FormControl.Label _text={{bold: true}}>{t("grace_period_label", {gracePeriod: formData.gracePeriod})}</FormControl.Label>
-                    </Center>
-                    <Center>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>{t("grace_period_helper")}</Text>
-                        </FormControl.HelperText>
-                    </Center>
+                    <FormControl.Label _text={{bold: true}}>{t("grace_period_label", {gracePeriod: formData.gracePeriod})}</FormControl.Label>
+                    <FormControl.HelperText _text={{fontSize: 'xs'}}>
+                        <Text>{t("grace_period_helper")}</Text>
+                    </FormControl.HelperText>
                     <Select
                         onValueChange={(value) => setData({ ...formData, gracePeriod: parseInt(value) })}
                     >
@@ -158,14 +154,10 @@ export default function ({navigation}: HomeScreenProps) {
             </FormControl>
             <FormControl isRequired>
                 <Stack>
-                    <Center>
-                        <FormControl.Label _text={{bold: true}}>{t("party_size_label", {partySize: formData.partySize})}</FormControl.Label>
-                    </Center>
-                    <Center>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>{t("party_size_helper")}</Text>
-                        </FormControl.HelperText>
-                    </Center>
+                    <FormControl.Label _text={{bold: true}}>{t("party_size_label", {partySize: formData.partySize})}</FormControl.Label>
+                    <FormControl.HelperText _text={{fontSize: 'xs'}}>
+                        <Text>{t("party_size_helper")}</Text>
+                    </FormControl.HelperText>
                     <Select
                         onValueChange={(value) => setData({ ...formData, partySize: parseInt(value) })}
                     >
@@ -174,9 +166,21 @@ export default function ({navigation}: HomeScreenProps) {
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Part size error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
-            <Button onPress={onSubmit} mt="5" colorScheme="cyan" isLoading={formData.submitted} isLoadingText="Submitting">
-                Submit
-            </Button>
+            <Button.Group space={2}>
+                <Button
+                    mt="5"
+                    variant="ghost"
+                    colorScheme="blueGray"
+                    onPress={() => {
+                        setShowModal(false)
+                    }}
+                >
+                    Cancel
+                </Button>
+                <Button onPress={onSubmit} mt="5" colorScheme="cyan" isLoading={formData.submitted} isLoadingText="Submitting">
+                    Submit
+                </Button>
+            </Button.Group>
         </VStack>
     )
 }

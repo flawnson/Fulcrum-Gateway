@@ -1,10 +1,9 @@
-import React, {SetStateAction, useState} from 'react'
+import React, { SetStateAction, useState } from 'react'
 import { Button, Menu, Fab, HamburgerIcon, Alert } from 'native-base';
 import { useNavigation, useRoute } from "@react-navigation/native";
-import {DashboardStat, HomeScreenProps} from "../../types";
+import { HomeScreenProps } from "../../types";
 import EditQueueModal from "./EditQueueModal";
 import { useTranslation } from "react-i18next";
-import {zipObject} from "lodash";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead

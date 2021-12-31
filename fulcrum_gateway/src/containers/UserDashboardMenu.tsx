@@ -12,10 +12,6 @@ export default function () {
     const [deferModalVisible, setDeferModalVisible] = React.useState(false)
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
 
-    function onLeaveQueuePress () {
-        setIsAlertOpen(true)
-    }
-
     return (
         <>
             <Menu
@@ -32,7 +28,7 @@ export default function () {
                 }}
             >
                 <Menu.Item onPress={() => setDeferModalVisible(true)}>{t("defer")}</Menu.Item>
-                <Menu.Item onPress={onLeaveQueuePress}>{t("leave")}</Menu.Item>
+                <Menu.Item onPress={() => setIsAlertOpen(true)}>{t("leave")}</Menu.Item>
                 <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>{t("share")}</Menu.Item>
             </Menu>
             <DeferPositionModal modalVisible={deferModalVisible} setModalVisible={setDeferModalVisible}/>

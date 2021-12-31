@@ -58,6 +58,9 @@
   "createQueueModal": {
     "title": "Create a Queue"
   },
+  "editQueueModal": {
+    "title": "Edit a Queue"
+  },
   "deferPositionModal": {
     "label": "How long would you like to defer for?"
   },
