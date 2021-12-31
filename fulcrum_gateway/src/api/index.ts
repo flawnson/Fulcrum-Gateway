@@ -3,9 +3,11 @@
 import "reflect-metadata";
 import express from "express";
 import cors from "cors";
-import { createClient } from 'redis'
-import session from 'express-session'
-import connectRedis from 'connect-redis'
+import { createClient } from 'redis';
+import session from 'express-session';
+import connectRedis from 'connect-redis';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 import { graphqlHTTP } from 'express-graphql';
 import { buildSchema, NonEmptyArray } from 'type-graphql';
@@ -100,7 +102,7 @@ async function bootstrap(){
           sameSite: 'lax'
         },
         saveUninitialized: false,
-        secret: 'qiwroasdjlasddde', //you would want to hide this in production
+        secret: process.env.SESSION_SECRET, //you would want to hide this in production
         resave: false
       })
   )

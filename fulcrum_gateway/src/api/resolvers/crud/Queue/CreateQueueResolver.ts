@@ -25,11 +25,6 @@ class CreateQueueArgs {
   })
   address!: string;
 
-  @Field({
-    nullable: false
-  })
-  organizerId!: string;
-
   @Field(type => Int, {
     nullable: false
   })
@@ -98,7 +93,6 @@ export class CreateQueueResolver {
           name: args.name,
           join_code: joinCode,
           address: args.address,
-          organizer_id: args.organizerId,
           capacity: args.capacity,
           max_party_size: args.maxPartySize,
           grace_period: args.gracePeriod,
