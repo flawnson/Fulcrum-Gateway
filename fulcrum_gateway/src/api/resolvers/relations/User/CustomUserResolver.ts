@@ -3,7 +3,8 @@ import {
   FieldResolver, Ctx,
   Root, Int,
   Mutation, Arg,
-  InputType, Field
+  InputType, Field,
+  Authorized
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { UserStatus } from "@prisma/client";
@@ -14,6 +15,7 @@ import { Context } from "../../../context.interface";
 @Resolver(of => User)
 export class CustomUserResolver {
 
+  @Authorized()
   @FieldResolver(type => Int, { nullable: true })
   async estimated_wait(@Root() user: User, @Ctx() {prisma}: Context): Promise<number | null> {
     // calculate average wait time
@@ -36,6 +38,7 @@ export class CustomUserResolver {
     return estimatedWait;
   }
 
+  @Authorized("ORGANIZER")
   @FieldResolver(type => String, { nullable: false })
   async status(@Root() user: User, @Ctx() {prisma}: Context): Promise<string | null> {
     // if user is summoned

@@ -4,7 +4,7 @@ import {
 } from "../../prisma/generated/type-graphql";
 import { Authorized, Extensions } from "type-graphql";
 
-// define the decorators configs
+// define the decorators configs for generated fields
 
 const userEnhanceConfig: ModelConfig<"User"> = {
   fields: {
@@ -16,7 +16,6 @@ const userEnhanceConfig: ModelConfig<"User"> = {
     index: [Authorized()],
     join_time: [Authorized()],
     reneged_time: [Authorized("ORGANIZER")],
-    status: [Authorized("ORGANIZER")],
     queue_id: [Authorized("ORGANIZER")],
     queue: [Authorized()],
     total_wait: [Authorized("ORGANIZER")],

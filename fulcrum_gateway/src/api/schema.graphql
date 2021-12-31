@@ -100,15 +100,15 @@ input IntNullableFilter {
 }
 
 type Mutation {
-  changeStatus(id: String!, status: String!): User
+  changeStatus(status: String!, userId: String!): User
   createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, password: String!): Queue
   createUser(joinCode: String!, name: String!, phoneNumber: String!): User
-  deferPosition(id: String!, time: String!): User
+  deferPosition(time: String!, userId: String!): User
   deleteManyUser(where: UserWhereInput): AffectedRowsOutput!
-  deleteQueue(id: String!): Queue
+  deleteQueue: Queue
   deleteUser(where: UserWhereUniqueInput!): User
   loginQueue(joinCode: String!, password: String!): Queue
-  summon(id: String!): User
+  summon(userId: String!): User
   updateManyQueue(data: QueueUpdateManyMutationInput!, where: QueueWhereInput): AffectedRowsOutput!
   updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): AffectedRowsOutput!
   updateQueue(data: QueueUpdateInput!, where: QueueWhereUniqueInput!): Queue
