@@ -79,7 +79,7 @@ export let user_table = [
 export let queue_table = [
   {
     id: "costco_queue1",
-    organizer_id: "costco_toronto",
+    //organizer_id: "costco_toronto",
     join_code: "123456",
     name: "Queue1",
     address: "somewhere, someplace",
@@ -93,7 +93,7 @@ export let queue_table = [
   },
   {
     id: "costco_queue2",
-    organizer_id: "costco_toronto",
+    //organizer_id: "costco_toronto",
     join_code: "333444",
     name: "Queue2",
     address: "somewhere, someplace",
@@ -107,9 +107,9 @@ export let queue_table = [
   }
 ];
 
-export let organizer_table = [
-  {
-    id: "costco_toronto",
-    name: "Costco In Toronto"
-  }
-];
+// export let organizer_table = [
+//   {
+//     id: "costco_toronto",
+//     name: "Costco In Toronto"
+//   }
+// ];

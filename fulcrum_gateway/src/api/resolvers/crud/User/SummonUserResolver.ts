@@ -3,32 +3,44 @@ import {
   FieldResolver, Ctx,
   Root, Int,
   Mutation, Arg, Args, ArgsType,
-  InputType, Field
+  InputType, Field,
+  Authorized
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
+import * as helpers from "../../../helpers";
 
 @ArgsType()
 class SummonUserArgs {
   @Field({
     nullable: false
   })
-  id!: string;
+  userId!: string;
 }
 
 
 @Resolver()
 export class SummonUserResolver {
 
+  @Authorized("ORGANIZER")
   @Mutation(returns => User, {
     nullable: true
   })
-  async summon(@Ctx() { prisma }: Context, @Args() args: SummonUserArgs): Promise<User | null> {
+  async summon(@Ctx() { req, prisma }: Context, @Args() args: SummonUserArgs): Promise<User | null> {
+    if (!req.session.queueId){
+      return null;
+    }
+
+    //check if the user you would to change is in the queue you own
+    const exists = await helpers.userExistsInQueue(args.userId, req.session.queueId);
+    if (exists === false){
+      return null;
+    }
 
     // check if user is ENQUEUED
     const user = await prisma.user.findUnique({
       where: {
-        id: args.id
+        id: args.userId
       }
     });
 
@@ -39,7 +51,7 @@ export class SummonUserResolver {
         // set user summoned_time
         const setSummoned = await prisma.user.update({
           where: {
-            id: args.id
+            id: args.userId
           },
           data: {
             summoned_time: currentTime,
@@ -50,11 +62,11 @@ export class SummonUserResolver {
         return setSummoned;
       }
       else {
-        console.log("User with id " + args.id + " is not ENQUEUED/DEFERRED status. Can't be summoned. ");
+        console.log("User with id " + args.userId + " is not ENQUEUED/DEFERRED status. Can't be summoned. ");
       }
     }
     else {
-      console.log("User with id " + args.id + " does not exist");
+      console.log("User with id " + args.userId + " does not exist");
     }
 
     return null;

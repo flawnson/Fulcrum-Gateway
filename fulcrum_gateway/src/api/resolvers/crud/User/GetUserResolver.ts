@@ -11,26 +11,21 @@ import { Context } from "../../../context.interface";
 import * as helpers from "../../../helpers";
 
 @ArgsType()
-class DeferUserArgs {
+class GetUserArgs {
   @Field({
     nullable: true
   })
   userId?: string;
-
-  @Field({
-    nullable: false
-  })
-  time!: string;
 }
 
 @Resolver()
-export class DeferUserResolver {
+export class GetUserResolver {
 
   @Authorized()
-  @Mutation(returns => User, {
+  @Query(returns => User, {
     nullable: true
   })
-  async deferPosition(@Ctx() { req, prisma }: Context, @Args() args: DeferUserArgs): Promise<User | null> {
+  async getUser(@Ctx() { req, prisma }: Context, @Args() args: GetUserArgs): Promise<User | null> {
 
     // if accessed by organizer
     if (req.session.queueId && args.userId){
@@ -39,31 +34,31 @@ export class DeferUserResolver {
         return null;
       }
 
-      // TODO: defer logic
+      // return user
+      const user = prisma.user.findUnique({
+        where: {
+          id: args.userId,
+        }
+      });
 
+      return user;
     }
-
+    
     // if accessed by user
     if (req.session.userId){
-      // TODO: defer logic
+      const user = prisma.user.findUnique({
+        where: {
+          id: req.session.userId,
+        }
+      });
+
+      return user;
     }
+
 
     return null;
 
 
-    // May need to import CustomUserResolver to access estimated_wait()
-
-    // const new_wait = await this.estimated_wait(user, {prisma})
-    // const result = await prisma.user.update({
-    //   where: {
-    //     id: user.id
-    //   },
-    //   data: {
-    //     state: "DEFERRED",
-    //     estimated_wait: new_wait
-    //   }
-    // })
-    // return result
 
   }
 }

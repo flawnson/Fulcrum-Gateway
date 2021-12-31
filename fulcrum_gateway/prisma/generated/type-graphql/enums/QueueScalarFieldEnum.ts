@@ -2,7 +2,6 @@ import * as TypeGraphQL from "type-graphql";
 
 export enum QueueScalarFieldEnum {
   id = "id",
-  organizer_id = "organizer_id",
   join_code = "join_code",
   name = "name",
   address = "address",

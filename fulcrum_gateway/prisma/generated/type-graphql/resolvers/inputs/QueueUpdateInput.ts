@@ -6,7 +6,6 @@ import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdat
 import { EnumQueueStateFieldUpdateOperationsInput } from "../inputs/EnumQueueStateFieldUpdateOperationsInput";
 import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
 import { NullableIntFieldUpdateOperationsInput } from "../inputs/NullableIntFieldUpdateOperationsInput";
-import { OrganizerUpdateOneRequiredWithoutQueuesInput } from "../inputs/OrganizerUpdateOneRequiredWithoutQueuesInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 import { UserUpdateManyWithoutQueueInput } from "../inputs/UserUpdateManyWithoutQueueInput";
 
@@ -68,11 +67,6 @@ export class QueueUpdateInput {
     nullable: true
   })
   password?: StringFieldUpdateOperationsInput | undefined;
-
-  @TypeGraphQL.Field(_type => OrganizerUpdateOneRequiredWithoutQueuesInput, {
-    nullable: true
-  })
-  organizer?: OrganizerUpdateOneRequiredWithoutQueuesInput | undefined;
 
   @TypeGraphQL.Field(_type => UserUpdateManyWithoutQueueInput, {
     nullable: true
