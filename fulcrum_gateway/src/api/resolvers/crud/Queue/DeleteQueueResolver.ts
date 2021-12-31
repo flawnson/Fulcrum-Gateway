@@ -6,11 +6,9 @@ import {
   InputType, Field
 } from "type-graphql";
 import { Queue } from "../../../../../prisma/generated/type-graphql/models/Queue";
-import { PrismaClient, Prisma} from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
-interface Context {
-  prisma: PrismaClient;
-}
+import { Context } from "../../../context.interface";
 
 @ArgsType()
 class DeleteQueueArgs {
@@ -20,7 +18,7 @@ class DeleteQueueArgs {
   id!: string;
 }
 
-@Resolver(of => Queue)
+@Resolver()
 export class DeleteQueueResolver {
 
   @Mutation(returns => Queue, {

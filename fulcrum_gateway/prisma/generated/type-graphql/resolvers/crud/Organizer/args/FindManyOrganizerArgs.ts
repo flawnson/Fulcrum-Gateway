@@ -35,5 +35,5 @@ export class FindManyOrganizerArgs {
   @TypeGraphQL.Field(_type => [OrganizerScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "name" | "password"> | undefined;
+  distinct?: Array<"id" | "name"> | undefined;
 }

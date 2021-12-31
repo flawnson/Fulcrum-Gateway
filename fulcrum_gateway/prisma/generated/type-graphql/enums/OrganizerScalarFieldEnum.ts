@@ -2,8 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 
 export enum OrganizerScalarFieldEnum {
   id = "id",
-  name = "name",
-  password = "password"
+  name = "name"
 }
 TypeGraphQL.registerEnumType(OrganizerScalarFieldEnum, {
   name: "OrganizerScalarFieldEnum",

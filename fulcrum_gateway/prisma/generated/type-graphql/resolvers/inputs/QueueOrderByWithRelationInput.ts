@@ -74,4 +74,9 @@ export class QueueOrderByWithRelationInput {
     nullable: true
   })
   users?: UserOrderByRelationAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  password?: "asc" | "desc" | undefined;
 }

@@ -42,9 +42,10 @@ import {
 } from "../../prisma/generated/type-graphql";
 import { customResolvers } from "./resolvers";
 
+import * as path from 'path';
 import { PrismaClient } from "@prisma/client";
 import prisma from './prismaClient';
-import * as path from 'path';
+import { authChecker } from "./authChecker";
 
 const pregeneratedCrudResolvers = [
   CreateOrganizerResolver,
@@ -79,10 +80,12 @@ const pregeneratedCrudResolvers = [
 
 const combinedResolvers = [...pregeneratedCrudResolvers, ...relationResolvers, ...customResolvers] as unknown as NonEmptyArray<Function>;
 
+
 async function bootstrap(){
 
   const schema = await buildSchema({
     resolvers: combinedResolvers,
+    authChecker: authChecker,
     validate: false,
     emitSchemaFile: __dirname + '/schema.graphql',
   });

@@ -4,8 +4,7 @@ const nowDate = new Date()
 const pastDate = new Date(nowDate.setDate(nowDate.getDate() - 1))
 const futureDate = new Date(nowDate.setDate(nowDate.getDate() + 1))
 
-
-export const user_table = [
+export let user_table = [
   {
     id: "user0",
     name: "Kevin Shen",
@@ -17,7 +16,7 @@ export const user_table = [
     index: 1,
     join_time: pastDate,
     reneged_time: futureDate,
-    status: UserStatus.ABANDONED,
+    status: UserStatus.ENQUEUED,
     total_wait: 1000
   },
   {
@@ -28,7 +27,7 @@ export const user_table = [
     phone_number: "4167777777",
     party_size: 1,
     last_online: nowDate,
-    index: 1,
+    index: 0,
     join_time: pastDate,
     reneged_time: futureDate,
     status: UserStatus.SERVICED,
@@ -45,7 +44,7 @@ export const user_table = [
     index: 1,
     join_time: pastDate,
     reneged_time: futureDate,
-    status: UserStatus.SERVICED,
+    status: UserStatus.ENQUEUED,
     total_wait: 800
   },
   {
@@ -56,7 +55,20 @@ export const user_table = [
     phone_number: "4162922346",
     party_size: 1,
     last_online: nowDate,
-    index: 1,
+    index: 2,
+    join_time: pastDate,
+    reneged_time: futureDate,
+    status: UserStatus.ENQUEUED
+  },
+  {
+    id: "user4",
+    name: "Joe Biden",
+    queue_id: "costco_queue1",
+    summoned: false,
+    phone_number: "4162922346",
+    party_size: 1,
+    last_online: nowDate,
+    index: 3,
     join_time: pastDate,
     reneged_time: futureDate,
     status: UserStatus.ENQUEUED
@@ -64,7 +76,7 @@ export const user_table = [
 ];
 
 
-export const queue_table = [
+export let queue_table = [
   {
     id: "costco_queue1",
     organizer_id: "costco_toronto",
@@ -76,7 +88,8 @@ export const queue_table = [
     capacity: 10,
     grace_period: 2,
     max_party_size: 4,
-    offline_time: 5
+    offline_time: 5,
+    password: ""
   },
   {
     id: "costco_queue2",
@@ -89,11 +102,12 @@ export const queue_table = [
     capacity: 10,
     grace_period: 2,
     max_party_size: 4,
-    offline_time: 5
+    offline_time: 5,
+    password: ""
   }
 ];
 
-export const organizer_table = [
+export let organizer_table = [
   {
     id: "costco_toronto",
     name: "Costco In Toronto"

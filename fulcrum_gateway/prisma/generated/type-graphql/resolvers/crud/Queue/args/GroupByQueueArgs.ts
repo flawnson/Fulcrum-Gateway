@@ -20,7 +20,7 @@ export class GroupByQueueArgs {
   @TypeGraphQL.Field(_type => [QueueScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "organizer_id" | "join_code" | "name" | "address" | "state" | "capacity" | "max_party_size" | "grace_period" | "offline_time" | "create_time">;
+  by!: Array<"id" | "organizer_id" | "join_code" | "name" | "address" | "state" | "capacity" | "max_party_size" | "grace_period" | "offline_time" | "create_time" | "password">;
 
   @TypeGraphQL.Field(_type => QueueScalarWhereWithAggregatesInput, {
     nullable: true
