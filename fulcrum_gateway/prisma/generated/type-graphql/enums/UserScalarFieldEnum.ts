@@ -3,6 +3,7 @@ import * as TypeGraphQL from "type-graphql";
 export enum UserScalarFieldEnum {
   id = "id",
   name = "name",
+  queue_id = "queue_id",
   summoned = "summoned",
   phone_number = "phone_number",
   party_size = "party_size",
@@ -10,9 +11,8 @@ export enum UserScalarFieldEnum {
   index = "index",
   join_time = "join_time",
   reneged_time = "reneged_time",
-  status = "status",
-  queue_id = "queue_id",
   total_wait = "total_wait",
+  status = "status",
   summoned_time = "summoned_time"
 }
 TypeGraphQL.registerEnumType(UserScalarFieldEnum, {

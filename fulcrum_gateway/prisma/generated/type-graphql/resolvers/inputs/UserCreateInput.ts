@@ -54,15 +54,15 @@ export class UserCreateInput {
   })
   reneged_time?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => UserStatus, {
-    nullable: true
-  })
-  status?: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | undefined;
-
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true
   })
   total_wait?: number | undefined;
+
+  @TypeGraphQL.Field(_type => UserStatus, {
+    nullable: true
+  })
+  status?: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | undefined;
 
   @TypeGraphQL.Field(_type => Date, {
     nullable: true

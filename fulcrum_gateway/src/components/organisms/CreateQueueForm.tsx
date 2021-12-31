@@ -9,15 +9,19 @@ import { AntDesign } from '@expo/vector-icons';
 import { PreferencesContext } from "../../utilities/useTheme";
 import { HomeScreenProps } from "../../../types";
 import { useTranslation } from "react-i18next";
-import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-import {RootStackParamList} from "../../../types";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../types";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 type DefaultData = {
     submitted: boolean,
     name: string,
-    maxSize: number,
+    capacity: number,
     gracePeriod: number,
-    partySize: number,
+    maxPartySize: number,
+    offlineTime: number,
+    address: string,
 }
 
 type DefaultErrors = {
@@ -27,15 +31,18 @@ type DefaultErrors = {
 
 type CreateQueueFormType = {
     setShowModal: Function
+    navigation: NativeStackScreenProps<RootStackParamList, 'HomePage'>['navigation']
 }
 
-export default function (props: CreateQueueFormType) {
+export default function ({ navigation, setShowModal }: CreateQueueFormType) {
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
     const defaultData = {submitted: false,
                          name: "Sample Queue name",
-                         maxSize: 10,
+                         capacity: 10,
                          gracePeriod: 0,
-                         partySize: 1}
+                         maxPartySize: 1,
+                         offlineTime: 3,
+                         address: "Sample address"}
     const defaultErrors = {nameInvalid: false}
     const [formData, setData] = useState<DefaultData>(defaultData);
     const [errors, setError] = useState<DefaultErrors>(defaultErrors);
@@ -69,9 +76,27 @@ export default function (props: CreateQueueFormType) {
         return true;
     };
 
+    const query = `
+        mutation create_queue($address: String!, $capacity: Int!, $name: String!, $organizerId: String! ) {
+            createQueue(address: $address, capacity: $capacity, name: $name, organizerId: $organizerId) {
+                id
+            }
+        }
+    `
+    const variables = `{
+        "address": "University of Waterloo",
+        "capacity": 250,
+        "name": "V1 Residence Queue",
+        "organizerId": "costco_toronto",
+        "gracePeriod": 0,
+        "maxPartySize": 1,
+        "offlineTime": 3,
+        "password": "uwaterloo"
+    }`
+
     async function submit () {
         try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -87,9 +112,11 @@ export default function (props: CreateQueueFormType) {
     const onSuccess = () => {
         setData({...formData, submitted: true})
         const submissionData = submit()
+        console.log(formData)
         console.log(submissionData);
-        props.setShowModal(false)
+        setShowModal(false)
         setData({...formData, submitted: false})
+        navigation.navigate("QueuesPage")
     }
 
     const onFailure = () => {
@@ -139,7 +166,7 @@ export default function (props: CreateQueueFormType) {
                         }}
                         onChangeEnd={(v) => {
                             v && setOnChangeEndValue(Math.floor(v))
-                            setData({...formData, maxSize: v})
+                            setData({...formData, capacity: v})
                         }}
                         minValue={0}
                         maxValue={1000}
@@ -182,7 +209,7 @@ export default function (props: CreateQueueFormType) {
                     </HStack>
                     <Input
                         placeholder={"No party"}
-                        onChangeText={(value) => setData({ ...formData, partySize: parseInt(value) })}
+                        onChangeText={(value) => setData({ ...formData, maxPartySize: parseInt(value) })}
                         keyboardType={"numeric"}
                     />
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Party size error"}</FormControl.ErrorMessage>
@@ -200,10 +227,10 @@ export default function (props: CreateQueueFormType) {
                     </HStack>
                     <Input
                         placeholder={"No limit"}
-                        onChangeText={(value) => setData({ ...formData, partySize: parseInt(value) })}
+                        onChangeText={(value) => setData({ ...formData, offlineTime: parseInt(value) })}
                         keyboardType={"numeric"}
                     />
-                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Party size error"}</FormControl.ErrorMessage>
+                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Offline time error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
             <FormControl isRequired>
@@ -218,9 +245,9 @@ export default function (props: CreateQueueFormType) {
                     </HStack>
                     <Input
                         placeholder={"King's Cross Station platform 9 3/4"}
-                        onChangeText={(value) => setData({ ...formData, partySize: parseInt(value) })}
+                        onChangeText={(value) => setData({ ...formData, address: value })}
                     />
-                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Party size error"}</FormControl.ErrorMessage>
+                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Address error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
             <Button.Group space={2}>
@@ -229,7 +256,7 @@ export default function (props: CreateQueueFormType) {
                     variant="ghost"
                     colorScheme="blueGray"
                     onPress={() => {
-                        props.setShowModal(false)
+                        setShowModal(false)
                     }}
                 >
                     Cancel

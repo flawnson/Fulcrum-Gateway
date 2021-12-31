@@ -2,9 +2,16 @@ import { Feather } from "@expo/vector-icons";
 import { StyleSheet, Switch } from "react-native";
 import React from "react";
 import { PreferencesContext } from "../../utilities/useTheme";
+import { useColorMode } from "native-base";
 
 export default function () {
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
+    const { colorMode, toggleColorMode } = useColorMode()
+
+    function toggle () {
+        toggleTheme()
+        toggleColorMode()
+    }
 
     return ((props: {tintColor?: string | undefined}) =>
         <>
@@ -16,7 +23,7 @@ export default function () {
             />
             <Switch
                 style={styles.switch}
-                onValueChange={toggleTheme}
+                onValueChange={toggle}
                 value={isThemeDark}
                 thumbColor={isThemeDark ? '#FFFFFF' : '#FFFFFF'}
                 trackColor={{false: 'gray', true: '#FFFFFF'}}

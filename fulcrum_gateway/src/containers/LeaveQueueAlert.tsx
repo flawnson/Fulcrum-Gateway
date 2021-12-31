@@ -2,6 +2,7 @@ import React from "react"
 import { AlertDialog, Button, Center } from "native-base"
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
+import {useTranslation} from "react-i18next";
 
 type LeaveQueueAlertProps = {
     isAlertOpen: boolean,
@@ -11,10 +12,40 @@ type LeaveQueueAlertProps = {
 
 export default (props: LeaveQueueAlertProps) => {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
+    const { t, i18n } = useTranslation(["leaveQueueAlert", "common"]);
 
     const onClose = () => {
         props.setIsAlertOpen(false)
     }
+
+    const query = `
+        mutation leave_queue($id: String!, $status: String!) {
+            changeStatus(where: $id, status: $status) {
+                name
+                status
+            }
+        }
+    `
+    const variables = `{
+        "id": "user3",
+        "status": "ABANDONED"
+    }`
+
+    async function leaveQueue (userId: string) {
+        try {
+            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: userId})
+            });
+            return await response.json()
+        } catch(error) {
+            return error
+        }
+    }
+
 
     const onLeave = () => {
         props.setIsAlertOpen(false)
@@ -31,10 +62,9 @@ export default (props: LeaveQueueAlertProps) => {
             >
                 <AlertDialog.Content>
                     <AlertDialog.CloseButton />
-                    <AlertDialog.Header>Leave Queue</AlertDialog.Header>
+                    <AlertDialog.Header>{t("header")}</AlertDialog.Header>
                     <AlertDialog.Body>
-                        Are you sure you want to abandon your position in line?
-                        You will have to enter the code again and start from the end of the line if you choose to rejoin.
+                        {t("dialog")}
                     </AlertDialog.Body>
                     <AlertDialog.Footer>
                         <Button.Group space={2}>
@@ -44,10 +74,10 @@ export default (props: LeaveQueueAlertProps) => {
                                 onPress={onClose}
                                 ref={cancelRef}
                             >
-                                Cancel
+                                {t("cancel", {ns: "common"})}
                             </Button>
                             <Button colorScheme="danger" onPress={onLeave}>
-                                Leave
+                                {t("confirm", {ns: "common"})}
                             </Button>
                         </Button.Group>
                     </AlertDialog.Footer>
