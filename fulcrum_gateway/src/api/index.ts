@@ -10,16 +10,6 @@ import connectRedis from 'connect-redis'
 import { graphqlHTTP } from 'express-graphql';
 import { buildSchema, NonEmptyArray } from 'type-graphql';
 import {
-  CreateOrganizerResolver,
-  DeleteManyUserResolver,
-  DeleteOrganizerResolver,
-  FindFirstOrganizerResolver,
-  FindManyOrganizerResolver,
-  FindUniqueOrganizerResolver,
-  GroupByOrganizerResolver,
-  UpdateManyOrganizerResolver,
-  UpdateOrganizerResolver,
-  UpsertOrganizerResolver,
 
   FindFirstQueueResolver,
   FindManyQueueResolver,
@@ -54,17 +44,6 @@ import prisma from './prismaClient';
 import { authChecker } from "./authChecker";
 
 const pregeneratedCrudResolvers = [
-  CreateOrganizerResolver,
-  DeleteManyUserResolver,
-  DeleteOrganizerResolver,
-  FindFirstOrganizerResolver,
-  FindManyOrganizerResolver,
-  FindUniqueOrganizerResolver,
-  GroupByOrganizerResolver,
-  UpdateManyOrganizerResolver,
-  UpdateOrganizerResolver,
-  UpsertOrganizerResolver,
-
   FindFirstQueueResolver,
   FindManyQueueResolver,
   FindUniqueQueueResolver,

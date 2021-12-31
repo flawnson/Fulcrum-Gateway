@@ -1,4 +1,3 @@
-export { OrganizerScalarFieldEnum } from "./OrganizerScalarFieldEnum";
 export { QueryMode } from "./QueryMode";
 export { QueueScalarFieldEnum } from "./QueueScalarFieldEnum";
 export { QueueState } from "./QueueState";

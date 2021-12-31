@@ -26,7 +26,6 @@ const userEnhanceConfig: ModelConfig<"User"> = {
 
 const queueEnhanceConfig: ModelConfig<"Queue"> = {
   fields: {
-    organizer_id: [Authorized("ORGANIZER")],
     join_code: [Authorized()],
     name: [Authorized()],
     address: [Authorized()],
@@ -36,7 +35,6 @@ const queueEnhanceConfig: ModelConfig<"Queue"> = {
     grace_period: [Authorized("ORGANIZER")],
     offline_time: [Authorized("ORGANIZER")],
     create_time: [Authorized("ORGANIZER")],
-    organizer: [Authorized("ORGANIZER")],
     users: [Authorized("ORGANIZER")],
     password: [Authorized("ORGANIZER")]
   }

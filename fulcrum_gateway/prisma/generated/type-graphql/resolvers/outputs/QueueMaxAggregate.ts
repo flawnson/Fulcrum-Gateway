@@ -16,11 +16,6 @@ export class QueueMaxAggregate {
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  organizer_id!: string | null;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
   join_code!: string | null;
 
   @TypeGraphQL.Field(_type => String, {

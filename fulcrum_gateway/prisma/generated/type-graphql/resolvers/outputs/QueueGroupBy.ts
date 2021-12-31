@@ -21,11 +21,6 @@ export class QueueGroupBy {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  organizer_id!: string;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
-  })
   join_code!: string;
 
   @TypeGraphQL.Field(_type => String, {

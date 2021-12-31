@@ -16,11 +16,6 @@ export class QueueCountOrderByAggregateInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  organizer_id?: "asc" | "desc" | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
   join_code?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
