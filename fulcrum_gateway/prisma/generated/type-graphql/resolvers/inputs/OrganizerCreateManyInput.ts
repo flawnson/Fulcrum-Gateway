@@ -16,4 +16,9 @@ export class OrganizerCreateManyInput {
     nullable: false
   })
   name!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  password?: string | undefined;
 }

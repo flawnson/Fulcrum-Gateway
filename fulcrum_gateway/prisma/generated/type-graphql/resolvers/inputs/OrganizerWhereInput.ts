@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { QueueListRelationFilter } from "../inputs/QueueListRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
+import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
 @TypeGraphQL.InputType("OrganizerWhereInput", {
   isAbstract: true
@@ -33,6 +34,11 @@ export class OrganizerWhereInput {
     nullable: true
   })
   name?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringNullableFilter, {
+    nullable: true
+  })
+  password?: StringNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => QueueListRelationFilter, {
     nullable: true

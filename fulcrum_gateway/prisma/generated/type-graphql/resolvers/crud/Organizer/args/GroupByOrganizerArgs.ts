@@ -20,7 +20,7 @@ export class GroupByOrganizerArgs {
   @TypeGraphQL.Field(_type => [OrganizerScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "name">;
+  by!: Array<"id" | "name" | "password">;
 
   @TypeGraphQL.Field(_type => OrganizerScalarWhereWithAggregatesInput, {
     nullable: true

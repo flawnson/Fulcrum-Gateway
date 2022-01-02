@@ -199,6 +199,37 @@ input NestedStringFilter {
   startsWith: String
 }
 
+input NestedStringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input NestedStringNullableWithAggregatesFilter {
+  _count: NestedIntNullableFilter
+  _max: NestedStringNullableFilter
+  _min: NestedStringNullableFilter
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableWithAggregatesFilter
+  notIn: [String!]
+  startsWith: String
+}
+
 input NestedStringWithAggregatesFilter {
   _count: NestedIntFilter
   _max: NestedStringFilter
@@ -228,10 +259,15 @@ input NullableIntFieldUpdateOperationsInput {
   set: Int
 }
 
+input NullableStringFieldUpdateOperationsInput {
+  set: String
+}
+
 type Organizer {
   _count: OrganizerCount
   id: String!
   name: String!
+  password: String
   queues(cursor: QueueWhereUniqueInput, distinct: [QueueScalarFieldEnum!], orderBy: [QueueOrderByWithRelationInput!], skip: Int, take: Int, where: QueueWhereInput): [Queue!]!
 }
 
@@ -243,16 +279,19 @@ type OrganizerCountAggregate {
   _all: Int!
   id: Int!
   name: Int!
+  password: Int!
 }
 
 input OrganizerCountOrderByAggregateInput {
   id: SortOrder
   name: SortOrder
+  password: SortOrder
 }
 
 input OrganizerCreateInput {
   id: String
   name: String!
+  password: String
   queues: QueueCreateNestedManyWithoutOrganizerInput
 }
 
@@ -270,6 +309,7 @@ input OrganizerCreateOrConnectWithoutQueuesInput {
 input OrganizerCreateWithoutQueuesInput {
   id: String
   name: String!
+  password: String
 }
 
 type OrganizerGroupBy {
@@ -278,26 +318,31 @@ type OrganizerGroupBy {
   _min: OrganizerMinAggregate
   id: String!
   name: String!
+  password: String
 }
 
 type OrganizerMaxAggregate {
   id: String
   name: String
+  password: String
 }
 
 input OrganizerMaxOrderByAggregateInput {
   id: SortOrder
   name: SortOrder
+  password: SortOrder
 }
 
 type OrganizerMinAggregate {
   id: String
   name: String
+  password: String
 }
 
 input OrganizerMinOrderByAggregateInput {
   id: SortOrder
   name: SortOrder
+  password: SortOrder
 }
 
 input OrganizerOrderByWithAggregationInput {
@@ -306,11 +351,13 @@ input OrganizerOrderByWithAggregationInput {
   _min: OrganizerMinOrderByAggregateInput
   id: SortOrder
   name: SortOrder
+  password: SortOrder
 }
 
 input OrganizerOrderByWithRelationInput {
   id: SortOrder
   name: SortOrder
+  password: SortOrder
   queues: QueueOrderByRelationAggregateInput
 }
 
@@ -322,6 +369,7 @@ input OrganizerRelationFilter {
 enum OrganizerScalarFieldEnum {
   id
   name
+  password
 }
 
 input OrganizerScalarWhereWithAggregatesInput {
@@ -330,17 +378,20 @@ input OrganizerScalarWhereWithAggregatesInput {
   OR: [OrganizerScalarWhereWithAggregatesInput!]
   id: StringWithAggregatesFilter
   name: StringWithAggregatesFilter
+  password: StringNullableWithAggregatesFilter
 }
 
 input OrganizerUpdateInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
   queues: QueueUpdateManyWithoutOrganizerInput
 }
 
 input OrganizerUpdateManyMutationInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
 }
 
 input OrganizerUpdateOneRequiredWithoutQueuesInput {
@@ -354,6 +405,7 @@ input OrganizerUpdateOneRequiredWithoutQueuesInput {
 input OrganizerUpdateWithoutQueuesInput {
   id: StringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
 }
 
 input OrganizerUpsertWithoutQueuesInput {
@@ -367,6 +419,7 @@ input OrganizerWhereInput {
   OR: [OrganizerWhereInput!]
   id: StringFilter
   name: StringFilter
+  password: StringNullableFilter
   queues: QueueListRelationFilter
 }
 
@@ -728,6 +781,39 @@ input StringFilter {
   lte: String
   mode: QueryMode
   not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input StringNullableWithAggregatesFilter {
+  _count: NestedIntNullableFilter
+  _max: NestedStringNullableFilter
+  _min: NestedStringNullableFilter
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringNullableWithAggregatesFilter
   notIn: [String!]
   startsWith: String
 }

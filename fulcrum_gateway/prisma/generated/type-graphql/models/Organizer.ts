@@ -19,6 +19,11 @@ export class Organizer {
   })
   name!: string;
 
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  password?: string | null;
+
   queues?: Queue[];
 
   @TypeGraphQL.Field(_type => OrganizerCount, {
