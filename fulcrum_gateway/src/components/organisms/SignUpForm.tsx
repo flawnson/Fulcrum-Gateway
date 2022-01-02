@@ -2,8 +2,16 @@ import * as React from "react"
 import { Box, Heading,
         VStack, FormControl,
         Input, Button } from "native-base"
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import {RootStackParamList} from "../../../types";
 
-export default () => {
+
+type SignUpFormType = {
+    navigation: NativeStackScreenProps<RootStackParamList, 'HomePage'>['navigation']
+    setShowModal: Function
+}
+
+export default ({navigation, setShowModal}: SignUpFormType) => {
     return (
         <Box safeArea p="2" w="90%" maxW="290" py="8">
             <Heading

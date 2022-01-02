@@ -30,8 +30,8 @@ type DefaultErrors = {
 }
 
 type CreateQueueFormType = {
-    setShowModal: Function
     navigation: NativeStackScreenProps<RootStackParamList, 'HomePage'>['navigation']
+    setShowModal: Function
 }
 
 export default function ({ navigation, setShowModal }: CreateQueueFormType) {

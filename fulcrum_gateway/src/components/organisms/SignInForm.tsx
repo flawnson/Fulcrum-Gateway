@@ -4,8 +4,16 @@ import { Box, Heading,
         Input, Button,
         Text, Link,
         HStack } from "native-base"
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import {RootStackParamList} from "../../../types";
 
-export default () => {
+
+type SignInFormType = {
+    navigation: NativeStackScreenProps<RootStackParamList, 'HomePage'>['navigation']
+    setShowModal: Function
+}
+
+export default ({navigation, setShowModal}: SignInFormType) => {
     return (
         <Box safeArea p="2" py="8" w="90%" maxW="290">
             <Heading
@@ -50,7 +58,10 @@ export default () => {
                         Forget Password?
                     </Link>
                 </FormControl>
-                <Button mt="2" colorScheme="indigo">
+                <Button
+                    mt="2"
+                    colorScheme="indigo"
+                    onPress={null}>
                     Sign in
                 </Button>
                 <HStack mt="6" justifyContent="center">
