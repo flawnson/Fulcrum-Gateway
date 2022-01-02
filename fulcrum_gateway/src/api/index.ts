@@ -34,7 +34,8 @@ import { customResolvers } from "./resolvers";
 import * as path from 'path';
 import { PrismaClient } from "@prisma/client";
 import prisma from './prismaClient';
-import { authChecker } from "./authChecker";
+import { redis } from "./redisClient";
+import { authChecker } from "./middleware/authChecker";
 
 const pregeneratedCrudResolvers = [
 
@@ -70,13 +71,12 @@ async function bootstrap(){
   app.use(cors())
 
   const RedisStore = connectRedis(session)
-  const redisClient = createClient()
 
   app.use(
       session({
         name: 'qid',
         store: new RedisStore({
-          client: redisClient,
+          client: redis,
           disableTouch: true,
         }),
         cookie: {

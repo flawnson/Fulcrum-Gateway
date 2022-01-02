@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 export interface Context {
   req: Request & {
     session: Session & Partial<SessionData> & {
+      organizerId?: string,
       queueId?: string,
       userId?: string
     }},

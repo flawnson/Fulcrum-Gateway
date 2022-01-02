@@ -39,11 +39,6 @@ export class UserScalarWhereInput {
   })
   name?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
-  })
-  queue_id?: StringFilter | undefined;
-
   @TypeGraphQL.Field(_type => BoolFilter, {
     nullable: true
   })
@@ -93,4 +88,9 @@ export class UserScalarWhereInput {
     nullable: true
   })
   summoned_time?: DateTimeNullableFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  queue_id?: StringFilter | undefined;
 }

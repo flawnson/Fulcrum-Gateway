@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../scalars";
+import { Organizer } from "../models/Organizer";
 import { User } from "../models/User";
 import { QueueState } from "../enums/QueueState";
 import { QueueCount } from "../resolvers/outputs/QueueCount";
@@ -66,6 +67,13 @@ export class Queue {
     nullable: false
   })
   password!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  organizer_id!: string;
+
+  organizer?: Organizer;
 
   @TypeGraphQL.Field(_type => QueueCount, {
     nullable: true

@@ -3,7 +3,8 @@ import {
   FieldResolver, Ctx,
   Root, Int,
   Mutation, Arg, Args, ArgsType,
-  InputType, Field
+  InputType, Field,
+  Authorized
 } from "type-graphql";
 import { Queue } from "../../../../../prisma/generated/type-graphql/models/Queue";
 import { Min, Max } from "class-validator";
@@ -57,6 +58,7 @@ class CreateQueueArgs {
 @Resolver()
 export class CreateQueueResolver {
 
+  @Authorized("ORGANIZER")
   @Mutation(returns => Queue, {
     nullable: true
   })
@@ -88,6 +90,12 @@ export class CreateQueueResolver {
       const hashedPassword = await bcrypt.hash(args.password, 12);
 
       const createTime = new Date();
+
+      // check if organizer exists
+      if (!req.session.organizerId){
+        return null;
+      }
+
       const createQueue = await prisma.queue.create({
         data: {
           name: args.name,
@@ -102,13 +110,13 @@ export class CreateQueueResolver {
           users: {
             create: []
           },
+          organizer_id: req.session.organizerId
         },
         include: {
           users: true,
         },
       });
 
-      req.session!.queueId = createQueue.id
       return createQueue;
 
     })

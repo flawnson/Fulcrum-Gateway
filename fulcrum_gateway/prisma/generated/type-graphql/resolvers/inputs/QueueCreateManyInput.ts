@@ -62,4 +62,9 @@ export class QueueCreateManyInput {
     nullable: false
   })
   password!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  organizer_id!: string;
 }

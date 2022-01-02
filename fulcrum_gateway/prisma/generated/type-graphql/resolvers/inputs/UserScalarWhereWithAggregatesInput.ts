@@ -39,11 +39,6 @@ export class UserScalarWhereWithAggregatesInput {
   })
   name?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
-    nullable: true
-  })
-  queue_id?: StringWithAggregatesFilter | undefined;
-
   @TypeGraphQL.Field(_type => BoolWithAggregatesFilter, {
     nullable: true
   })
@@ -93,4 +88,9 @@ export class UserScalarWhereWithAggregatesInput {
     nullable: true
   })
   summoned_time?: DateTimeNullableWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+    nullable: true
+  })
+  queue_id?: StringWithAggregatesFilter | undefined;
 }

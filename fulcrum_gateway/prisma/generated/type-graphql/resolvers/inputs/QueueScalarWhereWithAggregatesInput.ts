@@ -81,4 +81,9 @@ export class QueueScalarWhereWithAggregatesInput {
     nullable: true
   })
   password?: StringWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+    nullable: true
+  })
+  organizer_id?: StringWithAggregatesFilter | undefined;
 }

@@ -68,6 +68,11 @@ export class QueueOrderByWithAggregationInput {
   })
   password?: "asc" | "desc" | undefined;
 
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  organizer_id?: "asc" | "desc" | undefined;
+
   @TypeGraphQL.Field(_type => QueueCountOrderByAggregateInput, {
     nullable: true
   })

@@ -23,11 +23,6 @@ export class UserGroupBy {
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
-  })
-  queue_id!: string;
-
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: false
   })
@@ -77,6 +72,11 @@ export class UserGroupBy {
     nullable: true
   })
   summoned_time!: Date | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  queue_id!: string;
 
   @TypeGraphQL.Field(_type => UserCountAggregate, {
     nullable: true
