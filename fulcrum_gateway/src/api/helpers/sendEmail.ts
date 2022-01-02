@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-export async function sendEmail(email: string, url: string, task: string) {
+export async function sendEmail(email: string, url: string) {
   const account = await nodemailer.createTestAccount();
 
   const transporter = nodemailer.createTransport({
@@ -13,26 +13,13 @@ export async function sendEmail(email: string, url: string, task: string) {
     }
   });
 
-  let mailOptions = {};
-
-  if (task === "confirm"){
-    mailOptions = {
-      from: '"Fiefoe" <hello@fiefoe.io>', // sender address
-      to: email, // list of receivers
-      subject: "Confirm your email to finish signup", // Subject line
-      text: "Please click the link below to confirm your email:", // plain text body
-      html: `<a href="${url}">${url}</a>` // html body
-    };
-  }
-  else if (task == "reset"){
-    mailOptions = {
-      from: '"Fiefoe" <hello@fiefoe.io>', // sender address
-      to: email, // list of receivers
-      subject: "Reset your password", // Subject line
-      text: "Please click the link below to reset your password:", // plain text body
-      html: `<a href="${url}">${url}</a>` // html body
-    };
-  }
+  const mailOptions = {
+    from: '"Fiefoe" <hello@fiefoe.io>', // sender address
+    to: email, // list of receivers
+    subject: "Confirm your email to finish signup", // Subject line
+    text: "Please click the link below to confirm your email:", // plain text body
+    html: `<a href="${url}">${url}</a>` // html body
+  };
 
   const info = await transporter.sendMail(mailOptions);
 

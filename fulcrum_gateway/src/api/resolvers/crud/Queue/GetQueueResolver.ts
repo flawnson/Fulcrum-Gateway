@@ -23,24 +23,24 @@ class GetQueueArgs {
 @Resolver()
 export class GetQueueResolver {
 
-  @Authorized(["ORGANIZER", "ASSISTANT"])
+  @Authorized(["ORGANIZER", "QUEUE_MANAGER"])
   @UseMiddleware(queueAccessPermission)
   @Query(returns => Queue, {
     nullable: true
   })
-  async getQueue(@Ctx() ctx: Context, @Args() args: GetQueueArgs): Promise<Queue | null> {
+  async getQueue(@Ctx() { req, prisma }: Context, @Args() args: GetQueueArgs): Promise<Queue | null> {
 
     let queryQueueId = "";
 
-    if (ctx.req.session.queueId) {
-      queryQueueId = ctx.req.session.queueId;
+    if (req.session.queueId) {
+      queryQueueId = req.session.queueId;
     }
 
     if (args.queueId) {
       queryQueueId = args.queueId;
     }
 
-    const queue = await ctx.prisma.queue.findUnique({
+    const queue = prisma.queue.findUnique({
       where: {
         id: queryQueueId
       }

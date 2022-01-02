@@ -1,11 +1,9 @@
 import { v4 } from "uuid";
 import { redis } from "../redisClient";
-import { confirmOrganizerPrefix } from "../constants";
 
-
-export const createConfirmationUrl = async (organizerId: string) => {
+export const createConfirmationUrl = async (userId: string) => {
   const token = v4();
-  await redis.set(confirmOrganizerPrefix + token, organizerId, "ex", 60 * 60 * 12); // 12 hour expiration
+  await redis.set(token, userId, "ex", 60 * 60 * 12); // 12 hour expiration
 
   if (process.env.NODE_ENV === "production"){
     // TODO: FILL THIS IN
@@ -13,5 +11,5 @@ export const createConfirmationUrl = async (organizerId: string) => {
   }
 
   //development
-  return `http://localhost:3000/organizer/confirm/${confirmOrganizerPrefix + token}`; //fill in with correct URL
+  return `http://localhost:3000/organizer/confirm/${token}`; //fill in with correct URL
 };

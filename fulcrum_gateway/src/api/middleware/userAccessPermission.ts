@@ -14,7 +14,7 @@ export const userAccessPermission: MiddlewareFn<Context> = async ({ args, contex
     }
   }
 
-  // if accessed by assistant
+  // if accessed by queue manager
   if (context.req.session.queueId && args.userId){
     //check if user belongs to the queue
     const exists = await helpers.userExistsInQueue(args.userId, context.req.session.queueId);

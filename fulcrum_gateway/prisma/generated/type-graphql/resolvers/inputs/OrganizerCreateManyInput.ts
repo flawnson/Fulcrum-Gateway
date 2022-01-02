@@ -28,7 +28,7 @@ export class OrganizerCreateManyInput {
   password!: string;
 
   @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
+    nullable: false
   })
-  confirmed?: boolean | undefined;
+  confirmed!: boolean;
 }

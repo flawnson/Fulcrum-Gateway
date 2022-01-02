@@ -8,7 +8,7 @@ import { Authorized, Extensions } from "type-graphql";
 
 const organizerEnhanceConfig: ModelConfig<"Organizer"> = {
   fields: {
-    name: [Authorized(["ORGANIZER", "ASSISTANT"])],
+    name: [Authorized(["ORGANIZER", "QUEUE_MANAGER"])],
     email: [Authorized(["ORGANIZER"])],
     password: [Authorized(["ORGANIZER"])],
     //note: no resolver for "confirmed" field
@@ -22,13 +22,13 @@ const queueEnhanceConfig: ModelConfig<"Queue"> = {
     name: [Authorized()],
     address: [Authorized()],
     state: [Authorized()],
-    capacity: [Authorized(["ORGANIZER", "ASSISTANT"])],
+    capacity: [Authorized(["ORGANIZER", "QUEUE_MANAGER"])],
     max_party_size: [Authorized()],
-    grace_period: [Authorized(["ORGANIZER", "ASSISTANT"])],
-    offline_time: [Authorized(["ORGANIZER", "ASSISTANT"])],
-    create_time: [Authorized(["ORGANIZER", "ASSISTANT"])],
-    users: [Authorized(["ORGANIZER", "ASSISTANT"])],
-    password: [Authorized(["ORGANIZER", "ASSISTANT"])]
+    grace_period: [Authorized(["ORGANIZER", "QUEUE_MANAGER"])],
+    offline_time: [Authorized(["ORGANIZER", "QUEUE_MANAGER"])],
+    create_time: [Authorized(["ORGANIZER", "QUEUE_MANAGER"])],
+    users: [Authorized(["ORGANIZER", "QUEUE_MANAGER"])],
+    password: [Authorized(["ORGANIZER", "QUEUE_MANAGER"])]
   }
 };
 
@@ -38,13 +38,13 @@ const userEnhanceConfig: ModelConfig<"User"> = {
     summoned: [Authorized()],
     phone_number: [Authorized()],
     party_size: [Authorized()],
-    last_online: [Authorized(["ORGANIZER", "ASSISTANT"])],
+    last_online: [Authorized(["ORGANIZER", "QUEUE_MANAGER"])],
     index: [Authorized()],
     join_time: [Authorized()],
-    reneged_time: [Authorized(["ORGANIZER", "ASSISTANT"])],
-    queue_id: [Authorized(["ORGANIZER", "ASSISTANT"])],
+    reneged_time: [Authorized(["ORGANIZER", "QUEUE_MANAGER"])],
+    queue_id: [Authorized(["ORGANIZER", "QUEUE_MANAGER"])],
     queue: [Authorized()],
-    total_wait: [Authorized(["ORGANIZER", "ASSISTANT"])],
+    total_wait: [Authorized(["ORGANIZER", "QUEUE_MANAGER"])],
     summoned_time: [Authorized()]
   }
 };

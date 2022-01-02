@@ -4,6 +4,5 @@ export { userExistsInQueue } from "./userExistsInQueue";
 export { queueExistsInOrganizer } from "./queueExistsInOrganizer";
 export { userExistsInOrganizer } from "./userExistsInOrganizer";
 export { createConfirmationUrl } from "./createConfirmationUrl";
-export { createResetUrl } from "./createResetUrl";
-export { IsEmailAlreadyExist } from "./IsEmailAlreadyExist";
+export { isEmailAlreadyExist } from "./isEmailAlreadyExist";
 export { sendEmail } from "./sendEmail";

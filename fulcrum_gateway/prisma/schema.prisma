@@ -14,14 +14,14 @@ datasource db {
 }
 
 model Organizer {
-  id        String    @id @default(uuid())
+  id        String  @id @default(uuid())
   name      String
-  email     String    @unique
+  email     String  @unique
   /// @TypeGraphQL.omit(output: true)
   password  String
   /// @TypeGraphQL.omit(output: true)
-  confirmed Boolean   @default(false)
-  queues    Queue[]   @relation("queues_in_organizer")
+  confirmed Boolean
+  queues    Queue[] @relation("queues_in_organizer")
 }
 
 
@@ -39,7 +39,7 @@ model Queue {
   users          User[]     @relation("users_in_queue")
   password       String
   organizer_id   String
-  organizer      Organizer  @relation("queues_in_organizer", fields: [organizer_id], references: [id], onDelete: Cascade)
+  organizer      Organizer  @relation("queues_in_organizer", fields: [organizer_id], references: [id])
 }
 
 model User {
@@ -57,7 +57,7 @@ model User {
   status        UserStatus @default(ENQUEUED)
   summoned_time DateTime?
   queue_id      String
-  queue         Queue      @relation("users_in_queue", fields: [queue_id], references: [id], onDelete: Cascade)
+  queue         Queue      @relation("users_in_queue", fields: [queue_id], references: [id])
 }
 
 enum QueueState {
