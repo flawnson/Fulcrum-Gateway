@@ -3,32 +3,15 @@
 import "reflect-metadata";
 import express from "express";
 import cors from "cors";
-import { createClient } from 'redis'
-import session from 'express-session'
-import connectRedis from 'connect-redis'
+import { createClient } from 'redis';
+import session from 'express-session';
+import connectRedis from 'connect-redis';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 import { graphqlHTTP } from 'express-graphql';
 import { buildSchema, NonEmptyArray } from 'type-graphql';
 import {
-  CreateOrganizerResolver,
-  DeleteManyUserResolver,
-  DeleteOrganizerResolver,
-  FindFirstOrganizerResolver,
-  FindManyOrganizerResolver,
-  FindUniqueOrganizerResolver,
-  GroupByOrganizerResolver,
-  UpdateManyOrganizerResolver,
-  UpdateOrganizerResolver,
-  UpsertOrganizerResolver,
-
-  FindFirstQueueResolver,
-  FindManyQueueResolver,
-  FindUniqueQueueResolver,
-  GroupByOrganizerResolver,
-  UpdateManyQueueResolver,
-  UpdateQueueResolver,
-  UpsertQueueResolver,
-
   DeleteManyUserResolver,
   DeleteUserResolver,
   FindFirstUserResolver,
@@ -40,6 +23,12 @@ import {
   UpsertUserResolver,
   relationResolvers
 } from "../../prisma/generated/type-graphql";
+
+import {
+  applyModelsEnhanceMap
+} from "../../prisma/generated/type-graphql";
+import { modelsEnhanceMap } from "./modelsEnhanceMap";
+
 import { customResolvers } from "./resolvers";
 
 import * as path from 'path';
@@ -48,24 +37,6 @@ import prisma from './prismaClient';
 import { authChecker } from "./authChecker";
 
 const pregeneratedCrudResolvers = [
-  CreateOrganizerResolver,
-  DeleteManyUserResolver,
-  DeleteOrganizerResolver,
-  FindFirstOrganizerResolver,
-  FindManyOrganizerResolver,
-  FindUniqueOrganizerResolver,
-  GroupByOrganizerResolver,
-  UpdateManyOrganizerResolver,
-  UpdateOrganizerResolver,
-  UpsertOrganizerResolver,
-
-  FindFirstQueueResolver,
-  FindManyQueueResolver,
-  FindUniqueQueueResolver,
-  GroupByOrganizerResolver,
-  UpdateManyQueueResolver,
-  UpdateQueueResolver,
-  UpsertQueueResolver,
 
   DeleteManyUserResolver,
   DeleteUserResolver,
@@ -80,6 +51,8 @@ const pregeneratedCrudResolvers = [
 
 const combinedResolvers = [...pregeneratedCrudResolvers, ...relationResolvers, ...customResolvers] as unknown as NonEmptyArray<Function>;
 
+// apply the config (it will apply decorators on the generated model class and its properties)
+applyModelsEnhanceMap(modelsEnhanceMap);
 
 async function bootstrap(){
 
@@ -113,7 +86,7 @@ async function bootstrap(){
           sameSite: 'lax'
         },
         saveUninitialized: false,
-        secret: 'qiwroasdjlasddde', //you would want to hide this in production
+        secret: process.env.SESSION_SECRET, //you would want to hide this in production
         resave: false
       })
   )

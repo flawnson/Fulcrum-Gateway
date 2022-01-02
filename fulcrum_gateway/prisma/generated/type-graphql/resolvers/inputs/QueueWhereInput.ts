@@ -6,7 +6,6 @@ import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { EnumQueueStateFilter } from "../inputs/EnumQueueStateFilter";
 import { IntFilter } from "../inputs/IntFilter";
 import { IntNullableFilter } from "../inputs/IntNullableFilter";
-import { OrganizerRelationFilter } from "../inputs/OrganizerRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { UserListRelationFilter } from "../inputs/UserListRelationFilter";
 
@@ -33,11 +32,6 @@ export class QueueWhereInput {
     nullable: true
   })
   id?: StringFilter | undefined;
-
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
-  })
-  organizer_id?: StringFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
@@ -83,11 +77,6 @@ export class QueueWhereInput {
     nullable: true
   })
   create_time?: DateTimeFilter | undefined;
-
-  @TypeGraphQL.Field(_type => OrganizerRelationFilter, {
-    nullable: true
-  })
-  organizer?: OrganizerRelationFilter | undefined;
 
   @TypeGraphQL.Field(_type => UserListRelationFilter, {
     nullable: true

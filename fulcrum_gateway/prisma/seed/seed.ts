@@ -11,7 +11,7 @@ async function main() {
   // delete in order of user -> queue -> organizer to avoid foreign key conflicts
   await prisma.user.deleteMany({});
   await prisma.queue.deleteMany({});
-  await prisma.organizer.deleteMany({});
+  // await prisma.organizer.deleteMany({});
 
   // generate an insert password into queue table (hash needs await)
   const password = await bcrypt.hash("password123", 12);
@@ -20,9 +20,9 @@ async function main() {
   }
 
   // make sure to create in order of organizer -> queue -> user to avoid foreign key conflicts
-  const createOrganizers = await prisma.organizer.createMany({
-    data: organizer_table
-  });
+  // const createOrganizers = await prisma.organizer.createMany({
+  //   data: organizer_table
+  // });
 
   const createQueues = await prisma.queue.createMany({
     data: queue_table

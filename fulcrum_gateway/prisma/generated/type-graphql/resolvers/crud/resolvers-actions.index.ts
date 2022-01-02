@@ -1,15 +1,3 @@
-export { FindUniqueOrganizerResolver } from "./Organizer/FindUniqueOrganizerResolver";
-export { FindFirstOrganizerResolver } from "./Organizer/FindFirstOrganizerResolver";
-export { FindManyOrganizerResolver } from "./Organizer/FindManyOrganizerResolver";
-export { CreateOrganizerResolver } from "./Organizer/CreateOrganizerResolver";
-export { CreateManyOrganizerResolver } from "./Organizer/CreateManyOrganizerResolver";
-export { DeleteOrganizerResolver } from "./Organizer/DeleteOrganizerResolver";
-export { UpdateOrganizerResolver } from "./Organizer/UpdateOrganizerResolver";
-export { DeleteManyOrganizerResolver } from "./Organizer/DeleteManyOrganizerResolver";
-export { UpdateManyOrganizerResolver } from "./Organizer/UpdateManyOrganizerResolver";
-export { UpsertOrganizerResolver } from "./Organizer/UpsertOrganizerResolver";
-export { AggregateOrganizerResolver } from "./Organizer/AggregateOrganizerResolver";
-export { GroupByOrganizerResolver } from "./Organizer/GroupByOrganizerResolver";
 export { FindUniqueQueueResolver } from "./Queue/FindUniqueQueueResolver";
 export { FindFirstQueueResolver } from "./Queue/FindFirstQueueResolver";
 export { FindManyQueueResolver } from "./Queue/FindManyQueueResolver";
