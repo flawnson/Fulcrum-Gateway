@@ -17,7 +17,7 @@ export const user_table = [
     index: 1,
     join_time: pastDate,
     reneged_time: futureDate,
-    status: UserStatus.ABANDONED,
+    status: UserStatus.ENQUEUED,
     total_wait: 1000
   },
   {
@@ -56,7 +56,20 @@ export const user_table = [
     phone_number: "4162922346",
     party_size: 1,
     last_online: nowDate,
-    index: 1,
+    index: 2,
+    join_time: pastDate,
+    reneged_time: futureDate,
+    status: UserStatus.ENQUEUED
+  },
+  {
+    id: "user4",
+    name: "Joe Biden",
+    queue_id: "costco_queue1",
+    summoned: false,
+    phone_number: "4162922346",
+    party_size: 1,
+    last_online: nowDate,
+    index: 3,
     join_time: pastDate,
     reneged_time: futureDate,
     status: UserStatus.ENQUEUED

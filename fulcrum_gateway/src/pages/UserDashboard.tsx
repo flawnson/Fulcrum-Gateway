@@ -1,6 +1,6 @@
 import React, { SetStateAction, useState } from 'react'
 import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps, DashboardStat } from "../../types";
+import { HomeScreenProps } from "../../types";
 import { StyleSheet } from 'react-native'
 import { Avatar, HStack, Center, Heading, Image, Text} from "native-base";
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
@@ -32,7 +32,7 @@ export default function () {
                 userId: id
                 name
                 index
-                estimated_waiub
+                estimated_wait
                 join_time
                 state
             }
@@ -43,11 +43,11 @@ export default function () {
             "id": "user1"
         }
     "queueId": {
-            "id": "costco_queue1"
+            "id": "costco_queue2"
         }
     }`
 
-    useInterval(async () => {
+    const fetchUserStats = async () => {
         try {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
@@ -80,7 +80,9 @@ export default function () {
         } catch(error) {
             console.log(error)
         }
-    }, 5000)
+    }
+
+    useInterval(fetchUserStats, 5000)
 
     return (
         <Center style={styles.animationFormat}>

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Center,
+import { Button, Tooltip,
         FormControl, Input,
         Slider, Stack,
         Text, VStack,
-        Select } from 'native-base'
+        HStack, Select,
+        Box } from 'native-base'
+import { AntDesign } from '@expo/vector-icons';
+import { PreferencesContext } from "../../utilities/useTheme";
 import { HomeScreenProps } from "../../../types";
 import { useTranslation } from "react-i18next";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
@@ -27,6 +30,7 @@ type CreateQueueFormType = {
 }
 
 export default function (props: CreateQueueFormType) {
+    const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
     const defaultData = {submitted: false,
                          name: "Sample Queue name",
                          maxSize: 10,
@@ -98,17 +102,17 @@ export default function (props: CreateQueueFormType) {
     };
 
     return (
-        <VStack width="90%" mx="3">
+        <VStack space={3} width="90%" mx="3">
             <FormControl isRequired isInvalid={errors.nameInvalid}>
                 <Stack>
-                    <Center>
+                    <HStack>
                         <FormControl.Label _text={{bold: true}}>{t("business_name_label")}</FormControl.Label>
-                    </Center>
-                    <Center>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>{t("business_name_helper")}</Text>
-                        </FormControl.HelperText>
-                    </Center>
+                        <Tooltip label={t("business_name_helper")} openDelay={300}>
+                            <Box>
+                                <AntDesign name={isThemeDark ? "questioncircleo" : "questioncircle"} size={10}/>
+                            </Box>
+                        </Tooltip>
+                    </HStack>
                     <Input
                         placeholder={"Bob's Burgers"}
                         onChangeText={(value) => setData({ ...formData, name: value })}
@@ -116,16 +120,17 @@ export default function (props: CreateQueueFormType) {
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
-            <FormControl isRequired>
+            <FormControl>
                 <Stack>
-                    <Center>
-                        <FormControl.Label _text={{bold: true}}>{t("queue_cap_label", {onChangeValue: onChangeValue})}</FormControl.Label>
-                    </Center>
-                    <Center>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>{t("queue_cap_helper")}</Text>
-                        </FormControl.HelperText>
-                    </Center>
+                    <HStack>
+                        <FormControl.Label _text={{bold: true}}>{t("queue_cap_label")}</FormControl.Label>
+                        <Tooltip label={t("queue_cap_helper")} openDelay={300}>
+                            <Box>
+                                <AntDesign name={isThemeDark ? "questioncircleo" : "questioncircle"} size={10}/>
+                            </Box>
+                        </Tooltip>
+                    </HStack>
+                    <Text>{onChangeValue}</Text>
                     <Slider
                         defaultValue={500}
                         colorScheme="cyan"
@@ -147,40 +152,75 @@ export default function (props: CreateQueueFormType) {
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Queue cap error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
-            <FormControl isRequired>
+            <FormControl>
                 <Stack>
-                    <Center>
-                        <FormControl.Label _text={{bold: true}}>{t("grace_period_label", {gracePeriod: formData.gracePeriod})}</FormControl.Label>
-                    </Center>
-                    <Center>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>{t("grace_period_helper")}</Text>
-                        </FormControl.HelperText>
-                    </Center>
-                    <Select
-                        onValueChange={(value) => setData({ ...formData, gracePeriod: parseInt(value) })}
-                    >
-                        {[...Array(10).keys()].map(number => <Select.Item key={number} label={number.toString()} value="ux" />)}
-                    </Select>
+                    <HStack>
+                        <FormControl.Label _text={{bold: true}}>{t("grace_period_label")}</FormControl.Label>
+                        <Tooltip label={t("grace_period_helper")} openDelay={300}>
+                            <Box>
+                                <AntDesign name={isThemeDark ? "questioncircleo" : "questioncircle"} size={10}/>
+                            </Box>
+                        </Tooltip>
+                    </HStack>
+                    <Input
+                        placeholder={"None"}
+                        onChangeText={(value) => setData({ ...formData, gracePeriod: parseInt(value) })}
+                        keyboardType={"numeric"}
+                    />
                 <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Grace period error"}</FormControl.ErrorMessage>
+                </Stack>
+            </FormControl>
+            <FormControl>
+                <Stack>
+                    <HStack>
+                        <FormControl.Label _text={{bold: true}}>{t("party_size_label")}</FormControl.Label>
+                        <Tooltip label={t("party_size_helper")} openDelay={300}>
+                            <Box>
+                                <AntDesign name={isThemeDark ? "questioncircleo" : "questioncircle"} size={10}/>
+                            </Box>
+                        </Tooltip>
+                    </HStack>
+                    <Input
+                        placeholder={"No party"}
+                        onChangeText={(value) => setData({ ...formData, partySize: parseInt(value) })}
+                        keyboardType={"numeric"}
+                    />
+                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Party size error"}</FormControl.ErrorMessage>
+                </Stack>
+            </FormControl>
+            <FormControl>
+                <Stack>
+                    <HStack>
+                        <FormControl.Label _text={{bold: true}}>{t("offline_time_label")}</FormControl.Label>
+                        <Tooltip label={t("offline_time_helper")} openDelay={300}>
+                            <Box>
+                                <AntDesign name={isThemeDark ? "questioncircleo" : "questioncircle"} size={10}/>
+                            </Box>
+                        </Tooltip>
+                    </HStack>
+                    <Input
+                        placeholder={"No limit"}
+                        onChangeText={(value) => setData({ ...formData, partySize: parseInt(value) })}
+                        keyboardType={"numeric"}
+                    />
+                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Party size error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
             <FormControl isRequired>
                 <Stack>
-                    <Center>
-                        <FormControl.Label _text={{bold: true}}>{t("party_size_label", {partySize: formData.partySize})}</FormControl.Label>
-                    </Center>
-                    <Center>
-                        <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                            <Text>{t("party_size_helper")}</Text>
-                        </FormControl.HelperText>
-                    </Center>
-                    <Select
-                        onValueChange={(value) => setData({ ...formData, partySize: parseInt(value) })}
-                    >
-                        {[...Array(10).keys()].map(number => <Select.Item key={number} label={number.toString()} value="ux" />)}
-                    </Select>
-                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Part size error"}</FormControl.ErrorMessage>
+                    <HStack>
+                        <FormControl.Label _text={{bold: true}}>{t("address_label")}</FormControl.Label>
+                        <Tooltip label={t("address_helper")} openDelay={300}>
+                            <Box>
+                                <AntDesign name={isThemeDark ? "questioncircleo" : "questioncircle"} size={10}/>
+                            </Box>
+                        </Tooltip>
+                    </HStack>
+                    <Input
+                        placeholder={"King's Cross Station platform 9 3/4"}
+                        onChangeText={(value) => setData({ ...formData, partySize: parseInt(value) })}
+                    />
+                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Party size error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
             <Button.Group space={2}>
