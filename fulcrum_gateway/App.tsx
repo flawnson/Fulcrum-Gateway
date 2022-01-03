@@ -63,7 +63,7 @@ function App() {
                         <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe"}} >
                             {isInQueue && isQueuer ? (
                             <>
-                                <Stack.Screen name="HomePage" component={QueueDashboardTabs} />
+                                <Stack.Screen name="HomePage" component={HomePage} />
                                 <Stack.Screen name="LandingPage" component={LandingPage} />
                                 <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                 <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />

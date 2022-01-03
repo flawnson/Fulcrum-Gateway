@@ -1,9 +1,9 @@
 import React from "react";
 import SignUpForm from "../components/organisms/SignUpForm";
-import {useNavigation} from "@react-navigation/native";
-import {HomeScreenProps} from "../../types";
-import {useTranslation} from "react-i18next";
-import {Modal} from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import { HomeScreenProps } from "../../types";
+import { useTranslation } from "react-i18next";
+import { Modal } from "native-base";
 
 
 type CreateQueueModalProps = {

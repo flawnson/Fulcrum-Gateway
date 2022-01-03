@@ -3,7 +3,9 @@
     "cancel": "Cancel",
     "ok": "Ok",
     "submit": "Submit",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "login": "Log in",
+    "signup": "Sign up"
   },
   "landingPage": {
     "title": "Virtual lines that save time.",
@@ -32,7 +34,8 @@
   "homePage": {
     "queue_id": "Queue ID",
     "helper": "Queue ID must be 10 characters.",
-    "footer": "Create your own virtual queue at"
+    "or": " or ",
+    "footer": " to create your own virtual queue at"
   },
   "createQueuePage": {
     "business_name_label": "Queue name",
