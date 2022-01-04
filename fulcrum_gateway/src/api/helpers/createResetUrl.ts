@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import { redis } from "../redisClient";
-import { forgotOrganizerPasswordPrefix } from "../constants";
+import { forgotOrganizerPasswordPrefix } from "../../../constants";
 
 
 export const createResetUrl = async (organizerId: string) => {
@@ -13,5 +13,5 @@ export const createResetUrl = async (organizerId: string) => {
   }
 
   //development
-  return `http://localhost:3000/organizer/reset/${forgotOrganizerPasswordPrefix + token}`; //fill in with correct URL
+  return `http://localhost:3000/organizer/reset/${token}`; //fill in with correct URL
 };

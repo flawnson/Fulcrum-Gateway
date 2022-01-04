@@ -34,7 +34,7 @@ export class GetUserResolver {
     if (req.session.userId) {
       queryUserId = req.session.userId;
     }
-    
+
     if (args.userId) {
       queryUserId = args.userId;
     }

@@ -54,7 +54,7 @@ export class CreateOrganizerResolver {
     });
 
     if (organizer != null){
-      await sendEmail(email, await createConfirmationUrl(organizer.id));
+      await sendEmail(email, await createConfirmationUrl(organizer.id), "confirm");
     }
 
     req.session!.organizerId = organizer.id;
