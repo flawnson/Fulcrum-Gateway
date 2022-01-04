@@ -48,6 +48,21 @@ export class DeleteQueueResolver {
       },
     })
 
+    // logout assistant if they're in the same session
+    // clear queue id from session
+    delete ctx.req.session!.queueId;
+
+    // if this was the last id in the session, just destroy the session + cookie
+    if (!ctx.req.session.organizerId && !ctx.req.session.queueId && !ctx.req.session.userId){
+      // if session variables are empty then destroy the session
+      await ctx.req.session!.destroy(err => {
+          if (err) {
+            console.log(err);
+          }
+      })
+      await ctx.res.clearCookie("qid");
+    }
+
     return deleteQueue;
 
 

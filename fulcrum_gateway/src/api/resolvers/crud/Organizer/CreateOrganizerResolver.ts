@@ -58,7 +58,6 @@ export class CreateOrganizerResolver {
       await sendEmail(args.email, await createConfirmationUrl(organizer.id), "confirm");
     }
 
-    ctx.req.session!.organizerId = organizer.id;
     return organizer;
   }
 

@@ -13,5 +13,5 @@ export const createConfirmationUrl = async (organizerId: string) => {
   }
 
   //development
-  return `http://localhost:3000/organizer/confirm/${token}`; //fill in with correct URL
+  return `http://localhost:3000/organizer/confirm/${confirmOrganizerPrefix + token}`; //fill in with correct URL
 };

@@ -32,6 +32,19 @@ export class DeleteOrganizerResolver {
       },
     })
 
+    // Logout and clear session
+    delete ctx.req.session!.organizerId;
+
+    if (!ctx.req.session.organizerId && !ctx.req.session.queueId && !ctx.req.session.userId){
+      // if session variables are empty then destroy the session
+      await ctx.req.session!.destroy(err => {
+          if (err) {
+            console.log(err);
+          }
+      })
+      await ctx.res.clearCookie("qid");
+    }
+
     return deleteOrganizer;
 
   }
