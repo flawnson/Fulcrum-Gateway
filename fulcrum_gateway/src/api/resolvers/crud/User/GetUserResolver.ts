@@ -27,19 +27,19 @@ export class GetUserResolver {
   @Query(returns => User, {
     nullable: true
   })
-  async getUser(@Ctx() { req, prisma }: Context, @Args() args: GetUserArgs): Promise<User | null> {
+  async getUser(@Ctx() ctx: Context, @Args() args: GetUserArgs): Promise<User | null> {
 
     let queryUserId = "";
 
-    if (req.session.userId) {
-      queryUserId = req.session.userId;
+    if (ctx.req.session!.userId) {
+      queryUserId = ctx.req.session!.userId;
     }
 
     if (args.userId) {
       queryUserId = args.userId;
     }
 
-    const user = prisma.user.findUnique({
+    const user = await ctx.prisma.user.findUnique({
       where: {
         id: queryUserId,
       }

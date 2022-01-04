@@ -62,9 +62,9 @@ export class CreateQueueResolver {
   @Mutation(returns => Queue, {
     nullable: true
   })
-  async createQueue(@Ctx() { req, prisma }: Context, @Args() args: CreateQueueArgs): Promise<Queue | null> {
+  async createQueue(@Ctx() ctx: Context, @Args() args: CreateQueueArgs): Promise<Queue | null> {
 
-    return await prisma.$transaction(async (prisma) => {
+    return await ctx.prisma.$transaction(async (prisma) => {
       // generate 6 digit join code
       let joinCode = (+new Date * Math.random()).toString(36).substring(0,6);
 
@@ -92,7 +92,7 @@ export class CreateQueueResolver {
       const createTime = new Date();
 
       // check if organizer exists
-      if (!req.session.organizerId){
+      if (!ctx.req.session.organizerId){
         return null;
       }
 
@@ -110,7 +110,7 @@ export class CreateQueueResolver {
           users: {
             create: []
           },
-          organizer_id: req.session.organizerId
+          organizer_id: ctx.req.session.organizerId
         },
         include: {
           users: true,

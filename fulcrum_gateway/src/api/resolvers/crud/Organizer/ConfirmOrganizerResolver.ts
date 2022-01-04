@@ -1,8 +1,15 @@
-import { Resolver, Mutation, Arg } from "type-graphql";
+import {
+  Resolver, Query,
+  FieldResolver, Ctx,
+  Root, Int,
+  Mutation, Arg, Args, ArgsType,
+  InputType, Field
+} from "type-graphql";
 
 import { redis } from "../../../redisClient";
 import { Organizer } from "../../../../../prisma/generated/type-graphql/models/Organizer";
-import { forgotOrganizerPasswordPrefix } from "../../../constants";
+import { confirmOrganizerPrefix } from "../../../constants";
+import { Context } from "../../../context.interface";
 
 
 @ArgsType()
@@ -18,14 +25,15 @@ class ConfirmOrganizerArgs {
 @Resolver()
 export class ConfirmOrganizerResolver {
   @Mutation(() => Boolean)
-  async confirmOrganizer(@Ctx() { req, prisma }, @Args() args: ConfirmOrganizerArgs): Promise<boolean> {
-    const organizerId = await redis.get(confirmOrganizerPrefix + token);
+  async confirmOrganizer(@Ctx() ctx: Context, @Args() args: ConfirmOrganizerArgs): Promise<boolean> {
+  
+    const organizerId = await redis.get(confirmOrganizerPrefix + args.token);
 
     if (!organizerId) {
       return false;
     }
 
-    const update = await prisma.organizer.update({
+    const update = await ctx.prisma.organizer.update({
       where: {
         id: organizerId
       },
@@ -34,7 +42,7 @@ export class ConfirmOrganizerResolver {
       }
     });
 
-    await redis.del(confirmOrganizerPrefix + token);
+    await redis.del(confirmOrganizerPrefix + args.token);
 
     return true;
   }

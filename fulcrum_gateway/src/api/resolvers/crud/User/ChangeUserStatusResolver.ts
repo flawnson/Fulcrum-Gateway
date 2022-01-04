@@ -3,22 +3,21 @@ import {
   FieldResolver, Ctx,
   Root, Int,
   Mutation, Arg, Args, ArgsType,
-  InputType, Field
+  InputType, Field,
+  Authorized
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
-import { PrismaClient, UserStatus } from "@prisma/client";
+import { UserStatus } from "@prisma/client";
 import * as helpers from "../../../helpers";
 
-interface Context {
-  prisma: PrismaClient;
-}
+import { Context } from "../../../context.interface";
 
 @ArgsType()
 class ChangeStatusArgs {
   @Field({
     nullable: false
   })
-  id!: string;
+  userId!: string;
 
   @Field({
     nullable: false
@@ -27,14 +26,27 @@ class ChangeStatusArgs {
 }
 
 
-@Resolver(of => User)
+@Resolver()
 export class ChangeUserStatusResolver {
 
+  @Authorized("ORGANIZER")
   @Mutation(returns => User, {
     nullable: true
   })
-  async changeStatus(@Ctx() { prisma }: Context, @Args() args: ChangeStatusArgs): Promise<User | null> {
-    const updatedUser = await helpers.updateUserStatus(args.id, args.status);
+  async changeStatus(@Ctx() ctx: Context, @Args() args: ChangeStatusArgs): Promise<User | null> {
+    if (!ctx.req.session.queueId){
+      return null;
+    }
+
+    //check if the user you would to change is in the queue you own
+    const exists = await helpers.userExistsInQueue(args.userId, ctx.req.session.queueId);
+    if (exists === false){
+      return null;
+    }
+
+
+    // if all is fine, update the status of the user
+    const updatedUser = await helpers.updateUserStatus(args.userId, args.status);
     return updatedUser;
   }
 }

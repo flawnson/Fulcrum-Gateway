@@ -1,4 +1,11 @@
-import { Resolver, Mutation, Arg, UseMiddleware } from "type-graphql";
+import {
+  Resolver, Query,
+  FieldResolver, Ctx,
+  Root, Int,
+  Mutation, Arg, Args, ArgsType,
+  InputType, Field,
+  Authorized, UseMiddleware
+} from "type-graphql";
 import bcrypt from "bcryptjs";
 
 import { redis } from "../../../redisClient";
@@ -38,15 +45,15 @@ class ChangeQueuePasswordArgs {
 @Resolver()
 export class ChangePasswordResolver {
   @Mutation(() => Organizer, { nullable: true })
-  async changeOrganizerPassword(@Ctx() { req, prisma }: Context, @Args() args: ChangeOrganizerPasswordArgs): Promise<Organizer | null> {
+  async changeOrganizerPassword(@Ctx() ctx: Context, @Args() args: ChangeOrganizerPasswordArgs): Promise<Organizer | null> {
     // fetch id from redis via token
-    const organizerId = await redis.get(forgotOrganizerPasswordPrefix + token);
+    const organizerId = await redis.get(forgotOrganizerPasswordPrefix + args.token);
 
-    if (!organizerID) {
+    if (!organizerId) {
       return null;
     }
 
-    const organizer = await prisma.organizer.findUnique({
+    const organizer = await ctx.prisma.organizer.findUnique({
       where: {
         id: organizerId
       }
@@ -56,11 +63,11 @@ export class ChangePasswordResolver {
       return null;
     }
 
-    await redis.del(forgotOrganizerPasswordPrefix + token);
+    await redis.del(forgotOrganizerPasswordPrefix + args.token);
 
     const hashedPassword = await bcrypt.hash(args.password, 12);
 
-    const update = await prisma.organizer.update({
+    const update = await ctx.prisma.organizer.update({
       where: {
         id: organizerId
       },
@@ -69,7 +76,7 @@ export class ChangePasswordResolver {
       }
     });
 
-    req.session!.organizerId = organizer.id;
+    ctx.req.session!.organizerId = organizer.id;
 
     return organizer;
   }
@@ -77,10 +84,10 @@ export class ChangePasswordResolver {
   @Authorized("ORGANIZER")
   @UseMiddleware(queueAccessPermission)
   @Mutation(() => Queue, { nullable: true })
-  async changeQueuePassword(@Ctx() { req, prisma }: Context, @Args() args: ChangeQueuePasswordArgs,): Promise<Queue | null> {
+  async changeQueuePassword(@Ctx() ctx: Context, @Args() args: ChangeQueuePasswordArgs,): Promise<Queue | null> {
 
     const hashedPassword = await bcrypt.hash(args.password, 12);
-    const updateQueue = await prisma.queue.update({
+    const updateQueue = await ctx.prisma.queue.update({
       where: {
         id: args.queueId
       },

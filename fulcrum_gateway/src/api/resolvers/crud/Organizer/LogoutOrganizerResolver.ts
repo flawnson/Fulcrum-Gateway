@@ -12,6 +12,7 @@ import { Context } from "../../../context.interface";
 export class LogoutOrganizerResolver {
   @Mutation(() => Boolean)
   async logoutOrganizer(@Ctx() ctx: Context): Promise<Boolean> {
+
     // clear organizer id from session
     delete ctx.req.session!.organizerId;
 

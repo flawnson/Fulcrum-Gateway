@@ -28,19 +28,19 @@ export class GetQueueResolver {
   @Query(returns => Queue, {
     nullable: true
   })
-  async getQueue(@Ctx() { req, prisma }: Context, @Args() args: GetQueueArgs): Promise<Queue | null> {
+  async getQueue(@Ctx() ctx: Context, @Args() args: GetQueueArgs): Promise<Queue | null> {
 
     let queryQueueId = "";
 
-    if (req.session.queueId) {
-      queryQueueId = req.session.queueId;
+    if (ctx.req.session.queueId) {
+      queryQueueId = ctx.req.session.queueId;
     }
 
     if (args.queueId) {
       queryQueueId = args.queueId;
     }
 
-    const queue = prisma.queue.findUnique({
+    const queue = await ctx.prisma.queue.findUnique({
       where: {
         id: queryQueueId
       }
