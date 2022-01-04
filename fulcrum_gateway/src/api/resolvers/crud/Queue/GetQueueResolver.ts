@@ -23,7 +23,7 @@ class GetQueueArgs {
 @Resolver()
 export class GetQueueResolver {
 
-  @Authorized(["ORGANIZER", "QUEUE_MANAGER"])
+  @Authorized(["ORGANIZER", "ASSISTANT"])
   @UseMiddleware(queueAccessPermission)
   @Query(returns => Queue, {
     nullable: true

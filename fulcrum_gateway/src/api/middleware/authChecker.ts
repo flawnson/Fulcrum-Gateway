@@ -19,8 +19,8 @@ export const authChecker: AuthChecker<Context> = ({ context: { req, prisma } }, 
   }
 
   if(req.session.queueId){
-    //check for permission as queue manager
-    if (roles.includes("QUEUE_MANAGER")){
+    //check for permission as assistant
+    if (roles.includes("ASSISTANT")){
       return true;
     }
   }

@@ -12,15 +12,6 @@ dotenv.config();
 import { graphqlHTTP } from 'express-graphql';
 import { buildSchema, NonEmptyArray } from 'type-graphql';
 import {
-  DeleteManyUserResolver,
-  DeleteUserResolver,
-  FindFirstUserResolver,
-  FindManyUserResolver,
-  FindUniqueUserResolver,
-  GroupByOrganizerResolver,
-  UpdateManyUserResolver,
-  UpdateUserResolver,
-  UpsertUserResolver,
   relationResolvers
 } from "../../prisma/generated/type-graphql";
 
@@ -38,16 +29,7 @@ import { redis } from "./redisClient";
 import { authChecker } from "./middleware/authChecker";
 
 const pregeneratedCrudResolvers = [
-
-  DeleteManyUserResolver,
-  DeleteUserResolver,
-  FindFirstUserResolver,
-  FindManyUserResolver,
-  FindUniqueUserResolver,
-  GroupByOrganizerResolver,
-  UpdateManyUserResolver,
-  UpdateUserResolver,
-  UpsertUserResolver
+  // Currently not using any
 ];
 
 const combinedResolvers = [...pregeneratedCrudResolvers, ...relationResolvers, ...customResolvers] as unknown as NonEmptyArray<Function>;

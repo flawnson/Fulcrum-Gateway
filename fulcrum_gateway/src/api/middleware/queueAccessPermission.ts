@@ -14,7 +14,7 @@ export const queueAccessPermission: MiddlewareFn<Context> = async ({ args, conte
     }
   }
 
-  // if accessed by queue manager
+  // if accessed by ASSISTANT
   if (context.req.session.queueId){
     return next();
   }
