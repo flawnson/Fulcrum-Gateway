@@ -30,8 +30,8 @@ type DefaultErrors = {
 }
 
 type CreateQueueFormType = {
-    setShowModal: Function
     navigation: NativeStackScreenProps<RootStackParamList, 'HomePage'>['navigation']
+    setShowModal: Function
 }
 
 export default function ({ navigation, setShowModal }: CreateQueueFormType) {
@@ -94,7 +94,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
         "password": "uwaterloo"
     }`
 
-    async function submit () {
+    async function createQueue () {
         try {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
                 method: 'POST',
@@ -111,7 +111,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
 
     const onSuccess = () => {
         setData({...formData, submitted: true})
-        const submissionData = submit()
+        const submissionData = createQueue()
         console.log(formData)
         console.log(submissionData);
         setShowModal(false)

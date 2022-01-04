@@ -3,6 +3,7 @@ import { Button, Menu, Fab, HamburgerIcon, Alert } from 'native-base';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import EditQueueModal from "./EditQueueModal";
+import CreateUserModal from "./CreateUserModal"
 import { useTranslation } from "react-i18next";
 
 export default function () {
@@ -10,7 +11,8 @@ export default function () {
     const { t, i18n } = useTranslation(["queueDashboardMenu"]);
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const [queuePaused, toggleQueuePaused] = useState<boolean>(false)
-    const [showModal, setShowModal] = useState(false);
+    const [showEditQueueModal, setShowEditQueueModal] = useState(false);
+    const [showCreateUserModal, setShowCreateUserModal] = useState(false);
 
     async function setQueuePaused () {
         try {
@@ -74,12 +76,18 @@ export default function () {
                     )
                 }}
             >
-                <Menu.Item onPress={() => setShowModal(!showModal)}>{t("edit")}</Menu.Item>
+                <Menu.Item onPress={() => setShowCreateUserModal(true)}>{t("create")}</Menu.Item>
+                <Menu.Item onPress={() => setShowEditQueueModal(true)}>{t("edit")}</Menu.Item>
                 <Menu.Item onPress={() => onEndScreenPress}>{t("end")}</Menu.Item>
                 <Menu.Item onPress={() => pauseQueue}>{t("pause")}</Menu.Item>
                 <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>{t("share")}</Menu.Item>
             </Menu>
-            <EditQueueModal showModal={showModal} setShowModal={setShowModal} route={route} navigation={navigation}/>
+            <CreateUserModal showModal={showEditQueueModal}
+                            setShowModal={setShowEditQueueModal}
+                            navigation={navigation}/>
+            <EditQueueModal showModal={showEditQueueModal}
+                            setShowModal={setShowEditQueueModal}
+                            navigation={navigation}/>
         </>
     )
 }

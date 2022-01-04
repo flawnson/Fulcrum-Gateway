@@ -10,37 +10,36 @@ import { zipObject } from "lodash"
 import { DashboardStat } from "../../types";
 import { useTranslation } from "react-i18next";
 
-type UserData = {
-    user_id: string,
-    join_time: Date,
-    status: string,
+type QueueData = {
+    queue_id: string,
+    state: string,
 }
 
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { t, i18n } = useTranslation(["queueDashboard"]);
+    const { t, i18n } = useTranslation(["organizerDashboard"]);
 
     const defaultProps = {
-        name: "Some Queue",
+        name: "Some Organizer",
         stats: [
-            {prefix: t("enqueued_prefix"), stat: 0, suffix: ""},
-            {prefix: t("serviced_prefix"), stat: 0, suffix: ""},
-            {prefix: t("deferred_prefix"), stat: 0, suffix: ""},
-            {prefix: t("average_prefix"), stat: 0, suffix: "m"},
-            {prefix: t("abandoned_prefix"), stat: 0, suffix: ""},
-            {prefix: t("noshows_prefix"), stat: 0, suffix: ""}
+            {prefix: t("total_queues_prefix"), stat: 0, suffix: ""},
+            {prefix: t("universal_average_wait"), stat: 0, suffix: "m"},
+            {prefix: t("active_patron_count"), stat: 0, suffix: ""},
+            {prefix: t("serviced_patron_count"), stat: 0, suffix: ""},
+            {prefix: t("reneged_patron_count"), stat: 0, suffix: ""},
         ],
     }
     const [props, setProps] = useState(defaultProps)
     const query = `
         query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
-            queue(where: $queue_id) {
-                name
-                users {
-                    user_id: id
-                    join_time
-                    status
+            queues {
+                queue(where: $queue_id) {
+                    name
+                    users {
+                        queue_id: id
+                        state
+                    }
                 }
             }
         }
@@ -58,12 +57,12 @@ export default function () {
                 data => {
                     const name = data.data.queue.name
                     data = data.data.queue.users
-                    const statuses = ["ENQUEUED", "SERVICED", "DEFERRED", "ABANDONED", "NOSHOW"]
+                    const states = ["ACTIVE", "PAUSED", "INACTIVE"]
                     const counts = []
-                    for (const status of statuses) {
-                        counts.push(data.filter((user: UserData) => {return user.status === status}).length)
+                    for (const state of states) {
+                        counts.push(data.filter((user: QueueData) => {return user.state === state}).length)
                     }
-                    let stats: SetStateAction<DashboardStat[] | any> = zipObject(statuses.map(status => status.toLowerCase()), counts)
+                    let stats: SetStateAction<DashboardStat[] | any> = zipObject(states.map(state => state.toLowerCase()), counts)
                     const now: any = new Date()
                     let lifespans: Array<number> = []
                     for (const user of data) {
@@ -74,12 +73,11 @@ export default function () {
                     }
                     stats.avg = lifespans.reduce((a,b) => a + b, 0) / lifespans.length
                     stats = {name: name, stats: [
-                        {prefix: t("enqueued_prefix"), stat: stats.enqueued, suffix: ""},
-                        {prefix: t("serviced_prefix"), stat: stats.serviced, suffix: ""},
-                        {prefix: t("deferred_prefix"), stat: stats.deferred, suffix: ""},
-                        {prefix: t("average_prefix"), stat: stats.avg, suffix: "m"},
-                        {prefix: t("abandoned_prefix"), stat: stats.abandoned, suffix: ""},
-                        {prefix: t("noshows_prefix"), stat: stats.noshows, suffix: ""}
+                            {prefix: t("total_queues_prefix"), stat: 0, suffix: ""},
+                            {prefix: t("universal_average_wait"), stat: 0, suffix: "m"},
+                            {prefix: t("active_patron_count"), stat: 0, suffix: ""},
+                            {prefix: t("serviced_patron_count"), stat: 0, suffix: ""},
+                            {prefix: t("reneged_patron_count"), stat: 0, suffix: ""},
                         ]
                     }
                     setProps(stats)
