@@ -38,7 +38,7 @@ export class ChangeUserStatusResolver {
       return null;
     }
 
-    //check if the user you would to change is in the queue you own
+    //check if the user you would like to change is in the queue you own
     const exists = await helpers.userExistsInQueue(args.userId, ctx.req.session.queueId);
     if (exists === false){
       return null;
