@@ -28,12 +28,12 @@ export class DeleteQueueResolver {
   @Mutation(returns => Queue, {
     nullable: true
   })
-  async deleteQueue(@Ctx() { req, prisma }: Context, @Args() args: DeleteQueueArgs): Promise<Queue | null> {
+  async deleteQueue(@Ctx() ctx: Context, @Args() args: DeleteQueueArgs): Promise<Queue | null> {
 
     let queryQueueId = "";
 
-    if (req.session.queueId) {
-      queryQueueId = req.session.queueId;
+    if (ctx.req.session.queueId) {
+      queryQueueId = ctx.req.session.queueId;
     }
 
     if (args.queueId) {
@@ -42,7 +42,7 @@ export class DeleteQueueResolver {
 
 
     // Then delete the queue itself
-    const deleteQueue = prisma.queue.delete({
+    const deleteQueue = await ctx.prisma.queue.delete({
       where: {
         id: queryQueueId,
       },

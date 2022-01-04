@@ -26,19 +26,19 @@ export class SummonUserResolver {
   @Mutation(returns => User, {
     nullable: true
   })
-  async summon(@Ctx() { req, prisma }: Context, @Args() args: SummonUserArgs): Promise<User | null> {
-    if (!req.session.queueId){
+  async summon(@Ctx() ctx: Context, @Args() args: SummonUserArgs): Promise<User | null> {
+    if (!ctx.req.session.queueId){
       return null;
     }
 
     //check if the user you would to change is in the queue you own
-    const exists = await helpers.userExistsInQueue(args.userId, req.session.queueId);
+    const exists = await helpers.userExistsInQueue(args.userId, ctx.req.session.queueId);
     if (exists === false){
       return null;
     }
 
     // check if user is ENQUEUED
-    const user = await prisma.user.findUnique({
+    const user = await ctx.prisma.user.findUnique({
       where: {
         id: args.userId
       }
@@ -49,7 +49,7 @@ export class SummonUserResolver {
 
         const currentTime = new Date();
         // set user summoned_time
-        const setSummoned = await prisma.user.update({
+        const setSummoned = await ctx.prisma.user.update({
           where: {
             id: args.userId
           },

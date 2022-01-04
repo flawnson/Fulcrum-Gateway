@@ -33,13 +33,13 @@ export class ChangeUserStatusResolver {
   @Mutation(returns => User, {
     nullable: true
   })
-  async changeStatus(@Ctx() { req, prisma }: Context, @Args() args: ChangeStatusArgs): Promise<User | null> {
-    if (!req.session.queueId){
+  async changeStatus(@Ctx() ctx: Context, @Args() args: ChangeStatusArgs): Promise<User | null> {
+    if (!ctx.req.session.queueId){
       return null;
     }
 
     //check if the user you would to change is in the queue you own
-    const exists = await helpers.userExistsInQueue(args.userId, req.session.queueId);
+    const exists = await helpers.userExistsInQueue(args.userId, ctx.req.session.queueId);
     if (exists === false){
       return null;
     }

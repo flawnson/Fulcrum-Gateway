@@ -26,7 +26,7 @@ export class isEmailAlreadyExistConstraint implements ValidatorConstraintInterfa
   }
 }
 
-export function isEmailAlreadyExist(validationOptions?: ValidationOptions) {
+export function IsEmailAlreadyExist(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,

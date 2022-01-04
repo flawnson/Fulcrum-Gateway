@@ -32,8 +32,8 @@ export class CreateUserResolver {
   @Mutation(returns => User, {
     nullable: true
   })
-  async createUser(@Ctx() { req, prisma }: Context, @Args() args: CreateUserArgs): Promise<User | null> {
-    return await prisma.$transaction(async (prisma) => {
+  async createUser(@Ctx() ctx: Context, @Args() args: CreateUserArgs): Promise<User | null> {
+    return await ctx.prisma.$transaction(async (prisma) => {
       //check if theres a queue with that join code
       const results = await prisma.queue.findUnique({
         where: {
@@ -63,7 +63,7 @@ export class CreateUserResolver {
         }
       });
 
-      req.session!.userId = createUser.id;
+      ctx.req.session!.userId = createUser.id;
       return createUser;
 
     })

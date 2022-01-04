@@ -29,9 +29,9 @@ export class OrganizerCreateInput {
   password!: string;
 
   @TypeGraphQL.Field(_type => Boolean, {
-    nullable: false
+    nullable: true
   })
-  confirmed!: boolean;
+  confirmed?: boolean | undefined;
 
   @TypeGraphQL.Field(_type => QueueCreateNestedManyWithoutOrganizerInput, {
     nullable: true

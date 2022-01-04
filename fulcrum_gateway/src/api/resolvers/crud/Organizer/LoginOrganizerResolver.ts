@@ -24,10 +24,10 @@ class LoginOrganizerArgs {
 }
 
 @Resolver()
-export class LoginOrganizer  Resolver {
+export class LoginOrganizerResolver {
   @Mutation(() => Organizer, { nullable: true })
-  async loginOrganizer(@Ctx() { req, prisma }: Context, @Args() args: LoginOrganizerArgs): Promise<Organizer | null> {
-    const organizer = await prisma.organizer.findUnique({
+  async loginOrganizer(@Ctx() ctx: Context, @Args() args: LoginOrganizerArgs): Promise<Organizer | null> {
+    const organizer = await ctx.prisma.organizer.findUnique({
       where: {
         email: args.email
       }
@@ -43,7 +43,7 @@ export class LoginOrganizer  Resolver {
       return null;
     }
 
-    req.session!.organizerId = organizer.id;
+    ctx.req.session!.organizerId = organizer.id;
 
     return organizer;
   }

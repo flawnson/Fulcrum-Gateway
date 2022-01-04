@@ -7,4 +7,14 @@ export { GetUserResolver } from "./User/GetUserResolver";
 export { CreateQueueResolver } from "./Queue/CreateQueueResolver";
 export { DeleteQueueResolver } from "./Queue/DeleteQueueResolver";
 export { LoginQueueResolver } from "./Queue/LoginQueueResolver";
+//export { LogoutQueueResolver } from "./Queue/LogoutQueueResolver";
 export { GetQueueResolver } from "./Queue/GetQueueResolver";
+
+export { ConfirmOrganizerResolver } from "./Organizer/ConfirmOrganizerResolver";
+export { CreateOrganizerResolver } from "./Organizer/CreateOrganizerResolver";
+export { DeleteOrganizerResolver } from "./Organizer/DeleteOrganizerResolver";
+export { ForgotOrganizerPasswordResolver } from "./Organizer/ForgotOrganizerPasswordResolver";
+export { LoginOrganizerResolver } from "./Organizer/LoginOrganizerResolver";
+export { LogoutOrganizerResolver } from "./Organizer/LogoutOrganizerResolver";
+
+export { ChangePasswordResolver } from "./General/ChangePasswordResolver";

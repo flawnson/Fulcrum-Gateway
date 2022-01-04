@@ -9,7 +9,7 @@ export interface Context {
       queueId?: string,
       userId?: string
     }},
-  // res: Response
+  res: Response,
   // redis: typeof Redis
   prisma: PrismaClient;
 }

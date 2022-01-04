@@ -14,14 +14,14 @@ datasource db {
 }
 
 model Organizer {
-  id        String  @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
-  email     String  @unique
+  email     String    @unique
   /// @TypeGraphQL.omit(output: true)
   password  String
   /// @TypeGraphQL.omit(output: true)
-  confirmed Boolean
-  queues    Queue[] @relation("queues_in_organizer")
+  confirmed Boolean   @default(false)
+  queues    Queue[]   @relation("queues_in_organizer")
 }
 
 

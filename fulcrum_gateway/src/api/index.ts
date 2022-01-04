@@ -78,7 +78,7 @@ async function bootstrap(){
   })
   app.use('/api', graphqlHTTP(async (req, res, params) => ({
     schema,
-    context: { req, prisma },
+    context: { req, res, prisma },
     graphiql: true,
   })));
 
