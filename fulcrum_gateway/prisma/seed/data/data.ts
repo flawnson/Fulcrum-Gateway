@@ -111,7 +111,7 @@ export let organizer_table = [
   {
     id: "costco_toronto",
     name: "Costco In Toronto",
-    email: "kshen3778@gmail.com",
+    email: "test@gmail.com",
     confirmed: true,
     password: ""
   }

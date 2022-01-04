@@ -8,7 +8,6 @@ import {
 
 import { redis } from "../../../redisClient";
 import { Organizer } from "../../../../../prisma/generated/type-graphql/models/Organizer";
-import { confirmOrganizerPrefix } from "../../../constants";
 import { Context } from "../../../context.interface";
 
 
@@ -26,8 +25,8 @@ class ConfirmOrganizerArgs {
 export class ConfirmOrganizerResolver {
   @Mutation(() => Boolean)
   async confirmOrganizer(@Ctx() ctx: Context, @Args() args: ConfirmOrganizerArgs): Promise<boolean> {
-  
-    const organizerId = await redis.get(confirmOrganizerPrefix + args.token);
+
+    const organizerId = await redis.get(args.token);
 
     if (!organizerId) {
       return false;
@@ -42,7 +41,7 @@ export class ConfirmOrganizerResolver {
       }
     });
 
-    await redis.del(confirmOrganizerPrefix + args.token);
+    await redis.del(args.token);
 
     return true;
   }
