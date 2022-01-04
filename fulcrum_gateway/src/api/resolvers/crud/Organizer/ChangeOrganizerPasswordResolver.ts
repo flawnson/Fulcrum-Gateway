@@ -12,6 +12,7 @@ import { redis } from "../../../redisClient";
 import { Organizer } from "../../../../../prisma/generated/type-graphql/models/Organizer";
 import { Queue } from "../../../../../prisma/generated/type-graphql/models/Queue";
 import { Context } from "../../../context.interface";
+import { forgotOrganizerPasswordPrefix } from "../../../constants";
 
 @ArgsType()
 class ChangeOrganizerPasswordArgs {
@@ -32,7 +33,7 @@ export class ChangeOrganizerPasswordResolver {
   @Mutation(() => Organizer, { nullable: true })
   async changeOrganizerPassword(@Ctx() ctx: Context, @Args() args: ChangeOrganizerPasswordArgs): Promise<Organizer | null> {
     // fetch id from redis via token
-    const organizerId = await redis.get(args.token);
+    const organizerId = await redis.get(forgotOrganizerPasswordPrefix + args.token);
 
     if (!organizerId) {
       return null;
@@ -48,7 +49,7 @@ export class ChangeOrganizerPasswordResolver {
       return null;
     }
 
-    await redis.del(args.token);
+    await redis.del(forgotOrganizerPasswordPrefix + args.token);
 
     const hashedPassword = await bcrypt.hash(args.password, 12);
 
