@@ -52,7 +52,7 @@ export let user_table = [
     name: "Funny name",
     queue_id: "costco_queue1",
     summoned: false,
-    phone_number: "4162922346",
+    phone_number: "4161010111",
     party_size: 1,
     last_online: nowDate,
     index: 2,
@@ -65,7 +65,7 @@ export let user_table = [
     name: "Joe Biden",
     queue_id: "costco_queue1",
     summoned: false,
-    phone_number: "4162922346",
+    phone_number: "4168762999",
     party_size: 1,
     last_online: nowDate,
     index: 3,
@@ -79,7 +79,7 @@ export let user_table = [
 export let queue_table = [
   {
     id: "costco_queue1",
-    //organizer_id: "costco_toronto",
+    organizer_id: "costco_toronto",
     join_code: "123456",
     name: "Queue1",
     address: "somewhere, someplace",
@@ -93,7 +93,7 @@ export let queue_table = [
   },
   {
     id: "costco_queue2",
-    //organizer_id: "costco_toronto",
+    organizer_id: "costco_toronto",
     join_code: "333444",
     name: "Queue2",
     address: "somewhere, someplace",
@@ -107,9 +107,12 @@ export let queue_table = [
   }
 ];
 
-// export let organizer_table = [
-//   {
-//     id: "costco_toronto",
-//     name: "Costco In Toronto"
-//   }
-// ];
+export let organizer_table = [
+  {
+    id: "costco_toronto",
+    name: "Costco In Toronto",
+    email: "kshen3778@gmail.com",
+    confirmed: true,
+    password: ""
+  }
+];
