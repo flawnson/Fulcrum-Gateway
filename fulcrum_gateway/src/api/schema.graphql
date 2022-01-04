@@ -86,6 +86,7 @@ type Mutation {
   loginOrganizer(email: String!, password: String!): Organizer
   loginQueue(joinCode: String!, password: String!): Queue
   logoutOrganizer: Boolean!
+  logoutQueue: Boolean!
   summon(userId: String!): User
 }
 

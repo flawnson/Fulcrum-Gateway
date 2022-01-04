@@ -13,7 +13,6 @@ import { Organizer } from "../../../../../prisma/generated/type-graphql/models/O
 import { Queue } from "../../../../../prisma/generated/type-graphql/models/Queue";
 import { Context } from "../../../context.interface";
 import { forgotOrganizerPasswordPrefix } from "../../../constants";
-import { queueAccessPermission } from "../../../middleware/queueAccessPermission";
 
 @ArgsType()
 class ChangeOrganizerPasswordArgs {
@@ -28,22 +27,9 @@ class ChangeOrganizerPasswordArgs {
   password!: string;
 }
 
-@ArgsType()
-class ChangeQueuePasswordArgs {
-  @Field({
-    nullable: false
-  })
-  queueId!: string;
-
-  @Field({
-    nullable: false
-  })
-  password!: string;
-}
-
 
 @Resolver()
-export class ChangePasswordResolver {
+export class ChangeOrganizerPasswordResolver {
   @Mutation(() => Organizer, { nullable: true })
   async changeOrganizerPassword(@Ctx() ctx: Context, @Args() args: ChangeOrganizerPasswordArgs): Promise<Organizer | null> {
     // fetch id from redis via token
@@ -81,23 +67,5 @@ export class ChangePasswordResolver {
     return organizer;
   }
 
-  @Authorized("ORGANIZER")
-  @UseMiddleware(queueAccessPermission)
-  @Mutation(() => Queue, { nullable: true })
-  async changeQueuePassword(@Ctx() ctx: Context, @Args() args: ChangeQueuePasswordArgs,): Promise<Queue | null> {
-
-    const hashedPassword = await bcrypt.hash(args.password, 12);
-    const updateQueue = await ctx.prisma.queue.update({
-      where: {
-        id: args.queueId
-      },
-      data: {
-        password: hashedPassword
-      }
-    });
-
-    return updateQueue;
-
-  }
 
 }
