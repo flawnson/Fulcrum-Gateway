@@ -39,7 +39,7 @@ export class DeferUserResolver {
       if (exists === false){
         return null;
       }
-      const userIndex = prisma.user.findUnique({
+      const userIndex = await prisma.user.findUnique({
         where: {
           id: req.session.userId,
         },
@@ -47,21 +47,20 @@ export class DeferUserResolver {
           index: true
         }
       });
-      // const queue = prisma.queue.findUnique({
-      //   where: {
-      //     id: req.session.queueId,
-      //   }
-      // });
-      // const users = prisma.user.findMany({
-      //   orderBy: {
-      //     index: 'desc'
-      //   },
-      //   include: {
-      //     estimated_wait:
-      //   }
-      // })
-      // const subsequentUsers = _.filter(users, user => user.index > userIndex)
-      // const sumSubsequentUsers = _.sum()
+      const queue = await prisma.queue.findUnique({
+        where: {
+          id: req.session.queueId,
+        }
+      });
+      const users = await prisma.user.findMany({
+        orderBy: {
+          index: 'desc'
+        },
+      })
+      if (userIndex == null || queue == null || users == null) {
+        return null
+      }
+      const subsequentUsers = _.filter(users, user => user.index > userIndex.index)
 
     }
 
