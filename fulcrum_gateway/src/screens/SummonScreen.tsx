@@ -29,6 +29,9 @@ export default function() {
                 address
                 grace_period
             }
+            user(where: $userId) {
+                summoned
+            }
         }
     `
     const variables = `{
@@ -43,6 +46,8 @@ export default function() {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
+                    // If summoned is toggled false, navigate back to User Dashboard
+                    if (!data.data.user.summoned) {navigation.navigate("UserDashboard")}
                     data = data.data.queue.name
                     const now: any = new Date()
                     const join: any = new Date(data.data.queue.grace_period)
