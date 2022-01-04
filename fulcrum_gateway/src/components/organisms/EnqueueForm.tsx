@@ -6,10 +6,45 @@ import { HomeScreenProps } from "../../../types";
 import { useTranslation } from "react-i18next";
 
 
-export default function ({navigation}: HomeScreenProps) {
+type EnqueueFormProps = {
+    navigation: HomeScreenProps["navigation"]
+    setShowModal?: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+
+export default function ({navigation, setShowModal}: EnqueueFormProps) {
     const [formData, setData] = React.useState<any>({submitted: false});
     const [errors, setErrors] = React.useState<object>({});
     const { t, i18n } = useTranslation(["homePage", "common"]);
+
+    const query = `
+        mutation create_user($joinCode: String!, $phoneNumber: String!, $name: String!) {
+            createUser(joinCode: $joinCode, phoneNumber: $phoneNumber, name: $name){
+                id
+            }
+        }
+    `
+    const variables = `{
+        "joinCode": "123456",
+        "name": "Darth vader",
+        "phoneNumber": "1231114444"
+    }`
+
+    async function joinQueue () {
+        try {
+            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            return await response.json()
+        } catch(error) {
+            return error
+        }
+    }
+
     const validate = () => {
         if (formData.name === undefined) {
             setErrors({
@@ -40,6 +75,8 @@ export default function ({navigation}: HomeScreenProps) {
 
     const onSubmit = () => {
         validate() ?  onSuccess() : onFailure();
+        joinQueue()
+        if (setShowModal) {setShowModal(false)}
         navigation.navigate("UserDashboard")
     };
 

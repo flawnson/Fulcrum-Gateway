@@ -77,6 +77,7 @@
     "dialog": "Are you sure you want to abandon your position in line? You will have to enter the code again and start from the end of the line if you choose to rejoin."
   },
   "queueDashboardMenu": {
+    "create": "Create User",
     "edit": "Edit Queue",
     "end": "End Queue",
     "pause": "Pause Queue",
