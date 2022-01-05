@@ -9,8 +9,8 @@ export default function () {
     const [props, setProps] = useState<EnqueuedStats[]>([])
 
     const query = `
-        query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
-            queue(where: $queue_id) {
+        query get_queue_stats {
+            getQueue {
                 users {
                     userId: id
                     name
@@ -23,16 +23,10 @@ export default function () {
             }
         }
     `
-    const variables = `{
-        "queue_id":
-        {
-            "id": "costco_queue1"
-        }
-    }`
 
     async function fetchUserData () {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            const response = await fetch(`http://localhost:8080/api?query=${query}`)
             await response.json().then(
                 data => {
                     data = data.data.queue.users

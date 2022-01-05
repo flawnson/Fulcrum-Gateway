@@ -6,7 +6,6 @@ import { Button, FormControl,
 import { HomeScreenProps, RootStackParamList } from "../../../types";
 import { useTranslation } from "react-i18next";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Route } from "@react-navigation/native";
 
 type DefaultData = {
     submitted: boolean,
@@ -23,7 +22,6 @@ type DefaultErrors = {
 
 type CreateQueueFormType = {
     setShowModal: Function
-    route: Route<"HomePage", undefined>,
     navigation: NativeStackScreenProps<RootStackParamList, 'HomePage'>['navigation']
 }
 

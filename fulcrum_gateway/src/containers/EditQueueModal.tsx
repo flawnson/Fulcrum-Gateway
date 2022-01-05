@@ -5,14 +5,12 @@ import { NavigationProp, useNavigation, useRoute } from "@react-navigation/nativ
 import { HomeScreenProps } from "../../types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
-import { Route } from "@react-navigation/native";
 import {useTranslation} from "react-i18next";
 
 
 type EditQueueModalProps = {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-    route: Route<"HomePage", undefined>,
     navigation: NativeStackNavigationProp<RootStackParamList, "HomePage">
 }
 
@@ -26,7 +24,7 @@ export default function (props: EditQueueModalProps) {
                 <Modal.CloseButton />
                 <Modal.Header>{t("title")}</Modal.Header>
                 <Modal.Body>
-                    <EditQueueForm route={props.route} navigation={props.navigation} setShowModal={props.setShowModal}/>
+                    <EditQueueForm navigation={props.navigation} setShowModal={props.setShowModal}/>
                 </Modal.Body>
                 <Modal.Footer>
                 </Modal.Footer>

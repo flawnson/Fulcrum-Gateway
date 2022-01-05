@@ -9,6 +9,7 @@ import {
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
 import * as helpers from "../../../helpers";
+import _ from 'lodash'
 
 @ArgsType()
 class DeferUserArgs {
@@ -38,8 +39,29 @@ export class DeferUserResolver {
       if (exists === false){
         return null;
       }
-
-      // TODO: defer logic
+      const userIndex = prisma.user.findUnique({
+        where: {
+          id: req.session.userId,
+        },
+        select: {
+          index: true
+        }
+      });
+      // const queue = prisma.queue.findUnique({
+      //   where: {
+      //     id: req.session.queueId,
+      //   }
+      // });
+      // const users = prisma.user.findMany({
+      //   orderBy: {
+      //     index: 'desc'
+      //   },
+      //   include: {
+      //     estimated_wait:
+      //   }
+      // })
+      // const subsequentUsers = _.filter(users, user => user.index > userIndex)
+      // const sumSubsequentUsers = _.sum()
 
     }
 
