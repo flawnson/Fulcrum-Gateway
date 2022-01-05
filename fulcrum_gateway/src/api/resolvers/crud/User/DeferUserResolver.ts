@@ -31,17 +31,17 @@ export class DeferUserResolver {
   @Mutation(returns => User, {
     nullable: true
   })
-  async deferPosition(@Ctx() { req, prisma }: Context, @Args() args: DeferUserArgs): Promise<User | null> {
+  async deferPosition(@Ctx() ctx: Context, @Args() args: DeferUserArgs): Promise<User | null> {
 
     // if accessed by organizer
-    if (req.session.queueId && args.userId){
-      const exists = await helpers.userExistsInQueue(args.userId, req.session.queueId);
+    if (ctx.req.session.queueId && args.userId){
+      const exists = await helpers.userExistsInQueue(args.userId, ctx.req.session.queueId);
       if (exists === false){
         return null;
       }
-      const userIndex = prisma.user.findUnique({
+      const userIndex = await ctx.prisma.user.findUnique({
         where: {
-          id: req.session.userId,
+          id: ctx.req.session.userId,
         },
         select: {
           index: true
@@ -66,7 +66,7 @@ export class DeferUserResolver {
     }
 
     // if accessed by user
-    if (req.session.userId){
+    if (ctx.req.session.userId){
       // TODO: defer logic
     }
 

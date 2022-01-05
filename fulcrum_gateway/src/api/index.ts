@@ -12,15 +12,6 @@ dotenv.config();
 import { graphqlHTTP } from 'express-graphql';
 import { buildSchema, NonEmptyArray } from 'type-graphql';
 import {
-  DeleteManyUserResolver,
-  DeleteUserResolver,
-  FindFirstUserResolver,
-  FindManyUserResolver,
-  FindUniqueUserResolver,
-  GroupByOrganizerResolver,
-  UpdateManyUserResolver,
-  UpdateUserResolver,
-  UpsertUserResolver,
   relationResolvers
 } from "../../prisma/generated/type-graphql";
 
@@ -34,19 +25,11 @@ import { customResolvers } from "./resolvers";
 import * as path from 'path';
 import { PrismaClient } from "@prisma/client";
 import prisma from './prismaClient';
-import { authChecker } from "./authChecker";
+import { redis } from "./redisClient";
+import { authChecker } from "./middleware/authChecker";
 
 const pregeneratedCrudResolvers = [
-
-  DeleteManyUserResolver,
-  DeleteUserResolver,
-  FindFirstUserResolver,
-  FindManyUserResolver,
-  FindUniqueUserResolver,
-  GroupByOrganizerResolver,
-  UpdateManyUserResolver,
-  UpdateUserResolver,
-  UpsertUserResolver
+  // Currently not using any
 ];
 
 const combinedResolvers = [...pregeneratedCrudResolvers, ...relationResolvers, ...customResolvers] as unknown as NonEmptyArray<Function>;
@@ -70,13 +53,12 @@ async function bootstrap(){
   app.use(cors())
 
   const RedisStore = connectRedis(session)
-  const redisClient = createClient()
 
   app.use(
       session({
         name: 'qid',
         store: new RedisStore({
-          client: redisClient,
+          client: redis,
           disableTouch: true,
         }),
         cookie: {
@@ -96,7 +78,7 @@ async function bootstrap(){
   })
   app.use('/api', graphqlHTTP(async (req, res, params) => ({
     schema,
-    context: { req, prisma },
+    context: { req, res, prisma },
     graphiql: true,
   })));
 

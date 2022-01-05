@@ -11,7 +11,8 @@ export enum QueueScalarFieldEnum {
   grace_period = "grace_period",
   offline_time = "offline_time",
   create_time = "create_time",
-  password = "password"
+  password = "password",
+  organizer_id = "organizer_id"
 }
 TypeGraphQL.registerEnumType(QueueScalarFieldEnum, {
   name: "QueueScalarFieldEnum",

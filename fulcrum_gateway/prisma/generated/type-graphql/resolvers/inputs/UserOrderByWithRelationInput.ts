@@ -22,11 +22,6 @@ export class UserOrderByWithRelationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  queue_id?: "asc" | "desc" | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
   summoned?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
@@ -73,6 +68,11 @@ export class UserOrderByWithRelationInput {
     nullable: true
   })
   summoned_time?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  queue_id?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => QueueOrderByWithRelationInput, {
     nullable: true

@@ -62,4 +62,9 @@ export class QueueMinAggregate {
     nullable: true
   })
   password!: string | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  organizer_id!: string | null;
 }

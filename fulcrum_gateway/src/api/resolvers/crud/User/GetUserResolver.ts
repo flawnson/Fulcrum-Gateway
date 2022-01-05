@@ -4,11 +4,12 @@ import {
   Root, Int,
   Mutation, Arg, Args, ArgsType,
   InputType, Field,
-  Authorized
+  Authorized, UseMiddleware
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
 import * as helpers from "../../../helpers";
+import { userAccessPermission } from "../../../middleware/userAccessPermission";
 
 @ArgsType()
 class GetUserArgs {
@@ -22,43 +23,29 @@ class GetUserArgs {
 export class GetUserResolver {
 
   @Authorized()
+  @UseMiddleware(userAccessPermission)
   @Query(returns => User, {
     nullable: true
   })
-  async getUser(@Ctx() { req, prisma }: Context, @Args() args: GetUserArgs): Promise<User | null> {
+  async getUser(@Ctx() ctx: Context, @Args() args: GetUserArgs): Promise<User | null> {
 
-    // if accessed by organizer
-    if (req.session.queueId && args.userId){
-      const exists = await helpers.userExistsInQueue(args.userId, req.session.queueId);
-      if (exists === false){
-        return null;
+    let queryUserId = "";
+
+    if (ctx.req.session!.userId) {
+      queryUserId = ctx.req.session!.userId;
+    }
+
+    if (args.userId) {
+      queryUserId = args.userId;
+    }
+
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: queryUserId,
       }
+    });
 
-      // return user
-      const user = prisma.user.findUnique({
-        where: {
-          id: args.userId,
-        }
-      });
-
-      return user;
-    }
-    
-    // if accessed by user
-    if (req.session.userId){
-      const user = prisma.user.findUnique({
-        where: {
-          id: req.session.userId,
-        }
-      });
-
-      return user;
-    }
-
-
-    return null;
-
-
+    return user;
 
   }
 }

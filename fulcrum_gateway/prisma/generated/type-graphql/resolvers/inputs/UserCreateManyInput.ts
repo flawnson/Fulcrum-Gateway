@@ -18,11 +18,6 @@ export class UserCreateManyInput {
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
-  })
-  queue_id!: string;
-
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: true
   })
@@ -72,4 +67,9 @@ export class UserCreateManyInput {
     nullable: true
   })
   summoned_time?: Date | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  queue_id!: string;
 }
