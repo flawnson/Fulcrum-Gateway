@@ -39,9 +39,9 @@ export class DeferUserResolver {
       if (exists === false){
         return null;
       }
-      const userIndex = prisma.user.findUnique({
+      const userIndex = await ctx.prisma.user.findUnique({
         where: {
-          id: req.session.userId,
+          id: ctx.req.session.userId,
         },
         select: {
           index: true
