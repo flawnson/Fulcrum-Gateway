@@ -17,6 +17,7 @@ export type RootStackParamList = {
     EnqueuedPage: undefined;
     QueuesPage: undefined;
     QRCodeScanner: undefined;
+    NotFound: undefined;
 };
 
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'HomePage'>;

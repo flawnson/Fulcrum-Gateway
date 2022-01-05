@@ -3,7 +3,7 @@ import React from 'react';
 import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {Button} from 'native-base'
+import { Text } from 'native-base'
 import HomePage from './src/pages/HomePage'
 import SummonScreen from "./src/screens/SummonScreen";
 import EndScreen from "./src/screens/EndScreen"
@@ -18,17 +18,35 @@ import QueuesPage from "./src/pages/QueuesPage";
 import EnqueuedPage from "./src/pages/EnqueuedPage";
 import QueueDashboardTabs from "./src/pages/QueueDashboardTabs"
 import QRCodeScanner from "./src/components/organisms/QRCodeScanner"
+import ErrorScreen from "./src/screens/ErrorScreen";
 import './i18n';
 import { PreferencesContext } from "./src/utilities/useTheme";
+import * as Linking from 'expo-linking'
 import QueueDashboard from "./src/pages/QueueDashboard";
 import DarkModeToggle from "./src/components/atoms/DarkModeToggle";
 
 const config: object = {
     strictMode: 'off',
 };
+const prefix = Linking.createURL('/')
 
 function App() {
     const Stack = createNativeStackNavigator<RootStackParamList>();
+    const linking = {
+        prefixes: [prefix],
+        config: {
+            screens: {
+                initialRouteName: 'HomePage',
+                HomePage: {
+                    path: '',
+                },
+                QueueDashboard: {
+                    path: '/QueueDashboard'
+                },
+                NotFound: '*',
+            },
+        }
+    }
     const isInQueue = true
     const isQueuer = true
     const isOrganizer = false
@@ -49,16 +67,10 @@ function App() {
         [toggleTheme, isThemeDark]
     );
 
-    function buttonMaker () {
-        return (
-            <Button onPress={() => console.log("fuck")}/>
-        )
-    }
-
     return (
         <PreferencesContext.Provider value={preferences}>
             <NativeBaseProvider config={config} theme={theme.nativebase}>
-                <NavigationContainer theme={theme.navigation}>
+                <NavigationContainer linking={linking} fallback={<Text>Blah blah blah...</Text>} theme={theme.navigation}>
                     <Stack.Navigator initialRouteName="HomePage">
                         <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe"}} >
                             {isInQueue && isQueuer ? (
@@ -72,6 +84,7 @@ function App() {
                                 <Stack.Screen name="SummonScreen" component={SummonScreen} />
                                 <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
                                 <Stack.Screen name="QueuesPage" component={QueuesPage} />
+                                <Stack.Screen name="NotFound" component={ErrorScreen} />
                             </>
                             ) : isInQueue && isOrganizer ? (
                                 <>
