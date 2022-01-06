@@ -16,7 +16,7 @@ import { Context } from "../../../context.interface";
 export class CustomQueueResolver {
 
   // average wait statistics
-  @Authorized("ORGANIZER")
+  @Authorized(["ORGANIZER", "ASSISTANT"])
   @FieldResolver(type => Int, { nullable: true })
   async average_wait(@Root() queue: Queue, @Ctx() { req, prisma }: Context): Promise<number | null> {
     const averageWaitTime = await helpers.calculateAverageWait(queue.id);
@@ -24,7 +24,7 @@ export class CustomQueueResolver {
   }
 
   // queue user count statistics
-  @Authorized("ORGANIZER")
+  @Authorized(["ORGANIZER", "ASSISTANT"])
   @FieldResolver(type => Int)
   async num_enqueued(@Root() queue: Queue, @Ctx() { req, prisma }: Context): Promise<number> {
     const result = await prisma.queue.findUnique({
@@ -43,7 +43,7 @@ export class CustomQueueResolver {
     return result!.users.length;
   }
 
-  @Authorized("ORGANIZER")
+  @Authorized(["ORGANIZER", "ASSISTANT"])
   @FieldResolver(type => Int)
   async num_serviced(
     @Root() queue: Queue,
@@ -65,7 +65,7 @@ export class CustomQueueResolver {
     return result!.users.length;
   }
 
-  @Authorized("ORGANIZER")
+  @Authorized(["ORGANIZER", "ASSISTANT"])
   @FieldResolver(type => Int)
   async num_abandoned(
     @Root() queue: Queue,
@@ -87,7 +87,7 @@ export class CustomQueueResolver {
     return result!.users.length;
   }
 
-  @Authorized("ORGANIZER")
+  @Authorized(["ORGANIZER", "ASSISTANT"])
   @FieldResolver(type => Int)
   async num_kicked(
     @Root() queue: Queue,
@@ -109,7 +109,7 @@ export class CustomQueueResolver {
     return result!.users.length;
   }
 
-  @Authorized("ORGANIZER")
+  @Authorized(["ORGANIZER", "ASSISTANT"])
   @FieldResolver(type => Int)
   async num_deferred(
     @Root() queue: Queue,
@@ -131,7 +131,7 @@ export class CustomQueueResolver {
     return result!.users.length;
   }
 
-  @Authorized("ORGANIZER")
+  @Authorized(["ORGANIZER", "ASSISTANT"])
   @FieldResolver(type => Int)
   async num_noshow(
     @Root() queue: Queue,
