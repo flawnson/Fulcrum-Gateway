@@ -82,8 +82,8 @@ export default function () {
                 <Menu.Item onPress={() => pauseQueue}>{t("pause")}</Menu.Item>
                 <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>{t("share")}</Menu.Item>
             </Menu>
-            <CreateUserModal showModal={showEditQueueModal}
-                            setShowModal={setShowEditQueueModal}
+            <CreateUserModal showModal={showCreateUserModal}
+                            setShowModal={setShowCreateUserModal}
                             navigation={navigation}/>
             <EditQueueModal showModal={showEditQueueModal}
                             setShowModal={setShowEditQueueModal}

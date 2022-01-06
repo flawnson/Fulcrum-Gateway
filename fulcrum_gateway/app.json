@@ -2,6 +2,7 @@
   "expo": {
     "name": "fulcrum_gateway",
     "slug": "fulcrum_gateway",
+    "scheme": "fiefoe",
     "privacy": "public",
     "icon": "./src/assets/images/test-tube.png",
     "web": {
