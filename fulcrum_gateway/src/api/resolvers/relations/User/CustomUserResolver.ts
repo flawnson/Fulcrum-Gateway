@@ -38,7 +38,7 @@ export class CustomUserResolver {
     return estimatedWait;
   }
 
-  @Authorized("ORGANIZER")
+  @Authorized(["ORGANIZER", "ASSISTANT"])
   @FieldResolver(type => String, { nullable: false })
   async status(@Root() user: User, @Ctx() {prisma}: Context): Promise<string | null> {
     // if user is summoned

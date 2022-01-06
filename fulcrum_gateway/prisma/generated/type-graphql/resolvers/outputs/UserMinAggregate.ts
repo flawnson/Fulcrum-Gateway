@@ -18,11 +18,6 @@ export class UserMinAggregate {
   })
   name!: string | null;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  queue_id!: string | null;
-
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: true
   })
@@ -72,4 +67,9 @@ export class UserMinAggregate {
     nullable: true
   })
   summoned_time!: Date | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  queue_id!: string | null;
 }

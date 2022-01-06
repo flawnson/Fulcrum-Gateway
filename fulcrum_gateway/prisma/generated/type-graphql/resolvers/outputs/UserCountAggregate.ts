@@ -20,11 +20,6 @@ export class UserCountAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
   })
-  queue_id!: number;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
-  })
   summoned!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
@@ -71,6 +66,11 @@ export class UserCountAggregate {
     nullable: false
   })
   summoned_time!: number;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
+  queue_id!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false

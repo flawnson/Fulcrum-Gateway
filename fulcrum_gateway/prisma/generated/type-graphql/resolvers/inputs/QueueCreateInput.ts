@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { OrganizerCreateNestedOneWithoutQueuesInput } from "../inputs/OrganizerCreateNestedOneWithoutQueuesInput";
 import { UserCreateNestedManyWithoutQueueInput } from "../inputs/UserCreateNestedManyWithoutQueueInput";
 import { QueueState } from "../../enums/QueueState";
 
@@ -68,4 +69,9 @@ export class QueueCreateInput {
     nullable: true
   })
   users?: UserCreateNestedManyWithoutQueueInput | undefined;
+
+  @TypeGraphQL.Field(_type => OrganizerCreateNestedOneWithoutQueuesInput, {
+    nullable: false
+  })
+  organizer!: OrganizerCreateNestedOneWithoutQueuesInput;
 }

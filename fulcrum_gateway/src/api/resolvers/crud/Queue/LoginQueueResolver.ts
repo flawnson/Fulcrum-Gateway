@@ -26,8 +26,8 @@ class LoginQueueArgs {
 @Resolver()
 export class LoginQueueResolver {
   @Mutation(() => Queue, { nullable: true })
-  async loginQueue(@Ctx() { req, prisma }: Context, @Args() args: LoginQueueArgs): Promise<Queue | null> {
-    const queue = await prisma.queue.findUnique({
+  async loginQueue(@Ctx() ctx: Context, @Args() args: LoginQueueArgs): Promise<Queue | null> {
+    const queue = await ctx.prisma.queue.findUnique({
       where: {
         join_code: args.joinCode
       }
@@ -43,7 +43,7 @@ export class LoginQueueResolver {
       return null;
     }
 
-    req.session!.queueId = queue.id;
+    ctx.req.session!.queueId = queue.id;
 
     return queue;
   }
