@@ -49,5 +49,7 @@ export class DeferUserResolver {
     // Note to flawnson: Use queryUserId as the user id
     // ...TODO
 
+    return null; //for now
+
   }
 }
