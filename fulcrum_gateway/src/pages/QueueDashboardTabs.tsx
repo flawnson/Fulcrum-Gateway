@@ -1,9 +1,9 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import QueueDashboard from "./QueueDashboard";
-import EnqueuedQueuersPage from "./EnqueuedPage";
-import ServicedQueuersPage from "./ServicedPage";
-import AbandonedQueuersPage from "./AbandonedPage";
+import EnqueuedPage from "./EnqueuedPage";
+import ServicedPage from "./ServicedPage";
+import AbandonedPage from "./AbandonedPage";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
@@ -51,21 +51,21 @@ export default function QueueDashboardTabs() {
             />
             <Tab.Screen
                 name="Enqueued"
-                component={EnqueuedQueuersPage}
+                component={EnqueuedPage}
                 options={{
                     tabBarLabel: 'Enqueued',
                 }}
             />
             <Tab.Screen
                 name="Serviced"
-                component={ServicedQueuersPage}
+                component={ServicedPage}
                 options={{
                     tabBarLabel: 'Serviced',
                 }}
             />
             <Tab.Screen
                 name="Abandoned"
-                component={AbandonedQueuersPage}
+                component={AbandonedPage}
                 options={{
                     tabBarLabel: 'Abandoned',
                 }}

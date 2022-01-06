@@ -19,9 +19,11 @@ import EnqueuedPage from "./src/pages/EnqueuedPage";
 import QueueDashboardTabs from "./src/pages/QueueDashboardTabs"
 import QRCodeScanner from "./src/components/organisms/QRCodeScanner"
 import ErrorScreen from "./src/screens/ErrorScreen";
+import ConfirmationScreen from "./src/screens/ConfirmationScreen";
 import './i18n';
 import { PreferencesContext } from "./src/utilities/useTheme";
 import * as Linking from 'expo-linking'
+import linkConfig from "./src/utilities/linkConfig";
 import QueueDashboard from "./src/pages/QueueDashboard";
 import DarkModeToggle from "./src/components/atoms/DarkModeToggle";
 
@@ -34,18 +36,7 @@ function App() {
     const Stack = createNativeStackNavigator<RootStackParamList>();
     const linking = {
         prefixes: [prefix],
-        config: {
-            screens: {
-                initialRouteName: 'HomePage',
-                HomePage: {
-                    path: '',
-                },
-                QueueDashboard: {
-                    path: '/QueueDashboard'
-                },
-                NotFound: '*',
-            },
-        }
+        config: linkConfig
     }
     const isInQueue = true
     const isQueuer = true
@@ -75,7 +66,7 @@ function App() {
                         <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe"}} >
                             {isInQueue && isQueuer ? (
                             <>
-                                <Stack.Screen name="HomePage" component={QueueDashboardTabs} />
+                                <Stack.Screen name="HomePage" component={HomePage} />
                                 <Stack.Screen name="LandingPage" component={LandingPage} />
                                 <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                 <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
@@ -84,6 +75,7 @@ function App() {
                                 <Stack.Screen name="SummonScreen" component={SummonScreen} />
                                 <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
                                 <Stack.Screen name="QueuesPage" component={QueuesPage} />
+                                <Stack.Screen name="ConfirmationScreen" component={ConfirmationScreen} />
                                 <Stack.Screen name="NotFound" component={ErrorScreen} />
                             </>
                             ) : isInQueue && isOrganizer ? (
