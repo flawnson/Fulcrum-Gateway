@@ -74,7 +74,7 @@ input IntNullableFilter {
 type Mutation {
   changeOrganizerPassword(password: String!, token: String!): Organizer
   changeQueuePassword(password: String!, queueId: String!): Queue
-  changeStatus(status: String!, userId: String): User
+  changeStatus(status: String!, userId: String!): User
   confirmOrganizer(token: String!): Boolean!
   createOrganizer(email: String!, name: String!, password: String!): Organizer
   createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, password: String!): Queue

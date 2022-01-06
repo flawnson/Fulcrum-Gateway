@@ -42,6 +42,7 @@ export default function () {
                 estimated_wait
                 join_time
                 status
+                summoned
             }
         }
     `
@@ -59,6 +60,8 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
+                    // If summoned is toggled true, navigate to Summon Screen
+                    if (data.data.user.summoned) {navigation.navigate("SummonScreen")}
                     data = data.data.user
                     setState(data.data.queue.state)
                     const now: any = new Date()
@@ -70,7 +73,8 @@ export default function () {
                         "index",
                         "waited",
                         "average_wait",
-                        "estimated_wait"]
+                        "estimated_wait",
+                        "summoned"]
                         .filter(key => key in data)
                         .map(key => [key, data[key]]))
                     const terminalDigit = parseInt(info.index.toString().charAt(info.index.toString().length - 1))

@@ -4,14 +4,11 @@ import {
   Root, Int,
   Mutation, Arg, Args, ArgsType,
   InputType, Field,
-  Authorized, UseMiddleware
+  Authorized
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
 import * as helpers from "../../../helpers";
-import _ from 'lodash'
-import { userAccessPermission } from "../../../middleware/userAccessPermission";
-
 
 @ArgsType()
 class DeferUserArgs {
@@ -30,26 +27,43 @@ class DeferUserArgs {
 export class DeferUserResolver {
 
   @Authorized()
-  @UseMiddleware(userAccessPermission)
   @Mutation(returns => User, {
     nullable: true
   })
   async deferPosition(@Ctx() ctx: Context, @Args() args: DeferUserArgs): Promise<User | null> {
 
-    let queryUserId = "";
+    // if accessed by organizer
+    if (ctx.req.session.queueId && args.userId){
+      const exists = await helpers.userExistsInQueue(args.userId, ctx.req.session.queueId);
+      if (exists === false){
+        return null;
+      }
 
-    if (ctx.req.session!.userId) {
-      queryUserId = ctx.req.session!.userId;
+      // TODO: defer logic
+
     }
 
-    if (args.userId) {
-      queryUserId = args.userId;
+    // if accessed by user
+    if (ctx.req.session.userId){
+      // TODO: defer logic
     }
 
-    // Note to flawnson: Use queryUserId as the user id
-    // ...TODO
+    return null;
 
-    return null; //for now
+
+    // May need to import CustomUserResolver to access estimated_wait()
+
+    // const new_wait = await this.estimated_wait(user, {prisma})
+    // const result = await prisma.user.update({
+    //   where: {
+    //     id: user.id
+    //   },
+    //   data: {
+    //     state: "DEFERRED",
+    //     estimated_wait: new_wait
+    //   }
+    // })
+    // return result
 
   }
 }

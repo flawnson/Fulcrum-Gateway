@@ -59,15 +59,15 @@ export class UserUpdateManyMutationInput {
   })
   reneged_time?: NullableDateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => NullableIntFieldUpdateOperationsInput, {
-    nullable: true
-  })
-  total_wait?: NullableIntFieldUpdateOperationsInput | undefined;
-
   @TypeGraphQL.Field(_type => EnumUserStatusFieldUpdateOperationsInput, {
     nullable: true
   })
   status?: EnumUserStatusFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => NullableIntFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  total_wait?: NullableIntFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => NullableDateTimeFieldUpdateOperationsInput, {
     nullable: true
