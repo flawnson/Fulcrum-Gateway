@@ -4,11 +4,13 @@ import {
   Root, Int,
   Mutation, Arg, Args, ArgsType,
   InputType, Field,
-  Authorized
+  Authorized, UseMiddleware
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
 import * as helpers from "../../../helpers";
+import { userAccessPermission } from "../../../middleware/userAccessPermission";
+
 
 @ArgsType()
 class SummonUserArgs {
@@ -22,20 +24,12 @@ class SummonUserArgs {
 @Resolver()
 export class SummonUserResolver {
 
-  @Authorized("ORGANIZER")
+  @Authorized(["ORGANIZER", "ASSISTANT"])
+  @UseMiddleware(userAccessPermission)
   @Mutation(returns => User, {
     nullable: true
   })
   async summon(@Ctx() ctx: Context, @Args() args: SummonUserArgs): Promise<User | null> {
-    if (!ctx.req.session.queueId){
-      return null;
-    }
-
-    //check if the user you would to change is in the queue you own
-    const exists = await helpers.userExistsInQueue(args.userId, ctx.req.session.queueId);
-    if (exists === false){
-      return null;
-    }
 
     // check if user is ENQUEUED
     const user = await ctx.prisma.user.findUnique({
