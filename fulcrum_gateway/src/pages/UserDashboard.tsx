@@ -32,9 +32,6 @@ export default function () {
 
     const query = `
         query get_stats {
-            queue {
-                state
-            }
             getUser {
                 userId: id
                 name
@@ -43,6 +40,9 @@ export default function () {
                 join_time
                 status
                 summoned
+                queue {
+                    state
+                }
             }
         }
     `
@@ -53,9 +53,9 @@ export default function () {
             await response.json().then(
                 data => {
                     // If summoned is toggled true, navigate to Summon Screen
-                    if (data.data.user.summoned) {navigation.navigate("SummonScreen")}
-                    data = data.data.user
-                    setState(data.data.queue.state)
+                    data = data.data.getUser
+                    if (data.summoned) {navigation.navigate("SummonScreen")}
+                    setState(data.queue.state)
                     const now: any = new Date()
                     const join: any = new Date(data.join_time)
                     const waited = new Date(Math.abs(now - join))
