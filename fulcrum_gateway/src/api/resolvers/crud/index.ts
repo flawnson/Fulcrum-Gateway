@@ -10,6 +10,7 @@ export { LoginQueueResolver } from "./Queue/LoginQueueResolver";
 export { LogoutQueueResolver } from "./Queue/LogoutQueueResolver";
 export { GetQueueResolver } from "./Queue/GetQueueResolver";
 export { ChangeQueuePasswordResolver } from "./Queue/ChangeQueuePasswordResolver";
+export { ChangeQueueStateResolver } from "./Queue/ChangeQueueStateResolver";
 
 export { ConfirmOrganizerResolver } from "./Organizer/ConfirmOrganizerResolver";
 export { CreateOrganizerResolver } from "./Organizer/CreateOrganizerResolver";
@@ -18,3 +19,4 @@ export { ForgotOrganizerPasswordResolver } from "./Organizer/ForgotOrganizerPass
 export { LoginOrganizerResolver } from "./Organizer/LoginOrganizerResolver";
 export { LogoutOrganizerResolver } from "./Organizer/LogoutOrganizerResolver";
 export { ChangeOrganizerPasswordResolver } from "./Organizer/ChangeOrganizerPasswordResolver";
+export { GetOrganizerResolver } from "./Organizer/GetOrganizerResolver";

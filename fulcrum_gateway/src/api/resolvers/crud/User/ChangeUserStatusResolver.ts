@@ -13,7 +13,7 @@ import * as helpers from "../../../helpers";
 import { Context } from "../../../context.interface";
 
 @ArgsType()
-class ChangeStatusArgs {
+class ChangeUserStatusArgs {
   @Field({
     nullable: false
   })
@@ -33,7 +33,7 @@ export class ChangeUserStatusResolver {
   @Mutation(returns => User, {
     nullable: true
   })
-  async changeStatus(@Ctx() ctx: Context, @Args() args: ChangeStatusArgs): Promise<User | null> {
+  async changeUserStatus(@Ctx() ctx: Context, @Args() args: ChangeUserStatusArgs): Promise<User | null> {
     if (!ctx.req.session.queueId){
       return null;
     }
