@@ -74,14 +74,15 @@ input IntNullableFilter {
 type Mutation {
   changeOrganizerPassword(password: String!, token: String!): Organizer
   changeQueuePassword(password: String!, queueId: String!): Queue
-  changeStatus(status: String!, userId: String!): User
+  changeQueueState(queueId: String, state: String!): Queue
+  changeUserStatus(status: String!, userId: String!): User
   confirmOrganizer(token: String!): Boolean!
   createOrganizer(email: String!, name: String!, password: String!): Organizer
   createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, password: String!): Queue
   createUser(joinCode: String!, name: String!, phoneNumber: String!): User
   deferPosition(time: String!, userId: String): User
   deleteOrganizer: Organizer
-  deleteQueue(queueId: String): Queue
+  deleteQueue(queueId: String!): Queue
   forgotOrganizerPassword(email: String!): Boolean!
   loginOrganizer(email: String!, password: String!): Organizer
   loginQueue(joinCode: String!, password: String!): Queue
@@ -206,6 +207,7 @@ input OrganizerWhereInput {
 }
 
 type Query {
+  getOrganizer: Organizer
   getQueue(queueId: String): Queue
   getUser(userId: String): User
 }

@@ -74,23 +74,23 @@ export class UserScalarWhereWithAggregatesInput {
   })
   reneged_time?: DateTimeNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumUserStatusWithAggregatesFilter, {
-    nullable: true
-  })
-  status?: EnumUserStatusWithAggregatesFilter | undefined;
-
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
-    nullable: true
-  })
-  queue_id?: StringWithAggregatesFilter | undefined;
-
   @TypeGraphQL.Field(_type => IntNullableWithAggregatesFilter, {
     nullable: true
   })
   total_wait?: IntNullableWithAggregatesFilter | undefined;
 
+  @TypeGraphQL.Field(_type => EnumUserStatusWithAggregatesFilter, {
+    nullable: true
+  })
+  status?: EnumUserStatusWithAggregatesFilter | undefined;
+
   @TypeGraphQL.Field(_type => DateTimeNullableWithAggregatesFilter, {
     nullable: true
   })
   summoned_time?: DateTimeNullableWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+    nullable: true
+  })
+  queue_id?: StringWithAggregatesFilter | undefined;
 }
