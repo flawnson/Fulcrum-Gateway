@@ -9,27 +9,35 @@ export default function () {
     const [props, setProps] = useState<ServicedStats[]>([])
 
     const query = `
-        query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
-            queue(where: $queue_id) {
-                users {
-                    userId: id
+        query get_users($queueId: QueueWhereUniqueInput! $orderBy: [UserOrderByWithRelationInput!]) {
+            queue(where: $queueId) {
+                users(orderBy: $orderBy) {
+                    user_id: id
                     name
-                    join_time
+                    index
                     last_online
+                    join_time
                     status
+                    estimated_wait
                 }
             }
         }
     `
     const variables = `{
-    "queue_id": {
+        "queueId":
+        {
             "id": "costco_queue1"
+        },
+        "orderBy":
+        {
+            "index": "desc"
         }
     }`
 
     async function fetchServicedData () {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            const response = await fetch(`http://localhost:8080/api`,
+                                    {body: JSON.stringify({query: query, variables: variables})})
             await response.json().then(
                 data => {
                     data = data.data.queue.users

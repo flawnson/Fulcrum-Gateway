@@ -18,26 +18,25 @@ export default function (props: GenericTimePickerModalProps) {
     }, [setVisible])
 
     const query = `
-        mutation defer_user($id: String! $time: String!) {
-            deferPosition(id: $id time: $time) {
+        mutation defer_user($time: String!) {
+            deferPosition(time: $time) {
                 userId: id
                 status
             }
         }
     `
     const variables = `{
-        "id": "user3",
         "time": "1970-01-01T00:00:00.000Z"
     }`
 
-    async function deferPosition (userId: string) {
+    async function deferPosition () {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
+            const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({id: userId})
+                body: JSON.stringify({query: query, variables: variables})
             });
             return await response.json()
         } catch(error) {
@@ -49,7 +48,7 @@ export default function (props: GenericTimePickerModalProps) {
         ({ hours, minutes }) => {
             props.setModalVisible(false);
             console.log({ hours, minutes });
-            // deferPosition()
+            deferPosition()
             navigation.navigate("UserDashboard")
         },
         [setVisible]

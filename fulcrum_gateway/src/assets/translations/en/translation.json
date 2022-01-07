@@ -81,7 +81,8 @@
     "edit": "Edit Queue",
     "end": "End Queue",
     "pause": "Pause Queue",
-    "share": "Share Queue"
+    "share": "Share Queue",
+    "logout": "Logout"
   },
   "queueMultiSelectButtons": {
     "pause": "Pause Queues",

@@ -53,23 +53,23 @@ export class UserMinAggregate {
   })
   reneged_time!: Date | null;
 
-  @TypeGraphQL.Field(_type => UserStatus, {
-    nullable: true
-  })
-  status!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | null;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  queue_id!: string | null;
-
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true
   })
   total_wait!: number | null;
 
+  @TypeGraphQL.Field(_type => UserStatus, {
+    nullable: true
+  })
+  status!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | null;
+
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
   })
   summoned_time!: Date | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  queue_id!: string | null;
 }

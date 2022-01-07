@@ -14,6 +14,40 @@ type SignInFormType = {
 }
 
 export default ({navigation, setShowModal}: SignInFormType) => {
+
+    const query = `
+        mutation login_organizer($email: String!, $password: String!) {
+            loginOrganizer(email: $email, password: $password){
+                id
+            }
+        }
+    `
+    const variables = `{
+            "email": "test@gmail.com",
+            "password": "password123"
+        }
+    `
+
+    async function joinQueue () {
+        try {
+            const response = await fetch(`http://localhost:8080/api`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({query: query, variables: variables})
+            });
+            return await response.json()
+        } catch (error) {
+            return error
+        }
+    }
+
+    const onSignInPress = () => {
+        setShowModal(false)
+        navigation.navigate("QueueDashboard")
+    }
+
     return (
         <Box safeArea p="2" py="8" w="90%" maxW="290">
             <Heading
@@ -61,7 +95,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
                 <Button
                     mt="2"
                     colorScheme="indigo"
-                    onPress={null}>
+                    onPress={() => (onSignInPress)}>
                     Sign in
                 </Button>
                 <HStack mt="6" justifyContent="center">

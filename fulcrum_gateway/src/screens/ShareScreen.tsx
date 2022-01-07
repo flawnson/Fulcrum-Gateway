@@ -20,23 +20,17 @@ export default function() {
     useEffect(() => {fetchQRCode().then(null)}, [])
 
     const query = `
-        query get_share_data($queueId: QueueWhereUniqueInput!) {
-            queue(where: $queueId) {
+        query get_queue_stats {
+            getQueue {
                 joinCode
-                name
+                state
             }
         }
     `
-    const variables = `{
-        "queueId":
-        {
-            "id": "queueId"
-        }
-    }`
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            const response = await fetch(`http://localhost:8080/api`, {body: query})
             await response.json().then(
                 data => {
                     data = data.data.queue.name

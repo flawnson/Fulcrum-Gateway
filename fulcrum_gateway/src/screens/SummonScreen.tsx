@@ -29,7 +29,7 @@ export default function() {
                 address
                 grace_period
             }
-            user(where: $userId) {
+            getUser(where: $userId) {
                 summoned
             }
         }

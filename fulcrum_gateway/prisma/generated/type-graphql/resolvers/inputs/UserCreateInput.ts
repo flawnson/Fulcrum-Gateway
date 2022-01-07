@@ -69,11 +69,6 @@ export class UserCreateInput {
   })
   summoned_time?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
-  })
-  summoned_time?: Date | undefined;
-
   @TypeGraphQL.Field(_type => QueueCreateNestedOneWithoutUsersInput, {
     nullable: false
   })

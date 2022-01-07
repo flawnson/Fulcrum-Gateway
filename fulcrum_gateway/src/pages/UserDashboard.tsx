@@ -31,11 +31,11 @@ export default function () {
     const [state, setState] = useState("ACTIVE")
 
     const query = `
-        query get_stats($userId: UserWhereUniqueInput! $queueId: QueueWhereUniqueInput!) {
-            queue(where: $queueId) {
+        query get_stats {
+            queue {
                 state
             }
-            user(where: $userId) {
+            getUser {
                 userId: id
                 name
                 index
@@ -46,18 +46,10 @@ export default function () {
             }
         }
     `
-    const variables = `{
-    "userId": {
-            "id": "user1"
-        },
-    "queueId": {
-            "id": "costco_queue2"
-        }
-    }`
 
     const fetchUserStats = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            const response = await fetch(`http://localhost:8080/api`,{body: query})
             await response.json().then(
                 data => {
                     // If summoned is toggled true, navigate to Summon Screen

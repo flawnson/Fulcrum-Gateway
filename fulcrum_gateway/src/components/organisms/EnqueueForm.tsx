@@ -30,14 +30,19 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
         "phoneNumber": "1231114444"
     }`
 
+    const body = {
+        query: query,
+        variables: formData
+    }
+
     async function joinQueue () {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
+            const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(body)
             });
             return await response.json()
         } catch(error) {
@@ -88,7 +93,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                 </Center>
                 <Input
                     placeholder="Ex. 6477135354"
-                    onChangeText={(value) => setData({ ...formData, name: value })}
+                    onChangeText={(value) => setData({ ...formData, joinCode: value })}
                 />
                 <Center>
                     <FormControl.HelperText _text={{fontSize: 'xs'}}>
