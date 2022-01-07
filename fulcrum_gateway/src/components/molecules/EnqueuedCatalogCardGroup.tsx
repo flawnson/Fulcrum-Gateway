@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EnqueuedCatalogCard from "../atoms/EnqueuedCatalogCard";
 import { View, VStack } from "native-base";
+import { FlatList } from "react-native-gesture-handler"
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
@@ -82,9 +83,17 @@ export default function (props: EnqueuedStatsProps) {
 
     return (
         <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>
-            <VStack style={styles.stats}>
-                {EnqueuedStatCards}
-            </VStack>
+            <FlatList data={props.entities} renderItem={
+                ({item}) => {
+                    return <EnqueuedCatalogCard key={item.key}
+                                         onPress={() => handleOnPress(item.userStat)}
+                                         onLongPress={() => selectItems(item.userStat)}
+                                         deSelectItems={deSelectItems}
+                                         selected={getSelected(item.userStat)}
+                                         modified={getModified(item.userStat)}
+                                         entity={item.userStat}/>
+                }
+            }/>
         </Pressable>
     )
 }

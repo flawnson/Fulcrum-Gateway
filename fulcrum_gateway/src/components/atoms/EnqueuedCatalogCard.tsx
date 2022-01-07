@@ -9,6 +9,8 @@ import { HStack, Text,
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
 import { EnqueuedStats } from "../../../types";
+import { Swipeable, RectButton,
+        LongPressGestureHandler, TapGestureHandler} from "react-native-gesture-handler";
 
 type EnqueuedCatalogProps = {
     onPress: (event: GestureResponderEvent) => void,
@@ -55,52 +57,84 @@ export default function (props: EnqueuedCatalogProps) {
     const onBellPress = function () {
         setSummoned(!summoned)
     }
+
+    const renderLeftActions = (progress: any, dragX: any) => {
+        const trans = dragX.interpolate({
+            inputRange: [0, 50, 100, 101],
+            outputRange: [-20, 0, 0, 1],
+        });
+        return (
+            <RectButton style={styles.leftAction} onPress={this.close}>
+                <Animated.Text
+                    style={[
+                        styles.actionText,
+                        {
+                            transform: [{ translateX: trans }],
+                        },
+                    ]}>
+                    Delete
+                </Animated.Text>
+            </RectButton>
+        );
+    }
+
     return (
-        <Center>
-            <Box
-                rounded="lg"
-                borderRadius="lg"
-                overflow="hidden"
-                borderColor="coolGray.200"
-                borderWidth="1"
-                _dark={{
-                    borderColor: "coolGray.600",
-                    backgroundColor: "gray.700",
-                }}
-                _web={{
-                    shadow: "2",
-                    borderWidth: "0",
-                }}
-                _light={{
-                    backgroundColor: "gray.50",
-                }}
-                style={styles.card}
-            >
-                <HStack space='5' style={styles.group}>
-                    <Avatar style={styles.avatar} source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
-                        <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>
-                    </Avatar>
-                    <Text style={styles.text}>
-                        {props.entity.index}
-                    </Text>
-                    <Text suppressHighlighting={true} style={styles.text}>
-                        {props.entity.name}
-                    </Text>
-                    <VStack style={styles.text}>
-                        <Text>
-                            {props.entity.waited}
-                        </Text>
-                        <MaterialCommunityIcons selectable={false}
-                                                name={summoned ? "bell-circle" : "bell-circle-outline"}
-                                                size={32}
-                                                color={"#999999"}
-                                                style={styles.icon}
-                                                onPress={onBellPress}/>
-                    </VStack>
-                </HStack>
-                {props.selected && <View style={styles.overlay} />}
-            </Box>
-        </Center>
+        <Swipeable renderLeftActions={() => renderLeftActions}>
+            <LongPressGestureHandler
+                onHandlerStateChange={() => props.onLongPress}
+                minDurationMs={800}>
+                <TapGestureHandler
+                    onHandlerStateChange={() => props.onPress}>
+                    {/*waitFor={this.doubleTapRef}>*/}
+                    <Center>
+                        <Box
+                            rounded="lg"
+                            borderRadius="lg"
+                            overflow="hidden"
+                            borderColor="coolGray.200"
+                            borderWidth="1"
+                            _dark={{
+                                borderColor: "coolGray.600",
+                                backgroundColor: "gray.700",
+                            }}
+                            _web={{
+                                shadow: "2",
+                                borderWidth: "0",
+                            }}
+                            _light={{
+                                backgroundColor: "gray.50",
+                            }}
+                            style={styles.card}
+                        >
+                            <HStack space='5' style={styles.group}>
+                                <Avatar style={styles.avatar}
+                                        source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
+                                    <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>
+                                </Avatar>
+                                <Text style={styles.text}>
+                                    {props.entity.index}
+                                </Text>
+                                <Text suppressHighlighting={true} style={styles.text}>
+                                    {props.entity.name}
+                                </Text>
+                                <VStack style={styles.text}>
+                                    <Text>
+                                        {props.entity.waited}
+                                    </Text>
+                                    <MaterialCommunityIcons selectable={false}
+                                                            name={summoned ? "bell-circle" : "bell-circle-outline"}
+                                                            size={32}
+                                                            color={"#999999"}
+                                                            style={styles.icon}
+                                                            onPress={onBellPress}/>
+                                </VStack>
+                            </HStack>
+                            {props.selected && <View style={styles.overlay} />}
+                        </Box>
+                    </Center>
+                </TapGestureHandler>
+            </LongPressGestureHandler>
+        </Swipeable>
     );
 }
 
@@ -133,5 +167,11 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
+    leftAction: {
+        backgroundColor: 'red'
+    },
+    actionText: {
+        fontSize: 30
+    }
 })
 

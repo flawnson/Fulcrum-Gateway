@@ -10,7 +10,7 @@ export default function () {
 
     const query = `
         query get_users($queueId: QueueWhereUniqueInput! $orderBy: [UserOrderByWithRelationInput!]) {
-            queue(where: $queueId) {
+            getQueue(where: $queueId) {
                 users(orderBy: $orderBy) {
                     userId: id
                     name
@@ -35,7 +35,12 @@ export default function () {
     async function fetchUserData () {
         try {
             const response = await fetch(`http://localhost:8080/api`,
-                                     {body: JSON.stringify({query: query, variables: variables})})
+                                     {
+                                         method: 'POST',
+                                         headers: {
+                                             'Content-Type': 'application/json'
+                                         },
+                                         body: JSON.stringify({query: query, variables: variables})})
             await response.json().then(
                 data => {
                     data = data.data.queue.users
