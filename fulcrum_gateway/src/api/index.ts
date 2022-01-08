@@ -50,7 +50,17 @@ async function bootstrap(){
   const app = express();
   const port = 8080;
 
-  app.use(cors())
+  let originUrl = "http://localhost:19006";
+  if (process.env.NODE_ENV === "production"){
+      originUrl = process.env.ORIGIN_URL;
+  }
+
+  app.use(
+    cors({
+      credentials: true,
+      origin: originUrl
+    })
+  );
 
   const RedisStore = connectRedis(session)
 
@@ -64,7 +74,7 @@ async function bootstrap(){
         cookie: {
           maxAge: 10000000000, //long time
           httpOnly: true,
-          secure: false,  //cookie only works in https (we are developing)
+          secure: process.env.NODE_ENV === "production",  //cookie only works in https (we are developing) - set to true for production
           sameSite: 'lax'
         },
         saveUninitialized: false,
