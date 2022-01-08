@@ -76,6 +76,17 @@ and run node (Before you actually run though you'll want to set up the database 
 or if you want to use nodemon:
 `nodemon index.ts`
 
+Next set up a .env file with the following variables:
+```
+DATABASE_URL="postgresql database url"
+SESSION_SECRET="express session secret"
+NODE_ENV="development or production"
+SMTP_USERNAME="username for smtp service you're using"
+SMTP_PASSWORD="password for smtp service you're using"
+SMTP_SERVER="smtp server host"
+SENDER_EMAIL="the sender email (ex: hello@fiefoe.com)"
+```
+
 ## Database setup
 You can install postgres any way you want. Using brew or their GUI interface will work.
 But you can also use Docker:
