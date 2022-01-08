@@ -10,6 +10,8 @@ export const createConfirmationUrl = async (organizerId: string) => {
   if (process.env.NODE_ENV === "production"){
     // TODO: FILL THIS IN
     // RETURN PRODUCTION URL
+    //for now return the same localhost url
+    return `http://localhost:3000/organizer/confirm/${confirmOrganizerPrefix + token}`;
   }
 
   //development

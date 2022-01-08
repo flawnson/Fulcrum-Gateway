@@ -1,23 +1,42 @@
 import nodemailer from "nodemailer";
 
 export async function sendEmail(email: string, url: string, task: string) {
-  const account = await nodemailer.createTestAccount();
 
-  const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: account.user, // generated ethereal user
-      pass: account.pass // generated ethereal password
-    }
-  });
+  let transporter = null;
+
+  if (process.env.NODE_ENV === "production"){
+    //production environment
+    transporter = nodemailer.createTransport({
+      host: process.env.SMTP_SERVER,
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.env.SMTP_USERNAME, // generated ethereal user
+        pass: process.env.SMTP_PASSWORD // generated ethereal password
+      }
+    });
+  }
+  else {
+    console.log("Using test email account to send email.")
+    //development environment
+    const account = await nodemailer.createTestAccount();
+    transporter = nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: account.user, // generated ethereal user
+        pass: account.pass // generated ethereal password
+      }
+    });
+
+  }
 
   let mailOptions = {};
 
   if (task === "confirm"){
     mailOptions = {
-      from: '"Fiefoe" <hello@fiefoe.io>', // sender address
+      from: '"Fiefoe" <' + process.env.SENDER_EMAIL + '>', // sender address
       to: email, // list of receivers
       subject: "Confirm your email to finish signup", // Subject line
       text: "Please click the link below to confirm your email:", // plain text body
@@ -36,7 +55,9 @@ export async function sendEmail(email: string, url: string, task: string) {
 
   const info = await transporter.sendMail(mailOptions);
 
-  console.log("Message sent: %s", info.messageId);
+  console.log("Email sent: %s", info.messageId);
   // Preview only available when sending through an Ethereal account
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  if (process.env.NODE_ENV === "development") {
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  }
 }
