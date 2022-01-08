@@ -7,6 +7,7 @@ import {
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
+import { sendSMS } from "../../../helpers";
 
 @ArgsType()
 class CreateUserArgs {
@@ -70,7 +71,17 @@ export class CreateUserResolver {
         }
       });
 
-      ctx.req.session!.userId = createUser.id;
+
+      if (createUser != null){
+        // generate verification code
+
+
+        // send SMS here
+        //await sendSMS(args.phoneNumber);
+        
+        // create session
+        ctx.req.session!.userId = createUser.id;
+      }
       return createUser;
 
     })
