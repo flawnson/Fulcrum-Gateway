@@ -4,8 +4,8 @@ import { Box, Heading,
         Input, Button,
         Text, Link,
         HStack } from "native-base"
-import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {RootStackParamList} from "../../../types";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../types";
 
 
 type SignInFormType = {
@@ -50,31 +50,9 @@ export default ({navigation, setShowModal}: SignInFormType) => {
 
     return (
         <Box safeArea p="2" py="8" w="90%" maxW="290">
-            <Heading
-                size="lg"
-                fontWeight="600"
-                color="coolGray.800"
-                _dark={{
-                    color: "warmGray.50",
-                }}
-            >
-                Welcome
-            </Heading>
-            <Heading
-                mt="1"
-                _dark={{
-                    color: "warmGray.200",
-                }}
-                color="coolGray.600"
-                fontWeight="medium"
-                size="xs"
-            >
-                Sign in to continue!
-            </Heading>
-
             <VStack space={3} mt="5">
                 <FormControl>
-                    <FormControl.Label>Email ID</FormControl.Label>
+                    <FormControl.Label>Join code</FormControl.Label>
                     <Input />
                 </FormControl>
                 <FormControl>
