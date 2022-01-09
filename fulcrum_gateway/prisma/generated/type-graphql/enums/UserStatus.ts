@@ -1,6 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 
 export enum UserStatus {
+  UNVERIFIED = "UNVERIFIED",
   KICKED = "KICKED",
   ENQUEUED = "ENQUEUED",
   SERVICED = "SERVICED",

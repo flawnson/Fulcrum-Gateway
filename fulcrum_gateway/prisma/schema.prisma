@@ -54,7 +54,7 @@ model User {
   reneged_time  DateTime?
   total_wait    Int?
   /// @TypeGraphQL.omit(output: true)
-  status        UserStatus @default(ENQUEUED)
+  status        UserStatus @default(UNVERIFIED)
   summoned_time DateTime?
   queue_id      String
   queue         Queue      @relation("users_in_queue", fields: [queue_id], references: [id], onDelete: Cascade)
@@ -67,6 +67,7 @@ enum QueueState {
 }
 
 enum UserStatus {
+  UNVERIFIED
   KICKED
   ENQUEUED
   SERVICED

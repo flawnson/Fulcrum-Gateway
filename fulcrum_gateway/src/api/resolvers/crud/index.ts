@@ -3,6 +3,7 @@ export { ChangeUserStatusResolver } from "./User/ChangeUserStatusResolver";
 export { CreateUserResolver } from "./User/CreateUserResolver";
 export { SummonUserResolver } from "./User/SummonUserResolver";
 export { GetUserResolver } from "./User/GetUserResolver";
+export { ConfirmUserResolver } from "./User/ConfirmUserResolver";
 
 export { CreateQueueResolver } from "./Queue/CreateQueueResolver";
 export { DeleteQueueResolver } from "./Queue/DeleteQueueResolver";

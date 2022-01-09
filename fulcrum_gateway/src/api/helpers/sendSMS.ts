@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse} from 'axios';
 
-export async function sendSMS(phoneNumber: string) {
+export async function sendSMS(phoneNumber: string, confirmCode: string) {
   const url = process.env.SMS_API_URL!;
 
   //if phone number doesn't start with a + then add it.
@@ -11,7 +11,7 @@ export async function sendSMS(phoneNumber: string) {
   const data = JSON.stringify({
     "To": phoneNumber,
     "From": "Fiefoe",
-    "Text": "Your verification code: 123456"
+    "Text": "Use this code to enter the line: " + confirmCode
   });
 
   const config: AxiosRequestConfig = {
@@ -24,6 +24,13 @@ export async function sendSMS(phoneNumber: string) {
     data : data
   };
 
-  const response: AxiosResponse = await axios(config);
-  console.log("SMS sent to " + phoneNumber);
+  if (process.env.NODE_ENV === "production"){
+    const response: AxiosResponse = await axios(config);
+    console.log("SMS sent to " + phoneNumber);
+  }
+  else {
+    console.log("DEVELOPMENT MODE SMS")
+    console.log("(SMS) Use this code to enter the line: " + confirmCode);
+  }
+
 }
