@@ -22,6 +22,7 @@ export class DeleteOrganizerResolver {
   async deleteOrganizer(@Ctx() ctx: Context): Promise<Organizer | null> {
 
     if (!ctx.req.session.organizerId){
+      console.log("Can't delete organizer: Not logged in.");
       return null;
     }
 

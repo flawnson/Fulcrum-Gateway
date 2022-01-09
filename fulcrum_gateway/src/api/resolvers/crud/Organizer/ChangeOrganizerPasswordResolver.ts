@@ -36,6 +36,7 @@ export class ChangeOrganizerPasswordResolver {
     const organizerId = await redis.get(forgotOrganizerPasswordPrefix + args.token);
 
     if (!organizerId) {
+      console.log("Unable to change password: Organizer password change token does not exist.")
       return null;
     }
 
@@ -46,6 +47,7 @@ export class ChangeOrganizerPasswordResolver {
     });
 
     if (!organizer) {
+      console.log("Unable to change password: Organizer does not exist.")
       return null;
     }
 

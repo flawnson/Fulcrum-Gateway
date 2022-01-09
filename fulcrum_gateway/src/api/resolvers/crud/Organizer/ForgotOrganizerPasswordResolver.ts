@@ -30,6 +30,7 @@ export class ForgotOrganizerPasswordResolver {
     });
 
     if (!organizer) {
+      console.log("Can't reset password");
       return false;
     }
 

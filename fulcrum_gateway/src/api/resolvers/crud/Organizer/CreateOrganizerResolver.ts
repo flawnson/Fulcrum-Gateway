@@ -57,6 +57,9 @@ export class CreateOrganizerResolver {
     if (organizer != null){
       await sendEmail(args.email, await createConfirmationUrl(organizer.id), "confirm");
     }
+    else {
+      console.log("Can't send confirmation email: Organizer account failed to create. ")
+    }
 
     return organizer;
   }
