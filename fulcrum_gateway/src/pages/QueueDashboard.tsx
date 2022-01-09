@@ -48,11 +48,16 @@ export default function () {
 
     async function fetchQueueData () {
         try {
-            const response = await fetch(`http://localhost:8080/api`,
-                                     {body: JSON.stringify({query: query})})
+            const response = await fetch(`http://localhost:8080/api`, {
+                                         method: 'POST',
+                                         headers: {
+                                             'Content-Type': 'application/json'
+                                         },
+                                         body: JSON.stringify({query: query})
+            })
             await response.json().then(
                 data => {
-                    const name = data.data.queue.name
+                    const name = data.data.getQueue.name
                     data = data.data.queue.users
                     const statuses = ["ENQUEUED", "SERVICED", "DEFERRED", "ABANDONED", "NOSHOW"]
                     const counts = []

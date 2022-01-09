@@ -48,7 +48,6 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData}),
             });
-            console.log(await response.json())
             return await response.json()
         } catch (error) {
             return error
@@ -82,7 +81,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
     const onSuccess = () => {
         setShowModal(false)
         setSubmitted(false)
-        navigation.navigate("QueueDashboard")
+        navigation.navigate("QueuesPage")
     }
 
     const onFailure = () => {

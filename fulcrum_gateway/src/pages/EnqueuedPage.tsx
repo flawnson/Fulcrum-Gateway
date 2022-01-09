@@ -9,23 +9,21 @@ export default function () {
     const [props, setProps] = useState<EnqueuedStats[]>([])
 
     const query = `
-        query get_users($queueId: QueueWhereUniqueInput! $orderBy: [UserOrderByWithRelationInput!]) {
-            getQueue(where: $queueId) {
+        query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
+            getQueue(queueId: $queueId) {
                 users(orderBy: $orderBy) {
                     userId: id
                     name
-                    join_time
+                    index
                     last_online
+                    join_time
                     status
                 }
             }
         }
     `
     const variables = `{
-        "queueId":
-            {
-                "id": "costco_queue1"
-            },
+        "queueId": "costco_queue1",
         "orderBy":
             {
                 "index": "desc"
@@ -38,12 +36,14 @@ export default function () {
                                      {
                                          method: 'POST',
                                          headers: {
-                                             'Content-Type': 'application/json'
+                                             'Content-Type': 'application/json',
+                                             'Access-Control-Allow-Origin': 'http://localhost:19006/',
                                          },
+                                         credentials: 'include',
                                          body: JSON.stringify({query: query, variables: variables})})
             await response.json().then(
                 data => {
-                    data = data.data.queue.users
+                    data = data.data.getQueue.users
                     data = data.filter((d: EnqueuedStats) => d.status === "ENQUEUED" || d.status === "DEFERRED")
                     let user_stats: EnqueuedStats[] = []
                     data.forEach((queue_data: {[key: string]: any}) => {
@@ -52,13 +52,8 @@ export default function () {
                         const waited = new Date(Math.abs(now - join))
                         queue_data.waited = `${Math.floor(waited.getMinutes())}`
                         queue_data.online = new Date(queue_data.last_online) === new Date()
-                        const stats: SetStateAction<any> = Object.fromEntries([
-                            "userId",
-                            "name",
-                            "index",
-                            "waited",
-                            "online",
-                            "state"]
+                        const stats: SetStateAction<any> = Object.fromEntries(
+                            ["userId", "name", "index", "waited", "online", "status"]
                             .filter(key => key in queue_data)
                             .map(key => [key, queue_data[key]]))
                         user_stats.push(stats)

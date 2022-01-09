@@ -42,6 +42,7 @@ export default function (props: EnqueuedStatsProps) {
     }, [selectedItems])
 
     const handleOnPress = (item: EnqueuedStats) => {
+        console.log("handleOnPress triggered")
         if (selectedItems.length) {
             return selectItems(item)
         }
@@ -85,13 +86,13 @@ export default function (props: EnqueuedStatsProps) {
         <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>
             <FlatList data={props.entities} renderItem={
                 ({item}) => {
-                    return <EnqueuedCatalogCard key={item.key}
-                                         onPress={() => handleOnPress(item.userStat)}
-                                         onLongPress={() => selectItems(item.userStat)}
-                                         deSelectItems={deSelectItems}
-                                         selected={getSelected(item.userStat)}
-                                         modified={getModified(item.userStat)}
-                                         entity={item.userStat}/>
+                    return <EnqueuedCatalogCard key={item.userId}
+                                                onPress={() => handleOnPress(item)}
+                                                onLongPress={() => selectItems(item)}
+                                                deSelectItems={deSelectItems}
+                                                selected={getSelected(item)}
+                                                modified={getModified(item)}
+                                                entity={item}/>
                 }
             }/>
         </Pressable>

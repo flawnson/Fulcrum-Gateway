@@ -11,10 +11,13 @@ import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
 import { EnqueuedStats } from "../../../types";
 import { Swipeable, RectButton,
         LongPressGestureHandler, TapGestureHandler} from "react-native-gesture-handler";
+import {HandlerStateChangeEvent,
+        LongPressGestureHandlerEventPayload,
+        TapGestureHandlerEventPayload} from "react-native-gesture-handler";
 
 type EnqueuedCatalogProps = {
-    onPress: (event: GestureResponderEvent) => void,
-    onLongPress: (event: GestureResponderEvent) => void,
+    onPress: (event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) => void,
+    onLongPress: (event: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => void,
     deSelectItems: () => void,
     selected: boolean,
     modified: string,
@@ -27,7 +30,6 @@ export default function (props: EnqueuedCatalogProps) {
     const query = `
         mutation summon_user($userId: String!) {
             summon(where: $userId) {
-                name
                 summoned
             }
         }
@@ -36,12 +38,12 @@ export default function (props: EnqueuedCatalogProps) {
     async function toggleSummonUser (userId: string) {
         try {
             const response = await fetch(`http://localhost:8080/api`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({query: query, variables: {userId: {id: userId}}})
-            });
+                                         method: 'POST',
+                                         headers: {
+                                             'Content-Type': 'application/json'
+                                         },
+                                         body: JSON.stringify({query: query, variables: {userId: userId}})
+                                     });
             // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
@@ -77,15 +79,19 @@ export default function (props: EnqueuedCatalogProps) {
             </RectButton>
         );
     }
+    const longPressRef = React.createRef()
 
     return (
-        <Swipeable renderLeftActions={() => renderLeftActions}>
+        <Swipeable renderLeftActions={renderLeftActions}>
             <LongPressGestureHandler
-                onHandlerStateChange={() => props.onLongPress}
-                minDurationMs={800}>
+                onHandlerStateChange={props.onLongPress}
+                minDurationMs={1000}
+                ref={longPressRef}
+            >
                 <TapGestureHandler
-                    onHandlerStateChange={() => props.onPress}>
-                    {/*waitFor={this.doubleTapRef}>*/}
+                    onHandlerStateChange={props.onPress}
+                    waitFor={longPressRef}
+                >
                     <Center>
                         <Box
                             rounded="lg"
