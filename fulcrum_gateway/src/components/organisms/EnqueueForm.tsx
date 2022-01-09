@@ -11,11 +11,18 @@ type EnqueueFormProps = {
     setShowModal?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+type EnqueueFormData = {
+    name?: string
+    joinCode?: string
+    phoneNumber?: number
+}
+
 
 export default function ({navigation, setShowModal}: EnqueueFormProps) {
-    const [formData, setData] = React.useState<any>({submitted: false});
-    const [errors, setErrors] = React.useState<object>({});
-    const { t, i18n } = useTranslation(["homePage", "common"]);
+    const [formData, setData] = React.useState<EnqueueFormData>({})
+    const [submitted, setSubmitted] = React.useState<boolean>(false)
+    const [errors, setErrors] = React.useState<object>({})
+    const { t, i18n } = useTranslation(["homePage", "common"])
 
     const query = `
         mutation create_user($joinCode: String!, $phoneNumber: String!, $name: String!) {
@@ -30,11 +37,6 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
         "phoneNumber": "1231114444"
     }`
 
-    const body = {
-        query: query,
-        variables: formData
-    }
-
     async function joinQueue () {
         try {
             const response = await fetch(`http://localhost:8080/api`, {
@@ -42,7 +44,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(body)
+                body: JSON.stringify({query: query, variables: formData})
             });
             return await response.json()
         } catch(error) {
@@ -68,13 +70,13 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     };
 
     const onSuccess = () => {
-        setData({...formData, submitted: true})
+        setSubmitted(true)
         navigation.navigate("UserDashboard")
-        setData({...formData, submitted: false})  // In case user goes back to home page (probably wrong :P)
+        setSubmitted(false)  // In case user goes back to home page (probably wrong :P)
     }
 
     const onFailure = () => {
-        setData({...formData, submitted: false})
+        setSubmitted(false)
         setErrors({...errors, invalid: "invalid submission"})
     }
 
@@ -102,7 +104,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                 </Center>
                 <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>Error Name</FormControl.ErrorMessage>
             </FormControl>
-            <Button onPress={onSubmit} mt="5" isLoading={formData.submitted} isLoadingText="Submitting">
+            <Button onPress={onSubmit} mt="5" isLoading={submitted} isLoadingText="Submitting...">
                 <Text bold color={'white'}>
                     {t('submit', { ns: 'common' })}
                 </Text>

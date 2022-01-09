@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useState } from "react"
 import { Box, Heading,
         VStack, FormControl,
         Input, Button,
@@ -13,18 +13,21 @@ type SignInFormType = {
     setShowModal: Function
 }
 
+type AssistantFormData = {
+    joinCode?: string,
+    password?: string
+}
+
 export default ({navigation, setShowModal}: SignInFormType) => {
+    const [formData, setData] = useState<AssistantFormData>({});
+    const [submitted, setSubmitted] = useState<boolean>(false)
+    const [errors, setErrors] = useState<object>({});
 
     const query = `
-        mutation login_organizer($email: String!, $password: String!) {
-            loginOrganizer(email: $email, password: $password){
+        mutation login_queue($joinCode: String!, $password: String!) {
+            loginQueue(joinCode: $joinCode, password: $password){
                 id
             }
-        }
-    `
-    const variables = `{
-            "email": "test@gmail.com",
-            "password": "password123"
         }
     `
 
@@ -33,15 +36,40 @@ export default ({navigation, setShowModal}: SignInFormType) => {
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
                 },
-                body: JSON.stringify({query: query, variables: variables})
+                credentials: 'include',
+                body: JSON.stringify({query: query, variables: formData})
             });
             return await response.json()
         } catch (error) {
             return error
         }
     }
+
+    const validate = () => {
+        if (formData.joinCode === undefined) {
+            setErrors({
+                ...errors,
+                email: 'Oops! Looks like you forgot to provide a joinCode...',
+            });
+            return false;
+        } else if (formData.joinCode?.length !== 6){
+            setErrors({
+                ...errors,
+                email: "Oops! Looks like you didn't enter a valid email...",
+            });
+            return false;
+        } else if (formData.password === undefined) {
+            setErrors({
+                ...errors,
+                password: 'Oops! Looks like you forgot to provide a password...',
+            });
+            return false;
+        }
+        return true;
+    };
 
     const onSignInPress = () => {
         setShowModal(false)
@@ -53,27 +81,26 @@ export default ({navigation, setShowModal}: SignInFormType) => {
             <VStack space={3} mt="5">
                 <FormControl>
                     <FormControl.Label>Join code</FormControl.Label>
-                    <Input />
+                    <Input
+                        placeholder="Ex. 777777"
+                        onChangeText={(value) => setData({ ...formData, joinCode: value })}
+                     />
                 </FormControl>
                 <FormControl>
                     <FormControl.Label>Password</FormControl.Label>
-                    <Input type="password" />
-                    <Link
-                        _text={{
-                            fontSize: "xs",
-                            fontWeight: "500",
-                            color: "indigo.500",
-                        }}
-                        alignSelf="flex-end"
-                        mt="1"
-                    >
-                        Forget Password?
-                    </Link>
+                    <Input
+                        type="password"
+                        placeholder="Shhh it's a secret"
+                        onChangeText={(value) => setData({ ...formData, password: value })}
+                    />
                 </FormControl>
                 <Button
                     mt="2"
                     colorScheme="indigo"
-                    onPress={() => (onSignInPress)}>
+                    onPress={() => (onSignInPress)}
+                    isLoading={submitted}
+                    isLoadingText="Logging in..."
+                >
                     Sign in
                 </Button>
                 <HStack mt="6" justifyContent="center">

@@ -50,7 +50,12 @@ async function bootstrap(){
   const app = express();
   const port = 8080;
 
-  app.use(cors())
+  app.use(
+      cors({
+          credentials: true,
+          origin: "http://localhost:19006"
+      })
+  );
 
   const RedisStore = connectRedis(session)
 
