@@ -12,17 +12,17 @@ export class EnumUserStatusFilter {
   @TypeGraphQL.Field(_type => UserStatus, {
     nullable: true
   })
-  equals?: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | undefined;
+  equals?: "UNVERIFIED" | "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | undefined;
 
   @TypeGraphQL.Field(_type => [UserStatus], {
     nullable: true
   })
-  in?: Array<"KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW"> | undefined;
+  in?: Array<"UNVERIFIED" | "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW"> | undefined;
 
   @TypeGraphQL.Field(_type => [UserStatus], {
     nullable: true
   })
-  notIn?: Array<"KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW"> | undefined;
+  notIn?: Array<"UNVERIFIED" | "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW"> | undefined;
 
   @TypeGraphQL.Field(_type => NestedEnumUserStatusFilter, {
     nullable: true

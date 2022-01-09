@@ -59,7 +59,7 @@ export class User {
   })
   total_wait?: number | null;
 
-  status?: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+  status?: "UNVERIFIED" | "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
 
   @TypeGraphQL.Field(_type => Date, {
     nullable: true

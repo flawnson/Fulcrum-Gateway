@@ -61,7 +61,7 @@ export class UserCreateWithoutQueueInput {
   @TypeGraphQL.Field(_type => UserStatus, {
     nullable: true
   })
-  status?: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | undefined;
+  status?: "UNVERIFIED" | "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | undefined;
 
   @TypeGraphQL.Field(_type => Date, {
     nullable: true

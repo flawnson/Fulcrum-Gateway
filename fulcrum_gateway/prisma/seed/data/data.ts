@@ -80,7 +80,7 @@ export let queue_table = [
   {
     id: "costco_queue1",
     organizer_id: "costco_toronto",
-    join_code: "123456",
+    join_code: "123abc",
     name: "Queue1",
     address: "somewhere, someplace",
     state: QueueState.ACTIVE,

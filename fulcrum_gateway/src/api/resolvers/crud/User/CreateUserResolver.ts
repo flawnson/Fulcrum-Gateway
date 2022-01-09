@@ -8,6 +8,8 @@ import {
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
 import { sendSMS } from "../../../helpers";
+import { redis } from "../../../redisClient";
+
 
 @ArgsType()
 class CreateUserArgs {
@@ -36,6 +38,10 @@ export class CreateUserResolver {
   async createUser(@Ctx() ctx: Context, @Args() args: CreateUserArgs): Promise<User | null> {
     // make queries atomic so they immediately follow one another (prevents joining a queue that just got deleted)
     return await ctx.prisma.$transaction(async (prisma) => {
+
+      // convert joincode to all lowercase for comparison
+      args.joinCode = args.joinCode.toLowerCase();
+
       //check if theres a queue with that join code
       const result = await prisma.queue.findUnique({
         where: {
@@ -60,7 +66,7 @@ export class CreateUserResolver {
       const index = result.users.length + 1;
       const currentTime = new Date();
       const queueId = result.id;
-      // create a new user
+      // create a new user (by default unverified)
       const createUser = await prisma.user.create({
         data: {
           name: args.name,
@@ -73,14 +79,26 @@ export class CreateUserResolver {
 
 
       if (createUser != null){
-        // generate verification code
-
+        // generate 6 digit verification code
+        let confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
+        //check if this verification code is already in use by another user
+        while (true) {
+          const checkCode = await redis.get(confirmCode);
+          if (checkCode) {
+            console.log("Code " + confirmCode + " already exists, generating new one");
+            // already exists, generate new code
+            confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
+          }
+          else {
+            break;
+          }
+        }
+        // save code to redis
+        await redis.set(confirmCode, createUser.id, "ex", 60 * 60 * 0.5); // 0.5 hour expiration
 
         // send SMS here
-        //await sendSMS(args.phoneNumber);
-        
-        // create session
-        ctx.req.session!.userId = createUser.id;
+        await sendSMS(args.phoneNumber, confirmCode);
+
       }
       return createUser;
 
