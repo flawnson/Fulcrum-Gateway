@@ -76,6 +76,8 @@ export type DashboardStat = {
     "suffix": string,
 }
 
+export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"
+
 
 // /*** QUEUE DASHBOARD TYPES ***/
 //

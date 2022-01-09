@@ -1,27 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import EnqueuedCatalogCard from "../atoms/EnqueuedCatalogCard";
-import { View, VStack } from "native-base";
+import { Center } from "native-base";
 import { FlatList } from "react-native-gesture-handler"
-import { StyleSheet, Pressable } from "react-native";
+import { StyleSheet, Pressable, PressableStateCallbackType} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
 import EnqueuedMultiSelectButtons from "../../containers/EnqueuedMultiSelectButtons"
 import { EnqueuedStats } from "../../../types";
 
 
-type State = "ENQUEUED" | "KICKED" | "SERVICED" | "SUMMONED"
-
+type Status = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED"
 type EnqueuedStatsProps = {
     entities: Array<EnqueuedStats>
+    setEntities: React.Dispatch<React.SetStateAction<EnqueuedStats[]>>
+}
+type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
+type ConditionalWrapperArgs = {
+    condition: number | boolean,  // Uses 0 as false and any other number as true
+    wrapper: (children: Children) => any
+    children: any
 }
 
 export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const parentNavigation = navigation.getParent()
-    const [action, setAction] = useState<State>("ENQUEUED")
+    const [action, setAction] = useState<Status>("ENQUEUED")
     const [selectedItems, setSelectedItems] = useState<Array<EnqueuedStats["userId"]>>([])
 
-    function onActionPress (action: State) {
+    function onActionPress(action: Status) {
         setAction(action)
     }
 
@@ -42,7 +48,6 @@ export default function (props: EnqueuedStatsProps) {
     }, [selectedItems])
 
     const handleOnPress = (item: EnqueuedStats) => {
-        console.log("handleOnPress triggered")
         if (selectedItems.length) {
             return selectItems(item)
         }
@@ -61,7 +66,9 @@ export default function (props: EnqueuedStatsProps) {
 
     const selectItems = (item: EnqueuedStats) => {
         if (parentNavigation) {
-            parentNavigation.setOptions({headerRight: () => <EnqueuedMultiSelectButtons onActionPress={onActionPress} />})
+            parentNavigation.setOptions({
+                headerRight: () => <EnqueuedMultiSelectButtons onActionPress={onActionPress}/>
+            })
         }
 
         if (selectedItems.includes(item.userId)) {
@@ -73,37 +80,33 @@ export default function (props: EnqueuedStatsProps) {
         setSelectedItems([...selectedItems, item.userId])
     }
 
-    const EnqueuedStatCards = Object.entries(props.entities).map(([key, userStat]) =>
-        <EnqueuedCatalogCard key={key}
-                             onPress={() => handleOnPress(userStat)}
-                             onLongPress={() => selectItems(userStat)}
-                             deSelectItems={deSelectItems}
-                             selected={getSelected(userStat)}
-                             modified={getModified(userStat)}
-                             entity={userStat}/>)
+    const ConditionalWrapper = ({condition, wrapper, children}: ConditionalWrapperArgs) =>
+        condition ? wrapper(children) : children;
 
     return (
-        <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>
-            <FlatList data={props.entities} renderItem={
-                ({item}) => {
-                    return <EnqueuedCatalogCard key={item.userId}
-                                                onPress={() => handleOnPress(item)}
-                                                onLongPress={() => selectItems(item)}
-                                                deSelectItems={deSelectItems}
-                                                selected={getSelected(item)}
-                                                modified={getModified(item)}
-                                                entity={item}/>
-                }
-            }/>
-        </Pressable>
+        <Center>
+            <ConditionalWrapper
+                condition={selectedItems.length}
+                wrapper={(children: Children) => <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>{children}</Pressable>}
+            >
+                <FlatList
+                    data={props.entities}
+                    renderItem={({item}) => {
+                        return <EnqueuedCatalogCard
+                                    entities={props.entities}
+                                    setEntities={props.setEntities}
+                                    onPress={() => handleOnPress(item)}
+                                    onLongPress={() => selectItems(item)}
+                                    deSelectItems={deSelectItems}
+                                    selected={getSelected(item)}
+                                    modified={getModified(item)}
+                                    entity={item}/>
+                        }
+                    }
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            </ConditionalWrapper>
+        </Center>
     )
 }
-
-
-const styles = StyleSheet.create({
-    stats: {
-        marginTop: 25,
-        marginBottom: 25,
-    },
-})
 

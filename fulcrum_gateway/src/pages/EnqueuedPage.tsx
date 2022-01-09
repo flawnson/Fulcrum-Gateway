@@ -26,7 +26,7 @@ export default function () {
         "queueId": "costco_queue1",
         "orderBy":
             {
-                "index": "desc"
+                "index": "asc"
             }
     }`
 
@@ -73,6 +73,6 @@ export default function () {
     useInterval(fetchUserData, 5000)
 
     return (
-        <EnqueuedCatalogCardGroup entities={props}/>
+        <EnqueuedCatalogCardGroup entities={props} setEntities={setProps}/>
     )
 }

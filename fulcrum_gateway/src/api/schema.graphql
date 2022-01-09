@@ -75,7 +75,7 @@ type Mutation {
   changeOrganizerPassword(password: String!, token: String!): Organizer
   changeQueuePassword(password: String!, queueId: String!): Queue
   changeQueueState(queueId: String, state: String!): Queue
-  changeUserStatus(status: String!, userId: String!): User
+  changeStatus(status: String!, userId: String): User
   confirmOrganizer(token: String!): Boolean!
   confirmUser(confirmCode: String!): Boolean!
   createOrganizer(email: String!, name: String!, password: String!): Organizer
