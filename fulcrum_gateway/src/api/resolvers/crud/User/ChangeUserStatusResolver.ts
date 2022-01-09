@@ -52,3 +52,4 @@ export class ChangeUserStatusResolver {
     const updatedUser = await helpers.updateUserStatus(queryUserId, args.status);
     return updatedUser;
   }
+}
