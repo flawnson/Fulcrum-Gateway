@@ -50,10 +50,10 @@ async function bootstrap(){
   const app = express();
   const port = 8080;
 
-  let originUrl = "http://localhost:19006";
-  if (process.env.NODE_ENV === "production"){
-      originUrl = process.env.ORIGIN_URL;
-  }
+  const originUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.FRONTEND_PROD_URL
+    : process.env.FRONTEND_LOCAL_URL;
 
   app.use(
     cors({
