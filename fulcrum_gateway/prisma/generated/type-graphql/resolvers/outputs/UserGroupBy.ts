@@ -66,7 +66,7 @@ export class UserGroupBy {
   @TypeGraphQL.Field(_type => UserStatus, {
     nullable: false
   })
-  status!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
+  status!: "UNVERIFIED" | "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
 
   @TypeGraphQL.Field(_type => Date, {
     nullable: true

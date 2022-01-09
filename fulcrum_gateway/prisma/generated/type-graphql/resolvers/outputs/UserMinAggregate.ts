@@ -61,7 +61,7 @@ export class UserMinAggregate {
   @TypeGraphQL.Field(_type => UserStatus, {
     nullable: true
   })
-  status!: "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | null;
+  status!: "UNVERIFIED" | "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW" | null;
 
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
