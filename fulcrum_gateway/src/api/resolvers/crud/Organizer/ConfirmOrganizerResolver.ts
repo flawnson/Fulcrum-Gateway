@@ -29,6 +29,7 @@ export class ConfirmOrganizerResolver {
     const organizerId = await redis.get(args.token);
 
     if (!organizerId) {
+      console.log("Can't confirm organizer account: Organizer confirmation token does not exist.")
       return false;
     }
 

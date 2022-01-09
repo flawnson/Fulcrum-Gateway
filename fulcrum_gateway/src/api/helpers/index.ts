@@ -7,3 +7,4 @@ export { createConfirmationUrl } from "./createConfirmationUrl";
 export { createResetUrl } from "./createResetUrl";
 export { IsEmailAlreadyExist } from "./IsEmailAlreadyExist";
 export { sendEmail } from "./sendEmail";
+export { sendSMS } from "./sendSMS";

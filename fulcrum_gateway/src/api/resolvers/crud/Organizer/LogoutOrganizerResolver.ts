@@ -20,6 +20,7 @@ export class LogoutOrganizerResolver {
       return new Promise((res, rej) =>
         ctx.req.session!.destroy(err => {
           if (err) {
+            console.log("Cannot destroy session");
             console.log(err);
             return rej(false);
           }

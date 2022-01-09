@@ -7,6 +7,7 @@ import {
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
+import { sendSMS } from "../../../helpers";
 
 @ArgsType()
 class CreateUserArgs {
@@ -33,9 +34,10 @@ export class CreateUserResolver {
     nullable: true
   })
   async createUser(@Ctx() ctx: Context, @Args() args: CreateUserArgs): Promise<User | null> {
+    // make queries atomic so they immediately follow one another (prevents joining a queue that just got deleted)
     return await ctx.prisma.$transaction(async (prisma) => {
       //check if theres a queue with that join code
-      const results = await prisma.queue.findUnique({
+      const result = await prisma.queue.findUnique({
         where: {
           join_code: args.joinCode,
         },
@@ -44,14 +46,20 @@ export class CreateUserResolver {
         }
       });
 
-      if (results == null) {
+      if (result == null) {
+        console.log("Cannot join: Queue with code " + args.joinCode + " does not exist.");
+        return null;
+      }
+
+      if (result.state == "INACTIVE" || result.state == "PAUSED"){
+        console.log("Cannot join: Queue with code " + args.joinCode + " is INACTIVE or PAUSED.");
         return null;
       }
 
       // calculate the user's index
-      const index = results.users.length + 1;
+      const index = result.users.length + 1;
       const currentTime = new Date();
-      const queueId = results.id;
+      const queueId = result.id;
       // create a new user
       const createUser = await prisma.user.create({
         data: {
@@ -63,7 +71,17 @@ export class CreateUserResolver {
         }
       });
 
-      ctx.req.session!.userId = createUser.id;
+
+      if (createUser != null){
+        // generate verification code
+
+
+        // send SMS here
+        //await sendSMS(args.phoneNumber);
+        
+        // create session
+        ctx.req.session!.userId = createUser.id;
+      }
       return createUser;
 
     })

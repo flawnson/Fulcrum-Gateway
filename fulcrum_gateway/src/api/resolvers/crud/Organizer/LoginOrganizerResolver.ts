@@ -34,12 +34,19 @@ export class LoginOrganizerResolver {
     });
 
     if (!organizer) {
+      console.log("Organizer with this email does not exist: " + args.email);
       return null;
     }
 
     const valid = await bcrypt.compare(args.password, organizer.password);
 
     if (!valid) {
+      console.log("Incorrect password for organizer " + args.email);
+      return null;
+    }
+
+    if (!organizer.confirmed) {
+      console.log("Organizer's account is not confirmed: " + args.email);
       return null;
     }
 
