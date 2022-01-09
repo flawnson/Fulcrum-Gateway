@@ -78,7 +78,8 @@ or if you want to use nodemon:
 
 Next set up a .env file with the following variables:
 ```
-ORIGIN_URL="url of the frontend app"
+FRONTEND_PROD_URL="production url of the frontend app"
+FRONTEND_LOCAL_URL="development url of the frontend app"
 DATABASE_URL="postgresql database url"
 SESSION_SECRET="express session secret"
 NODE_ENV="development or production"
