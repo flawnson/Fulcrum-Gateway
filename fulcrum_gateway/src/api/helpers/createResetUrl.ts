@@ -10,8 +10,10 @@ export const createResetUrl = async (organizerId: string) => {
   if (process.env.NODE_ENV === "production"){
     // TODO: FILL THIS IN
     // RETURN PRODUCTION URL
+    //for now return the same localhost url
+    return `${process.env.FRONTEND_PROD_URL}/organizer/reset/${forgotOrganizerPasswordPrefix + token}`;
   }
 
   //development
-  return `http://localhost:3000/organizer/reset/${token}`; //fill in with correct URL
+  return `${process.env.FRONTEND_LOCAL_URL}/organizer/reset/${forgotOrganizerPasswordPrefix + token}`; //fill in with correct URL
 };
