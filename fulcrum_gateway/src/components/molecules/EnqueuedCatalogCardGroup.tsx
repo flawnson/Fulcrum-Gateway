@@ -7,9 +7,9 @@ import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
 import EnqueuedMultiSelectButtons from "../../containers/EnqueuedMultiSelectButtons"
 import { EnqueuedStats } from "../../../types";
+import {UserStatus} from "../../../types";
 
 
-type Status = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED"
 type EnqueuedStatsProps = {
     entities: Array<EnqueuedStats>
     setEntities: React.Dispatch<React.SetStateAction<EnqueuedStats[]>>
@@ -24,10 +24,10 @@ type ConditionalWrapperArgs = {
 export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const parentNavigation = navigation.getParent()
-    const [action, setAction] = useState<Status>("ENQUEUED")
+    const [action, setAction] = useState<UserStatus>("ENQUEUED")
     const [selectedItems, setSelectedItems] = useState<Array<EnqueuedStats["userId"]>>([])
 
-    function onActionPress(action: Status) {
+    function onActionPress(action: UserStatus) {
         setAction(action)
     }
 
@@ -91,7 +91,7 @@ export default function (props: EnqueuedStatsProps) {
             >
                 <FlatList
                     data={props.entities}
-                    renderItem={({item}) => {
+                    renderItem={({item}: {item: EnqueuedStats}) => {
                         return <EnqueuedCatalogCard
                                     entities={props.entities}
                                     setEntities={props.setEntities}

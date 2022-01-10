@@ -29,6 +29,17 @@ type EnqueuedCatalogProps = {
 export default function (props: EnqueuedCatalogProps) {
     const [summoned, setSummoned] = useState<boolean>(false)
 
+    // useEffect(() => {
+    //     if (props.modified === "KICKED") {
+    //         // onLeftSwipe(pan)
+    //     } else if (props.modified === "SERVICED") {
+    //         // onRightSwipe(pan)
+    //     } else if (props.modified === "SUMMONED") {
+    //         onBellPress()
+    //     }
+    //     props.deSelectItems()
+    // }, [props.modified])
+
     const summonQuery = `
         mutation summon_user($userId: String!) {
             summon(userId: $userId) {
@@ -42,8 +53,10 @@ export default function (props: EnqueuedCatalogProps) {
             const response = await fetch(`http://localhost:8080/api`, {
                                          method: 'POST',
                                          headers: {
-                                             'Content-Type': 'application/json'
+                                             'Content-Type': 'application/json',
+                                             'Access-Control-Allow-Origin': 'http://localhost:19006/',
                                          },
+                                         credentials: 'include',
                                          body: JSON.stringify({query: summonQuery, variables: {userId: userId}})
                                      });
             // enter you logic when the fetch is successful
@@ -55,7 +68,7 @@ export default function (props: EnqueuedCatalogProps) {
     }
 
     useEffect(() => {
-        toggleSummonUser(props.entity.userId).then(null)
+        toggleSummonUser(props.entity.userId).then()
     }, [summoned])
 
     const onBellPress = function () {
@@ -75,8 +88,10 @@ export default function (props: EnqueuedCatalogProps) {
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
                 },
+                credentials: 'include',
                 body: JSON.stringify({query: statusQuery, variables: {userId: props.entity.userId, status: status}})
             });
             // enter you logic when the fetch is successful
@@ -88,7 +103,7 @@ export default function (props: EnqueuedCatalogProps) {
     }
     const onDeletePress = () => {
         props.entities.find(user => user.userId === props.entity.userId)!.status = "KICKED"
-        changeUserStatus("KICKED").then((data) => {console.log(data)})
+        changeUserStatus("KICKED").then()
         props.setEntities(
             [...props.entities.filter(user => user.userId !== props.entity.userId)]
         )
