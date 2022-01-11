@@ -19,9 +19,9 @@ class CreateUserArgs {
   joinCode!: string;
 
   @Field({
-    nullable: false
+    nullable: true
   })
-  phoneNumber!: string;
+  phoneNumber?: string;
 
   @Field({
     nullable: false
@@ -77,8 +77,8 @@ export class CreateUserResolver {
         }
       });
 
-
-      if (createUser != null){
+      // generate a verification code only if phone number exists
+      if (createUser != null && args.phoneNumber != null){
         // generate 6 digit verification code
         let confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
         //check if this verification code is already in use by another user
@@ -100,6 +100,7 @@ export class CreateUserResolver {
         await sendSMS(args.phoneNumber, confirmCode);
 
       }
+
       return createUser;
 
     })
