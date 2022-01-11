@@ -8,6 +8,7 @@ import { DateTimeWithAggregatesFilter } from "../inputs/DateTimeWithAggregatesFi
 import { EnumUserStatusWithAggregatesFilter } from "../inputs/EnumUserStatusWithAggregatesFilter";
 import { IntNullableWithAggregatesFilter } from "../inputs/IntNullableWithAggregatesFilter";
 import { IntWithAggregatesFilter } from "../inputs/IntWithAggregatesFilter";
+import { StringNullableWithAggregatesFilter } from "../inputs/StringNullableWithAggregatesFilter";
 import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
 
 @TypeGraphQL.InputType("UserScalarWhereWithAggregatesInput", {
@@ -44,10 +45,10 @@ export class UserScalarWhereWithAggregatesInput {
   })
   summoned?: BoolWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
     nullable: true
   })
-  phone_number?: StringWithAggregatesFilter | undefined;
+  phone_number?: StringNullableWithAggregatesFilter | undefined;
 
   @TypeGraphQL.Field(_type => IntWithAggregatesFilter, {
     nullable: true
