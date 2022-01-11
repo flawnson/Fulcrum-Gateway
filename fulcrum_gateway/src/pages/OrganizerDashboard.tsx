@@ -89,10 +89,9 @@ export default function () {
     }
 
     // Run on first render
-    useEffect(() => {fetchQueueData()}, [])
+    useEffect(() => {fetchQueueData().then(null)}, [])
     // Poll only if user is currently on this screen
-    // if (useIsFocused()) {useInterval(fetchQueueData, 5000)}
-    useInterval(fetchQueueData, 5000)
+    useInterval(fetchQueueData, useIsFocused() ? 5000 : null)
 
     return (
         <Center style={styles.animationFormat}>

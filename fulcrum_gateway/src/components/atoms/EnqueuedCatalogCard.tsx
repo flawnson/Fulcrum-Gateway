@@ -22,23 +22,11 @@ type EnqueuedCatalogProps = {
     onLongPress: (event?: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => void,
     deSelectItems: () => void,
     selected: boolean,
-    modified: string,
     entity: EnqueuedStats,
 }
 
 export default function (props: EnqueuedCatalogProps) {
     const [summoned, setSummoned] = useState<boolean>(false)
-
-    // useEffect(() => {
-    //     if (props.modified === "KICKED") {
-    //         // onLeftSwipe(pan)
-    //     } else if (props.modified === "SERVICED") {
-    //         // onRightSwipe(pan)
-    //     } else if (props.modified === "SUMMONED") {
-    //         onBellPress()
-    //     }
-    //     props.deSelectItems()
-    // }, [props.modified])
 
     const summonQuery = `
         mutation summon_user($userId: String!) {
@@ -101,7 +89,7 @@ export default function (props: EnqueuedCatalogProps) {
             return error
         }
     }
-    const onDeletePress = () => {
+    const onKickPress = () => {
         props.entities.find(user => user.userId === props.entity.userId)!.status = "KICKED"
         changeUserStatus("KICKED").then()
         props.setEntities(
@@ -115,7 +103,7 @@ export default function (props: EnqueuedCatalogProps) {
             outputRange: [-20, 0, 0, 1],
         });
         return (
-            <RectButton style={styles.leftAction} onPress={onDeletePress}>
+            <RectButton style={styles.leftAction} onPress={onKickPress}>
                 <Animated.Text
                     style={[
                         styles.actionText,
@@ -123,7 +111,7 @@ export default function (props: EnqueuedCatalogProps) {
                             transform: [{ translateX: trans }],
                         },
                     ]}>
-                    Delete
+                    Kick
                 </Animated.Text>
             </RectButton>
         );
@@ -137,7 +125,7 @@ export default function (props: EnqueuedCatalogProps) {
                         props.onLongPress()
                     }
                 }}
-                minDurationMs={1000}
+                minDurationMs={800}
             >
                 <TapGestureHandler
                     onHandlerStateChange={({ nativeEvent }) => {

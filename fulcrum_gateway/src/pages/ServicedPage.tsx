@@ -65,10 +65,9 @@ export default function () {
     }
 
     // Run on first render
-    useEffect(() => {fetchServicedData()}, [])
+    useEffect(() => {fetchServicedData().then(null)}, [])
     // Poll only if user is currently on this screen
-    // if (useIsFocused()) {useInterval(fetchServicedData, 5000)}
-    useInterval(fetchServicedData, 5000)
+    useInterval(fetchServicedData, useIsFocused() ? 5000 : null)
 
     return (
         // Using active queues catalog cards because functionaly matches

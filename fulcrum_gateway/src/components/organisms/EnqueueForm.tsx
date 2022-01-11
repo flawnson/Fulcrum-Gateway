@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { VStack, FormControl,
         Input, Button,
-        Center, Text } from "native-base";
+        Center, Text} from "native-base";
 import { HomeScreenProps } from "../../../types";
 import { useTranslation } from "react-i18next";
+import CannotEnqueueAlert from "../atoms/CannotEnqueueAlert";
 
 
 type EnqueueFormProps = {
@@ -19,9 +20,10 @@ type EnqueueFormData = {
 
 
 export default function ({navigation, setShowModal}: EnqueueFormProps) {
-    const [formData, setData] = React.useState<EnqueueFormData>({})
-    const [submitted, setSubmitted] = React.useState<boolean>(false)
-    const [errors, setErrors] = React.useState<object>({})
+    const [formData, setData] = useState<EnqueueFormData>({})
+    const [submitted, setSubmitted] = useState<boolean>(false)
+    const [showAlert, setShowAlert] = useState<boolean>(false)
+    const [errors, setErrors] = useState<object>({})
     const { t, i18n } = useTranslation(["homePage", "common"])
 
     const query = `
@@ -31,11 +33,6 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
             }
         }
     `
-    const variables = `{
-        "joinCode": "123456",
-        "name": "Darth vader",
-        "phoneNumber": "1231114444"
-    }`
 
     async function joinQueue () {
         try {
@@ -46,7 +43,11 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                 },
                 body: JSON.stringify({query: query, variables: formData})
             });
-            return await response.json()
+            await response.json().then(
+                data => {
+                    return data ? data : setErrors({...errors, login: 'Cannot login to paused or inactive queue'})
+                }
+            )
         } catch(error) {
             return error
         }
@@ -109,6 +110,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                     {t('submit', { ns: 'common' })}
                 </Text>
             </Button>
+            <CannotEnqueueAlert showAlert={showAlert} setShowAlert={setShowAlert}/>
         </VStack>
     );
 }

@@ -19,7 +19,7 @@ type OrganizerFormData = {
     password?: string
 }
 
-type OrganizerErrorData = {
+type OrganizerLogInErrorData = {
     email?: string,
     password?: string
 }
@@ -27,7 +27,7 @@ type OrganizerErrorData = {
 export default ({navigation, setShowModal}: LogInFormType) => {
     const [formData, setData] = useState<OrganizerFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
-    const [errors, setErrors] = useState<OrganizerErrorData>({});
+    const [errors, setErrors] = useState<OrganizerLogInErrorData>({});
 
     const query = `
         mutation login_organizer($email: String!, $password: String!) {
@@ -37,7 +37,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
         }
     `
 
-    async function joinQueue () {
+    async function logIn () {
         try {
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
@@ -90,7 +90,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
 
     const onLogInPress = () => {
         setSubmitted(true)
-        validate() && joinQueue() ? onSuccess() : onFailure();
+        validate() && logIn() ? onSuccess() : onFailure();
     }
 
     return (

@@ -51,12 +51,15 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api`, {
                                          method: 'POST',
                                          headers: {
-                                             'Content-Type': 'application/json'
+                                             'Content-Type': 'application/json',
+                                             'Access-Control-Allow-Origin': 'http://localhost:19006/',
                                          },
+                                         credentials: 'include',
                                          body: JSON.stringify({query: query})
-            })
+                                         })
             await response.json().then(
                 data => {
+                    console.log(data)
                     const name = data.data.getQueue.name
                     data = data.data.queue.users
                     const statuses = ["ENQUEUED", "SERVICED", "DEFERRED", "ABANDONED", "NOSHOW"]

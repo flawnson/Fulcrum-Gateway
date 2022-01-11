@@ -49,7 +49,16 @@ export default function () {
 
     const fetchUserStats = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api`,{body: query})
+            const response = await fetch(`http://localhost:8080/api`,
+                                     {
+                                          method: 'POST',
+                                          headers: {
+                                              'Content-Type': 'application/json',
+                                              'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                                          },
+                                          credentials: 'include',
+                                          body: JSON.stringify({query: query})
+                                     })
             await response.json().then(
                 data => {
                     // If summoned is toggled true, navigate to Summon Screen
@@ -87,9 +96,9 @@ export default function () {
     }
 
     // Run on first render
-    useEffect(() => {fetchUserStats()}, [])
+    useEffect(() => {fetchUserStats().then(null)}, [])
     // Poll only if user is currently on this screen
-    if (useIsFocused()) {useInterval(fetchUserStats, 5000)}
+    useInterval(fetchUserStats, useIsFocused() ? 5000 : null)
 
     return (
         <Center style={styles.animationFormat}>
