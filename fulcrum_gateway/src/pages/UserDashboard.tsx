@@ -10,13 +10,13 @@ import UserDashboardMenu from "../containers/UserDashboardMenu"
 import useInterval from "../utilities/useInterval";
 import { uniqueId } from "lodash"
 import { useTranslation } from "react-i18next";
-import DarkModeToggle from "../components/atoms/DarkModeToggle";
+import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const { t, i18n } = useTranslation(["userDashboard"]);
-    navigation.setOptions({headerRight: DarkModeToggle()})
+    navigation.setOptions({headerRight: RightHeaderGroup()})
 
     const defaultProps = {
         name: "Someone",

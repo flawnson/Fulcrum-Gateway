@@ -7,6 +7,7 @@ import {
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {RootStackParamList} from "../../../types";
 import {useState} from "react";
+import {useTranslation} from "react-i18next";
 
 
 type SignUpFormType = {
@@ -28,6 +29,7 @@ type OrganizerSignUpErrorData = {
 
 export default ({navigation, setShowModal}: SignUpFormType) => {
     const [formData, setData] = useState<OrganizerFormData>({});
+    const { t, i18n } = useTranslation(["signUpForm"]);
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [errors, setErrors] = useState<OrganizerSignUpErrorData>({});
 
@@ -61,25 +63,25 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
         if (formData.email === undefined) {
             setErrors({
                 ...errors,
-                email: 'Oops! Looks like you forgot to provide an email...',
+                email: t("emailUndefinedError"),
             });
             return false;
         } else if (!re.test(formData.email)) {
             setErrors({
                 ...errors,
-                email: "Oops! Looks like you didn't enter a valid email...",
+                email: t("emailInvalidError"),
             });
             return false;
         } else if (formData.password === undefined) {
             setErrors({
                 ...errors,
-                password: 'Oops! Looks like you forgot to provide a password...',
+                password: t("passwordUndefinedError"),
             });
             return false;
         } else if (formData.password !== formData.confirmPassword) {
             setErrors({
                 ...errors,
-                password: "Oops! Looks like your passwords didn't match...",
+                password: t("passwordUnmatchError"),
             });
             return false;
         }
@@ -111,7 +113,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                 }}
                 fontWeight="semibold"
             >
-                Welcome
+                {t("welcome")}
             </Heading>
             <Heading
                 mt="1"
@@ -122,31 +124,31 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                 fontWeight="medium"
                 size="xs"
             >
-                Sign up to continue!
+                {t("message")}
             </Heading>
             <VStack space={3} mt="5">
                 <FormControl isInvalid={"email" in errors}>
-                    <FormControl.Label>Email</FormControl.Label>
+                    <FormControl.Label>{t("emailLabel")}</FormControl.Label>
                     <Input
-                        placeholder="Ex. your_email@example.com"
+                        placeholder={t("emailPlaceholder")}
                         onChangeText={(value) => setData({ ...formData, email: value })}
                     />
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.email}</FormControl.ErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={"password" in errors}>
-                    <FormControl.Label>Password</FormControl.Label>
+                    <FormControl.Label>{t("passwordLabel")}</FormControl.Label>
                     <Input
                         type="password"
-                        placeholder="Definitely not 12345"
+                        placeholder={t("passwordPlaceholder")}
                         onChangeText={(value) => setData({ ...formData, password: value })}
                     />
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.password}</FormControl.ErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={"confirmPassword" in errors}>
-                    <FormControl.Label>Password</FormControl.Label>
+                    <FormControl.Label>{t("confirmPasswordLabel")}</FormControl.Label>
                     <Input
                         type="password"
-                        placeholder="Definitely not my birthday"
+                        placeholder={t("confirmPasswordPlaceholder")}
                         onChangeText={(value) => setData({ ...formData, confirmPassword: value })}
                     />
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.password}</FormControl.ErrorMessage>
@@ -156,7 +158,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                     colorScheme="indigo"
                     onPress={onSignUpPress}
                     isLoading={submitted}
-                    isLoadingText="Logging in..."
+                    isLoadingText={t("isLoadingText")}
                 >
                     Sign up
                 </Button>

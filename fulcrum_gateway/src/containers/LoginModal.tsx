@@ -14,7 +14,7 @@ type CreateQueueModalProps = {
 
 export default (props: CreateQueueModalProps) => {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { t, i18n } = useTranslation(["signInModal"]);
+    const { t, i18n } = useTranslation(["logInModal"]);
     const [isOrganizer, setIsOrganizer] = useState(true)
 
     return (
@@ -32,7 +32,7 @@ export default (props: CreateQueueModalProps) => {
                                 color: "warmGray.50",
                             }}
                         >
-                            Hello and Welcome!
+                            {t("subtitle")}
                         </Heading>
                         <Heading
                             mt="1"
@@ -43,14 +43,14 @@ export default (props: CreateQueueModalProps) => {
                             fontWeight="medium"
                             size="xs"
                         >
-                            Are you an Organizer or an Assistant?
+                            {t("question")}
                         </Heading>
                         <Button.Group style={{marginTop: 40}}>
                             <Button onPress={() => setIsOrganizer(true)} variant={isOrganizer ? "solid" : "outline"}>
-                                Organizer
+                                {t("organizer")}
                             </Button>
                             <Button onPress={() => setIsOrganizer(false)} variant={isOrganizer ? "outline" : "solid"}>
-                                Assistant
+                                {t("assistant")}
                             </Button>
                         </Button.Group>
                         {isOrganizer ? <OrganizerLoginForm navigation={navigation} setShowModal={props.setShowModal}/>
