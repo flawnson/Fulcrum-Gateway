@@ -7,13 +7,13 @@ import { PreferencesContext } from "../utilities/useTheme";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { MaterialCommunityIcons} from '@expo/vector-icons';
-import DarkModeToggle from "../components/atoms/DarkModeToggle";
+import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 
 
 export default function () {
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    navigation.setOptions({headerRight: DarkModeToggle()})
+    navigation.setOptions({headerRight: RightHeaderGroup()})
 
     return (
         <View style={styles.container}>

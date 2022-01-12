@@ -1,6 +1,6 @@
+import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { StyleSheet, Switch } from "react-native";
-import React from "react";
 import { PreferencesContext } from "../../utilities/useTheme";
 import { useColorMode } from "native-base";
 
@@ -13,7 +13,7 @@ export default function () {
         toggleColorMode()
     }
 
-    return ((props: {tintColor?: string | undefined}) =>
+    return (
         <>
             <Feather
                 style={styles.switchName}
@@ -35,12 +35,8 @@ export default function () {
 
 const styles = StyleSheet.create({
     switch: {
-        position: "absolute",
-        right: "15px",
     },
     switchName: {
-        position: "absolute",
-        right: "60px",
     },
 });
 

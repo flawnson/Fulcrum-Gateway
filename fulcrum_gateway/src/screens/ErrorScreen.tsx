@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'native-base'
+import { Center, Text } from 'native-base'
 import { useTranslation } from "react-i18next"
 
 
@@ -8,8 +8,8 @@ export default function () {
     console.log("Something went wrong!")
 
     return (
-        <View>
+        <Center>
             <Text>{t("message")}</Text>
-        </View>
+        </Center>
     )
 }

@@ -45,7 +45,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
             });
             await response.json().then(
                 data => {
-                    return data ? data : setErrors({...errors, login: 'Cannot login to paused or inactive queue'})
+                    return data ? data : setShowAlert(true)
                 }
             )
         } catch(error) {
