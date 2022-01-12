@@ -98,7 +98,7 @@ export class CreateUserResolver {
         await redis.set(confirmUserPrefix + confirmCode, createUser.id, "ex", 60 * 60 * 0.5); // 0.5 hour expiration
 
         // send SMS here
-        await sendSMS(args.phoneNumber, confirmCode);
+        await sendSMS(args.phoneNumber, confirmCode + " is your Fiefoe verification code.", "Confirm");
 
       }
 

@@ -10,7 +10,7 @@ import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
 import * as helpers from "../../../helpers";
 import { userAccessPermission } from "../../../middleware/userAccessPermission";
-
+import { sendSMS } from "../../../helpers";
 
 @ArgsType()
 class SummonUserArgs {
@@ -35,6 +35,9 @@ export class SummonUserResolver {
     const user = await ctx.prisma.user.findUnique({
       where: {
         id: args.userId
+      },
+      include: {
+        queue: true
       }
     });
 
@@ -52,6 +55,14 @@ export class SummonUserResolver {
             summoned: true
           }
         });
+
+        // send SMS message to user
+        if (!user.phone_number){
+          console.log("User with id " + args.userId + " does not have a phone number.");
+        }
+        else {
+          await sendSMS(user.phone_number, user.queue.name + ": It is your turn now! You are now at the front of the line, please proceed. Thanks for waiting!", "Summon");
+        }
 
         return setSummoned;
       }
