@@ -87,6 +87,9 @@ SMTP_USERNAME="username for smtp service you're using"
 SMTP_PASSWORD="password for smtp service you're using"
 SMTP_SERVER="smtp server host"
 SENDER_EMAIL="the sender email (ex: hello@fiefoe.com)"
+TWILIO_ACCOUNT_SID="twilio account sid"
+TWILIO_AUTH_TOKEN="twilio auth token"
+TWILIO_PHONE_NUMBER="phone number used to send out SMS"
 ```
 
 ## Database setup

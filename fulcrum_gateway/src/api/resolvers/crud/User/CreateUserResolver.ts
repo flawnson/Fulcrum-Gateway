@@ -9,6 +9,7 @@ import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
 import { sendSMS } from "../../../helpers";
 import { redis } from "../../../redisClient";
+import { confirmUserPrefix } from "../../../constants";
 
 
 @ArgsType()
@@ -94,7 +95,7 @@ export class CreateUserResolver {
           }
         }
         // save code to redis
-        await redis.set(confirmCode, createUser.id, "ex", 60 * 60 * 0.5); // 0.5 hour expiration
+        await redis.set(confirmUserPrefix + confirmCode, createUser.id, "ex", 60 * 60 * 0.5); // 0.5 hour expiration
 
         // send SMS here
         await sendSMS(args.phoneNumber, confirmCode);
