@@ -10,6 +10,8 @@ import { redis } from "../../../redisClient";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
 import { UserStatus } from "@prisma/client";
+import { confirmUserPrefix } from "../../../constants";
+
 
 
 @ArgsType()
@@ -27,7 +29,7 @@ export class ConfirmUserResolver {
   @Mutation(() => Boolean)
   async confirmUser(@Ctx() ctx: Context, @Args() args: ConfirmUserArgs): Promise<boolean> {
 
-    const userId = await redis.get(args.confirmCode);
+    const userId = await redis.get(confirmUserPrefix + args.confirmCode);
 
     if (!userId) {
       console.log("Can't confirm user: Invalid confirmation code");
@@ -43,7 +45,7 @@ export class ConfirmUserResolver {
       }
     });
 
-    await redis.del(args.confirmCode);
+    await redis.del(confirmUserPrefix + args.confirmCode);
 
     // create session
     ctx.req.session!.userId = userId;
