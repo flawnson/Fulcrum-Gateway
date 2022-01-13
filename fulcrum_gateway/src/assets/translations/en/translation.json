@@ -135,5 +135,8 @@
     "question": "Are you an Organizer or an Assistant?",
     "assistant": "Assistant",
     "organizer": "Organizer"
+  },
+  "verifySMSModal": {
+    "title": "Verify your phone number"
   }
 }
