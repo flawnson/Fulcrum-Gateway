@@ -11,9 +11,9 @@ import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
 import {EnqueuedStats, UserStatus} from "../../../types";
 import { Swipeable, RectButton,
         LongPressGestureHandler, TapGestureHandler} from "react-native-gesture-handler";
-import {State, HandlerStateChangeEvent,
+import { State, HandlerStateChangeEvent,
         LongPressGestureHandlerEventPayload,
-        TapGestureHandlerEventPayload} from "react-native-gesture-handler";
+        TapGestureHandlerEventPayload } from "react-native-gesture-handler";
 
 type EnqueuedCatalogProps = {
     entities: Array<EnqueuedStats>
@@ -22,23 +22,11 @@ type EnqueuedCatalogProps = {
     onLongPress: (event?: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => void,
     deSelectItems: () => void,
     selected: boolean,
-    modified: string,
     entity: EnqueuedStats,
 }
 
 export default function (props: EnqueuedCatalogProps) {
     const [summoned, setSummoned] = useState<boolean>(false)
-
-    // useEffect(() => {
-    //     if (props.modified === "KICKED") {
-    //         // onLeftSwipe(pan)
-    //     } else if (props.modified === "SERVICED") {
-    //         // onRightSwipe(pan)
-    //     } else if (props.modified === "SUMMONED") {
-    //         onBellPress()
-    //     }
-    //     props.deSelectItems()
-    // }, [props.modified])
 
     const summonQuery = `
         mutation summon_user($userId: String!) {
@@ -101,12 +89,33 @@ export default function (props: EnqueuedCatalogProps) {
             return error
         }
     }
-    const onDeletePress = () => {
+
+    const onChangeStatusPress = (status: UserStatus) => {
         props.entities.find(user => user.userId === props.entity.userId)!.status = "KICKED"
         changeUserStatus("KICKED").then()
         props.setEntities(
             [...props.entities.filter(user => user.userId !== props.entity.userId)]
         )
+    }
+
+    const renderRightActions = (progress: any, dragX: any) => {
+        const trans = dragX.interpolate({
+            inputRange: [0, 50, 100, 101],
+            outputRange: [-20, 0, 0, 1],
+        });
+        return (
+            <RectButton style={styles.rightAction} onPress={() => onChangeStatusPress("SERVICED")}>
+                <Animated.Text
+                    style={[
+                        styles.actionText,
+                        {
+                            transform: [{ translateX: trans }],
+                        },
+                    ]}>
+                    Service
+                </Animated.Text>
+            </RectButton>
+        );
     }
 
     const renderLeftActions = (progress: any, dragX: any) => {
@@ -115,7 +124,7 @@ export default function (props: EnqueuedCatalogProps) {
             outputRange: [-20, 0, 0, 1],
         });
         return (
-            <RectButton style={styles.leftAction} onPress={onDeletePress}>
+            <RectButton style={styles.leftAction} onPress={() => onChangeStatusPress("KICKED")}>
                 <Animated.Text
                     style={[
                         styles.actionText,
@@ -123,21 +132,24 @@ export default function (props: EnqueuedCatalogProps) {
                             transform: [{ translateX: trans }],
                         },
                     ]}>
-                    Delete
+                    Kick
                 </Animated.Text>
             </RectButton>
         );
     }
 
     return (
-        <Swipeable renderLeftActions={renderLeftActions}>
+        <Swipeable
+            renderLeftActions={renderLeftActions}
+            renderRightActions={renderRightActions}
+        >
             <LongPressGestureHandler
                 onHandlerStateChange={({ nativeEvent }) => {
                     if (nativeEvent.state === State.ACTIVE) {
                         props.onLongPress()
                     }
                 }}
-                minDurationMs={1000}
+                minDurationMs={800}
             >
                 <TapGestureHandler
                     onHandlerStateChange={({ nativeEvent }) => {
@@ -227,6 +239,9 @@ const styles = StyleSheet.create({
     },
     leftAction: {
         backgroundColor: 'red'
+    },
+    rightAction: {
+        backgroundColor: 'green'
     },
     actionText: {
         fontSize: 30

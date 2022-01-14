@@ -25,7 +25,6 @@ import { PreferencesContext } from "./src/utilities/useTheme";
 import * as Linking from 'expo-linking'
 import linkConfig from "./src/utilities/linkConfig";
 import QueueDashboard from "./src/pages/QueueDashboard";
-import DarkModeToggle from "./src/components/atoms/DarkModeToggle";
 
 const config: object = {
     strictMode: 'off',

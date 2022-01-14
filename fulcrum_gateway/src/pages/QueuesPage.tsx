@@ -40,7 +40,8 @@ export default function () {
                                          'Access-Control-Allow-Origin': 'http://localhost:19006/',
                                          },
                                          credentials: 'include',
-                                         body: JSON.stringify({query: query})})
+                                         body: JSON.stringify({query: query})
+                                     })
             await response.json().then(
                 data => {
                     data = data.data.getOrganizer.queues
@@ -68,10 +69,9 @@ export default function () {
     }
 
     // Run on first render
-    useEffect(() => {fetchQueuesData()}, [])
+    useEffect(() => {fetchQueuesData().then(null)}, [])
     // Poll only if user is currently on this screen
-    // if (useIsFocused()) {useInterval(fetchQueuesData, 5000)}
-    useInterval(fetchQueuesData, 5000)
+    useInterval(fetchQueuesData, useIsFocused() ? 5000 : null)
 
     return (
         <>

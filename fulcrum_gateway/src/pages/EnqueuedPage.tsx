@@ -40,7 +40,8 @@ export default function () {
                                              'Access-Control-Allow-Origin': 'http://localhost:19006/',
                                          },
                                          credentials: 'include',
-                                         body: JSON.stringify({query: query, variables: variables})})
+                                         body: JSON.stringify({query: query, variables: variables})
+                                         })
             await response.json().then(
                 data => {
                     data = data.data.getQueue.users
@@ -67,10 +68,9 @@ export default function () {
     }
 
     // Run on first render
-    useEffect(() => {fetchUserData()}, [])
+    useEffect(() => {fetchUserData().then(null)}, [])
     // Poll only if user is currently on this screen
-    // if (useIsFocused()) {useInterval(fetchUserData, 5000)}
-    useInterval(fetchUserData, 5000)
+    useInterval(fetchUserData, useIsFocused() ? 5000 : null)
 
     return (
         <EnqueuedCatalogCardGroup entities={props} setEntities={setProps}/>

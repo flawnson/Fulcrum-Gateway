@@ -2,41 +2,47 @@ import React, { SetStateAction, useEffect, useState } from "react";
 import CatalogEntityCardGroup from "../components/molecules/AbandonedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
 import { AbandonedStats, EnqueuedStats } from "../../types";
+import {useIsFocused} from "@react-navigation/native";
 
 export default function () {
     const [props, setProps] = useState<AbandonedStats[]>([])
 
     const query = `
-        query get_users($queueId: QueueWhereUniqueInput! $orderBy: [UserOrderByWithRelationInput!]) {
-            queue(where: $queueId) {
+        query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
+            getQueue(queueId: $queueId) {
                 users(orderBy: $orderBy) {
                     userId: id
                     name
-                    join_time
+                    index
                     last_online
+                    join_time
                     status
                 }
             }
         }
     `
     const variables = `{
-        "queueId":
-            {
-                "id": "costco_queue1"
-            },
+        "queueId": "costco_queue1",
         "orderBy":
             {
-                "index": "desc"
+                "index": "asc"
             }
     }`
 
     async function fetchAbandonedData () {
         try {
             const response = await fetch(`http://localhost:8080/api`,
-                                    {body: JSON.stringify({query: query, variables: variables})})
+                                         {
+                                          method: 'POST',
+                                          headers: {
+                                                 'Content-Type': 'application/json',
+                                                 'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                                                   },
+                                             credentials: 'include',
+                                             body: JSON.stringify({query: query, variables: variables})})
             await response.json().then(
                 data => {
-                    data = data.data.queue.users
+                    data = data.data.getQueue.users
                     data = data.filter((d: AbandonedStats) => d.state === "ABANDONED" ||
                                                               d.state === "KICKED" ||
                                                               d.state === "NOSHOW")
@@ -64,13 +70,12 @@ export default function () {
     }
 
     // Run on first render
-    useEffect(() => {fetchAbandonedData()}, [])
+    useEffect(() => {fetchAbandonedData().then(null)}, [])
     // Poll only if user is currently on this screen
-    // if (useIsFocused()) {useInterval(fetchAbandonedData, 5000)}
-    useInterval(fetchAbandonedData, 5000)
+    useInterval(fetchAbandonedData, useIsFocused() ? 5000 : null)
 
     return (
-        // Using active queues catalog cards because functionaly matches
+        // Using active queues catalog cards because functionally matches
         <CatalogEntityCardGroup entities={props}/>
     )
 }

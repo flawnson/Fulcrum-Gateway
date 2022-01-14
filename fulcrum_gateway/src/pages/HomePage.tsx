@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, TouchableHighlight } from 'react-native'
 import { View } from 'native-base'
 import EnqueueGroup from "../components/molecules/EnqueueGroup";
 import QRCodeScanner from "../components/organisms/QRCodeScanner";
 import { PreferencesContext } from "../utilities/useTheme";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, StackActions } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { MaterialCommunityIcons} from '@expo/vector-icons';
-import DarkModeToggle from "../components/atoms/DarkModeToggle";
+import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 
 
 export default function () {
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    navigation.setOptions({headerRight: DarkModeToggle()})
+    useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     return (
         <View style={styles.container}>

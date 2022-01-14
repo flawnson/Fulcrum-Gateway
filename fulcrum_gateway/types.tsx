@@ -76,6 +76,12 @@ export type DashboardStat = {
     "suffix": string,
 }
 
+export type UserInfo = {
+    "name": string,
+    "phone_number": string,
+    stats: DashboardStat[]
+}
+
 export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"
 
 

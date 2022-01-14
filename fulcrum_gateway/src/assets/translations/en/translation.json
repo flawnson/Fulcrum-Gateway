@@ -33,6 +33,8 @@
   },
   "homePage": {
     "queue_id": "Queue ID",
+    "name": "Your name",
+    "phone_number": "Your phone number",
     "helper": "Queue ID must be 10 characters.",
     "or": " or ",
     "footer": " to create your own virtual queue at"
@@ -110,5 +112,33 @@
   },
   "errorScreen": {
     "message": "Uh... This is awkward! It seems like whatever you're trying to access can't be found. Maybe find your way back at fiefoe.com."
+  },
+  "signUpModal": {
+    "title": "Sign Up"
+  },
+  "signUpForm": {
+    "emailUndefinedError": "Oops! Looks like you forgot to provide an email...",
+    "emailInvalidError": "Oops! Looks like you didn't enter a valid email...",
+    "passwordUndefinedError": "Oops! Looks like you forgot to provide a password...",
+    "passwordUnmatchError": "Oops! Looks like your passwords didn't match...",
+    "welcome": "Welcome",
+    "message": "Sign up to continue!",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Ex. your_email@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Definitely not 12345",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Definitely not my birthday",
+    "isLoadingText": "Signing up..."
+  },
+  "logInModal": {
+    "title": "Log In",
+    "subtitle": "Hello and Welcome!",
+    "question": "Are you an Organizer or an Assistant?",
+    "assistant": "Assistant",
+    "organizer": "Organizer"
+  },
+  "verifySMSModal": {
+    "title": "Verify your phone number"
   }
 }

@@ -24,18 +24,11 @@ type ConditionalWrapperArgs = {
 export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const parentNavigation = navigation.getParent()
-    const [action, setAction] = useState<UserStatus>("ENQUEUED")
+    const [action, setAction] = useState<UserStatus | "SUMMONED">("ENQUEUED")
     const [selectedItems, setSelectedItems] = useState<Array<EnqueuedStats["userId"]>>([])
 
-    function onActionPress(action: UserStatus) {
-        setAction(action)
-    }
-
-    const getModified = (item: EnqueuedStats) => {
-        if (getSelected(item)) {
-            return action
-        }
-        return "ENQUEUED"
+    function onActionPress(actionStatus: UserStatus | "SUMMONED") {
+        setAction(actionStatus)
     }
 
     // To remove header when organizer deselects all users
@@ -99,7 +92,6 @@ export default function (props: EnqueuedStatsProps) {
                                     onLongPress={() => selectItems(item)}
                                     deSelectItems={deSelectItems}
                                     selected={getSelected(item)}
-                                    modified={getModified(item)}
                                     entity={item}/>
                         }
                     }

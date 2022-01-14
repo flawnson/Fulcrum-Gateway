@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text } from 'native-base'
+import { Center, Text } from 'native-base'
 import { useTranslation } from "react-i18next"
+import {StyleSheet} from "react-native";
 
 
 export default function () {
@@ -8,8 +9,26 @@ export default function () {
     console.log("Something went wrong!")
 
     return (
-        <View>
+        <Center>
+            <Text style={styles.error}>404</Text>
             <Text>{t("message")}</Text>
-        </View>
+        </Center>
     )
 }
+
+
+const styles = StyleSheet.create({
+    error: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        fontSize: 200
+    },
+    message: {
+
+    }
+})
+
+
+
