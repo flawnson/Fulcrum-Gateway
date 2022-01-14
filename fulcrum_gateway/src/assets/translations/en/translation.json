@@ -33,6 +33,8 @@
   },
   "homePage": {
     "queue_id": "Queue ID",
+    "name": "Your name",
+    "phone_number": "Your phone number",
     "helper": "Queue ID must be 10 characters.",
     "or": " or ",
     "footer": " to create your own virtual queue at"

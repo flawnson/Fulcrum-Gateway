@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, TouchableHighlight } from 'react-native'
 import { View } from 'native-base'
 import EnqueueGroup from "../components/molecules/EnqueueGroup";
@@ -13,7 +13,7 @@ import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 export default function () {
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    navigation.setOptions({headerRight: RightHeaderGroup()})
+    useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     return (
         <View style={styles.container}>

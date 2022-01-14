@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import QueueDashboard from "./QueueDashboard";
 import EnqueuedPage from "./EnqueuedPage";
@@ -9,12 +9,13 @@ import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { StyleSheet, Switch } from "react-native";
 import DarkModeToggle from "../components/atoms/DarkModeToggle"
+import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 
 const Tab = createBottomTabNavigator();
 
 export default function QueueDashboardTabs() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    navigation.setOptions({headerRight: DarkModeToggle()})
+    useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     return (
         <Tab.Navigator

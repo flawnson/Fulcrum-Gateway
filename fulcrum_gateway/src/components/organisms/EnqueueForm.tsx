@@ -104,7 +104,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                                 </FormControl.Label>
                             </Center>
                             <Input
-                                placeholder="Ex. 6477135354"
+                                placeholder="Ex. 123456"
                                 onChangeText={(value) => setData({ ...formData, joinCode: value })}
                             />
                             <Center>
@@ -134,7 +134,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                         <FormControl>
                             <Center>
                                 <FormControl.Label _text={{bold: true}}>
-                                    {t("queue_id")}
+                                    {t("name")}
                                 </FormControl.Label>
                             </Center>
                             <Input
@@ -168,7 +168,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                         <FormControl>
                             <Center>
                                 <FormControl.Label _text={{bold: true}}>
-                                    {t("queue_id")}
+                                    {t("phone_number")}
                                 </FormControl.Label>
                             </Center>
                             <Input

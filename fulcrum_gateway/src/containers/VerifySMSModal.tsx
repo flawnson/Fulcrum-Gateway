@@ -1,61 +1,117 @@
-import React, {useState} from 'react';
-import {Button, Link,
-        Modal} from 'native-base'
-import {StyleSheet, SafeAreaView,
-        Text, View} from 'react-native';
-
-import {
-    CodeField,
-    Cursor,
-    useBlurOnFulfill,
-    useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
+import React, {SetStateAction, useState} from 'react';
+import { Button, Link,
+        Modal, Center } from 'native-base'
+import { StyleSheet, SafeAreaView,
+        Text, View } from 'react-native';
+import { CodeField, Cursor,
+        useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import {useTranslation} from "react-i18next";
+import  { UserInfo } from "../../types"
 
-const CELL_COUNT = 4;
 
-export default function () {
+const CELL_COUNT = 6
+
+type VerifySMSModalProps = {
+    userInfo: UserInfo
+    showModal: boolean,
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function (props: VerifySMSModalProps) {
     const [value, setValue] = useState('');
     const { t, i18n } = useTranslation(["verifySMSModal"]);
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
-    const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    const [cellOnLayoutHandler, getCellOnLayoutHandler] = useClearByFocusCell({
         value,
         setValue,
     });
 
-    function onSubmit () {
+    const query = `
+        query get_stats {
+            getUser {
+                userId: id
+                phone_number
+                name
+                index
+                estimated_wait
+                join_time
+                status
+                summoned
+                queue {
+                    state
+                }
+            }
+        }
+    `
 
+    const submitSMSVerification = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({query: query, variables: value})
+                })
+            await response.json().then(
+                data => {
+                }
+            )
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+
+    function onSubmit () {
+        submitSMSVerification()
+        props.setShowModal(false)
     }
 
     return (
-        <Modal isOpen={props.showModal} onClose={() => props.setShowModal(false)}>
+        <Modal
+            defaultIsOpen
+            isOpen={props.showModal}
+            onClose={() => props.setShowModal(false)}
+            closeOnOverlayClick={false}
+            isKeyboardDismissable={false}
+        >
             <Modal.Content maxWidth="500px">
-                <Modal.CloseButton />
                 <Modal.Header>{t("title")}</Modal.Header>
                 <Modal.Body>
                     <SafeAreaView style={styles.root}>
-                        <Text style={styles.title}>Underline example</Text>
-                        <CodeField
-                            ref={ref}
-                            {...props}
-                            value={value}
-                            onChangeText={setValue}
-                            cellCount={CELL_COUNT}
-                            rootStyle={styles.codeFieldRoot}
-                            keyboardType="number-pad"
-                            textContentType="oneTimeCode"
-                            renderCell={({index, symbol, isFocused}: {index: number, symbol: string, isFocused: boolean})=> (
-                                <View
-                                    // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
-                                    onLayout={getCellOnLayoutHandler(index)}
-                                    key={index}
-                                    style={[styles.cellRoot, isFocused && styles.focusCell]}>
-                                    <Text style={styles.cellText}>
-                                        {symbol || (isFocused ? <Cursor /> : null)}
-                                    </Text>
-                                </View>
-                            )}
-                        />
+                        <Text style={styles.title}>
+                            Hello {props.userInfo.name}!
+                        </Text>
+                        <Text style={styles.subtitle}>
+                            Please enter the 6-digit code we sent to {props.userInfo.phone_number}
+                        </Text>
+                        <Center>
+                            <CodeField
+                                ref={ref}
+                                {...cellOnLayoutHandler}
+                                value={value}
+                                onChangeText={setValue}
+                                cellCount={CELL_COUNT}
+                                rootStyle={styles.codeFieldRoot}
+                                keyboardType="number-pad"
+                                textContentType="oneTimeCode"
+                                renderCell={({index, symbol, isFocused}: {index: number, symbol: string, isFocused: boolean})=> (
+                                    <View
+                                        // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
+                                        onLayout={getCellOnLayoutHandler(index)}
+                                        key={index}
+                                        style={[styles.cellRoot, isFocused && styles.focusCell]}>
+                                        <Text style={styles.cellText}>
+                                            {symbol || (isFocused ? <Cursor /> : null)}
+                                        </Text>
+                                    </View>
+                                )}
+                            />
+                        </Center>
                     </SafeAreaView>
                     <Link
                         _text={{
@@ -86,13 +142,17 @@ const styles = StyleSheet.create({
     },
     title: {
         textAlign: 'center',
-        fontSize: 30
+        fontSize: 24
+    },
+    subtitle: {
+        textAlign: 'center',
+        fontSize: 20
     },
     codeFieldRoot: {
         marginTop: 20,
-        width: 280,
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        // width: 280,
+        // marginLeft: 'auto',
+        // marginRight: 'auto',
     },
     cellRoot: {
         width: 60,
