@@ -28,14 +28,14 @@ export default function () {
         setQueuePaused()
     }
 
-    const query = `
+    const deleteQueueQuery = `
         mutation deleteQueue($id: String!) {
             deleteQueue(id: $id) {
             id
             }
         }
     `
-    const variables = `{
+    const deleteQueueVariables = `{
     "queue_id": {
             "id": "costco_queue1"
         }
@@ -43,11 +43,12 @@ export default function () {
 
     const deleteQueue = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
+            const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                body: JSON.stringify({query: deleteQueueQuery, variables: deleteQueueVariables})
             });
             // enter you logic when the fetch is successful
             return await response.json()
@@ -58,6 +59,33 @@ export default function () {
 
     function onEndScreenPress () {
         deleteQueue()
+        navigation.navigate("EndScreen")
+    }
+
+    const logoutQuery = `
+        mutation logout_organizer {
+            logoutOrganizer
+        }
+    `
+
+    const logout = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({query: logoutQuery})
+            });
+            // enter you logic when the fetch is successful
+            return await response.json()
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    function onLogoutPress () {
+        logout()
         navigation.navigate("EndScreen")
     }
 
@@ -81,6 +109,7 @@ export default function () {
                 <Menu.Item onPress={() => onEndScreenPress}>{t("end")}</Menu.Item>
                 <Menu.Item onPress={() => pauseQueue}>{t("pause")}</Menu.Item>
                 <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>{t("share")}</Menu.Item>
+                <Menu.Item onPress={() => onLogoutPress}>{t("logout")}</Menu.Item>
             </Menu>
             <CreateUserModal showModal={showCreateUserModal}
                             setShowModal={setShowCreateUserModal}

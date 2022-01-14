@@ -31,11 +31,8 @@ export default function () {
     const [state, setState] = useState("ACTIVE")
 
     const query = `
-        query get_stats($userId: UserWhereUniqueInput! $queueId: QueueWhereUniqueInput!) {
-            queue(where: $queueId) {
-                state
-            }
-            user(where: $userId) {
+        query get_stats {
+            getUser {
                 userId: id
                 name
                 index
@@ -43,27 +40,22 @@ export default function () {
                 join_time
                 status
                 summoned
+                queue {
+                    state
+                }
             }
         }
     `
-    const variables = `{
-    "userId": {
-            "id": "user1"
-        },
-    "queueId": {
-            "id": "costco_queue2"
-        }
-    }`
 
     const fetchUserStats = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            const response = await fetch(`http://localhost:8080/api`,{body: query})
             await response.json().then(
                 data => {
                     // If summoned is toggled true, navigate to Summon Screen
-                    if (data.data.user.summoned) {navigation.navigate("SummonScreen")}
-                    data = data.data.user
-                    setState(data.data.queue.state)
+                    data = data.data.getUser
+                    if (data.summoned) {navigation.navigate("SummonScreen")}
+                    setState(data.queue.state)
                     const now: any = new Date()
                     const join: any = new Date(data.join_time)
                     const waited = new Date(Math.abs(now - join))

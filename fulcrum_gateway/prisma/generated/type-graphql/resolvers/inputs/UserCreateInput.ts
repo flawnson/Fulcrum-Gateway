@@ -25,9 +25,9 @@ export class UserCreateInput {
   summoned?: boolean | undefined;
 
   @TypeGraphQL.Field(_type => String, {
-    nullable: false
+    nullable: true
   })
-  phone_number!: string;
+  phone_number?: string | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true

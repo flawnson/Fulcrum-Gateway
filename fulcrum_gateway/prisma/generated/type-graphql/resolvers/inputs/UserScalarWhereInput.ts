@@ -9,6 +9,7 @@ import { EnumUserStatusFilter } from "../inputs/EnumUserStatusFilter";
 import { IntFilter } from "../inputs/IntFilter";
 import { IntNullableFilter } from "../inputs/IntNullableFilter";
 import { StringFilter } from "../inputs/StringFilter";
+import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
 @TypeGraphQL.InputType("UserScalarWhereInput", {
   isAbstract: true
@@ -44,10 +45,10 @@ export class UserScalarWhereInput {
   })
   summoned?: BoolFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @TypeGraphQL.Field(_type => StringNullableFilter, {
     nullable: true
   })
-  phone_number?: StringFilter | undefined;
+  phone_number?: StringNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => IntFilter, {
     nullable: true

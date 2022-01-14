@@ -1,9 +1,9 @@
 import React from "react";
-import SignUpForm from "../components/organisms/SignUpForm";
+import SignUpForm from "../components/organisms/OrganizerSignUpForm";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
-import { Modal } from "native-base";
+import { Center, Modal } from "native-base";
 
 
 type CreateQueueModalProps = {
@@ -21,7 +21,9 @@ export default (props: CreateQueueModalProps) => {
                 <Modal.CloseButton />
                 <Modal.Header>{t("title")}</Modal.Header>
                 <Modal.Body>
-                    <SignUpForm navigation={navigation} setShowModal={props.setShowModal}/>
+                    <Center>
+                        <SignUpForm navigation={navigation} setShowModal={props.setShowModal}/>
+                    </Center>
                 </Modal.Body>
                 <Modal.Footer>
                 </Modal.Footer>

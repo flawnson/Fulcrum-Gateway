@@ -5,7 +5,7 @@ import EnqueueForm from '../organisms/EnqueueForm'
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
 import { useTranslation } from "react-i18next";
-import OrganizerLoginModal from "../../containers/OrganizerLoginModal";
+import OrganizerLoginModal from "../../containers/LoginModal";
 import OrganizerSignUpModal from "../../containers/OrganizerSignUpModal";
 
 
@@ -18,7 +18,7 @@ export default function () {
 
     return (
         <Center style={styles.container}>
-            <EnqueueForm route={route} navigation={navigation} />
+            <EnqueueForm navigation={navigation} />
             <Text style={styles.subText}>
                 <Text style={styles.linkText} onPress={() => setShowLoginModal(true)}>
                     {t("login", {ns: "common"})}

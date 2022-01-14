@@ -18,8 +18,8 @@ export default function () {
     const [showModal, setShowModal] = useState(false);
 
     const query = `
-        query get_queue_data($data: OrganizerWhereUniqueInput!) {
-            organizer(where: $data) {
+        query get_queue_data {
+            getOrganizer {
                 queues {
                     queueId: id
                     name
@@ -29,20 +29,22 @@ export default function () {
             }
         }
     `
-    const variables = `{
-        "data":
-        {
-            "id": "costco_toronto"
-        }
-    }`
 
     async function fetchQueuesData () {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            const response = await fetch(`http://localhost:8080/api`,
+                                     {
+                                         method: 'POST',
+                                         headers: {
+                                         'Content-Type': 'application/json',
+                                         'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                                         },
+                                         credentials: 'include',
+                                         body: JSON.stringify({query: query})})
             await response.json().then(
                 data => {
-                    data = data.data.organizer.queues
-                    let queue_sats: QueueInfo[] = []
+                    data = data.data.getOrganizer.queues
+                    let queue_stats: QueueInfo[] = []
                     data.forEach((queue_data: {[key: string]: string | number}) => {
                         const now: any = new Date()
                         const create: any = new Date(queue_data.create_time)
@@ -55,9 +57,9 @@ export default function () {
                             "lifespan"]
                             .filter(key => key in queue_data)
                             .map(key => [key, queue_data[key]]))
-                        queue_sats.push(stats)
+                        queue_stats.push(stats)
                     })
-                    setProps(queue_sats)
+                    setProps(queue_stats)
                 }
             )
         } catch(error) {

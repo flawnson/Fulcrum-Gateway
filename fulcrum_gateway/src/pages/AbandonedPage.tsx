@@ -1,15 +1,15 @@
-import React, {SetStateAction, useEffect, useState} from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import CatalogEntityCardGroup from "../components/molecules/AbandonedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
-import {AbandonedStats, EnqueuedStats} from "../../types";
+import { AbandonedStats, EnqueuedStats } from "../../types";
 
 export default function () {
     const [props, setProps] = useState<AbandonedStats[]>([])
 
     const query = `
-        query get_queue_stats($queue_id: QueueWhereUniqueInput!) {
-            queue(where: $queue_id) {
-                users {
+        query get_users($queueId: QueueWhereUniqueInput! $orderBy: [UserOrderByWithRelationInput!]) {
+            queue(where: $queueId) {
+                users(orderBy: $orderBy) {
                     userId: id
                     name
                     join_time
@@ -20,14 +20,20 @@ export default function () {
         }
     `
     const variables = `{
-    "queue_id": {
-            "id": "costco_queue1"
-        }
+        "queueId":
+            {
+                "id": "costco_queue1"
+            },
+        "orderBy":
+            {
+                "index": "desc"
+            }
     }`
 
     async function fetchAbandonedData () {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            const response = await fetch(`http://localhost:8080/api`,
+                                    {body: JSON.stringify({query: query, variables: variables})})
             await response.json().then(
                 data => {
                     data = data.data.queue.users

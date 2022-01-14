@@ -1,20 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef, SetStateAction} from 'react';
 import { StyleSheet,
         Pressable, Animated,
         PanResponder, Dimensions,
         GestureResponderEvent } from "react-native";
-import {
-    HStack, Text,
-    Box, View,
-    Center, Avatar, VStack
-} from 'native-base';
+import { HStack, Text,
+        Box, View,
+        Center, Avatar, VStack } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
-import { EnqueuedStats } from "../../../types";
+import {EnqueuedStats, UserStatus} from "../../../types";
+import { Swipeable, RectButton,
+        LongPressGestureHandler, TapGestureHandler} from "react-native-gesture-handler";
+import {State, HandlerStateChangeEvent,
+        LongPressGestureHandlerEventPayload,
+        TapGestureHandlerEventPayload} from "react-native-gesture-handler";
 
 type EnqueuedCatalogProps = {
-    onPress: (event: GestureResponderEvent) => void,
-    onLongPress: (event: GestureResponderEvent) => void,
+    entities: Array<EnqueuedStats>
+    setEntities: React.Dispatch<React.SetStateAction<EnqueuedStats[]>>
+    onPress: (event?: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) => void,
+    onLongPress: (event?: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => void,
     deSelectItems: () => void,
     selected: boolean,
     modified: string,
@@ -24,49 +29,36 @@ type EnqueuedCatalogProps = {
 export default function (props: EnqueuedCatalogProps) {
     const [summoned, setSummoned] = useState<boolean>(false)
 
-    const pan = useRef(new Animated.ValueXY()).current;
+    // useEffect(() => {
+    //     if (props.modified === "KICKED") {
+    //         // onLeftSwipe(pan)
+    //     } else if (props.modified === "SERVICED") {
+    //         // onRightSwipe(pan)
+    //     } else if (props.modified === "SUMMONED") {
+    //         onBellPress()
+    //     }
+    //     props.deSelectItems()
+    // }, [props.modified])
 
-    useEffect(() => {
-        if (props.modified === "KICKED") {
-            onLeftSwipe(pan)
-        } else if (props.modified === "SERVICED") {
-            onRightSwipe(pan)
-        } else if (props.modified === "SUMMONED") {
-            onBellPress()
-        }
-        props.deSelectItems()
-    }, [props.modified])
-
-    const query = `
-        mutation summon_user($userId: UserWhereUniqueInput!, $data: UserUpdateInput!) {
-            updateUser(where: $userId, data: $data) {
-                name
+    const summonQuery = `
+        mutation summon_user($userId: String!) {
+            summon(userId: $userId) {
                 summoned
             }
         }
     `
-    const variables = `{
-        "userId":
-        {
-            "id": "user0"
-        },
-        "data": 
-        {
-            "summoned": {
-                "set": true
-            }
-        }
-    }`
 
     async function toggleSummonUser (userId: string) {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({id: userId})
-            });
+            const response = await fetch(`http://localhost:8080/api`, {
+                                         method: 'POST',
+                                         headers: {
+                                             'Content-Type': 'application/json',
+                                             'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                                         },
+                                         credentials: 'include',
+                                         body: JSON.stringify({query: summonQuery, variables: {userId: userId}})
+                                     });
             // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
@@ -76,66 +68,106 @@ export default function (props: EnqueuedCatalogProps) {
     }
 
     useEffect(() => {
-        toggleSummonUser(props.entity.userId).then(null)
+        toggleSummonUser(props.entity.userId).then()
     }, [summoned])
 
     const onBellPress = function () {
         setSummoned(!summoned)
     }
 
-    const panResponder = useRef(
-        PanResponder.create({
-            onMoveShouldSetPanResponder: () => true,
-            onPanResponderMove: Animated.event([
-                null,
-                { dx: pan.x }
-            ], {useNativeDriver: false}),
-            onPanResponderRelease: (evt, gestureState) => {
-                if (gestureState.dx > 200) {
-                    Animated.spring(pan, {
-                        toValue: { x: Dimensions.get('window').width + 100, y: gestureState.dy }, useNativeDriver: false
-                    }).start(() => console.log('hi'))
-                } else if (gestureState.dx < -200) {
-                    Animated.spring(pan, {
-                        toValue: { x: -Dimensions.get('window').width - 100, y: gestureState.dy }, useNativeDriver: false
-                    }).start(() => console.log('bye'))
-                } else {
-                    Animated.spring(pan, {toValue: {x: 0, y: 5}, friction: 5, useNativeDriver: false}).start();
-                }
+    const statusQuery = `
+        mutation change_status($userId: String! $status: String!) {
+            changeStatus(userId: $userId status: $status) {
+                id
             }
-        })
-    ).current;
+        }
+    `
+
+    async function changeUserStatus (status: UserStatus) {
+        try {
+            const response = await fetch(`http://localhost:8080/api`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                },
+                credentials: 'include',
+                body: JSON.stringify({query: statusQuery, variables: {userId: props.entity.userId, status: status}})
+            });
+            // enter you logic when the fetch is successful
+            return await response.json()
+        } catch(error) {
+            // enter your logic for when there is an error (ex. error toast)
+            return error
+        }
+    }
+    const onDeletePress = () => {
+        props.entities.find(user => user.userId === props.entity.userId)!.status = "KICKED"
+        changeUserStatus("KICKED").then()
+        props.setEntities(
+            [...props.entities.filter(user => user.userId !== props.entity.userId)]
+        )
+    }
+
+    const renderLeftActions = (progress: any, dragX: any) => {
+        const trans = dragX.interpolate({
+            inputRange: [0, 50, 100, 101],
+            outputRange: [-20, 0, 0, 1],
+        });
+        return (
+            <RectButton style={styles.leftAction} onPress={onDeletePress}>
+                <Animated.Text
+                    style={[
+                        styles.actionText,
+                        {
+                            transform: [{ translateX: trans }],
+                        },
+                    ]}>
+                    Delete
+                </Animated.Text>
+            </RectButton>
+        );
+    }
 
     return (
-        <Center>
-            <Animated.View
-                style={{
-                    transform: [{ translateX: pan.x }, { translateY: pan.y }]
+        <Swipeable renderLeftActions={renderLeftActions}>
+            <LongPressGestureHandler
+                onHandlerStateChange={({ nativeEvent }) => {
+                    if (nativeEvent.state === State.ACTIVE) {
+                        props.onLongPress()
+                    }
                 }}
-                {...panResponder.panHandlers}
+                minDurationMs={1000}
             >
-                <Box
-                    rounded="lg"
-                    borderRadius="lg"
-                    overflow="hidden"
-                    borderColor="coolGray.200"
-                    borderWidth="1"
-                    _dark={{
-                        borderColor: "coolGray.600",
-                        backgroundColor: "gray.700",
+                <TapGestureHandler
+                    onHandlerStateChange={({ nativeEvent }) => {
+                        if (nativeEvent.state === State.END) {
+                            props.onPress()
+                        }
                     }}
-                    _web={{
-                        shadow: "2",
-                        borderWidth: "0",
-                    }}
-                    _light={{
-                        backgroundColor: "gray.50",
-                    }}
-                    style={styles.card}
                 >
-                    <Pressable onPress={props.onPress} delayLongPress={500} onLongPress={props.onLongPress}>
+                    <Box
+                        rounded="lg"
+                        borderRadius="lg"
+                        overflow="hidden"
+                        borderColor="coolGray.200"
+                        borderWidth="1"
+                        _dark={{
+                            borderColor: "coolGray.600",
+                            backgroundColor: "gray.700",
+                        }}
+                        _web={{
+                            shadow: "2",
+                            borderWidth: "0",
+                        }}
+                        _light={{
+                            backgroundColor: "gray.50",
+                        }}
+                        style={styles.card}
+                    >
                         <HStack space='5' style={styles.group}>
-                            <Avatar style={styles.avatar} source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
+                            <Avatar style={styles.avatar}
+                                    source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
                                 <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>
                             </Avatar>
                             <Text style={styles.text}>
@@ -157,10 +189,10 @@ export default function (props: EnqueuedCatalogProps) {
                             </VStack>
                         </HStack>
                         {props.selected && <View style={styles.overlay} />}
-                    </Pressable>
-                </Box>
-            </Animated.View>
-        </Center>
+                    </Box>
+                </TapGestureHandler>
+            </LongPressGestureHandler>
+        </Swipeable>
     );
 }
 
@@ -193,5 +225,11 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
+    leftAction: {
+        backgroundColor: 'red'
+    },
+    actionText: {
+        fontSize: 30
+    }
 })
 

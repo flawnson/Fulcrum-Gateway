@@ -9,27 +9,41 @@ export default function () {
     const [props, setProps] = useState<EnqueuedStats[]>([])
 
     const query = `
-        query get_queue_stats {
-            getQueue {
-                users {
+        query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
+            getQueue(queueId: $queueId) {
+                users(orderBy: $orderBy) {
                     userId: id
                     name
                     index
-                    join_time
-                    estimated_wait
                     last_online
+                    join_time
                     status
                 }
             }
         }
     `
+    const variables = `{
+        "queueId": "costco_queue1",
+        "orderBy":
+            {
+                "index": "asc"
+            }
+    }`
 
     async function fetchUserData () {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}`)
+            const response = await fetch(`http://localhost:8080/api`,
+                                     {
+                                         method: 'POST',
+                                         headers: {
+                                             'Content-Type': 'application/json',
+                                             'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                                         },
+                                         credentials: 'include',
+                                         body: JSON.stringify({query: query, variables: variables})})
             await response.json().then(
                 data => {
-                    data = data.data.queue.users
+                    data = data.data.getQueue.users
                     data = data.filter((d: EnqueuedStats) => d.status === "ENQUEUED" || d.status === "DEFERRED")
                     let user_stats: EnqueuedStats[] = []
                     data.forEach((queue_data: {[key: string]: any}) => {
@@ -38,13 +52,8 @@ export default function () {
                         const waited = new Date(Math.abs(now - join))
                         queue_data.waited = `${Math.floor(waited.getMinutes())}`
                         queue_data.online = new Date(queue_data.last_online) === new Date()
-                        const stats: SetStateAction<any> = Object.fromEntries([
-                            "userId",
-                            "name",
-                            "index",
-                            "waited",
-                            "online",
-                            "state"]
+                        const stats: SetStateAction<any> = Object.fromEntries(
+                            ["userId", "name", "index", "waited", "online", "status"]
                             .filter(key => key in queue_data)
                             .map(key => [key, queue_data[key]]))
                         user_stats.push(stats)
@@ -64,6 +73,6 @@ export default function () {
     useInterval(fetchUserData, 5000)
 
     return (
-        <EnqueuedCatalogCardGroup entities={props}/>
+        <EnqueuedCatalogCardGroup entities={props} setEntities={setProps}/>
     )
 }

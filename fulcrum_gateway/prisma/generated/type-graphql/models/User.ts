@@ -25,9 +25,9 @@ export class User {
   summoned!: boolean;
 
   @TypeGraphQL.Field(_type => String, {
-    nullable: false
+    nullable: true
   })
-  phone_number!: string;
+  phone_number?: string | null;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false

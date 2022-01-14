@@ -77,6 +77,8 @@ function App() {
                                 <Stack.Screen name="QueuesPage" component={QueuesPage} />
                                 <Stack.Screen name="ConfirmationScreen" component={ConfirmationScreen} />
                                 <Stack.Screen name="NotFound" component={ErrorScreen} />
+                                {/*NOT NEEDED HERE*/}
+                                <Stack.Screen name="QueueDashboard" component={QueueDashboardTabs} />
                             </>
                             ) : isInQueue && isOrganizer ? (
                                 <>
