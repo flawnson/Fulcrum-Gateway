@@ -11,8 +11,8 @@ export async function sendEmail(email: string, url: string, task: string) {
       port: 587,
       secure: false, // true for 465, false for other ports
       auth: {
-        user: process.env.SMTP_USERNAME, // generated ethereal user
-        pass: process.env.SMTP_PASSWORD // generated ethereal password
+        user: process.env.SMTP_USERNAME,
+        pass: process.env.SMTP_PASSWORD
       }
     });
   }
@@ -40,16 +40,16 @@ export async function sendEmail(email: string, url: string, task: string) {
       to: email, // list of receivers
       subject: "Confirm your email to finish signup", // Subject line
       text: "Please click the link below to confirm your email:", // plain text body
-      html: `<a href="${url}">${url}</a>` // html body
+      html: `<a Please finish your account signup at the following link: href="${url}">${url}</a>` // html body
     };
   }
   else if (task == "reset"){
     mailOptions = {
-      from: '"Fiefoe" <hello@fiefoe.io>', // sender address
+      from: '"Fiefoe" <' + process.env.SENDER_EMAIL + '>', // sender address
       to: email, // list of receivers
       subject: "Reset your password", // Subject line
       text: "Please click the link below to reset your password:", // plain text body
-      html: `<a href="${url}">${url}</a>` // html body
+      html: `<Please click the link below to reset your password: a href="${url}">${url}</a>` // html body
     };
   }
 
