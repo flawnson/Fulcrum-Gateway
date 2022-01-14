@@ -8255,10 +8255,10 @@
     "inherits" "^2.0.3"
     "readable-stream" "^2.3.6"
 
-"follow-redirects@^1.0.0", "follow-redirects@^1.10.0", "follow-redirects@^1.14.0", "follow-redirects@^1.14.4":
-  "integrity" "sha512-wtphSXy7d4/OR+MvIFbCVBDzZ5520qV8XfPklSN5QtxuMUJZ+b0Wnst1e1lCDocfzuCkHqj8k0FpZqO+UIaKNA=="
-  "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.5.tgz"
-  "version" "1.14.5"
+"follow-redirects@^1.0.0", "follow-redirects@^1.10.0", "follow-redirects@^1.14.4":
+  "integrity" "sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ=="
+  "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.7.tgz"
+  "version" "1.14.7"
 
 "fontfaceobserver@^2.1.0":
   "integrity" "sha512-ReOsO2F66jUa0jmv2nlM/s1MiutJx/srhAe2+TE8dJCMi02ZZOcCTxTCQFr3Yet+uODUtnr4Mewg+tNQ+4V1Ng=="
@@ -17015,6 +17015,7 @@
   "version" "3.0.0"
 
 "uWebSockets.js@uNetworking/uWebSockets.js#v19.3.0":
+  "integrity" "sha512-GL5ltrmxU/RPRCkCwor1OZ0IdCA0qzwZ9MkE37HWe+p3NLOewIlybYZ9vVDMQRdq+4bt3tu1u4zELPxrfn2vcA=="
   "resolved" "git+ssh://git@github.com/uNetworking/uWebSockets.js.git#7bf0faac5859fef2d113e83d22803f7833774c11"
   "version" "19.3.0"
 
