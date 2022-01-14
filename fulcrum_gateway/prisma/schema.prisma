@@ -46,7 +46,7 @@ model User {
   id            String     @id @default(uuid())
   name          String
   summoned      Boolean    @default(false)
-  phone_number  String     @unique
+  phone_number  String?     @unique
   party_size    Int        @default(1)
   last_online   DateTime?
   index         Int        @default(0)

@@ -9,6 +9,7 @@ import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
 import { sendSMS } from "../../../helpers";
 import { redis } from "../../../redisClient";
+import { confirmUserPrefix } from "../../../constants";
 
 
 @ArgsType()
@@ -19,9 +20,9 @@ class CreateUserArgs {
   joinCode!: string;
 
   @Field({
-    nullable: false
+    nullable: true
   })
-  phoneNumber!: string;
+  phoneNumber?: string;
 
   @Field({
     nullable: false
@@ -77,8 +78,8 @@ export class CreateUserResolver {
         }
       });
 
-
-      if (createUser != null){
+      // generate a verification code only if phone number exists
+      if (createUser != null && args.phoneNumber != null){
         // generate 6 digit verification code
         let confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
         //check if this verification code is already in use by another user
@@ -94,12 +95,13 @@ export class CreateUserResolver {
           }
         }
         // save code to redis
-        await redis.set(confirmCode, createUser.id, "ex", 60 * 60 * 0.5); // 0.5 hour expiration
+        await redis.set(confirmUserPrefix + confirmCode, createUser.id, "ex", 60 * 60 * 0.5); // 0.5 hour expiration
 
         // send SMS here
-        await sendSMS(args.phoneNumber, confirmCode);
+        await sendSMS(args.phoneNumber, confirmCode + " is your Fiefoe verification code.", "Confirm");
 
       }
+
       return createUser;
 
     })
