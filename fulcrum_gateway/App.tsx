@@ -36,7 +36,7 @@ export const AuthContext = React.createContext(
     {
         signIn: (data: any) => {},
         signOut: () => {},
-        signUp: () => {}
+        signUp: (data: any) => {}
     }
 )
 
@@ -46,9 +46,6 @@ function App() {
         prefixes: [prefix],
         config: linkConfig
     }
-    const isInQueue = true
-    const isQueuer = true
-    const isOrganizer = false
     const [isThemeDark, setIsThemeDark] = React.useState(false);
 
     let theme = isThemeDark ? {nativebase: nativebaseTheme("dark"), navigation: navigationTheme("dark")} :
@@ -72,11 +69,9 @@ function App() {
                 case 'SIGN_IN': {
                     switch (action.who) {
                         case 'ORGANIZER':
-                            console.log("ORGANIZER")
                             return {
                                 ...prevState,
                                 isOrganizer: true,
-                                isLoading: false,
                                 isSignout: false,
                             };
                         case 'ASSISTANT':
@@ -84,14 +79,12 @@ function App() {
                                 ...prevState,
                                 isAssistant: true,
                                 isSignout: false,
-                                isLoading: false,
                             };
                         case 'USER':
                             return {
                                 ...prevState,
                                 isUser: true,
                                 isSignout: false,
-                                isLoading: false,
                             };
                     }
                 };
@@ -102,7 +95,6 @@ function App() {
                         isOrganizer: false,
                         isAssistant: false,
                         isSignout: true,
-                        isLoading: false,
                     };
             }
         },
@@ -110,30 +102,15 @@ function App() {
             isUser: false,
             isOrganizer: false,
             isAssistant: false,
-            isLoading: false,
             isSignout: false,
         }
     );
 
     const authContext = React.useMemo(
         () => ({
-            signIn: (data: any) => {
-                // In a production app, we need to send some data (usually username, password) to server and get a token
-                // We will also need to handle errors if sign in failed
-                // After getting token, we need to persist the token using `SecureStore` or any other encrypted storage
-                // In the example, we'll use a dummy token
-
-                dispatch({ type: 'SIGN_IN', who: data });
-            },
+            signUp: (data: "ORGANIZER" | "ASSISTANT") => dispatch({ type: 'SIGN_IN', who: data }),
+            signIn: (data: "ORGANIZER" | "ASSISTANT" | "USER") => dispatch({ type: 'SIGN_IN', who: data }),
             signOut: () => dispatch({ type: 'SIGN_OUT' }),
-            signUp: () => {
-                // In a production app, we need to send user data to server and get a token
-                // We will also need to handle errors if sign up failed
-                // After getting token, we need to persist the token using `SecureStore` or any other encrypted storage
-                // In the example, we'll use a dummy token
-
-                dispatch({ type: 'SIGN_IN' });
-            },
         }),
         []
     );
@@ -144,16 +121,10 @@ function App() {
             <PreferencesContext.Provider value={preferences}>
                 <NativeBaseProvider config={config} theme={theme.nativebase}>
                     <NavigationContainer linking={linking} fallback={<Text>Blah blah blah...</Text>} theme={theme.navigation}>
-                        <Stack.Navigator>
+                        <Stack.Navigator initialRouteName={"HomePage"}>
                             <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe"}} >
-                                {state.isLoading ? (
+                                {state.isUser ? (
                                     <>
-                                        <Stack.Screen name="SplashScreen" component={SplashScreen} />
-                                    </>
-                                ) : state.isUser ? (
-                                    <>
-                                        <Stack.Screen name="HomePage" component={HomePage} />
-                                        <Stack.Screen name="LandingPage" component={LandingPage} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
                                         <Stack.Screen name="ShareScreen" component={ShareScreen} />
@@ -168,14 +139,20 @@ function App() {
                                         <Stack.Screen name="QueuesPage" component={QueuesPage} />
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
+                                        <Stack.Screen name="UserDashboard" component={UserDashboard} />
+                                        <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                     </>
                                 ) : state.isAssistant ? (
                                     <>
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
+                                        <Stack.Screen name="UserDashboard" component={UserDashboard} />
+                                        <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                     </>
                                 ) : (
                                     <>
+                                        <Stack.Screen name="QueuesPage" component={QueuesPage} />
+                                        <Stack.Screen name="HomePage" component={HomePage} />
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
                                     </>
                                 )}

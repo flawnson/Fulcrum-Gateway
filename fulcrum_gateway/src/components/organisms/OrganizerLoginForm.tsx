@@ -7,7 +7,7 @@ import { Box, Heading,
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../types";
 import { useState } from "react";
-import {AuthContext} from "../../../App";
+import { AuthContext } from "../../../App";
 
 
 type LogInFormType = {
@@ -144,7 +144,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                             color: "warmGray.200",
                         }}
                     >
-                        I'm a new user.{" "}
+                        I'm a new organizer.{" "}
                     </Text>
                     <Link
                         _text={{
@@ -154,7 +154,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                         }}
                         href="#"
                     >
-                        Log Up
+                        Sign Up
                     </Link>
                 </HStack>
             </VStack>

@@ -6,11 +6,11 @@ import { VStack, FormControl,
 import { HomeScreenProps } from "../../../types";
 import { useTranslation } from "react-i18next";
 import CannotEnqueueAlert from "../atoms/CannotEnqueueAlert";
+import {AuthContext} from "../../../App";
 
 
 type EnqueueFormProps = {
     navigation: HomeScreenProps["navigation"]
-    setShowModal?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 type EnqueueFormData = {
@@ -20,8 +20,9 @@ type EnqueueFormData = {
 }
 
 
-export default function ({navigation, setShowModal}: EnqueueFormProps) {
+export default function ({navigation}: EnqueueFormProps) {
     const [formData, setData] = useState<EnqueueFormData>({})
+    const { signIn } = React.useContext(AuthContext)
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [showAlert, setShowAlert] = useState<boolean>(false)
     const [isJoinCodeFormOpen, setJoinCodeFormOpen] = useState<boolean>(true)
@@ -75,9 +76,11 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     };
 
     const onSuccess = () => {
+        joinQueue()
+        signIn('USER')
         setSubmitted(true)
         navigation.navigate("UserDashboard")
-        setSubmitted(false)  // In case user goes back to home page (probably wrong :P)
+        // setSubmitted(false)  // In case user goes back to home page (probably wrong :P)
     }
 
     const onFailure = () => {
@@ -87,9 +90,6 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
 
     const onSubmit = () => {
         validate() ?  onSuccess() : onFailure();
-        joinQueue()
-        if (setShowModal) {setShowModal(false)}
-        navigation.navigate("UserDashboard")
     };
 
     return (

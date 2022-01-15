@@ -6,6 +6,7 @@ import { Box, Heading,
         HStack } from "native-base"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../types";
+import { AuthContext } from "../../../App";
 
 
 type SignInFormType = {
@@ -19,6 +20,7 @@ type AssistantFormData = {
 }
 
 export default ({navigation, setShowModal}: SignInFormType) => {
+    const { signIn } = React.useContext(AuthContext)
     const [formData, setData] = useState<AssistantFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [errors, setErrors] = useState<object>({});
@@ -31,7 +33,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
         }
     `
 
-    async function joinQueue () {
+    async function logIn () {
         try {
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
@@ -71,9 +73,19 @@ export default ({navigation, setShowModal}: SignInFormType) => {
         return true;
     };
 
-    const onSignInPress = () => {
+    const onSuccess = () => {
+        signIn('ASSISTANT')
         setShowModal(false)
+        setSubmitted(false)
         navigation.navigate("QueueDashboard")
+    }
+
+    const onFailure = () => {
+        setSubmitted(false)
+    }
+
+    const onSignInPress = () => {
+        validate() && logIn() ? onSuccess() : onFailure();
     }
 
     return (
@@ -103,27 +115,6 @@ export default ({navigation, setShowModal}: SignInFormType) => {
                 >
                     Sign in
                 </Button>
-                <HStack mt="6" justifyContent="center">
-                    <Text
-                        fontSize="sm"
-                        color="coolGray.600"
-                        _dark={{
-                            color: "warmGray.200",
-                        }}
-                    >
-                        I'm a new user.{" "}
-                    </Text>
-                    <Link
-                        _text={{
-                            color: "indigo.500",
-                            fontWeight: "medium",
-                            fontSize: "sm",
-                        }}
-                        href="#"
-                    >
-                        Sign Up
-                    </Link>
-                </HStack>
             </VStack>
         </Box>
     )

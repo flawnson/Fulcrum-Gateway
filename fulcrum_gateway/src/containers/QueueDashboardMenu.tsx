@@ -89,7 +89,7 @@ export default function () {
     function onLogoutPress () {
         signOut()
         logout()
-        // navigation.navigate("EndScreen")  We are automatically sent to the EndScreen
+        navigation.navigate("EndScreen")
     }
 
     return (

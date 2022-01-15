@@ -1,14 +1,11 @@
 import React, {useState, useEffect, useRef, SetStateAction} from 'react';
-import { StyleSheet,
-        Pressable, Animated,
-        PanResponder, Dimensions,
-        GestureResponderEvent } from "react-native";
+import { StyleSheet, Animated } from "react-native";
 import { HStack, Text,
         Box, View,
-        Center, Avatar, VStack } from 'native-base';
+        Avatar, VStack } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
-import {EnqueuedStats, UserStatus} from "../../../types";
+import { EnqueuedStats, UserStatus } from "../../../types";
 import { Swipeable, RectButton,
         LongPressGestureHandler, TapGestureHandler} from "react-native-gesture-handler";
 import { State, HandlerStateChangeEvent,

@@ -2,11 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Pressable,
         GestureResponderEvent, Animated,
         PanResponder, Dimensions } from "react-native";
-import {
-    HStack, Text,
-    Box, Center,
-    Avatar, View
-} from 'native-base';
+import { HStack, Text,
+        Box, Center,
+        Avatar, View } from 'native-base';
 import { QueueInfo } from "../../../types";
 
 type QueuesCatalogProps = {

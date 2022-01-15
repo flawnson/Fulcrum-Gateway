@@ -34,7 +34,7 @@ export type EnqueuedStats = {
     online: boolean,
     index: number,
     waited: number,
-    status: string
+    status: UserStatus
 }
 
 
@@ -44,7 +44,7 @@ export type ServicedStats = {
     userId: string,
     name: string,
     reneged: number,
-    state: string
+    status: UserStatus
 }
 
 
@@ -54,7 +54,7 @@ export type AbandonedStats = {
     userId: string,
     name: string,
     waited: number,
-    state: string
+    status: UserStatus
 }
 
 
