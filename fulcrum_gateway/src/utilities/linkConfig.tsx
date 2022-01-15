@@ -57,6 +57,9 @@ export default {
         ConfirmationScreen: {
             path: 'confirmationscreen'
         },
+        SplashScreen: {
+            path: 'splashscreen'
+        },
         NotFound: '*',
     },
 }

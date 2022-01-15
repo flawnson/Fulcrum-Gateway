@@ -40,7 +40,7 @@ export default function (props: QueuesStatsProps) {
             return selectItems(item)
         }
 
-        // here you can add you code what do you want if quue just do single tap
+        // Single tap code
         navigation.navigate("QueueDashboardTabs")
     }
 

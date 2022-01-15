@@ -40,7 +40,8 @@ export default function QueueDashboardTabs() {
                 tabBarActiveTintColor: '#8743FF',
                 tabBarInactiveTintColor: 'gray',
                 headerShown: false,
-                headerBackVisible: true
+                headerBackVisible: true,
+                // headerRight: RightHeaderGroup()
             })}
         >
             <Tab.Screen

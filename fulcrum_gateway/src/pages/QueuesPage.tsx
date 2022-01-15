@@ -8,12 +8,13 @@ import CreateQueueModal from "../containers/CreateQueueModal";
 import { QueueInfo } from "../../types";
 import useInterval from "../utilities/useInterval";
 import DarkModeToggle from "../components/atoms/DarkModeToggle";
+import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [props, setProps] = useState<QueueInfo[]>([])
-    navigation.setOptions({headerRight: DarkModeToggle()})
+    useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     const [showModal, setShowModal] = useState(false);
 
