@@ -7,6 +7,7 @@ import { Box, Heading,
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../types";
 import { useState } from "react";
+import {AuthContext} from "../../../App";
 
 
 type LogInFormType = {
@@ -25,6 +26,7 @@ type OrganizerLogInErrorData = {
 }
 
 export default ({navigation, setShowModal}: LogInFormType) => {
+    const { signIn } = React.useContext(AuthContext)
     const [formData, setData] = useState<OrganizerFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [errors, setErrors] = useState<OrganizerLogInErrorData>({});
@@ -79,9 +81,10 @@ export default ({navigation, setShowModal}: LogInFormType) => {
     };
 
     const onSuccess = () => {
+        signIn('ORGANIZER')
         setShowModal(false)
         setSubmitted(false)
-        navigation.navigate("QueuesPage")
+        // navigation.navigate("QueuesPage")  We are automatically sent to the QueuesPage
     }
 
     const onFailure = () => {

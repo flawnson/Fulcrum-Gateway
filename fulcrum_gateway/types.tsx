@@ -11,13 +11,13 @@ export type RootStackParamList = {
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
     ShareScreen: undefined
-    SignUp: undefined;
     EndScreen: undefined;
     SummonScreen: undefined;
     EnqueuedPage: undefined;
     QueuesPage: undefined;
     QRCodeScanner: undefined;
     ConfirmationScreen: undefined;
+    SplashScreen: undefined;
     NotFound: undefined;
 };
 

@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
 import { Button, Center, Heading, Modal } from "native-base";
+import {AuthContext} from "../../App";
 
 
 type CreateQueueModalProps = {

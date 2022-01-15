@@ -5,9 +5,11 @@ import { HomeScreenProps } from "../../types";
 import EditQueueModal from "./EditQueueModal";
 import CreateUserModal from "./CreateUserModal"
 import { useTranslation } from "react-i18next";
+import {AuthContext} from "../../App";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
+    const { signOut } = React.useContext(AuthContext)
     const { t, i18n } = useTranslation(["queueDashboardMenu"]);
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const [queuePaused, toggleQueuePaused] = useState<boolean>(false)
@@ -85,8 +87,9 @@ export default function () {
     }
 
     function onLogoutPress () {
+        signOut()
         logout()
-        navigation.navigate("EndScreen")
+        // navigation.navigate("EndScreen")  We are automatically sent to the EndScreen
     }
 
     return (
@@ -106,10 +109,10 @@ export default function () {
             >
                 <Menu.Item onPress={() => setShowCreateUserModal(true)}>{t("create")}</Menu.Item>
                 <Menu.Item onPress={() => setShowEditQueueModal(true)}>{t("edit")}</Menu.Item>
-                <Menu.Item onPress={() => onEndScreenPress}>{t("end")}</Menu.Item>
-                <Menu.Item onPress={() => pauseQueue}>{t("pause")}</Menu.Item>
+                <Menu.Item onPress={() => onEndScreenPress()}>{t("end")}</Menu.Item>
+                <Menu.Item onPress={() => pauseQueue()}>{t("pause")}</Menu.Item>
                 <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>{t("share")}</Menu.Item>
-                <Menu.Item onPress={() => onLogoutPress}>{t("logout")}</Menu.Item>
+                <Menu.Item onPress={() => onLogoutPress()}>{t("logout")}</Menu.Item>
             </Menu>
             <CreateUserModal showModal={showCreateUserModal}
                             setShowModal={setShowCreateUserModal}

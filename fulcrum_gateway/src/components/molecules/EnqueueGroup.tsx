@@ -7,6 +7,7 @@ import { HomeScreenProps } from "../../../types";
 import { useTranslation } from "react-i18next";
 import OrganizerLoginModal from "../../containers/LoginModal";
 import OrganizerSignUpModal from "../../containers/OrganizerSignUpModal";
+import { AuthContext } from "../../../App";
 
 
 export default function () {
