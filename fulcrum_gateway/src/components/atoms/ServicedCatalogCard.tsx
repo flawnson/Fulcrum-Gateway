@@ -9,85 +9,45 @@ import { HStack, Text,
 import { ServicedStats } from "../../../types";
 
 type ServicedCatalogProps = {
-    'onPress': (event: GestureResponderEvent) => void,
-    'onLongPress': (event: GestureResponderEvent) => void,
-    'selected': boolean,
     'entity': ServicedStats
 }
 
 export default function (props: ServicedCatalogProps) {
     const [online, setOnline] = useState<boolean>(true)
 
-    const pan = useRef(new Animated.ValueXY()).current;
-
-    const panResponder = useRef(
-        PanResponder.create({
-            onMoveShouldSetPanResponder: () => true,
-            onPanResponderMove: Animated.event([
-                null,
-                { dx: pan.x }
-            ], {useNativeDriver: false}),
-            onPanResponderRelease: (evt, gestureState) => {
-                if (gestureState.dx > 200) {
-                    Animated.spring(pan, {
-                        toValue: { x: Dimensions.get('window').width + 100, y: gestureState.dy }, useNativeDriver: false
-                    }).start(() => console.log('hi'))
-                } else if (gestureState.dx < -200) {
-                    Animated.spring(pan, {
-                        toValue: { x: -Dimensions.get('window').width - 100, y: gestureState.dy }, useNativeDriver: false
-                    }).start(() => console.log('bye'))
-                } else {
-                    Animated.spring(pan, {toValue: {x: 0, y: 5}, friction: 5, useNativeDriver: false}).start();
-                }
-            }
-        })
-    ).current;
-
     return (
-        <Center>
-            <Animated.View
-                style={{
-                    transform: [{ translateX: pan.x }, { translateY: pan.y }]
-                }}
-                {...panResponder.panHandlers}
-            >
-                <Box
-                    maxW="80"
-                    rounded="lg"
-                    borderRadius="lg"
-                    overflow="hidden"
-                    borderColor="coolGray.200"
-                    borderWidth="1"
-                    _dark={{
-                        borderColor: "coolGray.600",
-                        backgroundColor: "gray.700",
-                    }}
-                    _web={{
-                        shadow: "2",
-                        borderWidth: "0",
-                    }}
-                    _light={{
-                        backgroundColor: "gray.50",
-                    }}
-                    style={styles.card}
-                >
-                    <Pressable onPress={props.onPress} delayLongPress={500} onLongPress={props.onLongPress}>
-                        <HStack space='5' style={styles.group}>
-                            <Avatar style={styles.avatar} source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
-                                <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
-                            </Avatar>
-                            <Text suppressHighlighting={true} style={styles.text}>
-                                {props.entity.name}
-                            </Text>
-                            <Text style={styles.text}>
-                                {props.entity.reneged}
-                            </Text>
-                        </HStack>
-                        {props.selected && <View style={styles.overlay} />}
-                    </Pressable>
-                </Box>
-            </Animated.View>
-        </Center>
+        <Box
+            maxW="80"
+            rounded="lg"
+            borderRadius="lg"
+            overflow="hidden"
+            borderColor="coolGray.200"
+            borderWidth="1"
+            _dark={{
+                borderColor: "coolGray.600",
+                backgroundColor: "gray.700",
+            }}
+            _web={{
+                shadow: "2",
+                borderWidth: "0",
+            }}
+            _light={{
+                backgroundColor: "gray.50",
+            }}
+            style={styles.card}
+        >
+            <HStack space='5' style={styles.group}>
+                <Avatar style={styles.avatar} source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
+                    <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
+                </Avatar>
+                <Text suppressHighlighting={true} style={styles.text}>
+                    {props.entity.name}
+                </Text>
+                <Text style={styles.text}>
+                    {props.entity.reneged}
+                </Text>
+            </HStack>
+        </Box>
     );
 }
 

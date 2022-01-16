@@ -32,6 +32,12 @@
     "footer": "Requeue or create your own queue at"
   },
   "homePage": {
+    "join_code_missing": "You're missing the join code!",
+    "join_code_wrong": "The join code must be 6 digits",
+    "name_missing": "We need to know your name for reference",
+    "name_too_long": "Please choose a shorter name!",
+    "phone_number_missing": "We need your number to notify you",
+    "phone_number_too_long": "You have a very long phone number!",
     "queue_id": "Queue ID",
     "name": "Your name",
     "phone_number": "Your phone number",
