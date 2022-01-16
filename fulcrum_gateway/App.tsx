@@ -34,6 +34,7 @@ const prefix = Linking.createURL('/')
 
 export const AuthContext = React.createContext(
     {
+        signedInAs: "",
         signIn: (data: any) => {},
         signOut: () => {},
         signUp: (data: any) => {}
@@ -71,20 +72,20 @@ function App() {
                         case 'ORGANIZER':
                             return {
                                 ...prevState,
+                                signedInAs: "ORGANIZER",
                                 isOrganizer: true,
-                                isSignout: false,
                             };
                         case 'ASSISTANT':
                             return {
                                 ...prevState,
+                                signedInAs: "ASSISTANT",
                                 isAssistant: true,
-                                isSignout: false,
                             };
                         case 'USER':
                             return {
                                 ...prevState,
+                                signedInAs: "USER",
                                 isUser: true,
-                                isSignout: false,
                             };
                     }
                 };
@@ -94,7 +95,6 @@ function App() {
                         isUser: false,
                         isOrganizer: false,
                         isAssistant: false,
-                        isSignout: true,
                     };
             }
         },
@@ -102,14 +102,15 @@ function App() {
             isUser: false,
             isOrganizer: false,
             isAssistant: false,
-            isSignout: false,
+            signedInAs: "NONE"
         }
     );
 
     const authContext = React.useMemo(
         () => ({
-            signUp: (data: "ORGANIZER" | "ASSISTANT") => dispatch({ type: 'SIGN_IN', who: data }),
+            signedInAs: state.signedInAs,
             signIn: (data: "ORGANIZER" | "ASSISTANT" | "USER") => dispatch({ type: 'SIGN_IN', who: data }),
+            signUp: (data: "ORGANIZER" | "ASSISTANT") => dispatch({ type: 'SIGN_IN', who: data }),
             signOut: () => dispatch({ type: 'SIGN_OUT' }),
         }),
         []
@@ -151,8 +152,10 @@ function App() {
                                     </>
                                 ) : (
                                     <>
-                                        <Stack.Screen name="QueuesPage" component={QueuesPage} />
                                         <Stack.Screen name="HomePage" component={HomePage} />
+                                        <Stack.Screen name="QueuesPage" component={QueuesPage} />
+                                        <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
+                                        <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
                                     </>
                                 )}

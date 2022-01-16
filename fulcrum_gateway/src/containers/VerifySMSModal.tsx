@@ -36,7 +36,6 @@ export default function (props: VerifySMSModalProps) {
                 estimated_wait
                 join_time
                 status
-                summoned
                 queue {
                     state
                 }
@@ -150,9 +149,6 @@ const styles = StyleSheet.create({
     },
     codeFieldRoot: {
         marginTop: 20,
-        // width: 280,
-        // marginLeft: 'auto',
-        // marginRight: 'auto',
     },
     cellRoot: {
         width: 60,

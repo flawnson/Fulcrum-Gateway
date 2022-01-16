@@ -28,7 +28,7 @@ export default function ({navigation}: EnqueueFormProps) {
     const [isJoinCodeFormOpen, setJoinCodeFormOpen] = useState<boolean>(true)
     const [isNameFormOpen, setNameFormOpen] = useState<boolean>(false)
     const [isPhoneNumberFormOpen, setPhoneNumberFormOpen] = useState<boolean>(false)
-    const [errors, setErrors] = useState<object>({})
+    const [errors, setErrors] = useState<EnqueueFormData>({})
     const { t, i18n } = useTranslation(["homePage", "common"])
 
     const query = `
@@ -58,17 +58,51 @@ export default function ({navigation}: EnqueueFormProps) {
         }
     }
 
-    const validate = () => {
+    const validateJoinCode = () => {
+        if (formData.joinCode === undefined) {
+            setErrors({
+                ...errors,
+                joinCode: t('join_code_missing'),
+            });
+            return false;
+        } else if (formData.joinCode.length !== 6) {
+            setErrors({
+                ...errors,
+                joinCode: t('join_code_wrong'),
+            });
+            return false;
+        }
+        return true;
+    };
+
+    const validateName = () => {
         if (formData.name === undefined) {
             setErrors({
                 ...errors,
-                name: 'ID is required',
+                name: t('name_missing'),
             });
             return false;
-        } else if (formData.name.length !== 10) {
+        } else if (formData.name.length >= 20) {
             setErrors({
                 ...errors,
-                name: 'ID is too short',
+                name: t('name_too_long'),
+            });
+            return false;
+        }
+        return true;
+    };
+
+    const validatePhoneNumber = () => {
+        if (formData.phoneNumber === undefined) {
+            setErrors({
+                ...errors,
+                phoneNumber: t('phone_number_missing'),
+            });
+            return false;
+        } else if (formData.phoneNumber.length >= 10) {
+            setErrors({
+                ...errors,
+                phoneNumber: t('phone_number_too_long'),
             });
             return false;
         }
@@ -85,11 +119,11 @@ export default function ({navigation}: EnqueueFormProps) {
 
     const onFailure = () => {
         setSubmitted(false)
-        setErrors({...errors, invalid: "invalid submission"})
+        // setErrors({...errors, invalid: "invalid submission"})
     }
 
     const onSubmit = () => {
-        validate() ?  onSuccess() : onFailure();
+        // validate() ?  onSuccess() : onFailure();
     };
 
     return (
@@ -97,7 +131,7 @@ export default function ({navigation}: EnqueueFormProps) {
             {isJoinCodeFormOpen && (
                 <>
                     <ScaleFade in={isJoinCodeFormOpen} duration={500}>
-                        <FormControl>
+                        <FormControl isInvalid={"joinCode" in errors}>
                             <Center>
                                 <FormControl.Label _text={{bold: true}}>
                                     {t("queue_id")}
@@ -113,13 +147,19 @@ export default function ({navigation}: EnqueueFormProps) {
                                 </FormControl.HelperText>
                             </Center>
                             <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>
-                                Join Code Error
+                                {errors.joinCode}
                             </FormControl.ErrorMessage>
                         </FormControl>
-                        <Button onPress={() => {setJoinCodeFormOpen(false); setNameFormOpen(true)}}
-                                mt="5"
-                                isLoading={submitted}
-                                isLoadingText="Submitting...">
+                        <Button
+                            onPress={() => {
+                                validateJoinCode() ? setJoinCodeFormOpen(false) : null
+                                validateJoinCode() ? setNameFormOpen(true) : null
+                            }
+                        }
+                            mt="5"
+                            isLoading={submitted}
+                            isLoadingText="Submitting..."
+                        >
                             <Text bold color={'white'}>
                                 {t('submit', { ns: 'common' })}
                             </Text>
@@ -131,7 +171,7 @@ export default function ({navigation}: EnqueueFormProps) {
             {isNameFormOpen && (
                 <>
                     <ScaleFade in={isNameFormOpen} duration={500}>
-                        <FormControl>
+                        <FormControl isInvalid={"name" in errors}>
                             <Center>
                                 <FormControl.Label _text={{bold: true}}>
                                     {t("name")}
@@ -147,10 +187,15 @@ export default function ({navigation}: EnqueueFormProps) {
                                 </FormControl.HelperText>
                             </Center>
                             <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>
-                                Name Error
+                                {errors.name}
                             </FormControl.ErrorMessage>
                         </FormControl>
-                        <Button onPress={() => {setNameFormOpen(false); setPhoneNumberFormOpen(true)}}
+                        <Button
+                                onPress={() => {
+                                    validateName() ? setNameFormOpen(false) : null
+                                    validateName() ? setPhoneNumberFormOpen(true) : null
+                                }
+                            }
                                 mt="5"
                                 isLoading={submitted}
                                 isLoadingText="Submitting...">
@@ -165,7 +210,7 @@ export default function ({navigation}: EnqueueFormProps) {
             {isPhoneNumberFormOpen && (
                 <>
                     <ScaleFade in={isPhoneNumberFormOpen} duration={500}>
-                        <FormControl>
+                        <FormControl isInvalid={"phoneNumber" in errors}>
                             <Center>
                                 <FormControl.Label _text={{bold: true}}>
                                     {t("phone_number")}
@@ -181,11 +226,16 @@ export default function ({navigation}: EnqueueFormProps) {
                                 </FormControl.HelperText>
                             </Center>
                             <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>
-                                Phone Number Error
+                                {errors.phoneNumber}
                             </FormControl.ErrorMessage>
                         </FormControl>
-                        <Button onPress={() => {setPhoneNumberFormOpen(false); onSubmit()}}
-                                mt="5"
+                        <Button
+                                onPress={() => {
+                                    validatePhoneNumber() ? setPhoneNumberFormOpen(false) : null
+                                    validatePhoneNumber() ? onSubmit() : null
+                                }
+                            }
+                            mt="5"
                                 isLoading={submitted}
                                 isLoadingText="Submitting...">
                             <Text bold color={'white'}>

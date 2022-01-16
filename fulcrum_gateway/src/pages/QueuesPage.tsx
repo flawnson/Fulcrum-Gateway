@@ -76,7 +76,7 @@ export default function () {
 
     return (
         <>
-            <ActiveQueuesCatalogCardGroup entities={props}/>
+            <ActiveQueuesCatalogCardGroup entities={props} setEntities={setProps}/>
             <Fab
                 onPress={() => setShowModal(!showModal)}
                 position="absolute"

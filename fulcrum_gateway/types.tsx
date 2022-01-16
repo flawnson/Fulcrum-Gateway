@@ -5,7 +5,7 @@ import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigati
 export type RootStackParamList = {
     HomePage: undefined;
     LandingPage: undefined;
-    UserDashboard: undefined;
+    UserDashboard: undefined | object;
     QueueDashboard: undefined;
     QueueDashboardTabs: undefined;
     CreateQueuePage: undefined;
@@ -83,6 +83,8 @@ export type UserInfo = {
 }
 
 export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"
+
+export type QueueState = "ACTIVE" | "INACTIVE" | "PAUSED"
 
 
 // /*** QUEUE DASHBOARD TYPES ***/

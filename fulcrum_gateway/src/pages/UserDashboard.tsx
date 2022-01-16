@@ -1,5 +1,5 @@
-import React, {SetStateAction, useEffect, useState} from 'react'
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import React, {SetStateAction, useContext, useEffect, useState} from 'react'
+import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { StyleSheet } from 'react-native'
 import { Avatar, HStack,
@@ -13,10 +13,13 @@ import { useTranslation } from "react-i18next";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
 import { UserInfo } from "../../types"
+import { AuthContext } from "../../App";
 
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const route = useRoute<HomeScreenProps["route"]>()
+    const { signedInAs } = useContext(AuthContext)
     const { t, i18n } = useTranslation(["userDashboard"]);
     const [showModal, setShowModal] = useState<boolean>(true)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
@@ -80,8 +83,7 @@ export default function () {
                         "index",
                         "waited",
                         "average_wait",
-                        "estimated_wait",
-                        "summoned"]
+                        "estimated_wait"]
                         .filter(key => key in data)
                         .map(key => [key, data[key]]))
                     const terminalDigit = parseInt(info.index.toString().charAt(info.index.toString().length - 1))
@@ -102,6 +104,8 @@ export default function () {
         }
     }
 
+    // const fetchUserStats = route.params ? {id: route.params["id"]} : null
+    console.log(route.params)
     // Run on first render
     useEffect(() => {fetchUserStats().then(null)}, [])
     // Poll only if user is currently on this screen
