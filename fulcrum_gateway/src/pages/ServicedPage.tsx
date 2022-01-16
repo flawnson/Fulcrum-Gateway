@@ -37,11 +37,18 @@ export default function () {
     async function fetchServicedData () {
         try {
             const response = await fetch(`http://localhost:8080/api`,
-                                    {body: JSON.stringify({query: query, variables: variables})})
+                                    {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                                        },
+                                        credentials: 'include',
+                                        body: JSON.stringify({query: query, variables: variables})})
             await response.json().then(
                 data => {
                     data = data.data.queue.users
-                    data = data.filter((d: ServicedStats) => d.state === "SERVICED")
+                    data = data.filter((d: ServicedStats) => d.status === "SERVICED")
                     let serviced_stats: ServicedStats[] = []
                     data.forEach((serviced_data: any) => {
                         const join_time: any = new Date(serviced_data.join_time)

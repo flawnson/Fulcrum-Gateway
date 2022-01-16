@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import QueuesCatalogCard from "../atoms/QueuesCatalogCard";
-import { View, VStack } from "native-base";
-import { StyleSheet, Pressable } from "react-native";
+import { Center, View, VStack } from "native-base";
+import { StyleSheet, Pressable, PressableStateCallbackType } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps, QueueInfo } from "../../../types";
 import MultiSelectButtons from "../../containers/QueueMultiSelectButtons";
+import { FlatList } from "react-native-gesture-handler";
 
 type State = "ACTIVE" | "PAUSED" | "INACTIVE"
 
 type QueuesStatsProps = {
-    'entities': Array<QueueInfo>
+    entities: Array<QueueInfo>
+    setEntities: React.Dispatch<React.SetStateAction<QueueInfo[]>>
+}
+
+type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
+
+type ConditionalWrapperArgs = {
+    condition: number | boolean,  // Uses 0 as false and any other number as true
+    wrapper: (children: Children) => any
+    children: any
 }
 
 export default function (props: QueuesStatsProps) {
@@ -64,23 +74,34 @@ export default function (props: QueuesStatsProps) {
         setSelectedItems([...selectedItems, item.queueId])
     }
 
-    const OrganizerStatCards = Object.entries(props.entities).map(([key, queueStat]) =>
-        <QueuesCatalogCard key={key}
-                           onPress={() => handleOnPress(queueStat)}
-                           onLongPress={() => selectItems(queueStat)}
-                           deSelectItems={deSelectItems}
-                           selected={getSelected(queueStat)}
-                           modified={getModified(queueStat)}
-                           entity={queueStat}/>)
+    const ConditionalWrapper = ({condition, wrapper, children}: ConditionalWrapperArgs) =>
+        condition ? wrapper(children) : children;
 
     return (
-        <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>
-            <VStack style={styles.stats}>
-                {OrganizerStatCards}
-            </VStack>
-        </Pressable>
-    )
-}
+            <Center>
+                <ConditionalWrapper
+                    condition={selectedItems.length}
+                    wrapper={(children: Children) => <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>{children}</Pressable>}
+                >
+                    <FlatList
+                        data={props.entities}
+                        renderItem={({item}: {item: QueueInfo}) => {
+                            return <QueuesCatalogCard
+                                entities={props.entities}
+                                setEntities={props.setEntities}
+                                onPress={() => handleOnPress(item)}
+                                onLongPress={() => selectItems(item)}
+                                deSelectItems={deSelectItems}
+                                selected={getSelected(item)}
+                                entity={item}/>
+                        }
+                        }
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                </ConditionalWrapper>
+            </Center>
+        )
+    }
 
 
 const styles = StyleSheet.create({

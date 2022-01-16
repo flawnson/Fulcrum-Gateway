@@ -84,6 +84,8 @@ export type UserInfo = {
 
 export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"
 
+export type QueueState = "ACTIVE" | "INACTIVE" | "PAUSED"
+
 
 // /*** QUEUE DASHBOARD TYPES ***/
 //

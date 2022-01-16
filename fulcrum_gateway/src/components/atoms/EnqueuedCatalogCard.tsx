@@ -7,10 +7,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
 import { EnqueuedStats, UserStatus } from "../../../types";
 import { Swipeable, RectButton,
-        LongPressGestureHandler, TapGestureHandler} from "react-native-gesture-handler";
-import { State, HandlerStateChangeEvent,
+        State, HandlerStateChangeEvent,
         LongPressGestureHandlerEventPayload,
-        TapGestureHandlerEventPayload } from "react-native-gesture-handler";
+        TapGestureHandlerEventPayload,
+        LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 
 type EnqueuedCatalogProps = {
     entities: Array<EnqueuedStats>
