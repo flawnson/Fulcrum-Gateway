@@ -81,7 +81,7 @@ type Mutation {
   createOrganizer(email: String!, name: String!, password: String!): Organizer
   createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, password: String!): Queue
   createUser(joinCode: String!, name: String!, phoneNumber: String): User
-  deferPosition(time: String!, userId: String): User
+  deferPosition(timeNeeded: Int!, userId: String): User
   deleteOrganizer: Organizer
   deleteQueue(queueId: String!): Queue
   forgotOrganizerPassword(email: String!): Boolean!
@@ -375,6 +375,7 @@ input StringNullableFilter {
 }
 
 type User {
+  estimated_eta: Int
   estimated_wait: Int
   id: String!
   index: Int!

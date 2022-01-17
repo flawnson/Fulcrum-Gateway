@@ -16,8 +16,7 @@ export let user_table = [
     index: 1,
     join_time: pastDate,
     reneged_time: futureDate,
-    status: UserStatus.ENQUEUED,
-    total_wait: 1000
+    status: UserStatus.ENQUEUED
   },
   {
     id: "user1",
@@ -30,8 +29,7 @@ export let user_table = [
     index: 0,
     join_time: pastDate,
     reneged_time: futureDate,
-    status: UserStatus.ENQUEUED,
-    total_wait: 700
+    status: UserStatus.ENQUEUED
   },
   {
     id: "user2",
@@ -44,8 +42,7 @@ export let user_table = [
     index: 1,
     join_time: pastDate,
     reneged_time: futureDate,
-    status: UserStatus.ENQUEUED,
-    total_wait: 800
+    status: UserStatus.ENQUEUED
   },
   {
     id: "user3",
@@ -164,7 +161,60 @@ export let user_table = [
     join_time: pastDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
     status: UserStatus.ABANDONED
+  },
+  {
+    id: "user12",
+    name: "A",
+    queue_id: "costco_queue3",
+    phone_number: "1111111222",
+    party_size: 1,
+    last_online: nowDate,
+    index: 0,
+    join_time: pastDate,
+    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    status: UserStatus.SERVICED
+  },
+  {
+    id: "user13",
+    name: "B",
+    queue_id: "costco_queue3",
+    summoned: false,
+    phone_number: "4161231233",
+    party_size: 1,
+    last_online: nowDate,
+    index: 1,
+    join_time: pastDate,
+    reneged_time: futureDate,
+    status: UserStatus.ENQUEUED
+  },
+  {
+    id: "user14",
+    name: "C",
+    queue_id: "costco_queue3",
+    summoned: false,
+    phone_number: "12324687632423",
+    party_size: 1,
+    last_online: nowDate,
+    index: 2,
+    join_time: pastDate,
+    reneged_time: futureDate,
+    status: UserStatus.ENQUEUED
+  },
+  {
+    id: "user15",
+    name: "D",
+    queue_id: "costco_queue3",
+    summoned: false,
+    phone_number: "1232462141423",
+    party_size: 1,
+    last_online: nowDate,
+    index: 3,
+    join_time: pastDate,
+    reneged_time: futureDate,
+    status: UserStatus.ENQUEUED
   }
+
+
 ];
 
 
