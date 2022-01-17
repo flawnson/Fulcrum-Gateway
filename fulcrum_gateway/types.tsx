@@ -5,9 +5,9 @@ import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigati
 export type RootStackParamList = {
     HomePage: undefined;
     LandingPage: undefined;
-    UserDashboard: undefined;
+    UserDashboard: undefined | {userId: string};
     QueueDashboard: undefined;
-    QueueDashboardTabs: undefined;
+    QueueDashboardTabs: undefined | {queueId: string};
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
     ShareScreen: undefined

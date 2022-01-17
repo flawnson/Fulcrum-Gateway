@@ -9,8 +9,8 @@ export default function () {
     const [props, setProps] = useState<ServicedStats[]>([])
 
     const query = `
-        query get_users($queueId: QueueWhereUniqueInput! $orderBy: [UserOrderByWithRelationInput!]) {
-            queue(where: $queueId) {
+        query get_users($queueId: String! $orderBy: [UserOrderByWithRelationInput!]) {
+            getQueue(queueId: $queueId) {
                 users(orderBy: $orderBy) {
                     user_id: id
                     name
@@ -24,10 +24,7 @@ export default function () {
         }
     `
     const variables = `{
-        "queueId":
-        {
-            "id": "costco_queue1"
-        },
+        "queueId": "costco_queue1",
         "orderBy":
         {
             "index": "desc"

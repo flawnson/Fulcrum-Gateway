@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ServicedCatalogCard from "../atoms/ServicedCatalogCard";
-import { View, VStack } from "native-base";
+import { View, VStack, Center } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../../types";
@@ -19,9 +19,11 @@ export default function (props: ServicedStatsProps) {
                              entity={userStat}/>)
 
     return (
-        <VStack style={styles.stats}>
-            {OrganizerStatCards}
-        </VStack>
+        <Center>
+            <VStack style={styles.stats}>
+                {OrganizerStatCards}
+            </VStack>
+        </Center>
     )
 }
 

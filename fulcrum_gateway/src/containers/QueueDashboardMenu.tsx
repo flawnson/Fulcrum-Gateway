@@ -5,7 +5,7 @@ import { HomeScreenProps } from "../../types";
 import EditQueueModal from "./EditQueueModal";
 import CreateUserModal from "./CreateUserModal"
 import { useTranslation } from "react-i18next";
-import {AuthContext} from "../../App";
+import { AuthContext } from "../../App";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead

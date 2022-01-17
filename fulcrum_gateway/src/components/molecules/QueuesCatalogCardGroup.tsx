@@ -51,7 +51,7 @@ export default function (props: QueuesStatsProps) {
         }
 
         // Single tap code
-        navigation.navigate("QueueDashboardTabs")
+        navigation.navigate("QueueDashboardTabs", {queueId: item.queueId})
     }
 
     const getSelected = (item: QueueInfo) => selectedItems.includes(item.queueId)
