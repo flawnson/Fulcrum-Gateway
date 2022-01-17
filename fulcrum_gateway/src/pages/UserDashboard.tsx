@@ -21,7 +21,7 @@ export default function () {
     const route = useRoute<HomeScreenProps["route"]>()
     const { signedInAs } = useContext(AuthContext)
     const { t, i18n } = useTranslation(["userDashboard"]);
-    const [showModal, setShowModal] = useState<boolean>(true)
+    const [showModal, setShowModal] = useState<boolean>(!route.params)  // If params are defined, no need to verify SMS
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     const defaultProps: UserInfo = {

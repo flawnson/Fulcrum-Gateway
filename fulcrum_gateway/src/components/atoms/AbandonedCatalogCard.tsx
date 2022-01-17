@@ -57,23 +57,18 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     group: {
-        width: 500,
+        display: 'flex',
+        height: 70,
+        width: 300,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexDirection: 'row'
     },
     avatar: {
-        margin: 10,
         borderRadius: 10,
-        width: 50,
-        height: 50,
     },
     text: {
-    },
-    overlay: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        flex: 1
     },
 })
 

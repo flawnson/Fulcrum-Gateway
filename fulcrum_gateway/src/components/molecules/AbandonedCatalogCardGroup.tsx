@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AbandonedCatalogCard from "../atoms/AbandonedCatalogCard";
-import { View, VStack } from "native-base";
+import { View, Center, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps, AbandonedStats } from "../../../types";
@@ -18,9 +18,11 @@ export default function (props: AbandonedStatsProps) {
                               entity={userStat}/>)
 
     return (
-        <VStack style={styles.stats}>
-            {OrganizerStatCards}
-        </VStack>
+        <Center>
+            <VStack style={styles.stats}>
+                {OrganizerStatCards}
+            </VStack>
+        </Center>
     )
 }
 

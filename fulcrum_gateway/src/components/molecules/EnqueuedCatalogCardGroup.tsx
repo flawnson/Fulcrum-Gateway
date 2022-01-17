@@ -46,7 +46,7 @@ export default function (props: EnqueuedStatsProps) {
         }
 
         // here you can add you code what do you want if user just do single tap
-        navigation.navigate("UserDashboard", {id: props.entities[0].userId})
+        navigation.navigate("UserDashboard", {userId: item.userId})
     }
 
     const getSelected = (item: EnqueuedStats) => selectedItems.includes(item.userId)
