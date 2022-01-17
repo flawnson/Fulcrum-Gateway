@@ -31,13 +31,6 @@ export default function (props: QueuesStatsProps) {
         setAction(action)
     }
 
-    const getModified = (item: QueueInfo) => {
-        if (getSelected(item)) {
-            return action
-        }
-        return "ACTIVE"
-    }
-
     // To remove header when organizer deselects all queues
     useEffect(() => {
         if (selectedItems.length === 0) {
@@ -51,7 +44,7 @@ export default function (props: QueuesStatsProps) {
         }
 
         // Single tap code
-        navigation.navigate("QueueDashboardTabs", {queueId: item.queueId})
+        navigation.navigate("QueueDashboardTabs", {screen: "QueueDashboard", params: {queueId: item.queueId}})
     }
 
     const getSelected = (item: QueueInfo) => selectedItems.includes(item.queueId)
@@ -94,7 +87,7 @@ export default function (props: QueuesStatsProps) {
                                 deSelectItems={deSelectItems}
                                 selected={getSelected(item)}
                                 entity={item}/>
-                        }
+                            }
                         }
                         keyExtractor={(item, index) => index.toString()}
                     />

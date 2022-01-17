@@ -107,7 +107,7 @@
     "deferred_prefix": "Deferred",
     "average_prefix": "Average Wait",
     "abandoned_prefix": "Abandoned",
-    "noshows_prefix": "No Shows"
+    "noshow_prefix": "No Shows"
   },
   "QRCodeScanner": {
     "message": "We are going live in July!",

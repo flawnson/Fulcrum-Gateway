@@ -30,6 +30,6 @@ export default function (props: MultiSelectButtonType) {
 
 const styles = StyleSheet.create({
     button: {
-        marginHorizontal: 10,
+        marginHorizontal: 5,
     },
 })
