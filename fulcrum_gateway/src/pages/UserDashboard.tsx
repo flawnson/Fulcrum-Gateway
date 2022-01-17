@@ -18,10 +18,9 @@ import { AuthContext } from "../../App";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const route = useRoute<HomeScreenProps["route"]>()
     const { signedInAs } = useContext(AuthContext)
     const { t, i18n } = useTranslation(["userDashboard"]);
-    const [showModal, setShowModal] = useState<boolean>(!route.params)  // If params are defined, no need to verify SMS
+    const [showModal, setShowModal] = useState<boolean>(true)  // If params are defined, no need to verify SMS
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     const defaultProps: UserInfo = {
@@ -104,8 +103,6 @@ export default function () {
         }
     }
 
-    // const fetchUserStats = route.params ? {id: route.params["id"]} : null
-    console.log(route.params)
     // Run on first render
     useEffect(() => {fetchUserStats().then(null)}, [])
     // Poll only if user is currently on this screen

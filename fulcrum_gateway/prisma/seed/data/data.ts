@@ -13,7 +13,7 @@ export let user_table = [
     phone_number: "4162922346",
     party_size: 1,
     last_online: nowDate,
-    index: 1,
+    index: 0,
     join_time: pastDate,
     reneged_time: futureDate,
     status: UserStatus.ENQUEUED
@@ -52,7 +52,7 @@ export let user_table = [
     phone_number: "4161010111",
     party_size: 1,
     last_online: nowDate,
-    index: 2,
+    index: 1,
     join_time: pastDate,
     reneged_time: futureDate,
     status: UserStatus.ENQUEUED
@@ -65,7 +65,7 @@ export let user_table = [
     phone_number: "4168762999",
     party_size: 1,
     last_online: nowDate,
-    index: 3,
+    index: 2,
     join_time: pastDate,
     reneged_time: futureDate,
     status: UserStatus.ENQUEUED
@@ -92,7 +92,7 @@ export let user_table = [
     phone_number: "1342344534",
     party_size: 1,
     last_online: nowDate,
-    index: 0,
+    index: 3,
     join_time: pastDate,
     summoned_time: nowDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
@@ -120,7 +120,7 @@ export let user_table = [
     phone_number: "98789476",
     party_size: 1,
     last_online: nowDate,
-    index: 0,
+    index: 4,
     join_time: pastDate,
     summoned_time: nowDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
@@ -133,7 +133,7 @@ export let user_table = [
     phone_number: "98784353425463645",
     party_size: 1,
     last_online: nowDate,
-    index: 0,
+    index: 5,
     join_time: pastDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
     status: UserStatus.ABANDONED
@@ -145,7 +145,7 @@ export let user_table = [
     phone_number: "9832455323645",
     party_size: 1,
     last_online: nowDate,
-    index: 0,
+    index: 6,
     join_time: pastDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
     status: UserStatus.ABANDONED

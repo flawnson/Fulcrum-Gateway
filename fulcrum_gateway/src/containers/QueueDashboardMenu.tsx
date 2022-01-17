@@ -108,7 +108,7 @@ export default function () {
                 }}
             >
                 <Menu.Item onPress={() => setShowCreateUserModal(true)}>{t("create")}</Menu.Item>
-                <Menu.Item onPress={() => setShowEditQueueModal(true)}>{t("edit")}</Menu.Item>
+                {/*<Menu.Item onPress={() => setShowEditQueueModal(true)}>{t("edit")}</Menu.Item>*/}
                 <Menu.Item onPress={() => onEndScreenPress()}>{t("end")}</Menu.Item>
                 <Menu.Item onPress={() => pauseQueue()}>{t("pause")}</Menu.Item>
                 <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>{t("share")}</Menu.Item>

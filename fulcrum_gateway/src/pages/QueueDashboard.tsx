@@ -1,5 +1,5 @@
 import React, { SetStateAction, useEffect, useState } from 'react'
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { StyleSheet } from 'react-native'
 import { Center, Heading } from "native-base";
@@ -19,6 +19,7 @@ type UserData = {
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const route = useRoute<HomeScreenProps["route"]>()
     const { t, i18n } = useTranslation(["queueDashboard"]);
 
     const defaultProps = {
@@ -29,11 +30,11 @@ export default function () {
             {prefix: t("deferred_prefix"), stat: 0, suffix: ""},
             {prefix: t("average_prefix"), stat: 0, suffix: "m"},
             {prefix: t("abandoned_prefix"), stat: 0, suffix: ""},
-            {prefix: t("noshows_prefix"), stat: 0, suffix: ""}
+            {prefix: t("noshow_prefix"), stat: 0, suffix: ""}
         ],
     }
     const [props, setProps] = useState(defaultProps)
-    const query = `
+    const assistantQuery = `
         query get_queue_stats {
             getQueue {
                 name
@@ -45,6 +46,20 @@ export default function () {
             }
         }
     `
+    const organizerQuery = `
+        query get_queue_stats ($queueId: String) {
+            getQueue(queueId: $queueId) {
+                name
+                users {
+                    user_id: id
+                    join_time
+                    status
+                }
+            }
+        }
+    `
+    // @ts-ignore
+    const body = route.params ? {query: organizerQuery, variables: {"queueId": route.params?.queueId}} : {query: assistantQuery}
 
     async function fetchQueueData () {
         try {
@@ -55,13 +70,12 @@ export default function () {
                                              'Access-Control-Allow-Origin': 'http://localhost:19006/',
                                          },
                                          credentials: 'include',
-                                         body: JSON.stringify({query: query})
+                                         body: JSON.stringify(body)
                                          })
             await response.json().then(
                 data => {
-                    console.log(data)
                     const name = data.data.getQueue.name
-                    data = data.data.queue.users
+                    data = data.data.getQueue.users
                     const statuses = ["ENQUEUED", "SERVICED", "DEFERRED", "ABANDONED", "NOSHOW"]
                     const counts = []
                     for (const status of statuses) {
@@ -83,7 +97,7 @@ export default function () {
                         {prefix: t("deferred_prefix"), stat: stats.deferred, suffix: ""},
                         {prefix: t("average_prefix"), stat: stats.avg, suffix: "m"},
                         {prefix: t("abandoned_prefix"), stat: stats.abandoned, suffix: ""},
-                        {prefix: t("noshows_prefix"), stat: stats.noshows, suffix: ""}
+                        {prefix: t("noshow_prefix"), stat: stats.noshow, suffix: ""}
                         ]
                     }
                     setProps(stats)
@@ -97,8 +111,7 @@ export default function () {
     // Run on first render
     useEffect(() => {fetchQueueData()}, [])
     // Poll only if user is currently on this screen
-    // if (useIsFocused()) {useInterval(fetchQueueData, 5000)}
-    useInterval(fetchQueueData, 5000)
+    useInterval(fetchQueueData, useIsFocused() ? 5000 : null)
 
     return (
         <Center style={styles.animationFormat}>
