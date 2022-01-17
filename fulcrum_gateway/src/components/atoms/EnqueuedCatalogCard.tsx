@@ -7,10 +7,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
 import { EnqueuedStats, UserStatus } from "../../../types";
 import { Swipeable, RectButton,
-        LongPressGestureHandler, TapGestureHandler} from "react-native-gesture-handler";
-import { State, HandlerStateChangeEvent,
+        State, HandlerStateChangeEvent,
         LongPressGestureHandlerEventPayload,
-        TapGestureHandlerEventPayload } from "react-native-gesture-handler";
+        TapGestureHandlerEventPayload,
+        LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 
 type EnqueuedCatalogProps = {
     entities: Array<EnqueuedStats>
@@ -88,8 +88,8 @@ export default function (props: EnqueuedCatalogProps) {
     }
 
     const onChangeStatusPress = (status: UserStatus) => {
-        props.entities.find(user => user.userId === props.entity.userId)!.status = "KICKED"
-        changeUserStatus("KICKED").then()
+        props.entities.find(user => user.userId === props.entity.userId)!.status = status
+        changeUserStatus(status).then()
         props.setEntities(
             [...props.entities.filter(user => user.userId !== props.entity.userId)]
         )
@@ -101,7 +101,7 @@ export default function (props: EnqueuedCatalogProps) {
             outputRange: [-20, 0, 0, 1],
         });
         return (
-            <RectButton style={styles.rightAction} onPress={() => onChangeStatusPress("SERVICED")}>
+            <RectButton style={styles.rightAction} onPress={() => onChangeStatusPress("KICKED")}>
                 <Animated.Text
                     style={[
                         styles.actionText,
@@ -109,7 +109,7 @@ export default function (props: EnqueuedCatalogProps) {
                             transform: [{ translateX: trans }],
                         },
                     ]}>
-                    Service
+                    Kick
                 </Animated.Text>
             </RectButton>
         );
@@ -121,7 +121,7 @@ export default function (props: EnqueuedCatalogProps) {
             outputRange: [-20, 0, 0, 1],
         });
         return (
-            <RectButton style={styles.leftAction} onPress={() => onChangeStatusPress("KICKED")}>
+            <RectButton style={styles.leftAction} onPress={() => onChangeStatusPress("SERVICED")}>
                 <Animated.Text
                     style={[
                         styles.actionText,
@@ -129,7 +129,7 @@ export default function (props: EnqueuedCatalogProps) {
                             transform: [{ translateX: trans }],
                         },
                     ]}>
-                    Kick
+                    Service
                 </Animated.Text>
             </RectButton>
         );
@@ -235,10 +235,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
     leftAction: {
-        backgroundColor: 'red'
+        backgroundColor: 'green'
     },
     rightAction: {
-        backgroundColor: 'green'
+        backgroundColor: 'red'
     },
     actionText: {
         fontSize: 30

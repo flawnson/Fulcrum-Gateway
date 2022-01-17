@@ -38,14 +38,14 @@ export default function () {
                                                  'Content-Type': 'application/json',
                                                  'Access-Control-Allow-Origin': 'http://localhost:19006/',
                                                    },
-                                             credentials: 'include',
-                                             body: JSON.stringify({query: query, variables: variables})})
+                                          credentials: 'include',
+                                          body: JSON.stringify({query: query, variables: variables})})
             await response.json().then(
                 data => {
                     data = data.data.getQueue.users
-                    data = data.filter((d: AbandonedStats) => d.state === "ABANDONED" ||
-                                                              d.state === "KICKED" ||
-                                                              d.state === "NOSHOW")
+                    data = data.filter((d: AbandonedStats) => d.status === "ABANDONED" ||
+                                                              d.status === "KICKED" ||
+                                                              d.status === "NOSHOW")
                     let abandoned_stats: AbandonedStats[] = []
                     data.forEach((abandoned_data: any) => {
                         const now: any = new Date()
