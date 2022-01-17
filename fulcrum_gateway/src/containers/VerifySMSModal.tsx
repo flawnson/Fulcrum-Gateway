@@ -1,12 +1,12 @@
-import React, {SetStateAction, useState} from 'react';
+import React, { useState } from 'react';
 import { Button, Link,
         Modal, Center } from 'native-base'
 import { StyleSheet, SafeAreaView,
         Text, View } from 'react-native';
 import { CodeField, Cursor,
         useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
-import {useTranslation} from "react-i18next";
-import  { UserInfo } from "../../types"
+import { useTranslation } from "react-i18next";
+import { UserInfo } from "../../types"
 
 
 const CELL_COUNT = 6
@@ -27,19 +27,8 @@ export default function (props: VerifySMSModalProps) {
     });
 
     const query = `
-        query get_stats {
-            getUser {
-                userId: id
-                phone_number
-                name
-                index
-                estimated_wait
-                join_time
-                status
-                queue {
-                    state
-                }
-            }
+            mutation confirm_user($confirmCode: String!) {
+            confirmUser(confirmCode: $confirmCode)
         }
     `
 
@@ -53,12 +42,9 @@ export default function (props: VerifySMSModalProps) {
                         'Access-Control-Allow-Origin': 'http://localhost:19006/',
                     },
                     credentials: 'include',
-                    body: JSON.stringify({query: query, variables: value})
+                    body: JSON.stringify({query: query, variables: {confirmCode: value}})
                 })
-            await response.json().then(
-                data => {
-                }
-            )
+            return await response.json()
         } catch(error) {
             console.log(error)
         }
@@ -66,7 +52,7 @@ export default function (props: VerifySMSModalProps) {
 
 
     function onSubmit () {
-        submitSMSVerification()
+        submitSMSVerification().then(null)
         props.setShowModal(false)
     }
 

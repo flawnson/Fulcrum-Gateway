@@ -68,8 +68,8 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
-                    // If summoned is toggled true, navigate to Summon Screen
                     data = data.data.getUser
+                    // If summoned is toggled true, navigate to Summon Screen
                     if (data.summoned) {navigation.navigate("SummonScreen")}
                     setState(data.queue.state)
                     const now: any = new Date()
@@ -86,10 +86,13 @@ export default function () {
                         .filter(key => key in data)
                         .map(key => [key, data[key]]))
                     const terminalDigit = parseInt(info.index.toString().charAt(info.index.toString().length - 1))
-                    const suffix = terminalDigit === 1 ? "st"
+                    const suffix = info.index === 1 ? "st"
+                                   : info.index === 11 ? "th"
+                                   : terminalDigit === 1 ? "st"
                                    : terminalDigit === 2 ? "nd"
                                    : terminalDigit === 3 ? "rd"
                                    : "th"
+                    console.log(info)
                     setProps({"name": info.name,
                                     "phone_number": info.phone_number,
                                     "stats": [{"prefix": t("index_prefix"), "stat": info.index, "suffix": suffix},

@@ -146,5 +146,10 @@
   },
   "verifySMSModal": {
     "title": "Verify your phone number"
+  },
+  "cannotEnqueueAlert": {
+    "title": "Oops! Something went wrong",
+    "joinCodeNotExistMessage": "It looks like the join code you entered doesn't match any queue we have on record. Please check your code and try again, or use the QR code scanner.",
+    "queuePauseOrInactivemessage": "It looks like the queue you're trying to join is either paused or inactive. Please try again or ask the organizer for details."
   }
 }
