@@ -80,11 +80,12 @@ type Mutation {
   confirmUser(confirmCode: String!): Boolean!
   createOrganizer(email: String!, name: String!, password: String!): Organizer
   createQueue(address: String!, capacity: Int!, gracePeriod: Int, maxPartySize: Int = 1, name: String!, offlineTime: Int, password: String!): Queue
-  createUser(joinCode: String!, name: String!, phoneNumber: String): User
+  createUser(name: String!, phoneNumber: String, queueId: String): User
   deferPosition(timeNeeded: Int!, userId: String): User
   deleteOrganizer: Organizer
   deleteQueue(queueId: String!): Queue
   forgotOrganizerPassword(email: String!): Boolean!
+  joinQueue(joinCode: String!, name: String!, phoneNumber: String!): User
   loginOrganizer(email: String!, password: String!): Organizer
   loginQueue(joinCode: String!, password: String!): Queue
   logoutOrganizer: Boolean!
