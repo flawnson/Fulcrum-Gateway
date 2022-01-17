@@ -1,4 +1,6 @@
 export { calculateAverageWait } from "./calculateAverageWait";
+export { calculateEstimatedWait } from "./calculateEstimatedWait";
+export { calculateETA } from "./calculateETA";
 export { updateUserStatus } from "./updateUserStatus";
 export { userExistsInQueue } from "./userExistsInQueue";
 export { queueExistsInOrganizer } from "./queueExistsInOrganizer";
