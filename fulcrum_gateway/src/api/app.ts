@@ -10,7 +10,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import { graphqlHTTP } from 'express-graphql';
-import { buildSchema, NonEmptyArray } from 'type-graphql';
+import { buildSchema, buildSchemaSync, NonEmptyArray } from 'type-graphql';
 import {
   relationResolvers
 } from "../../prisma/generated/type-graphql";
@@ -37,16 +37,14 @@ const combinedResolvers = [...pregeneratedCrudResolvers, ...relationResolvers, .
 // apply the config (it will apply decorators on the generated model class and its properties)
 applyModelsEnhanceMap(modelsEnhanceMap);
 
-async function createSchema(){
-  const schema = await buildSchema({
-    resolvers: combinedResolvers,
-    authChecker: authChecker,
-    validate: false,
-    emitSchemaFile: __dirname + '/schema.graphql',
-  });
-  return schema;
-}
 
+const schema = buildSchemaSync({
+  resolvers: combinedResolvers,
+  authChecker: authChecker,
+  validate: false,
+  emitSchemaFile: true,
+  emitSchemaFile: __dirname + '/schema.graphql',
+});
 
 const app = express();
 const port = 8080;
@@ -87,8 +85,9 @@ app.use(
 app.get('/', (req, res) => {
   res.redirect('/api')
 })
+
 app.use('/api', graphqlHTTP(async (req, res, params) => ({
-  schema: await createSchema(),
+  schema: schema,
   context: { req, res, prisma },
   graphiql: true,
 })));
