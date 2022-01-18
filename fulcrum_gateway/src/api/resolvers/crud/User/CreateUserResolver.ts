@@ -5,7 +5,8 @@ import {
   Mutation, Arg, Args, ArgsType,
   InputType, Field,
   Authorized, UseMiddleware,
-
+  ObjectType,
+  createUnionType
 } from "type-graphql";
 import { User } from "../../../../../prisma/generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
@@ -13,7 +14,9 @@ import { sendSMS } from "../../../helpers";
 import { redis } from "../../../redisClient";
 import { confirmUserPrefix } from "../../../constants";
 import { queueAccessPermission } from "../../../middleware/queueAccessPermission";
-import { UserStatus } from '@prisma/client';
+import { UserStatus, Prisma } from '@prisma/client';
+import { Error } from "../../../types";
+import { errors } from "../../../constants";
 
 @ArgsType()
 class JoinQueueArgs {
@@ -51,15 +54,32 @@ class CreateUserArgs {
   name!: string;
 }
 
+
+const CreateUserResult = createUnionType({
+  name: "CreateUserResult", // the name of the GraphQL union
+  types: () => [User, Error] as const, // function that returns tuple of object types classes
+  // our implementation of detecting returned object type
+  resolveType: value => {
+    if ("error" in value) {
+      return Error; // we can return object type class (the one with `@ObjectType()`)
+    }
+    if ("id" in value) {
+      return User; // or the schema name of the type as a string
+    }
+    return null;
+  }
+});
+
+
 @Resolver()
 export class CreateUserResolver {
 
   @Authorized(["ORGANIZER", "ASSISTANT"])
   @UseMiddleware(queueAccessPermission)
-  @Mutation(returns => User, {
+  @Mutation(returns => CreateUserResult, {
     nullable: true
   })
-  async createUser(@Ctx() ctx: Context, @Args() args: CreateUserArgs): Promise<User | null> {
+  async createUser(@Ctx() ctx: Context, @Args() args: CreateUserArgs): Promise<typeof CreateUserResult> {
     let queryQueueId = "";
 
     if (ctx.req.session.queueId) {
@@ -85,12 +105,16 @@ export class CreateUserResolver {
 
       if (result == null) {
         console.log("Cannot join: Queue with id " + queryQueueId + " does not exist.");
-        return null;
+        return {
+          error: errors.NO_QUEUE
+        };
       }
 
       if (result.state == "INACTIVE" || result.state == "PAUSED"){
         console.log("Cannot join: Queue with id " + queryQueueId + " is INACTIVE or PAUSED.");
-        return null;
+        return {
+          error: errors.QUEUE_NOT_ACTIVE
+        };
       }
 
       // calculate the user's index
@@ -98,29 +122,42 @@ export class CreateUserResolver {
       const currentTime = new Date();
       const queueId = result.id;
       // create a new user (by default unverified)
-      const createUser = await prisma.user.create({
-        data: {
-          name: args.name,
-          queue_id: queueId,
-          phone_number: args.phoneNumber,
-          join_time: currentTime,
-          index: index,
-          status: UserStatus.ENQUEUED
+      try {
+        const createUser = await prisma.user.create({
+          data: {
+            name: args.name,
+            queue_id: queueId,
+            phone_number: args.phoneNumber,
+            join_time: currentTime,
+            index: index,
+            status: UserStatus.ENQUEUED
+          }
+        });
+        return createUser;
+      } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+          // The .code property can be accessed in a type-safe manner
+          if (e.code === 'P2002') {
+            console.log('Cannot join: Phone number ' + args.phoneNumber + ' is taken.');
+            let error = {
+              error: errors.PHONE_NUMBER_NOT_UNIQUE
+            };
+            return error;
+          }
         }
-      });
 
-      return createUser;
+        throw e;
+      }
 
     })
   }
 
-  @Mutation(returns => User, {
+  @Mutation(returns => CreateUserResult, {
     nullable: true
   })
-  async joinQueue(@Ctx() ctx: Context, @Args() args: JoinQueueArgs): Promise<User | null> {
+  async joinQueue(@Ctx() ctx: Context, @Args() args: JoinQueueArgs): Promise<typeof CreateUserResult> {
     // make queries atomic so they immediately follow one another (prevents joining a queue that just got deleted)
     return await ctx.prisma.$transaction(async (prisma) => {
-
       // convert joincode to all lowercase for comparison
       args.joinCode = args.joinCode.toLowerCase();
 
@@ -136,54 +173,74 @@ export class CreateUserResolver {
 
       if (result == null) {
         console.log("Cannot join: Queue with code " + args.joinCode + " does not exist.");
-        return null;
+        let error = {
+          error: errors.NO_QUEUE
+        };
+        return error;
       }
 
       if (result.state == "INACTIVE" || result.state == "PAUSED"){
         console.log("Cannot join: Queue with code " + args.joinCode + " is INACTIVE or PAUSED.");
-        return null;
+        let error = {
+          error: errors.QUEUE_NOT_ACTIVE
+        };
+        return error;
       }
 
       // calculate the user's index
       const index = result.users.length + 1;
       const currentTime = new Date();
       const queueId = result.id;
-      // create a new user (by default unverified)
-      const createUser = await prisma.user.create({
-        data: {
-          name: args.name,
-          queue_id: queueId,
-          phone_number: args.phoneNumber,
-          join_time: currentTime,
-          index: index
-        }
-      });
 
-      // generate a verification code
-      if (createUser != null){
-        // generate 6 digit verification code
-        let confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
-        //check if this verification code is already in use by another user
-        while (true) {
-          const checkCode = await redis.get(confirmCode);
-          if (checkCode) {
-            console.log("Code " + confirmCode + " already exists, generating new one");
-            // already exists, generate new code
-            confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
+      try {
+        // create a new user (by default unverified)
+        const createUser = await prisma.user.create({
+          data: {
+            name: args.name,
+            queue_id: queueId,
+            phone_number: args.phoneNumber,
+            join_time: currentTime,
+            index: index
           }
-          else {
-            break;
+        });
+
+        // generate a verification code
+        if (createUser != null){
+          // generate 6 digit verification code
+          let confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
+          //check if this verification code is already in use by another user
+          while (true) {
+            const checkCode = await redis.get(confirmCode);
+            if (checkCode) {
+              console.log("Code " + confirmCode + " already exists, generating new one");
+              // already exists, generate new code
+              confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
+            }
+            else {
+              break;
+            }
+          }
+          // save code to redis
+          await redis.set(confirmUserPrefix + confirmCode, createUser.id, "ex", 60 * 60 * 0.5); // 0.5 hour expiration
+          // send SMS here
+          await sendSMS(args.phoneNumber, confirmCode + " is your Fiefoe verification code.", "Confirm");
+        }
+        return createUser;
+
+      } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+          // The .code property can be accessed in a type-safe manner
+          if (e.code === 'P2002') {
+            console.log('Cannot join: Phone number ' + args.phoneNumber + ' is taken.');
+            let error = {
+              error: errors.PHONE_NUMBER_NOT_UNIQUE
+            };
+            return error;
           }
         }
-        // save code to redis
-        await redis.set(confirmUserPrefix + confirmCode, createUser.id, "ex", 60 * 60 * 0.5); // 0.5 hour expiration
-
-        // send SMS here
-        await sendSMS(args.phoneNumber, confirmCode + " is your Fiefoe verification code.", "Confirm");
-
+        throw e;
       }
 
-      return createUser;
 
     })
   }
