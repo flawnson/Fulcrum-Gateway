@@ -63,7 +63,7 @@ export type AbandonedStats = {
 export type QueueInfo = {
     queueId: string,
     name: string,
-    lifespan: number,
+    create_time: string,
     state: string,
 }
 
@@ -72,14 +72,14 @@ export type QueueInfo = {
 
 export type DashboardStat = {
     "prefix": string,
-    "stat": number,
+    "stat": string,
     "suffix": string,
 }
 
 export type UserInfo = {
     "name": string,
     "phone_number": string,
-    stats: DashboardStat[]
+    "stats": DashboardStat[]
 }
 
 export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"

@@ -14,6 +14,7 @@ import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
 import { UserInfo } from "../../types"
 import { AuthContext } from "../../App";
+import calculateTimeToNow from "../utilities/calculateTimeToNow";
 
 
 export default function () {
@@ -72,15 +73,13 @@ export default function () {
                     // If summoned is toggled true, navigate to Summon Screen
                     if (data.summoned) {navigation.navigate("SummonScreen")}
                     setState(data.queue.state)
-                    const now: any = new Date()
-                    const join: any = new Date(data.join_time)
-                    const waited = new Date(Math.abs(now - join))
-                    data.waited = `${Math.floor(waited.getMinutes())}`
+                    data.waiter = calculateTimeToNow(data.join_time).m
                     const info: SetStateAction<any> = Object.fromEntries([
                         "name",
                         "phone_number",
                         "index",
                         "waited",
+                        "join_time",
                         "average_wait",
                         "estimated_wait"]
                         .filter(key => key in data)
@@ -92,7 +91,6 @@ export default function () {
                                    : terminalDigit === 2 ? "nd"
                                    : terminalDigit === 3 ? "rd"
                                    : "th"
-                    console.log(info)
                     setProps({"name": info.name,
                                     "phone_number": info.phone_number,
                                     "stats": [{"prefix": t("index_prefix"), "stat": info.index, "suffix": suffix},
