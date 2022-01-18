@@ -149,8 +149,6 @@ export class CreateUserResolver {
         throw e;
       }
 
-
-
     })
   }
 
