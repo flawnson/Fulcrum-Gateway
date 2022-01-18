@@ -1,6 +1,17 @@
 import app from "../app";
 import request from 'supertest';
 import { redis } from "../redisClient";
+import prisma from '../prismaClient';
+
+
+beforeAll(async () => {
+  await prisma.$connect();
+  // clear all current data first
+  await prisma.user.deleteMany({});
+  await prisma.queue.deleteMany({});
+  await prisma.organizer.deleteMany({});
+
+});
 
 describe("Sample test", () => {
   it("Organizer Login", async () => {
@@ -25,4 +36,6 @@ describe("Sample test", () => {
 afterAll(async () => {
   // close redis connection
   await redis.disconnect();
+  // close prisma connection
+  await prisma.$disconnect();
 });
