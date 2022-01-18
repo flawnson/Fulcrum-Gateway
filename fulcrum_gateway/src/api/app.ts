@@ -23,7 +23,6 @@ import { modelsEnhanceMap } from "./modelsEnhanceMap";
 import { customResolvers } from "./resolvers";
 
 import * as path from 'path';
-import { PrismaClient } from "@prisma/client";
 import prisma from './prismaClient';
 import { redis } from "./redisClient";
 import { authChecker } from "./middleware/authChecker";

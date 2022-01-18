@@ -2,15 +2,10 @@ import app from "../app";
 import request from 'supertest';
 import { redis } from "../redisClient";
 import prisma from '../prismaClient';
-
+import { dbSetup } from '../seed/dbSetup';
 
 beforeAll(async () => {
-  await prisma.$connect();
-  // clear all current data first
-  await prisma.user.deleteMany({});
-  await prisma.queue.deleteMany({});
-  await prisma.organizer.deleteMany({});
-
+  await dbSetup();
 });
 
 describe("Sample test", () => {
