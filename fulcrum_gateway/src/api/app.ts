@@ -92,4 +92,5 @@ app.use('/api', graphqlHTTP(async (req, res, params) => ({
   graphiql: true,
 })));
 
-module.exports = app;
+//module.exports = app;
+export default app;
