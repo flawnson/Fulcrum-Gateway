@@ -86,7 +86,7 @@ describe("Defer User (Organizer)", () => {
     console.log("Logged out as organizer");
   });
 
-  test("Normal Index Defer", async () => {
+  test("Index Defer (Normal)", async () => {
     const userId = "user13";
     const numSpots = 1;
     let data = {
@@ -153,6 +153,152 @@ describe("Defer User (Organizer)", () => {
       },
       {
         id: "user15",
+        index: 3
+      }
+    ];
+
+    const returnedOrder = userToDefer!.queue.users;
+
+    expect(returnedOrder).toStrictEqual(correctOrder);
+
+  });
+
+  test("Index Defer (Last person in queue)", async () => {
+    const userId = "user15";
+    const numSpots = 1;
+    let data = {
+      query: `mutation defer_user($userId: String, $numSpots: Int!) {
+                  indexDeferPosition(userId: $userId, numSpots: $numSpots){
+                      ... on User {
+                          id
+                          index
+                      }
+                      ... on Error {
+                          error
+                      }
+                  }
+              }`,
+      variables: {
+        "userId": userId,
+        "numSpots": numSpots
+      }
+    }
+    // const response = await authenticatedSession.post("/api").send(data);
+    const response = await agent.post("/api").send(data);
+
+    //console.log(response);
+    expect(response.statusCode).toBe(200);
+
+    // check the queue's new order
+    // get list of enqueued users in ascending order of index
+    const userToDefer = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        queue: {
+          include: {
+            users: {
+              where: {
+                index: {
+                  gt: 0
+                }
+              },
+              orderBy: {
+                index: 'asc',
+              },
+              select: {
+                id: true,
+                index: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    expect(userToDefer).not.toBeFalsy(); // cannot return null
+
+    const correctOrder = [
+      {
+        id: "user13",
+        index: 1
+      },
+      {
+        id: "user14",
+        index: 2
+      },
+      {
+        id: "user15",
+        index: 3
+      }
+    ];
+
+    const returnedOrder = userToDefer!.queue.users;
+
+    expect(returnedOrder).toStrictEqual(correctOrder);
+
+  });
+
+  test("Index Defer (Only person in queue)", async () => {
+    const userId = "user16";
+    const numSpots = 1;
+    let data = {
+      query: `mutation defer_user($userId: String, $numSpots: Int!) {
+                  indexDeferPosition(userId: $userId, numSpots: $numSpots){
+                      ... on User {
+                          id
+                          index
+                      }
+                      ... on Error {
+                          error
+                      }
+                  }
+              }`,
+      variables: {
+        "userId": userId,
+        "numSpots": numSpots
+      }
+    }
+    // const response = await authenticatedSession.post("/api").send(data);
+    const response = await agent.post("/api").send(data);
+
+    //console.log(response);
+    expect(response.statusCode).toBe(200);
+
+    // check the queue's new order
+    // get list of enqueued users in ascending order of index
+    const userToDefer = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        queue: {
+          include: {
+            users: {
+              where: {
+                index: {
+                  gt: 0
+                }
+              },
+              orderBy: {
+                index: 'asc',
+              },
+              select: {
+                id: true,
+                index: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    expect(userToDefer).not.toBeFalsy(); // cannot return null
+
+    const correctOrder = [
+      {
+        id: "user16",
         index: 3
       }
     ];

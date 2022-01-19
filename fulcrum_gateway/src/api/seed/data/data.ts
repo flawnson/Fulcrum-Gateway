@@ -212,6 +212,19 @@ export let user_table = [
     join_time: pastDate,
     reneged_time: futureDate,
     status: UserStatus.ENQUEUED
+  },
+  {
+    id: "user16",
+    name: "E",
+    queue_id: "costco_queue5",
+    summoned: false,
+    phone_number: "123241423",
+    party_size: 1,
+    last_online: nowDate,
+    index: 3,
+    join_time: pastDate,
+    reneged_time: futureDate,
+    status: UserStatus.ENQUEUED
   }
 
 
@@ -251,7 +264,7 @@ export let queue_table = [
     id: "costco_queue3",
     organizer_id: "costco_toronto",
     join_code: "a4e35t",
-    name: "Queue1",
+    name: "Queue3",
     address: "somewhere, someplace",
     state: QueueState.ACTIVE,
     create_time: nowDate,
@@ -265,7 +278,21 @@ export let queue_table = [
     id: "costco_queue4",
     organizer_id: "costco_toronto",
     join_code: "678iuy",
-    name: "Queue1",
+    name: "Queue4",
+    address: "somewhere, someplace",
+    state: QueueState.ACTIVE,
+    create_time: nowDate,
+    capacity: 10,
+    grace_period: 2000,
+    max_party_size: 4,
+    offline_time: 5,
+    password: ""
+  },
+  {
+    id: "costco_queue5",
+    organizer_id: "costco_toronto",
+    join_code: "456234",
+    name: "Queue5",
     address: "somewhere, someplace",
     state: QueueState.ACTIVE,
     create_time: nowDate,
