@@ -3,13 +3,17 @@ import { Alert, VStack,
         HStack, Text,
         IconButton, CloseIcon,
         Box, PresenceTransition } from 'native-base'
+import {useTranslation} from "react-i18next";
+import {StyleSheet} from "react-native";
 
 type CannotEnqueueAlertProps = {
     showAlert: boolean,
     setShowAlert:  React.Dispatch<React.SetStateAction<boolean>>
+    message: string
 }
 
 export default function (props: CannotEnqueueAlertProps) {
+    const { t, i18n } = useTranslation(["cannotEnqueueAlert"])
     return (
         <PresenceTransition
             visible={props.showAlert}
@@ -22,8 +26,9 @@ export default function (props: CannotEnqueueAlertProps) {
                     duration: 250,
                 },
             }}
+            style={styles.container}
         >
-            <Alert w="100%" status="error" colorScheme="info">
+            <Alert w="100%" status="error" colorScheme="error">
                 <VStack space={2} flexShrink={1} w="100%">
                     <HStack
                         flexShrink={1}
@@ -34,7 +39,7 @@ export default function (props: CannotEnqueueAlertProps) {
                         <HStack flexShrink={1} space={2} alignItems="center">
                             <Alert.Icon />
                             <Text fontSize="md" fontWeight="medium" color="coolGray.800">
-                                We are going live in July!
+                                {t("title")}
                             </Text>
                         </HStack>
                         <IconButton
@@ -49,11 +54,19 @@ export default function (props: CannotEnqueueAlertProps) {
                             color: "coolGray.600",
                         }}
                     >
-                        We are happy to announce that we are going live on July 28th. Get
-                        ready!
+                        {t("message")}
                     </Box>
                 </VStack>
             </Alert>
         </PresenceTransition>
     )
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        marginTop: 50,
+        position: 'absolute',
+    },
+});
+

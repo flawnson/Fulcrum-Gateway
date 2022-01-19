@@ -52,12 +52,9 @@ export default function (props: EnqueuedCatalogProps) {
         }
     }
 
-    useEffect(() => {
-        toggleSummonUser(props.entity.userId).then()
-    }, [summoned])
-
     const onBellPress = function () {
         setSummoned(!summoned)
+        toggleSummonUser(props.entity.userId).then()
     }
 
     const statusQuery = `
@@ -179,13 +176,13 @@ export default function (props: EnqueuedCatalogProps) {
                                     source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
                                 <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>
                             </Avatar>
-                            <Text style={styles.text}>
+                            <Text style={styles.index}>
                                 {props.entity.index}
                             </Text>
-                            <Text suppressHighlighting={true} style={styles.text}>
+                            <Text suppressHighlighting={true} style={styles.name}>
                                 {props.entity.name}
                             </Text>
-                            <VStack style={styles.text}>
+                            <VStack>
                                 <Text>
                                     {props.entity.waited}
                                 </Text>
@@ -221,7 +218,11 @@ const styles = StyleSheet.create({
     avatar: {
         borderRadius: 10,
     },
-    text: {
+    index: {
+        fontSize: 30,
+        flex: 1,
+    },
+    name: {
         flex: 1,
     },
     icon: {

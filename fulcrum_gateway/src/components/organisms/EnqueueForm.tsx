@@ -7,6 +7,7 @@ import { HomeScreenProps } from "../../../types";
 import { useTranslation } from "react-i18next";
 import CannotEnqueueAlert from "../atoms/CannotEnqueueAlert";
 import {AuthContext} from "../../../App";
+import LoadingSpinner from "../atoms/LoadingSpinner";
 
 
 type EnqueueFormProps = {
@@ -24,6 +25,7 @@ export default function ({navigation}: EnqueueFormProps) {
     const [formData, setData] = useState<EnqueueFormData>({})
     const { signIn } = React.useContext(AuthContext)
     const [submitted, setSubmitted] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
     const [showAlert, setShowAlert] = useState<boolean>(false)
     const [isJoinCodeFormOpen, setJoinCodeFormOpen] = useState<boolean>(true)
     const [isNameFormOpen, setNameFormOpen] = useState<boolean>(false)
@@ -40,6 +42,7 @@ export default function ({navigation}: EnqueueFormProps) {
     `
 
     async function joinQueue () {
+        setLoading(true)
         try {
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
@@ -50,9 +53,18 @@ export default function ({navigation}: EnqueueFormProps) {
             });
             await response.json().then(
                 data => {
-                    return data ? data : setShowAlert(true)
+                    if (data?.data?.createUser) {
+                        signIn('USER')
+                        setSubmitted(true)
+                        navigation.navigate("UserDashboard")
+                    } else {
+                        setSubmitted(false)
+                        setShowAlert(true)
+                        setJoinCodeFormOpen(true)
+                    }
                 }
             )
+            setLoading(false)
         } catch(error) {
             return error
         }
@@ -109,25 +121,14 @@ export default function ({navigation}: EnqueueFormProps) {
         return true;
     };
 
-    const onSuccess = () => {
-        joinQueue()
-        signIn('USER')
-        setSubmitted(true)
-        navigation.navigate("UserDashboard")
-        // setSubmitted(false)  // In case user goes back to home page (probably wrong :P)
-    }
-
-    const onFailure = () => {
-        setSubmitted(false)
-        // setErrors({...errors, invalid: "invalid submission"})
-    }
-
     const onSubmit = () => {
-        // validate() ?  onSuccess() : onFailure();
+        joinQueue()
     };
 
     return (
-        <VStack width="90%" mx="3">
+        <>
+            <CannotEnqueueAlert showAlert={showAlert} setShowAlert={setShowAlert} message={"something"}/>
+            <LoadingSpinner show={loading} />
             {isJoinCodeFormOpen && (
                 <>
                     <ScaleFade in={isJoinCodeFormOpen} duration={500}>
@@ -164,7 +165,6 @@ export default function ({navigation}: EnqueueFormProps) {
                                 {t('submit', { ns: 'common' })}
                             </Text>
                         </Button>
-                        <CannotEnqueueAlert showAlert={showAlert} setShowAlert={setShowAlert}/>
                     </ScaleFade>
                 </>
             )}
@@ -203,7 +203,6 @@ export default function ({navigation}: EnqueueFormProps) {
                                 {t('submit', { ns: 'common' })}
                             </Text>
                         </Button>
-                        <CannotEnqueueAlert showAlert={showAlert} setShowAlert={setShowAlert}/>
                     </ScaleFade>
                 </>
             )}
@@ -242,10 +241,9 @@ export default function ({navigation}: EnqueueFormProps) {
                                 {t('submit', { ns: 'common' })}
                             </Text>
                         </Button>
-                        <CannotEnqueueAlert showAlert={showAlert} setShowAlert={setShowAlert}/>
                     </ScaleFade>
                 </>
             )}
-        </VStack>
+        </>
     );
 }

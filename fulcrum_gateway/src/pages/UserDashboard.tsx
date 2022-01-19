@@ -14,6 +14,7 @@ import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
 import { UserInfo } from "../../types"
 import { AuthContext } from "../../App";
+import calculateTimeToNow from "../utilities/calculateTimeToNow";
 
 
 export default function () {
@@ -68,25 +69,25 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
-                    // If summoned is toggled true, navigate to Summon Screen
                     data = data.data.getUser
+                    // If summoned is toggled true, navigate to Summon Screen
                     if (data.summoned) {navigation.navigate("SummonScreen")}
                     setState(data.queue.state)
-                    const now: any = new Date()
-                    const join: any = new Date(data.join_time)
-                    const waited = new Date(Math.abs(now - join))
-                    data.waited = `${Math.floor(waited.getMinutes())}`
+                    data.waiter = calculateTimeToNow(data.join_time).m
                     const info: SetStateAction<any> = Object.fromEntries([
                         "name",
                         "phone_number",
                         "index",
                         "waited",
+                        "join_time",
                         "average_wait",
                         "estimated_wait"]
                         .filter(key => key in data)
                         .map(key => [key, data[key]]))
                     const terminalDigit = parseInt(info.index.toString().charAt(info.index.toString().length - 1))
-                    const suffix = terminalDigit === 1 ? "st"
+                    const suffix = info.index === 1 ? "st"
+                                   : info.index === 11 ? "th"
+                                   : terminalDigit === 1 ? "st"
                                    : terminalDigit === 2 ? "nd"
                                    : terminalDigit === 3 ? "rd"
                                    : "th"

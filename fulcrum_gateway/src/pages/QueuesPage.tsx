@@ -48,15 +48,11 @@ export default function () {
                     data = data.data.getOrganizer.queues
                     let queue_stats: QueueInfo[] = []
                     data.forEach((queue_data: {[key: string]: string | number}) => {
-                        const now: any = new Date()
-                        const create: any = new Date(queue_data.create_time)
-                        const lifespan = new Date(Math.abs(now - create))
-                        queue_data.lifespan = `${Math.floor(lifespan.getMinutes())}`
                         const stats: SetStateAction<QueueInfo | any> = Object.fromEntries([
                             "queueId",
                             "name",
                             "state",
-                            "lifespan"]
+                            "create_time"]
                             .filter(key => key in queue_data)
                             .map(key => [key, queue_data[key]]))
                         queue_stats.push(stats)
