@@ -2,7 +2,7 @@ import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { StyleSheet, Switch } from "react-native";
 import { PreferencesContext } from "../../utilities/useTheme";
-import { useColorMode } from "native-base";
+import { useColorMode, HStack } from "native-base";
 
 export default function () {
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
@@ -14,9 +14,9 @@ export default function () {
     }
 
     return (
-        <>
+        <HStack space={1} style={styles.container}>
             <Feather
-                style={styles.switchName}
+                style={styles.switchIcon}
                 name={isThemeDark ? 'sun' : 'moon'}
                 size={32}
                 color={isThemeDark ? 'white': 'black'}
@@ -28,15 +28,22 @@ export default function () {
                 thumbColor={isThemeDark ? '#FFFFFF' : '#FFFFFF'}
                 trackColor={{false: 'gray', true: '#FFFFFF'}}
             />
-        </>
+        </HStack>
     )
 }
 
 
 const styles = StyleSheet.create({
+    container: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10
+    },
     switch: {
     },
-    switchName: {
+    switchIcon: {
     },
 });
 
