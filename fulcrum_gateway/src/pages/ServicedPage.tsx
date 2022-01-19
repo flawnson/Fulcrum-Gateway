@@ -1,12 +1,13 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import useInterval from "../utilities/useInterval";
 import ServicedCatalogCardGroup from "../components/molecules/ServicedCatalogCardGroup";
-import { ServicedStats } from "../../types";
-import { useIsFocused } from "@react-navigation/native";
+import {HomeScreenProps, ServicedStats} from "../../types";
+import {useIsFocused, useRoute} from "@react-navigation/native";
 
 
 export default function () {
     const [props, setProps] = useState<ServicedStats[]>([])
+    const route = useRoute<HomeScreenProps["route"]>()
 
     const query = `
         query get_users($queueId: String! $orderBy: [UserOrderByWithRelationInput!]) {
@@ -23,13 +24,9 @@ export default function () {
             }
         }
     `
-    const variables = `{
-        "queueId": "costco_queue1",
-        "orderBy":
-        {
-            "index": "desc"
-        }
-    }`
+    //@ts-ignore
+    const variables = route.params ? {"queueId": route.params?.queueId, "orderBy": {"index": "asc"}}
+                                   : {"queueId": "123456", "orderBy": {"index": "asc"}}
 
     async function fetchServicedData () {
         try {
@@ -44,7 +41,7 @@ export default function () {
                                         body: JSON.stringify({query: query, variables: variables})})
             await response.json().then(
                 data => {
-                    data = data.data.queue.users
+                    data = data.data.getQueue.users
                     data = data.filter((d: ServicedStats) => d.status === "SERVICED")
                     let serviced_stats: ServicedStats[] = []
                     data.forEach((serviced_data: any) => {

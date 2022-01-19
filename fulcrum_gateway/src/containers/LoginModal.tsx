@@ -4,7 +4,9 @@ import AssistantLoginForm from "../components/organisms/AssistantLoginForm";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
-import { Button, Center, Heading, Modal } from "native-base";
+import { Button, Text,
+        Center, Heading,
+        Modal } from "native-base";
 
 
 type CreateQueueModalProps = {
@@ -46,11 +48,21 @@ export default (props: CreateQueueModalProps) => {
                             {t("question")}
                         </Heading>
                         <Button.Group style={{marginTop: 40}}>
-                            <Button onPress={() => setIsOrganizer(true)} variant={isOrganizer ? "solid" : "outline"}>
-                                {t("organizer")}
+                            <Button
+                                onPress={() => setIsOrganizer(true)}
+                                variant={isOrganizer ? "solid" : "outline"}
+                            >
+                                <Text style={{color: isOrganizer ? "white" : "black"}}>
+                                    {t("organizer")}
+                                </Text>
                             </Button>
-                            <Button onPress={() => setIsOrganizer(false)} variant={isOrganizer ? "outline" : "solid"}>
-                                {t("assistant")}
+                            <Button
+                                onPress={() => setIsOrganizer(false)}
+                                variant={isOrganizer ? "outline" : "solid"}
+                            >
+                                <Text style={{color: isOrganizer ? "black" : "white"}}>
+                                    {t("assistant")}
+                                </Text>
                             </Button>
                         </Button.Group>
                         {isOrganizer ? <OrganizerLoginForm navigation={navigation} setShowModal={props.setShowModal}/>

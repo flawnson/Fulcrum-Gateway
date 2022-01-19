@@ -1,11 +1,12 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import CatalogEntityCardGroup from "../components/molecules/AbandonedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
-import { AbandonedStats, EnqueuedStats } from "../../types";
-import {useIsFocused} from "@react-navigation/native";
+import {AbandonedStats, EnqueuedStats, HomeScreenProps} from "../../types";
+import {useIsFocused, useRoute} from "@react-navigation/native";
 
 export default function () {
     const [props, setProps] = useState<AbandonedStats[]>([])
+    const route = useRoute<HomeScreenProps["route"]>()
 
     const query = `
         query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
@@ -21,13 +22,9 @@ export default function () {
             }
         }
     `
-    const variables = `{
-        "queueId": "costco_queue1",
-        "orderBy":
-            {
-                "index": "asc"
-            }
-    }`
+    //@ts-ignore
+    const variables = route.params ? {"queueId": route.params?.queueId, "orderBy": {"index": "asc"}}
+                                   : {"queueId": "123456", "orderBy": {"index": "asc"}}
 
     async function fetchAbandonedData () {
         try {
