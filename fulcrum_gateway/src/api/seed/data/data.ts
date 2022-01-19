@@ -171,7 +171,7 @@ export let user_table = [
     last_online: nowDate,
     index: 0,
     join_time: pastDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    total_wait: 5000,
     status: UserStatus.SERVICED
   },
   {

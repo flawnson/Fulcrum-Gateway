@@ -18,7 +18,7 @@ import { Error } from "../../../types";
 import { errors } from "../../../constants";
 
 @ArgsType()
-class DeferUserArgs {
+class TimeDeferUserArgs {
   @Field({
     nullable: true
   })
@@ -31,6 +31,22 @@ class DeferUserArgs {
     }
   )
   timeNeeded!: number;
+}
+
+@ArgsType()
+class IndexDeferUserArgs {
+  @Field({
+    nullable: true
+  })
+  userId?: string;
+
+  @Field(
+    type => Int,
+    {
+      nullable: false
+    }
+  )
+  numSpots!: number;
 }
 
 const DeferUserResult = createUnionType({
@@ -51,12 +67,109 @@ const DeferUserResult = createUnionType({
 @Resolver()
 export class DeferUserResolver {
 
+
   @Authorized()
   @UseMiddleware(userAccessPermission)
   @Mutation(returns => DeferUserResult, {
     nullable: true
   })
-  async deferPosition(@Ctx() ctx: Context, @Args() args: DeferUserArgs): Promise<typeof DeferUserResult> {
+  async indexDeferPosition(@Ctx() ctx: Context, @Args() args: IndexDeferUserArgs): Promise<typeof DeferUserResult> {
+    return await ctx.prisma.$transaction(async (prisma) => {
+      let queryUserId = "";
+
+      if (ctx.req.session!.userId) {
+        queryUserId = ctx.req.session!.userId;
+      }
+
+      if (args.userId) {
+        queryUserId = args.userId;
+      }
+
+      // first get the user to defer
+      const userToDefer = await prisma.user.findUnique({
+        where: {
+          id: queryUserId,
+        },
+        include: {
+          queue: {
+            include: {
+              users: {
+                where: {
+                  index: {
+                    gt: 0
+                  }
+                },
+                orderBy: {
+                  index: 'asc',
+                },
+                select: {
+                  id: true,
+                  index: true
+                }
+              }
+            }
+          }
+        }
+      });
+
+      if (userToDefer == null){
+        console.log("Cannot defer: User does not exist!");
+        let error = {
+          error: errors.USER_DOES_NOT_EXIST
+        };
+        return error;
+      }
+
+      if (userToDefer.status == "SERVICED"){
+        console.log("Cannot defer: User is not ENQUEUED.");
+        let error = {
+          error: errors.USER_NOT_ENQUEUED
+        };
+        return error;
+      }
+
+      // get users in the same queue
+      let allUsers = userToDefer.queue.users;
+
+      const deferUserIndex = userToDefer.index;
+      let swapUserIndex = userToDefer.index + args.numSpots;
+
+      // if beyond the max index in queue, set to last
+      if (swapUserIndex > allUsers[allUsers.length - 1].index){
+        swapUserIndex = allUsers[allUsers.length - 1].index;
+      }
+
+      // swap index
+      allUsers[deferUserIndex - 1].index = swapUserIndex;
+      allUsers[swapUserIndex - 1].index = deferUserIndex;
+
+      // swap
+      let temp = allUsers[deferUserIndex - 1];
+      allUsers[deferUserIndex - 1] = allUsers[swapUserIndex - 1];
+      allUsers[swapUserIndex - 1] = temp;
+
+      // update prisma
+      for (let u = 0; u < allUsers.length; u++){
+        const updatedUser = await prisma.user.update({
+          where: {
+            id: allUsers[u].id
+          },
+          data: {
+            index: allUsers[u].index
+          }
+        });
+      }
+
+      return userToDefer;
+    })
+  }
+
+  @Authorized()
+  @UseMiddleware(userAccessPermission)
+  @Mutation(returns => DeferUserResult, {
+    nullable: true
+  })
+  async timeDeferPosition(@Ctx() ctx: Context, @Args() args: TimeDeferUserArgs): Promise<typeof DeferUserResult> {
     return await ctx.prisma.$transaction(async (prisma) => {
       let queryUserId = "";
 
@@ -115,13 +228,12 @@ export class DeferUserResolver {
       let swapIndex = -1; // the index of the user that will get bumped up when deferred user is swapped in
       let totalTimeDiff = 0.0;
       // note allUsers is sorted so "i" will track the index
+      const e2 = await helpers.calculateEstimatedWait(allUsers[deferUserIndex - 1]);
       for (let i = 1; i <= allUsers.length; i++){
         // if this user is after the defer user
         if (allUsers[i - 1].index > deferUserIndex){
           // calculate time diff
           const e1 = await helpers.calculateEstimatedWait(allUsers[i - 1])
-          const e2 = await helpers.calculateEstimatedWait(allUsers[deferUserIndex - 1]);
-
           // if estimated wait is null
           if (!e1 || !e2){
             console.log("Cannot defer position: Queue has not started service.");
