@@ -52,16 +52,9 @@ export default function (props: EnqueuedCatalogProps) {
         }
     }
 
-    useEffect(() => {
-        console.log(`${props.entity.userId} WAS SUMMONED`)
-        console.log(summoned)
-        toggleSummonUser(props.entity.userId).then()
-    }, [summoned])
-
     const onBellPress = function () {
-        console.log(`${props.entity.userId} WAS SUMMONED`)
-        console.log(summoned)
         setSummoned(!summoned)
+        toggleSummonUser(props.entity.userId).then()
     }
 
     const statusQuery = `

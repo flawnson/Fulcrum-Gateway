@@ -78,7 +78,7 @@ export let user_table = [
     phone_number: "4161928984",
     party_size: 1,
     last_online: nowDate,
-    index: 0,
+    index: 3,
     join_time: pastDate,
     summoned_time: nowDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
@@ -106,7 +106,7 @@ export let user_table = [
     phone_number: "4442344534123",
     party_size: 1,
     last_online: nowDate,
-    index: 0,
+    index: 4,
     join_time: pastDate,
     summoned_time: nowDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
@@ -157,7 +157,7 @@ export let user_table = [
     phone_number: "1111111111111",
     party_size: 1,
     last_online: nowDate,
-    index: 0,
+    index: 5,
     join_time: pastDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
     status: UserStatus.ABANDONED
@@ -192,7 +192,7 @@ export let user_table = [
     name: "C",
     queue_id: "costco_queue3",
     summoned: false,
-    phone_number: "12324687632423",
+    phone_number: "34506721823",
     party_size: 1,
     last_online: nowDate,
     index: 2,
@@ -205,16 +205,62 @@ export let user_table = [
     name: "D",
     queue_id: "costco_queue3",
     summoned: false,
-    phone_number: "1232462141423",
+    phone_number: "1467245843205",
     party_size: 1,
     last_online: nowDate,
     index: 3,
     join_time: pastDate,
     reneged_time: futureDate,
     status: UserStatus.ENQUEUED
-  }
-
-
+  },
+  {
+    id: "user16",
+    name: "Spongebob Squarepants",
+    queue_id: "costco_queue2",
+    phone_number: "49385772365",
+    party_size: 1,
+    last_online: nowDate,
+    index: 6,
+    join_time: pastDate,
+    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    status: UserStatus.SERVICED
+  },
+  {
+    id: "user17",
+    name: "I'm a carrot",
+    queue_id: "costco_queue1",
+    phone_number: "0913745345",
+    party_size: 1,
+    last_online: nowDate,
+    index: 7,
+    join_time: pastDate,
+    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    status: UserStatus.ENQUEUED
+  },
+  {
+    id: "user18",
+    name: "Mr. Sunshine",
+    queue_id: "costco_queue1",
+    phone_number: "10429586234",
+    party_size: 1,
+    last_online: nowDate,
+    index: 8,
+    join_time: pastDate,
+    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    status: UserStatus.SERVICED
+  },
+  {
+    id: "user19",
+    name: "Pygmy Porcupine",
+    queue_id: "costco_queue1",
+    phone_number: "0897867564",
+    party_size: 1,
+    last_online: nowDate,
+    index: 9,
+    join_time: pastDate,
+    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    status: UserStatus.ENQUEUED
+  },
 ];
 
 
