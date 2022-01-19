@@ -72,7 +72,7 @@ export type QueueInfo = {
 
 export type DashboardStat = {
     "prefix": string,
-    "stat": string,
+    "stat": number,
     "suffix": string,
 }
 

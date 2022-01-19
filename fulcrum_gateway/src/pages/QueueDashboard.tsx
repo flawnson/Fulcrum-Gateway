@@ -86,11 +86,11 @@ export default function () {
                     let lifespans: Array<number> = []
                     for (const user of data) {
                         const join: any = new Date(user.join_time)
-                        const lifespan = new Date(Math.abs(now - join)).getMinutes()
-                        const minutes = Math.floor(lifespan)
+                        const waited = new Date(Math.abs(now - join)).getMinutes()
+                        const minutes = Math.floor(waited)
                         lifespans.push(minutes)
                     }
-                    stats.avg = lifespans.reduce((a,b) => a + b, 0) / lifespans.length
+                    stats.avg = Math.floor(lifespans.reduce((a,b) => a + b, 0) / lifespans.length)
                     stats = {name: name, stats: [
                         {prefix: t("enqueued_prefix"), stat: stats.enqueued, suffix: ""},
                         {prefix: t("serviced_prefix"), stat: stats.serviced, suffix: ""},
