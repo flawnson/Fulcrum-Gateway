@@ -2,6 +2,7 @@ import { dbSetup } from "./dbSetup";
 import prisma from '../prismaClient';
 
 async function main() {
+  await prisma.$connect();
   await dbSetup();
 }
 

@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import { user_table, queue_table, organizer_table} from "./data/data"
 
 export async function dbSetup() {
-  await prisma.$connect();
 
   // delete in order of user -> queue -> organizer to avoid foreign key conflicts
   await prisma.user.deleteMany({});
