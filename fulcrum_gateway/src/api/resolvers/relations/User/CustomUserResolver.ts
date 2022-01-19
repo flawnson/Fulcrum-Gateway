@@ -68,14 +68,6 @@ export class CustomUserResolver {
       if (queue.grace_period != null){
         const currentTime = new Date();
         const timeDiff = parseInt("" + ((currentTime.valueOf() - user.summoned_time!.valueOf()) / 1000));
-        console.log("User " + user.id + " is being set to NOSHOW");
-        console.log("Current time: " + currentTime.valueOf());
-        console.log("Summoned time: " + user.summoned_time!.valueOf());
-        console.log("Time difference: " + timeDiff);
-        console.log("Summoned state: " + user.summoned);
-        console.log("Original status: " + user.status);
-        console.log("Grace period: " + queue.grace_period);
-        console.log("Index of User: " + user.index);
         if (timeDiff > queue.grace_period) {
           const updatedUser = await helpers.updateUserStatus(user.id, UserStatus.NOSHOW);
           return UserStatus.NOSHOW;
