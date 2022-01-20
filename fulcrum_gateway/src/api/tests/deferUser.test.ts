@@ -5,6 +5,7 @@ import { redis } from "../redisClient";
 import prisma from '../prismaClient';
 import { dbSetup } from '../seed/dbSetup';
 import { clearRedis } from './clearRedis';
+import { QueueState, UserStatus } from "@prisma/client";
 
 // let authenticatedSession: any = null;
 
@@ -286,57 +287,62 @@ describe("Defer User (Organizer)", () => {
 
 });
 
+
+
+// DEFER USER (USER)
+async function createAndConfirmUser(variables: object){
+  const query = `mutation join_queue($joinCode: String!, $phoneNumber: String!, $name: String!) {
+                      joinQueue(joinCode: $joinCode, phoneNumber: $phoneNumber, name: $name){
+                          ... on User {
+                              id
+                          }
+                          ... on Error {
+                              error
+                          }
+                      }
+                  }`;
+
+  let data = {
+    query: query,
+    variables: variables
+  }
+
+  const confirmQuery = `mutation confirm_user($confirmCode: String!) {
+                            confirmUser(confirmCode: $confirmCode)
+                        }`;
+
+
+  const response = await agent.post("/api").send(data);
+
+
+
+  const keys = await redis.keys('user-confirmation:*');
+  for (let i = 0; i < keys.length; i++){
+    const confirmCode = keys[i].split(":")[1];
+    // call confirmation request to confirm user
+    const confirmVariables = {
+      "confirmCode": confirmCode
+    };
+    let data = {
+      query: confirmQuery,
+      variables: confirmVariables
+    };
+
+    const response = await agent.post("/api").send(data);
+  }
+}
+
 describe("Defer User (User)", () => {
   beforeEach(async () => {
     await clearRedis();
     await dbSetup(); // will auto clear db before re-populating
-
-    const query = `mutation join_queue($joinCode: String!, $phoneNumber: String!, $name: String!) {
-                        joinQueue(joinCode: $joinCode, phoneNumber: $phoneNumber, name: $name){
-                            ... on User {
-                                id
-                            }
-                            ... on Error {
-                                error
-                            }
-                        }
-                    }`;
-
     const variables = {
-        "joinCode": "456234",
-        "name": "Max",
-        "phoneNumber": "16479947088"
+        "joinCode": "a4e35t",
+        "name": "Max123",
+        "phoneNumber": "134444452"
     }
+    await createAndConfirmUser(variables);
 
-    let data = {
-      query: query,
-      variables: variables
-    }
-
-    const confirmQuery = `mutation confirm_user($confirmCode: String!) {
-                              confirmUser(confirmCode: $confirmCode)
-                          }`;
-
-
-    const response = await agent.post("/api").send(data);
-
-
-    const keys = await redis.keys('user-confirmation:*');
-    for (let i = 0; i < keys.length; i++){
-      const confirmCode = keys[i].split(":");
-      // call confirmation request to confirm user
-      const confirmVariables = {
-        "confirmCode": confirmCode
-      };
-      let data = {
-        query: confirmQuery,
-        variables: confirmVariables
-      };
-
-      const response = await agent.post("/api").send(data);
-    }
-
-    //console.log("Logged in as organizer");
   });
 
   afterEach(async () => {
@@ -344,6 +350,247 @@ describe("Defer User (User)", () => {
   });
 
   test("Index Defer (Normal)", async () => {
-    
+    // add another user behind them
+    const testDate = new Date()
+    await prisma.user.create({
+      data: {
+        id: "after_max",
+        name: "After Max",
+        queue_id: "costco_queue3",
+        summoned: false,
+        phone_number: "9765890001",
+        party_size: 1,
+        last_online: testDate,
+        index: 5,
+        join_time: testDate,
+        status: UserStatus.ENQUEUED
+      }
+    })
+
+    let data = {
+      query: `mutation defer_user($numSpots: Int!) {
+                  indexDeferPosition(numSpots: $numSpots){
+                      ... on User {
+                          id
+                      }
+                      ... on Error {
+                          error
+                      }
+                  }
+              }`,
+      variables: {
+          "numSpots": 1
+      }
+    }
+    // const response = await authenticatedSession.post("/api").send(data);
+    const response = await agent.post("/api").send(data);
+
+    expect(response.statusCode).toBe(200);
+
+    // check the queue's new order
+    // get list of enqueued users in ascending order of index
+    const userId = response.body["data"]["indexDeferPosition"]["id"];
+    const userToDefer = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        queue: {
+          include: {
+            users: {
+              where: {
+                index: {
+                  gt: 0
+                }
+              },
+              orderBy: {
+                index: 'asc',
+              },
+              select: {
+                name: true,
+                index: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    expect(userToDefer).not.toBeFalsy(); // cannot return null
+
+    const correctOrder = [
+      {
+        name: "B",
+        index: 1
+      },
+      {
+        name: "C",
+        index: 2
+      },
+      {
+        name: "D",
+        index: 3
+      },
+      {
+        name: "After Max",
+        index: 4
+      },
+      {
+        name: "Max123",
+        index: 5
+      }
+    ];
+
+    const returnedOrder = userToDefer!.queue.users;
+
+    expect(returnedOrder).toStrictEqual(correctOrder);
+  });
+
+  test("Index Defer (Last person in queue)", async () => {
+    let data = {
+      query: `mutation defer_user($numSpots: Int!) {
+                  indexDeferPosition(numSpots: $numSpots){
+                      ... on User {
+                          id
+                      }
+                      ... on Error {
+                          error
+                      }
+                  }
+              }`,
+      variables: {
+          "numSpots": 1
+      }
+    }
+    // const response = await authenticatedSession.post("/api").send(data);
+    const response = await agent.post("/api").send(data);
+
+    expect(response.statusCode).toBe(200);
+    // check the queue's new order
+    // get list of enqueued users in ascending order of index
+    const userId = response.body["data"]["indexDeferPosition"]["id"];
+    const userToDefer = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        queue: {
+          include: {
+            users: {
+              where: {
+                index: {
+                  gt: 0
+                }
+              },
+              orderBy: {
+                index: 'asc',
+              },
+              select: {
+                name: true,
+                index: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    expect(userToDefer).not.toBeFalsy(); // cannot return null
+
+    const correctOrder = [
+      {
+        name: "B",
+        index: 1
+      },
+      {
+        name: "C",
+        index: 2
+      },
+      {
+        name: "D",
+        index: 3
+      },
+      {
+        name: "Max123",
+        index: 4
+      }
+    ];
+
+    const returnedOrder = userToDefer!.queue.users;
+
+    expect(returnedOrder).toStrictEqual(correctOrder);
+  });
+
+  test("Index Defer (Only person in queue)", async () => {
+
+    // create user in a different queue
+    const variables = {
+        "joinCode": "678iuy",
+        "name": "Sack of Potatoes",
+        "phoneNumber": "4356752"
+    }
+    await createAndConfirmUser(variables);
+
+    let data = {
+      query: `mutation defer_user($numSpots: Int!) {
+                  indexDeferPosition(numSpots: $numSpots){
+                      ... on User {
+                          id
+                      }
+                      ... on Error {
+                          error
+                      }
+                  }
+              }`,
+      variables: {
+          "numSpots": 1
+      }
+    }
+    // const response = await authenticatedSession.post("/api").send(data);
+    const response = await agent.post("/api").send(data);
+
+    expect(response.statusCode).toBe(200);
+
+    // check the queue's new order
+    // get list of enqueued users in ascending order of index
+    const userId = response.body["data"]["indexDeferPosition"]["id"];
+    const userToDefer = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        queue: {
+          include: {
+            users: {
+              where: {
+                index: {
+                  gt: 0
+                }
+              },
+              orderBy: {
+                index: 'asc',
+              },
+              select: {
+                name: true,
+                index: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    expect(userToDefer).not.toBeFalsy(); // cannot return null
+
+    const correctOrder = [
+      {
+        name: "Sack of Potatoes",
+        index: 1
+      }
+    ];
+
+    const returnedOrder = userToDefer!.queue.users;
+
+    expect(returnedOrder).toStrictEqual(correctOrder);
   });
 });

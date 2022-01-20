@@ -99,7 +99,16 @@ export class CreateUserResolver {
           id: queryQueueId,
         },
         include: {
-          users: true
+          users: {
+            where: {
+              index: {
+                gt: 0
+              }
+            },
+            orderBy: {
+              index: 'asc',
+            }
+          }
         }
       });
 
@@ -167,7 +176,16 @@ export class CreateUserResolver {
           join_code: args.joinCode,
         },
         include: {
-          users: true
+          users: {
+            where: {
+              index: {
+                gt: 0
+              }
+            },
+            orderBy: {
+              index: 'asc',
+            }
+          }
         }
       });
 
