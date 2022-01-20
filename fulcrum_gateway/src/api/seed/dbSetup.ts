@@ -1,12 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from '../prismaClient';
 import bcrypt from "bcryptjs";
 import { user_table, queue_table, organizer_table} from "./data/data"
 
-const prisma = new PrismaClient();
-
-
-async function main() {
-  await prisma.$connect();
+export async function dbSetup() {
 
   // delete in order of user -> queue -> organizer to avoid foreign key conflicts
   await prisma.user.deleteMany({});
@@ -35,14 +31,4 @@ async function main() {
   const createUsers = await prisma.user.createMany({
     data: user_table
   });
-
 }
-
-main()
-  .catch((e) => {
-    console.error(e)
-    process.exit(1)
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
