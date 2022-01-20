@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import QueuesCatalogCard from "../atoms/QueuesCatalogCard";
-import { Center, View, VStack } from "native-base";
+import { Center, Text, View, VStack } from "native-base";
 import { StyleSheet, Pressable, PressableStateCallbackType } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps, QueueInfo } from "../../../types";
@@ -10,7 +10,7 @@ import { FlatList } from "react-native-gesture-handler";
 type State = "ACTIVE" | "PAUSED" | "INACTIVE"
 
 type QueuesStatsProps = {
-    entities: Array<QueueInfo>
+    entities: QueueInfo[]
     setEntities: React.Dispatch<React.SetStateAction<QueueInfo[]>>
 }
 
@@ -44,7 +44,7 @@ export default function (props: QueuesStatsProps) {
         }
 
         // Single tap code
-        navigation.navigate("QueueDashboardTabs", {screen: "QueueDashboard", params: {queueId: item.queueId}})
+        navigation.navigate("QueueDashboardTabs", {queueId: item.queueId})
     }
 
     const getSelected = (item: QueueInfo) => selectedItems.includes(item.queueId)
@@ -70,7 +70,13 @@ export default function (props: QueuesStatsProps) {
     const ConditionalWrapper = ({condition, wrapper, children}: ConditionalWrapperArgs) =>
         condition ? wrapper(children) : children;
 
+    const ifEmptyComponent =
+    <Center>
+        <Text>Nothing to see here...</Text>
+    </Center>
+
     return (
+        props.entities.length === 0 ? ifEmptyComponent :
             <Center>
                 <ConditionalWrapper
                     condition={selectedItems.length}
@@ -98,9 +104,5 @@ export default function (props: QueuesStatsProps) {
 
 
 const styles = StyleSheet.create({
-    stats: {
-        marginTop: 25,
-        marginBottom: 25,
-    },
 })
 

@@ -39,17 +39,14 @@ export default function () {
 
 const styles = StyleSheet.create({
     container: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        marginTop: 200,
-        marginLeft: -100,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 250
     },
     subText: {
-        position: "absolute",
-        top: 300,
-        textAlign: "center",
-        marginTop: 50,
+        marginTop: 200,
     },
     linkText: {
         fontWeight: 'bold',

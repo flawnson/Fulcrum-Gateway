@@ -4,10 +4,12 @@ import request from 'supertest';
 import { redis } from "../redisClient";
 import prisma from '../prismaClient';
 import { dbSetup } from '../seed/dbSetup';
+import { clearRedis } from './clearRedis';
 
 // let authenticatedSession: any = null;
 
 let agent = request.agent(app);
+
 
 beforeAll(async () => {
   //redis is automatically connected from import
@@ -45,35 +47,8 @@ describe("Defer User (Organizer)", () => {
     await dbSetup(); // will auto clear db before re-populating
     const response = await agent.post("/api").send(data);
 
-    console.log("Logged in as organizer");
+    //console.log("Logged in as organizer");
   });
-
-  // using express session
-  // beforeEach(async () => {
-  //   // login
-  //   const email = "test@gmail.com";
-  //   const password = "password123";
-  //
-  //   let data = {
-  //     query: `mutation login_organizer($email: String!, $password: String!) {
-  //                loginOrganizer(email: $email, password: $password){
-  //                  id
-  //                }
-  //             }`,
-  //     variables: {
-  //         "email": email,
-  //         "password": password
-  //     }
-  //
-  //   }
-  //
-  //   await dbSetup(); // will auto clear db before re-populating
-  //   let testSession = session(app);
-  //   const response = await testSession.post("/api").send(data);
-  //   authenticatedSession = testSession;
-  //
-  //   console.log("Logged in as organizer");
-  // });
 
   afterEach(async () => {
     // logout
@@ -83,7 +58,7 @@ describe("Defer User (Organizer)", () => {
               }`
     }
     const response = await agent.post("/api").send(data);
-    console.log("Logged out as organizer");
+    //console.log("Logged out as organizer");
   });
 
   test("Index Defer (Normal)", async () => {
@@ -299,7 +274,7 @@ describe("Defer User (Organizer)", () => {
     const correctOrder = [
       {
         id: "user16",
-        index: 3
+        index: 1
       }
     ];
 
@@ -309,4 +284,66 @@ describe("Defer User (Organizer)", () => {
 
   });
 
+});
+
+describe("Defer User (User)", () => {
+  beforeEach(async () => {
+    await clearRedis();
+    await dbSetup(); // will auto clear db before re-populating
+
+    const query = `mutation join_queue($joinCode: String!, $phoneNumber: String!, $name: String!) {
+                        joinQueue(joinCode: $joinCode, phoneNumber: $phoneNumber, name: $name){
+                            ... on User {
+                                id
+                            }
+                            ... on Error {
+                                error
+                            }
+                        }
+                    }`;
+
+    const variables = {
+        "joinCode": "456234",
+        "name": "Max",
+        "phoneNumber": "16479947088"
+    }
+
+    let data = {
+      query: query,
+      variables: variables
+    }
+
+    const confirmQuery = `mutation confirm_user($confirmCode: String!) {
+                              confirmUser(confirmCode: $confirmCode)
+                          }`;
+
+
+    const response = await agent.post("/api").send(data);
+
+
+    const keys = await redis.keys('user-confirmation:*');
+    for (let i = 0; i < keys.length; i++){
+      const confirmCode = keys[i].split(":");
+      // call confirmation request to confirm user
+      const confirmVariables = {
+        "confirmCode": confirmCode
+      };
+      let data = {
+        query: confirmQuery,
+        variables: confirmVariables
+      };
+
+      const response = await agent.post("/api").send(data);
+    }
+
+    //console.log("Logged in as organizer");
+  });
+
+  afterEach(async () => {
+    // nothing for now
+  });
+
+  test("Index Defer (Normal)", async () => {
+    
+  });
 });

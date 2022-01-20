@@ -5,7 +5,7 @@ import EnqueuedPage from "./EnqueuedPage";
 import ServicedPage from "./ServicedPage";
 import AbandonedPage from "./AbandonedPage";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { StyleSheet, Switch } from "react-native";
 import DarkModeToggle from "../components/atoms/DarkModeToggle"
@@ -15,6 +15,7 @@ const Tab = createBottomTabNavigator();
 
 export default function QueueDashboardTabs() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const route = useRoute<HomeScreenProps["route"]>()
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     return (
@@ -50,6 +51,8 @@ export default function QueueDashboardTabs() {
                 options={{
                     tabBarLabel: 'Dashboard',
                 }}
+                // @ts-ignore
+                initialParams={{queueId: route.params?.queueId}}
             />
             <Tab.Screen
                 name="Enqueued"
@@ -57,6 +60,8 @@ export default function QueueDashboardTabs() {
                 options={{
                     tabBarLabel: 'Enqueued',
                 }}
+                // @ts-ignore
+                initialParams={{queueId: route.params?.queueId}}
             />
             <Tab.Screen
                 name="Serviced"
@@ -64,6 +69,8 @@ export default function QueueDashboardTabs() {
                 options={{
                     tabBarLabel: 'Serviced',
                 }}
+                // @ts-ignore
+                initialParams={{queueId: route.params?.queueId}}
             />
             <Tab.Screen
                 name="Abandoned"
@@ -71,6 +78,8 @@ export default function QueueDashboardTabs() {
                 options={{
                     tabBarLabel: 'Abandoned',
                 }}
+                // @ts-ignore
+                initialParams={{queueId: route.params?.queueId}}
             />
         </Tab.Navigator>
     );

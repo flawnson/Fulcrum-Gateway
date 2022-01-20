@@ -11,6 +11,7 @@ import { Swipeable, RectButton,
         LongPressGestureHandlerEventPayload,
         TapGestureHandlerEventPayload,
         LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
+import calculateTimeToNow from "../../utilities/calculateTimeToNow";
 
 type QueuesCatalogProps = {
     entities: Array<QueueInfo>
@@ -51,6 +52,31 @@ export default function (props: QueuesCatalogProps) {
             return error
         }
     }
+
+    const [timeLeft, setTimeLeft] = useState<object>(calculateTimeToNow(props.entity.create_time))
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setTimeLeft(calculateTimeToNow(props.entity.create_time))
+        }, 1000)
+
+        return () => clearTimeout(timer)
+    })
+
+    const timerComponents: Array<React.ComponentElement<any, any>> = [];
+
+    Object.keys(timeLeft).forEach((interval) => {
+        // @ts-ignore
+        if (!timeLeft[interval]) {
+            return
+        }
+
+        timerComponents.push(
+            <Text key={interval}>
+                {/*// @ts-ignore*/}
+                {timeLeft[interval]} {interval}{" "}
+            </Text>
+        );
+    });
 
     const onChangeStatePress = (state: QueueState) => {
         props.entities.find(user => user.queueId === props.entity.queueId)!.state = "PAUSED"
@@ -148,7 +174,8 @@ export default function (props: QueuesCatalogProps) {
                                 {props.entity.name}
                             </Text>
                             <Text style={styles.lifespan}>
-                                {props.entity.lifespan}
+                                {/*{props.entity.lifespan}*/}
+                                {timerComponents.length ? timerComponents : <Text>Can't get lifespan...</Text>}
                             </Text>
                         </HStack>
                         {props.selected && <View style={styles.overlay} />}
@@ -176,11 +203,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     name: {
+        fontSize: 16,
         margin: 10,
         flex: 1,
     },
     lifespan: {
-        margin: 10,
+        fontSize: 10,
+        margin:10
     },
     overlay: {
         position: 'absolute',

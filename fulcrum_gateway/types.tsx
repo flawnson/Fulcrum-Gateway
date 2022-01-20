@@ -7,7 +7,7 @@ export type RootStackParamList = {
     LandingPage: undefined;
     UserDashboard: undefined;
     QueueDashboard: undefined;
-    QueueDashboardTabs: undefined | {screen: string, params: {queueId: string}};
+    QueueDashboardTabs: undefined | {queueId: string};
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
     ShareScreen: undefined
@@ -63,7 +63,7 @@ export type AbandonedStats = {
 export type QueueInfo = {
     queueId: string,
     name: string,
-    lifespan: number,
+    create_time: string,
     state: string,
 }
 
@@ -79,7 +79,7 @@ export type DashboardStat = {
 export type UserInfo = {
     "name": string,
     "phone_number": string,
-    stats: DashboardStat[]
+    "stats": DashboardStat[]
 }
 
 export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"

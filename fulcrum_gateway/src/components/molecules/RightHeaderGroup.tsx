@@ -6,7 +6,7 @@ import LanguagePicker from "../atoms/LanguagePicker";
 
 export default function () {
     return ((props: {tintColor?: string | undefined}) =>
-        <HStack>
+        <HStack space={3}>
             <LanguagePicker/>
             <DarkModeToggle/>
         </HStack>
