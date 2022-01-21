@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import AbandonedCatalogCard from "../atoms/AbandonedCatalogCard";
-import { View, Center, VStack } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps, AbandonedStats } from "../../../types";
+import {HomeScreenProps, AbandonedStats, ServicedStats} from "../../../types";
+import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
+import { FlatList } from "react-native-gesture-handler";
 
 
 type AbandonedStatsProps = {
@@ -11,26 +11,19 @@ type AbandonedStatsProps = {
 }
 
 export default function (props: AbandonedStatsProps) {
-    const navigation = useNavigation<HomeScreenProps["navigation"]>()
-
-    const OrganizerStatCards = Object.entries(props.entities).map(([key, userStat]) =>
-        <AbandonedCatalogCard key={key}
-                              entity={userStat}/>)
 
     return (
-        <Center>
-            <VStack style={styles.stats}>
-                {OrganizerStatCards}
-            </VStack>
-        </Center>
+        props.entities.length === 0 ? <NothingToSeeScreen /> :
+        <FlatList
+            data={props.entities}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item}: {item: AbandonedStats}) => {
+                return <AbandonedCatalogCard
+                    entity={item}/>
+                }
+            }
+        />
     )
 }
 
-
-const styles = StyleSheet.create({
-    stats: {
-        marginTop: 25,
-        marginBottom: 25,
-    },
-})
 

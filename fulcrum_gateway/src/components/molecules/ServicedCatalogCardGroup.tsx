@@ -3,8 +3,11 @@ import ServicedCatalogCard from "../atoms/ServicedCatalogCard";
 import { View, VStack, Center } from "native-base";
 import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps } from "../../../types";
+import {EnqueuedStats, HomeScreenProps} from "../../../types";
 import { ServicedStats } from "../../../types";
+import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
+import {FlatList} from "react-native-gesture-handler";
+import EnqueuedCatalogCard from "../atoms/EnqueuedCatalogCard";
 
 
 type ServicedStatsProps = {
@@ -12,26 +15,19 @@ type ServicedStatsProps = {
 }
 
 export default function (props: ServicedStatsProps) {
-    const navigation = useNavigation<HomeScreenProps["navigation"]>()
-
-    const OrganizerStatCards = Object.entries(props.entities).map(([key, userStat]) =>
-        <ServicedCatalogCard key={key}
-                             entity={userStat}/>)
 
     return (
-        <Center>
-            <VStack style={styles.stats}>
-                {OrganizerStatCards}
-            </VStack>
-        </Center>
+        props.entities.length === 0 ? <NothingToSeeScreen /> :
+        <FlatList
+            data={props.entities}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item}: {item: ServicedStats}) => {
+                return <ServicedCatalogCard
+                    entity={item}/>
+                }
+            }
+        />
     )
 }
 
-
-const styles = StyleSheet.create({
-    stats: {
-        marginTop: 25,
-        marginBottom: 25,
-    },
-})
 

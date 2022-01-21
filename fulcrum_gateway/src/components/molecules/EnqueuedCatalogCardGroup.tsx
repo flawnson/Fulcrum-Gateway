@@ -8,6 +8,7 @@ import { HomeScreenProps } from "../../../types";
 import EnqueuedMultiSelectButtons from "../../containers/EnqueuedMultiSelectButtons"
 import { EnqueuedStats } from "../../../types";
 import {UserStatus} from "../../../types";
+import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 
 
 type EnqueuedStatsProps = {
@@ -76,6 +77,7 @@ export default function (props: EnqueuedStatsProps) {
         condition ? wrapper(children) : children;
 
     return (
+        props.entities.length === 0 ? <NothingToSeeScreen /> :
         <Center>
             <ConditionalWrapper
                 condition={selectedItems.length}
@@ -83,6 +85,7 @@ export default function (props: EnqueuedStatsProps) {
             >
                 <FlatList
                     data={props.entities}
+                    keyExtractor={(item, index) => index.toString()}
                     renderItem={({item}: {item: EnqueuedStats}) => {
                         return <EnqueuedCatalogCard
                                     entities={props.entities}
@@ -94,7 +97,6 @@ export default function (props: EnqueuedStatsProps) {
                                     entity={item}/>
                         }
                     }
-                    keyExtractor={(item, index) => index.toString()}
                 />
             </ConditionalWrapper>
         </Center>
