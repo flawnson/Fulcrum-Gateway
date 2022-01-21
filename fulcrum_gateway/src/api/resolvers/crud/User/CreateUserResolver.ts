@@ -99,14 +99,23 @@ export class CreateUserResolver {
           id: queryQueueId,
         },
         include: {
-          users: true
+          users: {
+            where: {
+              index: {
+                gt: 0
+              }
+            },
+            orderBy: {
+              index: 'asc',
+            }
+          }
         }
       });
 
       if (result == null) {
         console.log("Cannot join: Queue with id " + queryQueueId + " does not exist.");
         return {
-          error: errors.NO_QUEUE
+          error: errors.QUEUE_DOES_NOT_EXIST
         };
       }
 
@@ -167,14 +176,23 @@ export class CreateUserResolver {
           join_code: args.joinCode,
         },
         include: {
-          users: true
+          users: {
+            where: {
+              index: {
+                gt: 0
+              }
+            },
+            orderBy: {
+              index: 'asc',
+            }
+          }
         }
       });
 
       if (result == null) {
         console.log("Cannot join: Queue with code " + args.joinCode + " does not exist.");
         let error = {
-          error: errors.NO_QUEUE
+          error: errors.QUEUE_DOES_NOT_EXIST
         };
         return error;
       }

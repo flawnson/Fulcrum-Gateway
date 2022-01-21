@@ -23,7 +23,6 @@ import { modelsEnhanceMap } from "./modelsEnhanceMap";
 import { customResolvers } from "./resolvers";
 
 import * as path from 'path';
-import { PrismaClient } from "@prisma/client";
 import prisma from './prismaClient';
 import { redis } from "./redisClient";
 import { authChecker } from "./middleware/authChecker";
@@ -92,4 +91,5 @@ app.use('/api', graphqlHTTP(async (req, res, params) => ({
   graphiql: true,
 })));
 
-module.exports = app;
+//module.exports = app;
+export default app;

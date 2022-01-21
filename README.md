@@ -76,6 +76,9 @@ and run node (Before you actually run though you'll want to set up the database 
 or if you want to use nodemon:
 `nodemon index.ts`
 
+To run Jest tests:
+`npm test`
+
 Next set up a .env file with the following variables:
 ```
 FRONTEND_PROD_URL="production url of the frontend app"

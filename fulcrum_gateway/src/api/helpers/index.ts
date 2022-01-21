@@ -7,6 +7,6 @@ export { queueExistsInOrganizer } from "./queueExistsInOrganizer";
 export { userExistsInOrganizer } from "./userExistsInOrganizer";
 export { createConfirmationUrl } from "./createConfirmationUrl";
 export { createResetUrl } from "./createResetUrl";
-export { IsEmailAlreadyExist } from "./IsEmailAlreadyExist";
+export { IsEmailAlreadyExist } from "./isEmailAlreadyExist";
 export { sendEmail } from "./sendEmail";
 export { sendSMS } from "./sendSMS";
