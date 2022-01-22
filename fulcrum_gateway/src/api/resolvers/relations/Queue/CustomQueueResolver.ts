@@ -5,7 +5,8 @@ import {
   Authorized,
   Ctx,
   Root,
-  Int
+  Int,
+  Float
 } from "type-graphql";
 import { Queue } from "../../../../../prisma/generated/type-graphql/models/Queue";
 import * as helpers from "../../../helpers";
@@ -20,7 +21,10 @@ export class CustomQueueResolver {
   @FieldResolver(type => Int, { nullable: true })
   async average_wait(@Root() queue: Queue, @Ctx() { req, prisma }: Context): Promise<number | null> {
     const averageWaitTime = await helpers.calculateAverageWait(queue.id);
-    return averageWaitTime;
+    if (averageWaitTime == null){
+      return null;
+    }
+    return Math.floor(averageWaitTime);
   }
 
   // queue user count statistics
