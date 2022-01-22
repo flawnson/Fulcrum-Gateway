@@ -64,22 +64,13 @@ or with react native:
 `npx react-native start`
 `npx react-native run-android` or run-ios
 
-To start the backend, navigate to the index.ts file:
-`cd src/api/routes`
+To start the backend, navigate to the backend directory "fulcrum":
+`cd fulcrum`
 
 Install ts-node:
 `npm install ts-node -g`
 
-and run node (Before you actually run though you'll want to set up the database in the following section):
-`ts-node index.ts`
-
-or if you want to use nodemon:
-`nodemon index.ts`
-
-To run Jest tests:
-`npm test`
-
-Next set up a .env file with the following variables:
+Next set up a .env file in directory "fulcrum" with the following variables:
 ```
 FRONTEND_PROD_URL="production url of the frontend app"
 FRONTEND_LOCAL_URL="development url of the frontend app"
@@ -94,6 +85,16 @@ TWILIO_ACCOUNT_SID="twilio account sid"
 TWILIO_AUTH_TOKEN="twilio auth token"
 TWILIO_PHONE_NUMBER="phone number used to send out SMS"
 ```
+
+and run node (Before you actually run though you'll want to set up the database in the following section):
+`ts-node index.ts`
+
+or if you want to use nodemon:
+`nodemon index.ts`
+
+To run Jest tests:
+`npm test`
+
 
 ## Database setup
 You can install postgres any way you want. Using brew or their GUI interface will work.
@@ -155,19 +156,10 @@ I use 4 branches to work:
 5. `intl` is for internationalization/localization of the project.
 
 ## Backend Directory Structure
-### src/
+### fulcrum/
 All source code lives in this directory
 ### ./api/
 All code associated with the API.
-All backend code lives here, and may one day be sequestered into its own repository to prevent bloat.
-### ./routes/
-All routes are defined in these files, index.js imports all the route files and initializes the backend API.
-### ./controllers/
-Routes are supplied data by controllers which are in charge of calling the appropriate services to build a response.
-### ./services/
-Services are called by controllers. Services can call other services and interact directly with the cache and database.
-### ./db/
-Database layer is for all code that pertains to making queries to the database. Cache is kept separately.
 
 ## Frontend Directory structure
 ### src/
