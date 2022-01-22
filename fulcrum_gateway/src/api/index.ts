@@ -2,7 +2,10 @@
 // @ts-ignore
 
 import app from "./app";
-const port = 8080;
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const port = process.env.PORT || 8080;
 
 // async function bootstrap(){
 //   app.listen(port, function(err){

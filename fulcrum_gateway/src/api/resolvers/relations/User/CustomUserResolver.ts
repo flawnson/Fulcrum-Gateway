@@ -31,6 +31,9 @@ export class CustomUserResolver {
   async estimated_wait(@Root() user: User, @Ctx() {prisma}: Context): Promise<number | null> {
     // calculate average wait time
     const estimatedWait = await helpers.calculateEstimatedWait(user);
+    if (estimatedWait == null){
+      return null;
+    }
     return estimatedWait;
   }
 
@@ -39,6 +42,9 @@ export class CustomUserResolver {
   async estimated_eta(@Root() user: User, @Ctx() {prisma}: Context): Promise<number | null> {
     // calculate average wait time
     const eta = await helpers.calculateETA(user);
+    if (eta == null){
+      return null;
+    }
     return eta;
   }
 
