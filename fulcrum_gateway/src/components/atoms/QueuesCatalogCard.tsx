@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Pressable,
         GestureResponderEvent, Animated,
         PanResponder, Dimensions } from "react-native";
@@ -12,6 +12,7 @@ import { Swipeable, RectButton,
         TapGestureHandlerEventPayload,
         LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 import calculateTimeToNow from "../../utilities/calculateTimeToNow";
+import { scale } from "../../utilities/scales";
 
 type QueuesCatalogProps = {
     entities: Array<QueueInfo>
@@ -25,11 +26,13 @@ type QueuesCatalogProps = {
 
 export default function (props: QueuesCatalogProps) {
     const [online, setOnline] = useState<boolean>(true)
+    const swipeableRef = useRef(null)
 
     const stateQuery = `
-        mutation change_state($queueId: String! $state: String!) {
-            changeStatus(queueId: $queueId state: $state) {
-                queue_id: id
+        mutation change_queue_state($queueId: String, $state: String!) {
+            changeQueueState(queueId: $queueId, state: $state) {
+                id
+                state
             }
         }
     `
@@ -79,57 +82,48 @@ export default function (props: QueuesCatalogProps) {
     });
 
     const onChangeStatePress = (state: QueueState) => {
-        props.entities.find(user => user.queueId === props.entity.queueId)!.state = "PAUSED"
-        changeQueueState("PAUSED").then()
-        props.setEntities(
-            [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
-        )
+        props.entities.find(user => user.queueId === props.entity.queueId)!.state = state
+        changeQueueState(state).then()
+        if (state === "INACTIVE"){
+            props.setEntities(
+                [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
+            )
+        } else if (state === "PAUSED") {
+            // @ts-ignore
+            swipeableRef?.current?.close()
+            setOnline(!online)
+        }
     }
 
     const renderRightActions = (progress: any, dragX: any) => {
-        const trans = dragX.interpolate({
-            inputRange: [0, 50, 100, 101],
-            outputRange: [-20, 0, 0, 1],
-        });
         return (
-            <RectButton style={styles.rightAction} onPress={() => onChangeStatePress("INACTIVE")}>
-                <Animated.Text
-                    style={[
-                        styles.actionText,
-                        {
-                            transform: [{ translateX: trans }],
-                        },
-                    ]}>
-                    Deactivate
-                </Animated.Text>
-            </RectButton>
+            <Animated.Text
+                style={[
+                    styles.actionText,
+                ]}>
+                Deactivate
+            </Animated.Text>
         );
     }
 
     const renderLeftActions = (progress: any, dragX: any) => {
-        const trans = dragX.interpolate({
-            inputRange: [0, 50, 100, 101],
-            outputRange: [-20, 0, 0, 1],
-        });
         return (
-            <RectButton style={styles.leftAction} onPress={() => onChangeStatePress("PAUSED")}>
-                <Animated.Text
-                    style={[
-                        styles.actionText,
-                        {
-                            transform: [{ translateX: trans }],
-                        },
-                    ]}>
-                    Pause
-                </Animated.Text>
-            </RectButton>
+            <Animated.Text
+                style={[
+                    styles.actionText,
+                ]}>
+                {online ? "Pause" : "Unpause"}
+            </Animated.Text>
         );
     }
 
     return (
         <Swipeable
+            ref={swipeableRef}
             renderLeftActions={renderLeftActions}
             renderRightActions={renderRightActions}
+            onSwipeableLeftOpen={() => onChangeStatePress("PAUSED")}
+            onSwipeableRightOpen={() => onChangeStatePress("INACTIVE")}
         >
             <LongPressGestureHandler
                 onHandlerStateChange={({ nativeEvent }) => {
@@ -137,7 +131,7 @@ export default function (props: QueuesCatalogProps) {
                         props.onLongPress()
                     }
                 }}
-                minDurationMs={800}
+                minDurationMs={700}
             >
                 <TapGestureHandler
                     onHandlerStateChange={({ nativeEvent }) => {
@@ -188,13 +182,13 @@ export default function (props: QueuesCatalogProps) {
 
 const styles = StyleSheet.create({
     card: {
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: scale(10),
+        marginBottom: scale(10),
     },
     group: {
         display: 'flex',
-        height: 70,
-        width: 300,
+        height: scale(70),
+        width: scale(300),
         justifyContent: 'flex-start',
         alignItems: 'center',
         flexDirection: 'row'
@@ -203,13 +197,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     name: {
-        fontSize: 16,
-        margin: 10,
+        fontSize: scale(16),
+        margin: scale(10),
         flex: 1,
     },
     lifespan: {
-        fontSize: 10,
-        margin:10
+        fontSize: scale(10),
+        margin: scale(10),
     },
     overlay: {
         position: 'absolute',
@@ -220,13 +214,17 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
     leftAction: {
+        height: scale(70),
+        width: scale(300),
         backgroundColor: 'red'
     },
     rightAction: {
+        height: scale(70),
+        width: scale(300),
         backgroundColor: 'green'
     },
     actionText: {
-        fontSize: 30
+        fontSize: scale(30)
     }
 })
 

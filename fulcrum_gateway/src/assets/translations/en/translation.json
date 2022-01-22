@@ -64,7 +64,11 @@
     "index_prefix": "You're",
     "waited_prefix": "You've waited",
     "average_prefix": "Average wait",
-    "eta_prefix": "ETA"
+    "eta_prefix": "ETA",
+    "index_tooltip": "This is you position in line.",
+    "waited_tooltip": "This is how long you've waited in line, from the moment you joined to now.",
+    "average_tooltip": "The average wait in minutes of all your fellow queuers in this line.",
+    "eta_tooltip": "The estimated time of your arrival, calculated by combining the average along with a few other stats."
   },
   "createQueueModal": {
     "title": "Create a Queue"
@@ -107,7 +111,13 @@
     "deferred_prefix": "Deferred",
     "average_prefix": "Average Wait",
     "abandoned_prefix": "Abandoned",
-    "noshow_prefix": "No Shows"
+    "noshow_prefix": "No Shows",
+    "enqueued_tooltip": "The number of queuers currently waiting in this line.",
+    "serviced_tooltip": "The number of queuers you have serviced since this line started.",
+    "deferred_tooltip": "The number of queuers that have deferred at least once since joining the queue.",
+    "average_tooltip": "The average wait of queuers since this line started.",
+    "abandoned_tooltip": "The number of queuers that have since abandoned their position in line.",
+    "noshow_tooltip": "The number of queuers that were summoned but did not arrive before the grace period."
   },
   "QRCodeScanner": {
     "message": "We are going live in July!",

@@ -34,9 +34,14 @@ export default function ({navigation}: EnqueueFormProps) {
     const { t, i18n } = useTranslation(["homePage", "common"])
 
     const query = `
-        mutation create_user($joinCode: String!, $phoneNumber: String!, $name: String!) {
-            createUser(joinCode: $joinCode, phoneNumber: $phoneNumber, name: $name){
-                id
+        mutation join_queue($joinCode: String!, $phoneNumber: String!, $name: String!) {
+            joinQueue(joinCode: $joinCode, phoneNumber: $phoneNumber, name: $name){
+                ... on User {
+                    id
+                }
+                ... on Error {
+                    error
+                }
             }
         }
     `
@@ -53,7 +58,7 @@ export default function ({navigation}: EnqueueFormProps) {
             });
             await response.json().then(
                 data => {
-                    if (data?.data?.createUser) {
+                    if (data?.data?.createUser || data?.data?.joinQueue.id) {
                         signIn('USER')
                         setSubmitted(true)
                         navigation.navigate("UserDashboard")
