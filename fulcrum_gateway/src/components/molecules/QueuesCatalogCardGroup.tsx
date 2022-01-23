@@ -4,8 +4,9 @@ import { Center, Text, View, VStack } from "native-base";
 import { StyleSheet, Pressable, PressableStateCallbackType } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps, QueueInfo } from "../../../types";
-import MultiSelectButtons from "../../containers/QueueMultiSelectButtons";
 import { FlatList } from "react-native-gesture-handler";
+import MultiSelectButtons from "../../containers/QueueMultiSelectButtons";
+import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 
 type State = "ACTIVE" | "PAUSED" | "INACTIVE"
 
@@ -21,6 +22,7 @@ type ConditionalWrapperArgs = {
     wrapper: (children: Children) => any
     children: any
 }
+
 
 export default function (props: QueuesStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
@@ -70,13 +72,8 @@ export default function (props: QueuesStatsProps) {
     const ConditionalWrapper = ({condition, wrapper, children}: ConditionalWrapperArgs) =>
         condition ? wrapper(children) : children;
 
-    const ifEmptyComponent =
-    <Center>
-        <Text>Nothing to see here...</Text>
-    </Center>
-
     return (
-        props.entities.length === 0 ? ifEmptyComponent :
+        props.entities.length === 0 ? <NothingToSeeScreen /> :
             <Center>
                 <ConditionalWrapper
                     condition={selectedItems.length}
@@ -84,6 +81,7 @@ export default function (props: QueuesStatsProps) {
                 >
                     <FlatList
                         data={props.entities}
+                        keyExtractor={(item, index) => index.toString()}
                         renderItem={({item}: {item: QueueInfo}) => {
                             return <QueuesCatalogCard
                                 entities={props.entities}
@@ -95,7 +93,6 @@ export default function (props: QueuesStatsProps) {
                                 entity={item}/>
                             }
                         }
-                        keyExtractor={(item, index) => index.toString()}
                     />
                 </ConditionalWrapper>
             </Center>

@@ -25,12 +25,12 @@ export default function () {
     const defaultProps = {
         name: "Some Queue",
         stats: [
-            {prefix: t("enqueued_prefix"), stat: 0, suffix: ""},
-            {prefix: t("serviced_prefix"), stat: 0, suffix: ""},
-            {prefix: t("deferred_prefix"), stat: 0, suffix: ""},
-            {prefix: t("average_prefix"), stat: 0, suffix: "m"},
-            {prefix: t("abandoned_prefix"), stat: 0, suffix: ""},
-            {prefix: t("noshow_prefix"), stat: 0, suffix: ""}
+            {prefix: t("enqueued_prefix"), stat: 0, suffix: "", tooltip: t("enqueued_tooltip")},
+            {prefix: t("serviced_prefix"), stat: 0, suffix: "", tooltip: t("serviced_tooltip")},
+            {prefix: t("deferred_prefix"), stat: 0, suffix: "", tooltip: t("deferred_tooltip")},
+            {prefix: t("average_prefix"), stat: 0, suffix: "m", tooltip: t("average_tooltip")},
+            {prefix: t("abandoned_prefix"), stat: 0, suffix: "", tooltip: t("abandoned_tooltip")},
+            {prefix: t("noshow_prefix"), stat: 0, suffix: "", tooltip: t("noshow_tooltip")}
         ],
     }
     const [props, setProps] = useState(defaultProps)

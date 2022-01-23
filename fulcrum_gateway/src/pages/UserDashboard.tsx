@@ -1,6 +1,6 @@
 import React, {SetStateAction, useContext, useEffect, useState} from 'react'
 import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
-import { HomeScreenProps } from "../../types";
+import { UserInfo, HomeScreenProps } from "../../types";
 import { StyleSheet } from 'react-native'
 import { Avatar, HStack,
         Center, Heading,
@@ -12,9 +12,9 @@ import { uniqueId } from "lodash"
 import { useTranslation } from "react-i18next";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
-import { UserInfo } from "../../types"
 import { AuthContext } from "../../App";
 import calculateTimeToNow from "../utilities/calculateTimeToNow";
+import { scale } from "../utilities/scales";
 
 
 export default function () {
@@ -27,15 +27,25 @@ export default function () {
     const defaultProps: UserInfo = {
         name: "Someone",
         phone_number: "123456789",
+        join_time: "",
         stats: [
-                {prefix: t("index_prefix"), stat: 0, suffix: ""},
-                {prefix: t("waited_prefix"), stat: 0, suffix: "m"},
-                {prefix: t("average_prefix"), stat: 0, suffix: "m"},
-                {prefix: t("eta_prefix"), stat: 0, suffix: "m"}
+                {prefix: t("index_prefix"), stat: 0, suffix: "th", tooltip: t("index_tooltip")},
+                {prefix: t("waited_prefix"), stat: 0, suffix: "m", tooltip: t("waited_tooltip")},
+                {prefix: t("average_prefix"), stat: 0, suffix: "m", tooltip: t("average_tooltip")},
+                {prefix: t("eta_prefix"), stat: 0, suffix: "m", tooltip: t("eta_tooltip")}
             ],
         }
     const [props, setProps] = useState(defaultProps)
     const [state, setState] = useState("ACTIVE")
+
+    const [timeLeft, setTimeLeft] = useState<{d: number, h: number, m: number, s: number}>(calculateTimeToNow(props.join_time))
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setTimeLeft(calculateTimeToNow(props.join_time))
+        }, 1000)
+
+        return () => clearTimeout(timer)
+    })
 
     const query = `
         query get_stats {
@@ -50,6 +60,7 @@ export default function () {
                 summoned
                 queue {
                     state
+                    average_wait
                 }
             }
         }
@@ -93,10 +104,23 @@ export default function () {
                                    : "th"
                     setProps({"name": info.name,
                                     "phone_number": info.phone_number,
-                                    "stats": [{"prefix": t("index_prefix"), "stat": info.index, "suffix": suffix},
-                                              {"prefix": t("waited_prefix"), "stat": info.waited, "suffix": "m"},
-                                              {"prefix": t("average_prefix"), "stat": info.average_wait, "suffix": "m"},
-                                              {"prefix": t("eta_prefix"), "stat": info.estimated_wait, "suffix": "m"}]})
+                                    "join_time": info.join_time,
+                                    "stats": [{"prefix": t("index_prefix"),
+                                               "stat": info.index,
+                                               "suffix": suffix,
+                                               "tooltip": t("index_tooltip")},
+                                              {"prefix": t("waited_prefix"),
+                                               "stat": timeLeft.m,
+                                               "suffix": "m",
+                                               "tooltip": t("waited_tooltip")},
+                                              {"prefix": t("average_prefix"),
+                                               "stat": data.queue.average_wait,
+                                               "suffix": "m",
+                                               "tooltip": t("average_tooltip")},
+                                              {"prefix": t("eta_prefix"),
+                                               "stat": info.estimated_wait,
+                                               "suffix": "m",
+                                               "tooltip": t("eta_tooltip")}]})
                 }
             )
         } catch(error) {
@@ -112,7 +136,7 @@ export default function () {
     return (
         <Center style={styles.animationFormat}>
             <Heading style={styles.headingFormat}>{props.name}'s Queue</Heading>
-            <HStack space={3} style={styles.container}>
+            <HStack style={styles.container}>
                 <Image
                     source={require('../assets/images/queueup.gif')}
                     alt={"Loading..."}
@@ -145,17 +169,16 @@ const styles = StyleSheet.create({
     },
     animation: {
         flex: 1,
-        marginTop: 25,
-        marginBottom: 25,
-        width: 309,
-        height: 93,
+        marginY: scale(25),
+        width: scale(200),
+        height: scale(60),
     },
     avatar: {
         flex: 1,
         borderRadius: 10,
     },
     animationFormat: {
-        position: 'relative',
+        // position: 'relative',
     },
     headingFormat: {
         marginTop: 25,

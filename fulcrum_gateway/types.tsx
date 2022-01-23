@@ -74,11 +74,13 @@ export type DashboardStat = {
     "prefix": string,
     "stat": number,
     "suffix": string,
+    "tooltip": string,
 }
 
 export type UserInfo = {
     "name": string,
     "phone_number": string,
+    "join_time": string,
     "stats": DashboardStat[]
 }
 
