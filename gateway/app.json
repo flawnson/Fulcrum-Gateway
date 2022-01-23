@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "fulcrum_gateway",
+    "slug": "fulcrum_gateway",
+    "scheme": "fiefoe",
+    "privacy": "public",
+    "icon": "./assets/images/test-tube.png",
+    "web": {
+      "favicon": "./assets/images/test-tube.png",
+      "build": {
+        "babel": {
+          "include": [
+            "react-router-native"
+          ]
+        }
+      }
+    },
+    "android": {
+    },
+    "ios": {
+    }
+  }
+}

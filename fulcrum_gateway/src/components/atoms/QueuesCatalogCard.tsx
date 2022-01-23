@@ -24,6 +24,9 @@ type QueuesCatalogProps = {
     entity: QueueInfo
 }
 
+const SCREEN_HEIGHT = Dimensions.get('window').height
+const SCREEN_WIDTH = Dimensions.get('window').width
+
 export default function (props: QueuesCatalogProps) {
     const [online, setOnline] = useState<boolean>(true)
     const swipeableRef = useRef(null)
@@ -95,12 +98,16 @@ export default function (props: QueuesCatalogProps) {
         }
     }
 
+    const position = new Animated.ValueXY()
+    let nextCardOpacity = position.x.interpolate({
+        inputRange: [-SCREEN_WIDTH, 0, SCREEN_WIDTH],
+        outputRange: [0, 0.5, 1],
+        extrapolate: 'clamp'
+    })
+
     const renderRightActions = (progress: any, dragX: any) => {
         return (
-            <Animated.Text
-                style={[
-                    styles.actionText,
-                ]}>
+            <Animated.Text style={[styles.actionText, {opacity: nextCardOpacity}]}>
                 Deactivate
             </Animated.Text>
         );
@@ -108,10 +115,7 @@ export default function (props: QueuesCatalogProps) {
 
     const renderLeftActions = (progress: any, dragX: any) => {
         return (
-            <Animated.Text
-                style={[
-                    styles.actionText,
-                ]}>
+            <Animated.Text style={[styles.actionText, {opacity: nextCardOpacity}]}>
                 {online ? "Pause" : "Unpause"}
             </Animated.Text>
         );
@@ -224,7 +228,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'green'
     },
     actionText: {
-        fontSize: scale(30)
+        fontSize: scale(30),
+        display: 'flex',
+        alignItems: 'center'
     }
 })
 
