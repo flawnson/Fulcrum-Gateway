@@ -191,23 +191,23 @@ node_modules/
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-fulcrum_gateway/node_modules
-fulcrum_gateway/.pnp
-fulcrum_gateway/.pnp.js
+node_modules/
+.pnp
+.pnp.js
 
 # testing
-fulcrum_gateway/coverage
+coverage/
 
 # misc
-fulcrum_gateway/.DS_Store
-fulcrum_gateway/.env.local
-fulcrum_gateway/.env.development.local
-fulcrum_gateway/.env.test.local
-fulcrum_gateway/.env.production.local
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-fulcrum_gateway/npm-debug.log*
-fulcrum_gateway/yarn-debug.log*
-fulcrum_gateway/yarn-error.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # expo
 .expo/
@@ -216,7 +216,10 @@ fulcrum_gateway/yarn-error.log*
 .idea/
 
 # Redis
-fulcrum_gateway/dump.rdb
+dump.rdb
 
 # generated graphql files
 *.graphql
+
+# environment files
+*.env
