@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
-import { Button, Menu, Pressable, HamburgerIcon, Fab } from 'native-base';
+import { Text, Menu,
+        HamburgerIcon, Fab,
+        HStack } from 'native-base';
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../types";
 import DeferPositionModal from "./DeferPositionModal";
 import LeaveQueueAlert from "./LeaveQueueAlert";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import { PreferencesContext } from "../utilities/useTheme";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
+    const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
     const { t, i18n } = useTranslation(["userDashboardMenu"]);
     const [deferModalVisible, setDeferModalVisible] = React.useState(false)
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
@@ -58,9 +63,42 @@ export default function () {
                     )
                 }}
             >
-                <Menu.Item onPress={() => setDeferModalVisible(true)}>{t("defer")}</Menu.Item>
-                <Menu.Item onPress={() => setIsAlertOpen(true)}>{t("leave")}</Menu.Item>
-                <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>{t("share")}</Menu.Item>
+                <Menu.Item onPress={() => setDeferModalVisible(true)}>
+                    <HStack space={3}>
+                        <MaterialCommunityIcons
+                            name={'account-switch'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("defer")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
+                <Menu.Item onPress={() => setIsAlertOpen(true)}>
+                    <HStack space={3}>
+                        <Ionicons
+                            name={'md-exit-outline'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("leave")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
+                <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>
+                    <HStack space={3}>
+                        <MaterialCommunityIcons
+                            name={'share-variant'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("share")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
             </Menu>
             <DeferPositionModal modalVisible={deferModalVisible} setModalVisible={setDeferModalVisible}/>
             <LeaveQueueAlert isAlertOpen={isAlertOpen} setIsAlertOpen={setIsAlertOpen}/>

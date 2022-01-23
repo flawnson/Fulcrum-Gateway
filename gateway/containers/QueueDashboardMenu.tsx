@@ -1,15 +1,18 @@
 import React, { SetStateAction, useState } from 'react'
-import { Button, Menu, Fab, HamburgerIcon, Alert } from 'native-base';
+import { HStack, Menu, Fab, HamburgerIcon, Text } from 'native-base';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { HomeScreenProps } from "../types";
 import EditQueueModal from "./EditQueueModal";
 import CreateUserModal from "./CreateUserModal"
 import { useTranslation } from "react-i18next";
 import { AuthContext } from "../App";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { PreferencesContext } from "../utilities/useTheme";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const { signOut } = React.useContext(AuthContext)
+    const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
     const { t, i18n } = useTranslation(["queueDashboardMenu"]);
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const [queuePaused, toggleQueuePaused] = useState<boolean>(false)
@@ -107,12 +110,67 @@ export default function () {
                     )
                 }}
             >
-                <Menu.Item onPress={() => setShowCreateUserModal(true)}>{t("create")}</Menu.Item>
+                <Menu.Item onPress={() => setShowCreateUserModal(true)}>
+                    <HStack space={3}>
+                        <Ionicons
+                            name={'person-add'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("create")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
                 {/*<Menu.Item onPress={() => setShowEditQueueModal(true)}>{t("edit")}</Menu.Item>*/}
-                <Menu.Item onPress={() => onEndScreenPress()}>{t("end")}</Menu.Item>
-                <Menu.Item onPress={() => pauseQueue()}>{t("pause")}</Menu.Item>
-                <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>{t("share")}</Menu.Item>
-                <Menu.Item onPress={() => onLogoutPress()}>{t("logout")}</Menu.Item>
+                <Menu.Item onPress={() => onEndScreenPress()}>
+                    <HStack space={3}>
+                        <Ionicons
+                            name={'close-circle'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("end")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
+                <Menu.Item onPress={() => pauseQueue()}>
+                    <HStack space={3}>
+                        <MaterialCommunityIcons
+                            name={'pause-circle'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("pause")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
+                <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>
+                    <HStack space={3}>
+                        <MaterialCommunityIcons
+                            name={'share-variant'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("share")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
+                <Menu.Item onPress={() => onLogoutPress()}>
+                    <HStack space={3}>
+                        <MaterialCommunityIcons
+                            name={'logout-variant'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("logout")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
             </Menu>
             <CreateUserModal showModal={showCreateUserModal}
                             setShowModal={setShowCreateUserModal}
