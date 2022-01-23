@@ -119,8 +119,8 @@ export class CreateUserResolver {
         };
       }
 
-      if (result.state == "INACTIVE" || result.state == "PAUSED"){
-        console.log("Cannot join: Queue with id " + queryQueueId + " is INACTIVE or PAUSED.");
+      if (result.state == "PAUSED"){
+        console.log("Cannot join: Queue with id " + queryQueueId + " is not ACTIVE.");
         return {
           error: errors.QUEUE_NOT_ACTIVE
         };
@@ -197,8 +197,8 @@ export class CreateUserResolver {
         return error;
       }
 
-      if (result.state == "INACTIVE" || result.state == "PAUSED"){
-        console.log("Cannot join: Queue with code " + args.joinCode + " is INACTIVE or PAUSED.");
+      if (result.state == "PAUSED"){
+        console.log("Cannot join: Queue with code " + args.joinCode + " is not ACTIVE.");
         let error = {
           error: errors.QUEUE_NOT_ACTIVE
         };

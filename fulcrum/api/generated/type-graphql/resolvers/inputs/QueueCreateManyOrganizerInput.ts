@@ -31,7 +31,7 @@ export class QueueCreateManyOrganizerInput {
   @TypeGraphQL.Field(_type => QueueState, {
     nullable: true
   })
-  state?: "ACTIVE" | "PAUSED" | "INACTIVE" | undefined;
+  state?: "ACTIVE" | "PAUSED" | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false

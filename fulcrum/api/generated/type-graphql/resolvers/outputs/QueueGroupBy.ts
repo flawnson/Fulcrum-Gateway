@@ -36,7 +36,7 @@ export class QueueGroupBy {
   @TypeGraphQL.Field(_type => QueueState, {
     nullable: false
   })
-  state!: "ACTIVE" | "PAUSED" | "INACTIVE";
+  state!: "ACTIVE" | "PAUSED";
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false

@@ -11,5 +11,5 @@ export class EnumQueueStateFieldUpdateOperationsInput {
   @TypeGraphQL.Field(_type => QueueState, {
     nullable: true
   })
-  set?: "ACTIVE" | "PAUSED" | "INACTIVE" | undefined;
+  set?: "ACTIVE" | "PAUSED" | undefined;
 }

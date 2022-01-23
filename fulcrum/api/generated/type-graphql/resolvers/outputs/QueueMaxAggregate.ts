@@ -31,7 +31,7 @@ export class QueueMaxAggregate {
   @TypeGraphQL.Field(_type => QueueState, {
     nullable: true
   })
-  state!: "ACTIVE" | "PAUSED" | "INACTIVE" | null;
+  state!: "ACTIVE" | "PAUSED" | null;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true

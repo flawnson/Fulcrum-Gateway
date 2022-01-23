@@ -63,7 +63,6 @@ model User {
 enum QueueState {
   ACTIVE
   PAUSED
-  INACTIVE
 }
 
 enum UserStatus {

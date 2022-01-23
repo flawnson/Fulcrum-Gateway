@@ -2,8 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 
 export enum QueueState {
   ACTIVE = "ACTIVE",
-  PAUSED = "PAUSED",
-  INACTIVE = "INACTIVE"
+  PAUSED = "PAUSED"
 }
 TypeGraphQL.registerEnumType(QueueState, {
   name: "QueueState",

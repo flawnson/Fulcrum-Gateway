@@ -11,17 +11,17 @@ export class NestedEnumQueueStateFilter {
   @TypeGraphQL.Field(_type => QueueState, {
     nullable: true
   })
-  equals?: "ACTIVE" | "PAUSED" | "INACTIVE" | undefined;
+  equals?: "ACTIVE" | "PAUSED" | undefined;
 
   @TypeGraphQL.Field(_type => [QueueState], {
     nullable: true
   })
-  in?: Array<"ACTIVE" | "PAUSED" | "INACTIVE"> | undefined;
+  in?: Array<"ACTIVE" | "PAUSED"> | undefined;
 
   @TypeGraphQL.Field(_type => [QueueState], {
     nullable: true
   })
-  notIn?: Array<"ACTIVE" | "PAUSED" | "INACTIVE"> | undefined;
+  notIn?: Array<"ACTIVE" | "PAUSED"> | undefined;
 
   @TypeGraphQL.Field(_type => NestedEnumQueueStateFilter, {
     nullable: true
