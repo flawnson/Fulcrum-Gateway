@@ -3,8 +3,8 @@ import { Alert, VStack,
         HStack, Text,
         IconButton, CloseIcon,
         Box, PresenceTransition } from 'native-base'
-import {useTranslation} from "react-i18next";
-import {StyleSheet} from "react-native";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
 
 type CannotEnqueueAlertProps = {
     showAlert: boolean,
@@ -13,7 +13,7 @@ type CannotEnqueueAlertProps = {
 }
 
 export default function (props: CannotEnqueueAlertProps) {
-    const { t, i18n } = useTranslation(["cannotEnqueueAlert"])
+    const { t, i18n } = useTranslation(["generalErrorAlert"])
     return (
         <PresenceTransition
             visible={props.showAlert}
@@ -54,7 +54,7 @@ export default function (props: CannotEnqueueAlertProps) {
                             color: "coolGray.600",
                         }}
                     >
-                        {t("message")}
+                        props.message
                     </Box>
                 </VStack>
             </Alert>

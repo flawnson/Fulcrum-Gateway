@@ -86,7 +86,7 @@ export type UserInfo = {
 
 export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"
 
-export type QueueState = "ACTIVE" | "INACTIVE" | "PAUSED"
+export type QueueState = "ACTIVE" | "PAUSED"
 
 export type PossibleInputTypes = 'keyboard' | 'picker'
 export type InputTypeMap = {

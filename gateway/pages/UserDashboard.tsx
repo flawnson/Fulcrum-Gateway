@@ -13,8 +13,8 @@ import { useTranslation } from "react-i18next";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
 import { AuthContext } from "../App";
-import calculateTimeToNow from "../utilities/calculateTimeToNow";
 import { scale } from "../utilities/scales";
+import calculateTimeToNow from "../utilities/calculateTimeToNow";
 
 
 export default function () {
@@ -37,15 +37,6 @@ export default function () {
         }
     const [props, setProps] = useState(defaultProps)
     const [state, setState] = useState("ACTIVE")
-
-    const [timeLeft, setTimeLeft] = useState<{d: number, h: number, m: number, s: number}>(calculateTimeToNow(props.join_time))
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setTimeLeft(calculateTimeToNow(props.join_time))
-        }, 1000)
-
-        return () => clearTimeout(timer)
-    })
 
     const query = `
         query get_stats {
@@ -84,12 +75,11 @@ export default function () {
                     // If summoned is toggled true, navigate to Summon Screen
                     if (data.summoned) {navigation.navigate("SummonScreen")}
                     setState(data.queue.state)
-                    data.waiter = calculateTimeToNow(data.join_time).m
+                    data.waited = calculateTimeToNow(data.join_time).m
                     const info: SetStateAction<any> = Object.fromEntries([
                         "name",
                         "phone_number",
                         "index",
-                        "waited",
                         "join_time",
                         "average_wait",
                         "estimated_wait"]
@@ -110,7 +100,7 @@ export default function () {
                                                "suffix": suffix,
                                                "tooltip": t("index_tooltip")},
                                               {"prefix": t("waited_prefix"),
-                                               "stat": timeLeft.m,
+                                               "stat": data.waited,
                                                "suffix": "m",
                                                "tooltip": t("waited_tooltip")},
                                               {"prefix": t("average_prefix"),
@@ -145,7 +135,8 @@ export default function () {
                 <Avatar
                     style={styles.avatar}
                     size='xl'
-                    source={{uri: `https://avatars.dicebear.com/api/jdenticon/${uniqueId()}.svg?mood[]=happy`}}
+                    source={require('../assets/images/queueup.gif')}
+                    // source={{uri: `https://avatars.dicebear.com/api/jdenticon/${uniqueId()}.svg?mood[]=happy`}}
                 >
                     <Avatar.Badge bg={state === "ACTIVE" ? "green.500" : "red.500"}/>
                 </Avatar>

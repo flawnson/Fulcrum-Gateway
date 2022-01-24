@@ -5,7 +5,7 @@ import EnqueueGroup from "../components/molecules/EnqueueGroup";
 import QRCodeScanner from "../components/organisms/QRCodeScanner";
 import { PreferencesContext } from "../utilities/useTheme";
 import { useNavigation, StackActions } from "@react-navigation/native";
-import { HomeScreenProps } from "../../types";
+import { HomeScreenProps } from "../types";
 import { MaterialCommunityIcons} from '@expo/vector-icons';
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 

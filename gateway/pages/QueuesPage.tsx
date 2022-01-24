@@ -3,11 +3,10 @@ import ActiveQueuesCatalogCardGroup from "../components/molecules/QueuesCatalogC
 import { Fab, Icon } from "native-base"
 import { AntDesign } from "@expo/vector-icons"
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { HomeScreenProps } from "../../types";
+import { HomeScreenProps } from "../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
-import { QueueInfo } from "../../types";
+import { QueueInfo } from "../types";
 import useInterval from "../utilities/useInterval";
-import DarkModeToggle from "../components/atoms/DarkModeToggle";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 
 
