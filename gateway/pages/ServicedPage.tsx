@@ -1,7 +1,7 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import useInterval from "../utilities/useInterval";
 import ServicedCatalogCardGroup from "../components/molecules/ServicedCatalogCardGroup";
-import {HomeScreenProps, ServicedStats} from "../../types";
+import {HomeScreenProps, ServicedStats} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
 
 
@@ -13,13 +13,11 @@ export default function () {
         query get_users($queueId: String! $orderBy: [UserOrderByWithRelationInput!]) {
             getQueue(queueId: $queueId) {
                 users(orderBy: $orderBy) {
-                    user_id: id
+                    userId: id
                     name
-                    index
-                    last_online
-                    join_time
+                    joinTime: join_time
+                    renegedTime: reneged_time
                     status
-                    estimated_wait
                 }
             }
         }
@@ -43,21 +41,15 @@ export default function () {
                 data => {
                     data = data.data.getQueue.users
                     data = data.filter((d: ServicedStats) => d.status === "SERVICED")
-                    let serviced_stats: ServicedStats[] = []
-                    data.forEach((serviced_data: any) => {
-                        const join_time: any = new Date(serviced_data.join_time)
-                        const reneged_time: any = new Date(serviced_data.reneged_time)
-                        const serviced_time = new Date(Math.abs(reneged_time - join_time))
-                        serviced_data.serviced_time = `${Math.floor(serviced_time.getMinutes())}`
-                        const stats: SetStateAction<any> = Object.fromEntries([
-                            "userId",
-                            "name",
-                            "waited"]
-                            .filter(key => key in serviced_data)
-                            .map(key => [key, serviced_data[key]]))
-                        serviced_stats.push(stats)
+                    let servicedStats: ServicedStats[] = []
+                    data.forEach((servicedData: ServicedStats) => {
+                        const joinTime: any = new Date(servicedData.joinTime)
+                        const renegedTime: any = new Date(servicedData.renegedTime)
+                        const servicedTime = new Date(Math.abs(renegedTime - joinTime))
+                        servicedData.servicedTime = `${Math.floor(servicedTime.getMinutes())}`
+                        servicedStats.push(servicedData)
                     })
-                    setProps(serviced_stats)
+                    setProps(servicedStats)
                 }
             )
         } catch(error) {

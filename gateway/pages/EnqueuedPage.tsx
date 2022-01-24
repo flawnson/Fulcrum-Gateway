@@ -1,7 +1,7 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import EnqueuedCatalogCardGroup from "../components/molecules/EnqueuedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
-import { EnqueuedStats, HomeScreenProps } from "../../types";
+import { EnqueuedStats, HomeScreenProps } from "../types";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 
 
@@ -13,10 +13,11 @@ export default function () {
         query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
             getQueue(queueId: $queueId) {
                 users(orderBy: $orderBy) {
+                    userId: id
                     name
                     index
-                    last_online
-                    join_time
+                    lastOnline: last_online
+                    joinTime: join_time
                     status
                 }
             }
@@ -45,10 +46,10 @@ export default function () {
                     const user_stats: EnqueuedStats[] = []
                     data.forEach((userData: EnqueuedStats) => {
                         const now: any = new Date()
-                        const join: any = new Date(userData.join_time)
+                        const join: any = new Date(userData.joinTime)
                         const waited = new Date(Math.abs(now - join))
                         userData.waited = `${Math.floor(waited.getMinutes())}`
-                        userData.online = new Date(userData.last_online) === new Date()
+                        userData.online = new Date(userData.lastOnline) === new Date()
                         user_stats.push(userData)
                     })
                     setProps(user_stats)

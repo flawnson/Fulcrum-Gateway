@@ -6,7 +6,7 @@ import { StyleSheet,
 import { HStack, Text,
         Box, View,
         Center, Avatar } from 'native-base';
-import { ServicedStats } from "../../../types";
+import { ServicedStats } from "../../types";
 
 type ServicedCatalogProps = {
     'entity': ServicedStats
@@ -14,6 +14,7 @@ type ServicedCatalogProps = {
 
 export default function (props: ServicedCatalogProps) {
     const [online, setOnline] = useState<boolean>(true)
+    console.log(props.entity)
 
     return (
         <Box
@@ -37,9 +38,9 @@ export default function (props: ServicedCatalogProps) {
             style={styles.card}
         >
             <HStack space='5' style={styles.group}>
-                <Avatar style={styles.avatar} source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
-                    <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
-                </Avatar>
+                {/*<Avatar style={styles.avatar} source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>*/}
+                {/*    <Avatar.Badge bg={online ? "green.500" : "red.500"}/>*/}
+                {/*</Avatar>*/}
                 <Text suppressHighlighting={true} style={styles.text}>
                     {props.entity.name}
                 </Text>

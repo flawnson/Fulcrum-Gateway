@@ -5,7 +5,7 @@ import { HStack, Text,
         Avatar, VStack } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
-import { EnqueuedStats, UserStatus } from "../../../types";
+import { EnqueuedStats, UserStatus } from "../../types";
 import { Swipeable, RectButton,
         State, HandlerStateChangeEvent,
         LongPressGestureHandlerEventPayload,
@@ -172,10 +172,12 @@ export default function (props: EnqueuedCatalogProps) {
                         style={styles.card}
                     >
                         <HStack space='5' style={styles.group}>
-                            <Avatar style={styles.avatar}
-                                    source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>
-                                <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>
-                            </Avatar>
+                            {/*<Avatar*/}
+                            {/*    style={styles.avatar}*/}
+                            {/*    source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}*/}
+                            {/*>*/}
+                            {/*    <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>*/}
+                            {/*</Avatar>*/}
                             <Text style={styles.index}>
                                 {props.entity.index}
                             </Text>
@@ -186,12 +188,14 @@ export default function (props: EnqueuedCatalogProps) {
                                 <Text>
                                     {props.entity.waited}
                                 </Text>
-                                <MaterialCommunityIcons selectable={false}
-                                                        name={summoned ? "bell-circle" : "bell-circle-outline"}
-                                                        size={32}
-                                                        color={"#999999"}
-                                                        style={styles.icon}
-                                                        onPress={onBellPress}/>
+                                <MaterialCommunityIcons
+                                    selectable={false}
+                                    name={summoned ? "bell-circle" : "bell-circle-outline"}
+                                    size={32}
+                                    color={"#999999"}
+                                    style={styles.icon}
+                                    onPress={onBellPress}
+                                />
                             </VStack>
                         </HStack>
                         {props.selected && <View style={styles.overlay} />}

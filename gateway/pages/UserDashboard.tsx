@@ -12,6 +12,7 @@ import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
 import {scale} from "../utilities/scales";
 import calculateTimeToNow from "../utilities/calculateTimeToNow";
+import {uniqueId} from "lodash"
 
 
 export default function () {
@@ -126,8 +127,7 @@ export default function () {
                 <Avatar
                     style={styles.avatar}
                     size='xl'
-                    source={require('../assets/images/queueup.gif')}
-                    // source={{uri: `https://avatars.dicebear.com/api/jdenticon/${uniqueId()}.svg?mood[]=happy`}}
+                    source={require('../assets/images/store_004.jpg')}
                 >
                     <Avatar.Badge bg={state === "ACTIVE" ? "green.500" : "red.500"}/>
                 </Avatar>
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     container: {
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'baseline',
         flexDirection: 'row'
     },
     animation: {

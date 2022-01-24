@@ -29,13 +29,13 @@ export type HomeScreenRouteProps = RouteProp<RootStackParamList, 'HomePage'>;
 /*** ENQUEUED CATALOG PAGE TYPES ***/
 
 export type EnqueuedStats = {
-    userId: string,
+    userId: string
     name: string,
     online: boolean,
     index: number,
     waited: string,
-    join_time: string,
-    last_online: string,
+    joinTime: string,
+    lastOnline: string,
     status: UserStatus
 }
 
@@ -46,6 +46,9 @@ export type ServicedStats = {
     userId: string,
     name: string,
     reneged: number,
+    joinTime: string,
+    renegedTime: string,
+    servicedTime: string,
     status: UserStatus
 }
 

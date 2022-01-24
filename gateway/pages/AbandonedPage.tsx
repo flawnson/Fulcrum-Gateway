@@ -47,13 +47,13 @@ export default function () {
                     data.forEach((abandoned_data: any) => {
                         const now: any = new Date()
                         const join: any = new Date(abandoned_data.create_time)
-                        const lifespan = new Date(Math.abs(now - join))
-                        abandoned_data.lifespan = `${Math.floor(lifespan.getMinutes())}`
+                        const waited = new Date(Math.abs(now - join))
+                        abandoned_data.waited = `${Math.floor(waited.getMinutes())}`
                         const stats: SetStateAction<any> = Object.fromEntries([
-                            "id",
+                            "userId",
                             "name",
                             "state",
-                            "lifespan"]
+                            "waited"]
                             .filter(key => key in abandoned_data)
                             .map(key => [key, abandoned_data[key]]))
                         abandoned_stats.push(stats)
