@@ -86,7 +86,7 @@ export default function (props: EnqueuedCatalogProps) {
 
     const onChangeStatusPress = (status: UserStatus) => {
         props.entities.find(user => user.userId === props.entity.userId)!.status = status
-        changeUserStatus(status).then()
+        changeUserStatus(status).then(null)
         props.setEntities(
             [...props.entities.filter(user => user.userId !== props.entity.userId)]
         )
@@ -172,12 +172,12 @@ export default function (props: EnqueuedCatalogProps) {
                         style={styles.card}
                     >
                         <HStack space='5' style={styles.group}>
-                            {/*<Avatar*/}
-                            {/*    style={styles.avatar}*/}
-                            {/*    source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}*/}
-                            {/*>*/}
-                            {/*    <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>*/}
-                            {/*</Avatar>*/}
+                            <Avatar
+                                style={styles.avatar}
+                                source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}
+                            >
+                                <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>
+                            </Avatar>
                             <Text style={styles.index}>
                                 {props.entity.index}
                             </Text>
@@ -212,6 +212,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     group: {
+        margin: 10,
         display: 'flex',
         height: 70,
         width: 300,

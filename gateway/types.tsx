@@ -45,7 +45,7 @@ export type EnqueuedStats = {
 export type ServicedStats = {
     userId: string,
     name: string,
-    reneged: number,
+    online: boolean,
     joinTime: string,
     renegedTime: string,
     servicedTime: string,

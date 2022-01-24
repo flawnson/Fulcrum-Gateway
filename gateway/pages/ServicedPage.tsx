@@ -63,7 +63,7 @@ export default function () {
     useInterval(fetchServicedData, useIsFocused() ? 5000 : null)
 
     return (
-        // Using active queues catalog cards because functionaly matches
+        // Using active queues catalog cards because functionally matches
         <ServicedCatalogCardGroup entities={props}/>
     )
 }

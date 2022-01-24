@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet,
         Pressable, Animated,
         PanResponder, Dimensions,
@@ -38,14 +38,17 @@ export default function (props: ServicedCatalogProps) {
             style={styles.card}
         >
             <HStack space='5' style={styles.group}>
-                {/*<Avatar style={styles.avatar} source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}>*/}
-                {/*    <Avatar.Badge bg={online ? "green.500" : "red.500"}/>*/}
-                {/*</Avatar>*/}
+                <Avatar
+                    style={styles.avatar}
+                    source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}
+                >
+                    <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
+                </Avatar>
                 <Text suppressHighlighting={true} style={styles.text}>
                     {props.entity.name}
                 </Text>
                 <Text style={styles.text}>
-                    {props.entity.reneged}
+                    {props.entity.servicedTime}
                 </Text>
             </HStack>
         </Box>
