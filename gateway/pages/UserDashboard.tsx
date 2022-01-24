@@ -1,27 +1,24 @@
 import React, {SetStateAction, useContext, useEffect, useState} from 'react'
-import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
-import { UserInfo, HomeScreenProps } from "../types";
-import { StyleSheet } from 'react-native'
-import { Avatar, HStack,
-        Center, Heading,
-        Image, Text } from "native-base";
+import {useIsFocused, useNavigation} from "@react-navigation/native";
+import {HomeScreenProps, UserInfo} from "../types";
+import {StyleSheet} from 'react-native'
+import {Avatar, Center, Heading, HStack, Image, Text} from "native-base";
+
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
 import UserDashboardMenu from "../containers/UserDashboardMenu"
 import useInterval from "../utilities/useInterval";
-import { uniqueId } from "lodash"
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
-import { AuthContext } from "../App";
-import { scale } from "../utilities/scales";
+import {scale} from "../utilities/scales";
 import calculateTimeToNow from "../utilities/calculateTimeToNow";
 
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { signedInAs } = useContext(AuthContext)
-    const { t, i18n } = useTranslation(["userDashboard"]);
+    const { t } = useTranslation(["userDashboard"]);
     const [showModal, setShowModal] = useState<boolean>(true)  // If params are defined, no need to verify SMS
+    // Render the header (dark mode toggle and language picker)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     const defaultProps: UserInfo = {
@@ -41,13 +38,11 @@ export default function () {
     const query = `
         query get_stats {
             getUser {
-                userId: id
                 phone_number
                 name
                 index
                 estimated_wait
                 join_time
-                status
                 summoned
                 queue {
                     state
@@ -71,44 +66,40 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
-                    data = data.data.getUser
-                    // If summoned is toggled true, navigate to Summon Screen
-                    if (data.summoned) {navigation.navigate("SummonScreen")}
-                    setState(data.queue.state)
-                    data.waited = calculateTimeToNow(data.join_time).m
-                    const info: SetStateAction<any> = Object.fromEntries([
-                        "name",
-                        "phone_number",
-                        "index",
-                        "join_time",
-                        "average_wait",
-                        "estimated_wait"]
-                        .filter(key => key in data)
-                        .map(key => [key, data[key]]))
-                    const terminalDigit = parseInt(info.index.toString().charAt(info.index.toString().length - 1))
-                    const suffix = info.index === 1 ? "st"
-                                   : info.index === 11 ? "th"
+                    const userData = data.data.getUser
+                    const queueData = data.data.queue
+                    // If summoned is toggled true, immediately navigate to Summon Screen
+                    if (userData.summoned) {navigation.navigate("SummonScreen")}
+                    // Set the queue state
+                    setState(queueData.queue.state)
+                    // Calculate join time and get the minutes
+                    userData.waited = calculateTimeToNow(userData.join_time).m
+                    // Get the last digit to determine the index suffix
+                    const terminalDigit = parseInt(userData.index.toString().charAt(userData.index.toString().length - 1))
+                    const suffix = userData.index === 1 ? "st"
+                                   : userData.index === 11 ? "th"
                                    : terminalDigit === 1 ? "st"
                                    : terminalDigit === 2 ? "nd"
                                    : terminalDigit === 3 ? "rd"
                                    : "th"
-                    setProps({"name": info.name,
-                                    "phone_number": info.phone_number,
-                                    "join_time": info.join_time,
+                    // Set user data to be displayed and passed to subcomponents
+                    setProps({"name": userData.name,
+                                    "phone_number": userData.phone_number,
+                                    "join_time": userData.join_time,
                                     "stats": [{"prefix": t("index_prefix"),
-                                               "stat": info.index,
+                                               "stat": userData.index,
                                                "suffix": suffix,
                                                "tooltip": t("index_tooltip")},
                                               {"prefix": t("waited_prefix"),
-                                               "stat": data.waited,
+                                               "stat": userData.waited,
                                                "suffix": "m",
                                                "tooltip": t("waited_tooltip")},
                                               {"prefix": t("average_prefix"),
-                                               "stat": data.queue.average_wait,
+                                               "stat": queueData.average_wait,
                                                "suffix": "m",
                                                "tooltip": t("average_tooltip")},
                                               {"prefix": t("eta_prefix"),
-                                               "stat": info.estimated_wait,
+                                               "stat": userData.estimated_wait,
                                                "suffix": "m",
                                                "tooltip": t("eta_tooltip")}]})
                 }

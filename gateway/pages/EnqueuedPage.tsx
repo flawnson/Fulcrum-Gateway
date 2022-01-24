@@ -13,7 +13,6 @@ export default function () {
         query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
             getQueue(queueId: $queueId) {
                 users(orderBy: $orderBy) {
-                    userId: id
                     name
                     index
                     last_online
@@ -43,18 +42,14 @@ export default function () {
                 data => {
                     data = data.data.getQueue.users
                     data = data.filter((d: EnqueuedStats) => d.status === "ENQUEUED" || d.status === "DEFERRED")
-                    let user_stats: EnqueuedStats[] = []
-                    data.forEach((queue_data: {[key: string]: any}) => {
+                    const user_stats: EnqueuedStats[] = []
+                    data.forEach((userData: EnqueuedStats) => {
                         const now: any = new Date()
-                        const join: any = new Date(queue_data.join_time)
+                        const join: any = new Date(userData.join_time)
                         const waited = new Date(Math.abs(now - join))
-                        queue_data.waited = `${Math.floor(waited.getMinutes())}`
-                        queue_data.online = new Date(queue_data.last_online) === new Date()
-                        const stats: SetStateAction<any> = Object.fromEntries(
-                            ["userId", "name", "index", "waited", "online", "status"]
-                            .filter(key => key in queue_data)
-                            .map(key => [key, queue_data[key]]))
-                        user_stats.push(stats)
+                        userData.waited = `${Math.floor(waited.getMinutes())}`
+                        userData.online = new Date(userData.last_online) === new Date()
+                        user_stats.push(userData)
                     })
                     setProps(user_stats)
                 }

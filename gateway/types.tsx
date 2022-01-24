@@ -33,7 +33,9 @@ export type EnqueuedStats = {
     name: string,
     online: boolean,
     index: number,
-    waited: number,
+    waited: string,
+    join_time: string,
+    last_online: string,
     status: UserStatus
 }
 
