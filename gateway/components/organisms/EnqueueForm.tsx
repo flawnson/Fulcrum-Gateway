@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { VStack, FormControl,
         Input, Button,
         Center, Text,
         ScaleFade } from "native-base";
 import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
-import CannotEnqueueAlert from "../atoms/CannotEnqueueAlert";
+import GeneralErrorAlert from "../atoms/GeneralErrorAlert";
 import { AuthContext } from "../../App";
 import LoadingSpinner from "../atoms/LoadingSpinner";
 
@@ -33,6 +33,17 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     const [isPhoneNumberFormOpen, setPhoneNumberFormOpen] = useState<boolean>(false)
     const [errors, setErrors] = useState<EnqueueFormData>({})
     const { t, i18n } = useTranslation(["homePage", "common"])
+
+    useEffect(() => {
+        setInterval(() => {
+            if (loading) {
+                setLoading(false)
+                setSubmitted(false)
+                setShowAlert(true)
+                setJoinCodeFormOpen(true)
+            }
+        }, 10000)
+    }, [loading])
 
     const query = `
         mutation join_queue($joinCode: String!, $phoneNumber: String!, $name: String!) {
@@ -133,7 +144,11 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
 
     return (
         <>
-            <CannotEnqueueAlert showAlert={showAlert} setShowAlert={setShowAlert} message={"something"}/>
+            <GeneralErrorAlert
+                showAlert={showAlert}
+                setShowAlert={setShowAlert}
+                message={t("cannot_enqueue_message")}
+            />
             <LoadingSpinner show={loading} />
             {isJoinCodeFormOpen && (
                 <>

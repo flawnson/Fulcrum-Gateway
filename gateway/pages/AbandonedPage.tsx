@@ -1,11 +1,12 @@
 import React, { SetStateAction, useEffect, useState } from "react";
-import CatalogEntityCardGroup from "../components/molecules/AbandonedCatalogCardGroup";
+import AbandonedCatalogCardGroup from "../components/molecules/AbandonedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
-import {AbandonedStats, EnqueuedStats, HomeScreenProps} from "../types";
+import {AbandonedStats, EnqueuedStats, HomeScreenProps, UserStatsTypes} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
+import EnqueuedCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
 
 export default function () {
-    const [props, setProps] = useState<AbandonedStats[]>([])
+    const [props, setProps] = useState<UserStatsTypes[]>([])
     const route = useRoute<HomeScreenProps["route"]>()
 
     const query = `
@@ -47,13 +48,13 @@ export default function () {
                     data.forEach((abandoned_data: any) => {
                         const now: any = new Date()
                         const join: any = new Date(abandoned_data.create_time)
-                        const lifespan = new Date(Math.abs(now - join))
-                        abandoned_data.lifespan = `${Math.floor(lifespan.getMinutes())}`
+                        const waited = new Date(Math.abs(now - join))
+                        abandoned_data.waited = `${Math.floor(waited.getMinutes())}`
                         const stats: SetStateAction<any> = Object.fromEntries([
-                            "id",
+                            "userId",
                             "name",
                             "state",
-                            "lifespan"]
+                            "waited"]
                             .filter(key => key in abandoned_data)
                             .map(key => [key, abandoned_data[key]]))
                         abandoned_stats.push(stats)
@@ -73,6 +74,6 @@ export default function () {
 
     return (
         // Using active queues catalog cards because functionally matches
-        <CatalogEntityCardGroup entities={props}/>
+        <EnqueuedCatalogCardGroup entities={props} setEntities={setProps}/>
     )
 }

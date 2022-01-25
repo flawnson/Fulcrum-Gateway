@@ -6,9 +6,7 @@ import ServicedPage from "./ServicedPage";
 import AbandonedPage from "./AbandonedPage";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {useNavigation, useRoute} from "@react-navigation/native";
-import { HomeScreenProps } from "../../types";
-import { StyleSheet, Switch } from "react-native";
-import DarkModeToggle from "../components/atoms/DarkModeToggle"
+import { HomeScreenProps } from "../types";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 
 const Tab = createBottomTabNavigator();
@@ -84,17 +82,5 @@ export default function QueueDashboardTabs() {
         </Tab.Navigator>
     );
 }
-
-
-const styles = StyleSheet.create({
-    switch: {
-        position: "absolute",
-        right: "15px",
-    },
-    switchName: {
-        position: "absolute",
-        right: "60px",
-    },
-});
 
 

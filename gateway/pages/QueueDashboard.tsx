@@ -1,14 +1,13 @@
-import React, { SetStateAction, useEffect, useState } from 'react'
+import React, {SetStateAction, useEffect, useState} from 'react'
 import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
-import { HomeScreenProps } from "../types";
-import { StyleSheet } from 'react-native'
-import { Center, Heading } from "native-base";
+import {DashboardStat, HomeScreenProps} from "../types";
+import {StyleSheet} from 'react-native'
+import {Center, Heading} from "native-base";
 import QueueDashboardGroup from "../components/organisms/QueueDashboardStats";
 import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval";
-import { zipObject } from "lodash"
-import { DashboardStat } from "../types";
-import { useTranslation } from "react-i18next";
+import {zipObject} from "lodash"
+import {useTranslation} from "react-i18next";
 
 type UserData = {
     user_id: string,
@@ -18,9 +17,8 @@ type UserData = {
 
 
 export default function () {
-    const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const route = useRoute<HomeScreenProps["route"]>()
-    const { t, i18n } = useTranslation(["queueDashboard"]);
+    const { t } = useTranslation(["queueDashboard"]);
 
     const defaultProps = {
         name: "Some Queue",
@@ -34,6 +32,8 @@ export default function () {
         ],
     }
     const [props, setProps] = useState(defaultProps)
+
+    // Two queries are needed depending on what type of user you are
     const assistantQuery = `
         query get_queue_stats {
             getQueue {
@@ -46,6 +46,7 @@ export default function () {
             }
         }
     `
+    // Organizers must provide a queueId because they have access to all queues
     const organizerQuery = `
         query get_queue_stats ($queueId: String) {
             getQueue(queueId: $queueId) {
@@ -76,31 +77,49 @@ export default function () {
                 data => {
                     const name = data.data.getQueue.name
                     data = data.data.getQueue.users
+                    // Count the number users with of each type of status
                     const statuses = ["ENQUEUED", "SERVICED", "DEFERRED", "ABANDONED", "NOSHOW"]
                     const counts = []
                     for (const status of statuses) {
                         counts.push(data.filter((user: UserData) => {return user.status === status}).length)
                     }
                     let stats: SetStateAction<DashboardStat[] | any> = zipObject(statuses.map(status => status.toLowerCase()), counts)
+                    // Calculate the average of all user waits thus far
                     const now: any = new Date()
-                    let lifespans: Array<number> = []
+                    let userWaits: Array<number> = []
                     for (const user of data) {
                         const join: any = new Date(user.join_time)
                         const waited = new Date(Math.abs(now - join)).getMinutes()
                         const minutes = Math.floor(waited)
-                        lifespans.push(minutes)
+                        userWaits.push(minutes)
                     }
-                    stats.avg = Math.floor(lifespans.reduce((a,b) => a + b, 0) / lifespans.length)
-                    stats = {name: name, stats: [
-                        {prefix: t("enqueued_prefix"), stat: stats.enqueued, suffix: ""},
-                        {prefix: t("serviced_prefix"), stat: stats.serviced, suffix: ""},
-                        {prefix: t("deferred_prefix"), stat: stats.deferred, suffix: ""},
-                        {prefix: t("average_prefix"), stat: stats.avg, suffix: "m"},
-                        {prefix: t("abandoned_prefix"), stat: stats.abandoned, suffix: ""},
-                        {prefix: t("noshow_prefix"), stat: stats.noshow, suffix: ""}
-                        ]
-                    }
-                    setProps(stats)
+                    stats.avg = Math.floor(userWaits.reduce((a,b) => a + b, 0) / userWaits.length)
+                    // Set queue data to be displayed and passed to subcomponents
+                    setProps({"name": name,
+                                    "stats": [{prefix: t("enqueued_prefix"),
+                                               stat: stats.enqueued,
+                                               suffix: "",
+                                               tooltip: t("enqueued_tooltip")},
+                                              {prefix: t("serviced_prefix"),
+                                               stat: stats.serviced,
+                                               suffix: "",
+                                               tooltip: t("serviced_tooltip")},
+                                              {prefix: t("deferred_prefix"),
+                                               stat: stats.deferred,
+                                               suffix: "",
+                                               tooltip: t("deferred_tooltip")},
+                                              {prefix: t("average_prefix"),
+                                               stat: stats.avg,
+                                               suffix: "m",
+                                               tooltip: t("average_tooltip")},
+                                              {prefix: t("abandoned_prefix"),
+                                               stat: stats.abandoned,
+                                               suffix: "",
+                                               tooltip: t("abandoned_tooltip")},
+                                              {prefix: t("noshow_prefix"),
+                                               stat: stats.noshow,
+                                               suffix: "",
+                                               tooltip: t("noshow_tooltip")}]})
                 }
             )
         } catch(error) {

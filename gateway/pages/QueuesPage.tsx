@@ -1,13 +1,11 @@
-import React, { SetStateAction, useEffect, useState } from "react"
+import React, {SetStateAction, useEffect, useState} from "react"
 import ActiveQueuesCatalogCardGroup from "../components/molecules/QueuesCatalogCardGroup"
-import { Fab, Icon } from "native-base"
-import { AntDesign } from "@expo/vector-icons"
-import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { HomeScreenProps } from "../../types";
+import {Fab, Icon} from "native-base"
+import {AntDesign} from "@expo/vector-icons"
+import {useIsFocused, useNavigation} from "@react-navigation/native";
+import {HomeScreenProps, QueueInfo} from "../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
-import { QueueInfo } from "../../types";
 import useInterval from "../utilities/useInterval";
-import DarkModeToggle from "../components/atoms/DarkModeToggle";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 
 
@@ -45,19 +43,7 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
-                    data = data.data.getOrganizer.queues
-                    let queue_stats: QueueInfo[] = []
-                    data.forEach((queue_data: {[key: string]: string | number}) => {
-                        const stats: SetStateAction<QueueInfo | any> = Object.fromEntries([
-                            "queueId",
-                            "name",
-                            "state",
-                            "create_time"]
-                            .filter(key => key in queue_data)
-                            .map(key => [key, queue_data[key]]))
-                        queue_stats.push(stats)
-                    })
-                    setProps(queue_stats)
+                    setProps(data.data.getOrganizer.queues)
                 }
             )
         } catch(error) {

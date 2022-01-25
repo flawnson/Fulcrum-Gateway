@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    Menu,
-    Button,
-    Text,
-    Pressable,
-    Center,
-} from "native-base"
+import {Button, Menu, Text,} from "native-base"
 import {useTranslation} from 'react-i18next';
 
 export default function () {
@@ -34,9 +28,15 @@ export default function () {
                 )
             }}
         >
-            <Menu.Item onPress={() => changeLanguage('en')}>{`${availableLanguages['en']} - en`}</Menu.Item>
-            <Menu.Item onPress={() => changeLanguage('fr')}>{`${availableLanguages['fr']} - fr`}</Menu.Item>
-            <Menu.Item onPress={() => changeLanguage('zh')}>{`${availableLanguages['zh']} - zh`}</Menu.Item>
+            <Menu.Item onPress={() => changeLanguage('en')}>
+                {`${availableLanguages['en']} - en`}
+            </Menu.Item>
+            <Menu.Item onPress={() => changeLanguage('fr')}>
+                {`${availableLanguages['fr']} - fr`}
+            </Menu.Item>
+            <Menu.Item onPress={() => changeLanguage('zh')}>
+                {`${availableLanguages['zh']} - zh`}
+            </Menu.Item>
         </Menu>
     )
 }

@@ -26,14 +26,18 @@ export type HomeNavigationProps = NativeStackNavigationProp<RootStackParamList, 
 export type HomeScreenRouteProps = RouteProp<RootStackParamList, 'HomePage'>;
 
 
+export type UserStatsTypes = EnqueuedStats | ServicedStats | AbandonedStats
+
 /*** ENQUEUED CATALOG PAGE TYPES ***/
 
 export type EnqueuedStats = {
-    userId: string,
+    userId: string
     name: string,
     online: boolean,
     index: number,
-    waited: number,
+    waited: string,
+    joinTime: string,
+    lastOnline: string,
     status: UserStatus
 }
 
@@ -43,7 +47,12 @@ export type EnqueuedStats = {
 export type ServicedStats = {
     userId: string,
     name: string,
-    reneged: number,
+    index: undefined,
+    joinTime: string,
+    renegedTime: string,
+    servicedTime: string,
+    waited: number,
+    online: undefined,
     status: UserStatus
 }
 
@@ -53,7 +62,9 @@ export type ServicedStats = {
 export type AbandonedStats = {
     userId: string,
     name: string,
+    index: undefined,
     waited: number,
+    online: undefined,
     status: UserStatus
 }
 
@@ -86,7 +97,7 @@ export type UserInfo = {
 
 export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"
 
-export type QueueState = "ACTIVE" | "INACTIVE" | "PAUSED"
+export type QueueState = "ACTIVE" | "PAUSED"
 
 export type PossibleInputTypes = 'keyboard' | 'picker'
 export type InputTypeMap = {

@@ -1,36 +1,40 @@
-import 'react-native-gesture-handler';
-import React from 'react';
-import { NativeBaseProvider } from 'native-base';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// Library imports
+import React from 'react'
+import './i18n'
+import 'react-native-gesture-handler'
+import { registerRootComponent } from 'expo'
+import * as Linking from 'expo-linking'
+import { NativeBaseProvider } from 'native-base'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Text } from 'native-base'
+
+// Component imports
 import HomePage from './pages/HomePage'
-import SummonScreen from "./screens/SummonScreen";
+import SummonScreen from "./screens/SummonScreen"
 import EndScreen from "./screens/EndScreen"
 import ShareScreen from "./screens/ShareScreen"
-import AbandonedScreen from "./screens/AbandonedScreen";
-import UserDashboard from "./pages/UserDashboard";
-import { RootStackParamList } from "./types";
-import { nativebaseTheme, navigationTheme } from "./theme";
-import { registerRootComponent } from 'expo';
-import QueuesPage from "./pages/QueuesPage";
+import AbandonedScreen from "./screens/AbandonedScreen"
+import UserDashboard from "./pages/UserDashboard"
+import { RootStackParamList } from "./types"
+import { nativebaseTheme, navigationTheme } from "./theme"
+import QueuesPage from "./pages/QueuesPage"
 import EnqueuedPage from "./pages/EnqueuedPage";
 import QueueDashboardTabs from "./pages/QueueDashboardTabs"
 import QRCodeScanner from "./components/organisms/QRCodeScanner"
-import ErrorScreen from "./screens/ErrorScreen";
-import ConfirmationScreen from "./screens/ConfirmationScreen";
-import './i18n';
-import { PreferencesContext } from "./utilities/useTheme";
-import * as Linking from 'expo-linking'
-import linkConfig from "./utilities/linkConfig";
-import QueueDashboard from "./pages/QueueDashboard";
+import ErrorScreen from "./screens/ErrorScreen"
+import ConfirmationScreen from "./screens/ConfirmationScreen"
+import { PreferencesContext } from "./utilities/useTheme"
+import linkConfig from "./utilities/linkConfig"
+import QueueDashboard from "./pages/QueueDashboard"
 import SplashScreen from "./screens/SpashScreen"
 
-const config: object = {
+// Strict mode can be changed to trigger a warning or an error in case of any nativebase issues
+const nativebaseConfig: object = {
     strictMode: 'off',
-};
-const prefix = Linking.createURL('/')
+}
 
+// AuthContext used throughout the app, default values do nothing
 export const AuthContext = React.createContext(
     {
         signedInAs: "",
@@ -41,20 +45,24 @@ export const AuthContext = React.createContext(
 )
 
 function App() {
-    const Stack = createNativeStackNavigator<RootStackParamList>();
+
+    // Stack navigator to navigate between pages and screens in the app
+    const Stack = createNativeStackNavigator<RootStackParamList>()
+
+    // The prefix and config to use
+    const prefix = Linking.createURL('/')
     const linking = {
         prefixes: [prefix],
         config: linkConfig
     }
-    const [isThemeDark, setIsThemeDark] = React.useState(false);
 
-    let theme = isThemeDark ? {nativebase: nativebaseTheme("dark"), navigation: navigationTheme("dark")} :
+    // Theme related config
+    const [isThemeDark, setIsThemeDark] = React.useState(false)
+    const theme = isThemeDark ? {nativebase: nativebaseTheme("dark"), navigation: navigationTheme("dark")} :
                               {nativebase: nativebaseTheme("light"), navigation: navigationTheme("light")};
-
     const toggleTheme = React.useCallback(() => {
         return setIsThemeDark(!isThemeDark);
     }, [isThemeDark]);
-
     const preferences = React.useMemo(
         () => ({
             toggleTheme,
@@ -63,6 +71,7 @@ function App() {
         [toggleTheme, isThemeDark]
     );
 
+    // Reducer to change authentication state according to what kind of user is logged in
     const [state, dispatch] = React.useReducer(
         (prevState: any, action: any) => {
             switch (action.type) {
@@ -98,13 +107,14 @@ function App() {
             }
         },
         {
+            signedInAs: "NONE",
             isUser: false,
             isOrganizer: false,
             isAssistant: false,
-            signedInAs: "NONE"
         }
     );
 
+    // Mirrors AuthContext, the actual implementation of methods
     const authContext = React.useMemo(
         () => ({
             signedInAs: state.signedInAs,
@@ -119,7 +129,7 @@ function App() {
     return (
         <AuthContext.Provider value={authContext}>
             <PreferencesContext.Provider value={preferences}>
-                <NativeBaseProvider config={config} theme={theme.nativebase}>
+                <NativeBaseProvider config={nativebaseConfig} theme={theme.nativebase}>
                     <NavigationContainer linking={linking} fallback={<Text>Blah blah blah...</Text>} theme={theme.navigation}>
                         <Stack.Navigator initialRouteName={"HomePage"}>
                             <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe"}} >
@@ -151,7 +161,7 @@ function App() {
                                     </>
                                 ) : (
                                     <>
-                                        <Stack.Screen name="HomePage" component={HomePage} />
+                                        <Stack.Screen name="HomePage" component={QueuesPage} />
                                         <Stack.Screen name="QueuesPage" component={QueuesPage} />
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />

@@ -106,6 +106,7 @@ export default function () {
                             size='sm'
                             icon={<HamburgerIcon size="sm" />}
                             {...triggerProps}
+                            style={{bottom: "7%", right: "3%"}}
                         />
                     )
                 }}
