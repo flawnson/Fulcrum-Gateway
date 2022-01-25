@@ -1,28 +1,34 @@
 import React, {useState, useEffect, useRef, SetStateAction} from 'react';
-import { StyleSheet, Animated } from "react-native";
+import {StyleSheet, Animated, PressableStateCallbackType, Pressable} from "react-native";
 import { HStack, Text,
         Box, View,
         Avatar, VStack } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
-import { EnqueuedStats, UserStatus } from "../../types";
+import {UserStatus, UserStatsTypes} from "../../types";
 import { Swipeable, RectButton,
         State, HandlerStateChangeEvent,
         LongPressGestureHandlerEventPayload,
         TapGestureHandlerEventPayload,
         LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 
-type EnqueuedCatalogProps = {
-    entities: Array<EnqueuedStats>
-    setEntities: React.Dispatch<React.SetStateAction<EnqueuedStats[]>>
+type UserCatalogCardProps = {
+    entities: Array<UserStatsTypes>
+    setEntities: React.Dispatch<React.SetStateAction<UserStatsTypes[]>>
     onPress: (event?: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) => void,
     onLongPress: (event?: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => void,
     deSelectItems: () => void,
     selected: boolean,
-    entity: EnqueuedStats,
+    entity: UserStatsTypes,
+}
+type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
+type ConditionalWrapperArgs = {
+    condition: number | undefined,  // Uses 0 as false and any other number as true
+    wrapper: (children: Children) => any
+    children: any
 }
 
-export default function (props: EnqueuedCatalogProps) {
+export default function (props: UserCatalogCardProps) {
     const [summoned, setSummoned] = useState<boolean>(false)
 
     const summonQuery = `
@@ -132,77 +138,93 @@ export default function (props: EnqueuedCatalogProps) {
         );
     }
 
+    const ConditionalWrapper = ({condition, wrapper, children}: ConditionalWrapperArgs) =>
+        condition ? wrapper(children) : children;
+
     return (
-        <Swipeable
-            renderLeftActions={renderLeftActions}
-            renderRightActions={renderRightActions}
-        >
-            <LongPressGestureHandler
-                onHandlerStateChange={({ nativeEvent }) => {
-                    if (nativeEvent.state === State.ACTIVE) {
-                        props.onLongPress()
-                    }
-                }}
-                minDurationMs={800}
-            >
-                <TapGestureHandler
+        <ConditionalWrapper
+            condition={props.entity.index}
+            wrapper={
+            (children: Children) =>
+                <Swipeable
+                    renderLeftActions={renderLeftActions}
+                    renderRightActions={renderRightActions}
+                >
+                    <LongPressGestureHandler
                     onHandlerStateChange={({ nativeEvent }) => {
-                        if (nativeEvent.state === State.END) {
-                            props.onPress()
+                        if (nativeEvent.state === State.ACTIVE) {
+                            props.onLongPress()
                         }
                     }}
-                >
-                    <Box
-                        rounded="lg"
-                        borderRadius="lg"
-                        overflow="hidden"
-                        borderColor="coolGray.200"
-                        borderWidth="1"
-                        _dark={{
-                            borderColor: "coolGray.600",
-                            backgroundColor: "gray.700",
-                        }}
-                        _web={{
-                            shadow: "2",
-                            borderWidth: "0",
-                        }}
-                        _light={{
-                            backgroundColor: "gray.50",
-                        }}
-                        style={styles.card}
+                    minDurationMs={800}
                     >
-                        <HStack space='5' style={styles.group}>
-                            <Avatar
-                                style={styles.avatar}
-                                source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}
-                            >
-                                <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/>
-                            </Avatar>
-                            <Text style={styles.index}>
-                                {props.entity.index}
-                            </Text>
-                            <Text suppressHighlighting={true} style={styles.name}>
-                                {props.entity.name}
-                            </Text>
-                            <VStack>
-                                <Text>
-                                    {props.entity.waited}
-                                </Text>
-                                <MaterialCommunityIcons
-                                    selectable={false}
-                                    name={summoned ? "bell-circle" : "bell-circle-outline"}
-                                    size={32}
-                                    color={"#999999"}
-                                    style={styles.icon}
-                                    onPress={onBellPress}
-                                />
-                            </VStack>
-                        </HStack>
-                        {props.selected && <View style={styles.overlay} />}
-                    </Box>
-                </TapGestureHandler>
-            </LongPressGestureHandler>
-        </Swipeable>
+                        <TapGestureHandler
+                            onHandlerStateChange={({ nativeEvent }) => {
+                                if (nativeEvent.state === State.END) {
+                                    props.onPress()
+                                }
+                            }}
+                        >
+                            {children}
+                        </TapGestureHandler>
+                    </LongPressGestureHandler>
+                </Swipeable>
+            }
+        >
+            <Box
+                rounded="lg"
+                borderRadius="lg"
+                overflow="hidden"
+                borderColor="coolGray.200"
+                borderWidth="1"
+                _dark={{
+                    borderColor: "coolGray.600",
+                    backgroundColor: "gray.700",
+                }}
+                _web={{
+                    shadow: "2",
+                    borderWidth: "0",
+                }}
+                _light={{
+                    backgroundColor: "gray.50",
+                }}
+                style={styles.card}
+            >
+                <HStack space='5' style={styles.group}>
+                    <Avatar
+                        style={styles.avatar}
+                        source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}
+                    >
+                        {props.entity.online !== undefined ?
+                            <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/> : <></>}
+                    </Avatar>
+                    {props.entity.index !== undefined ?
+                        <Text style={styles.index}>
+                            {`${props.entity.index}.`}
+                        </Text> : <></>
+                    }
+                    <Text suppressHighlighting={true} style={styles.name}>
+                        {props.entity.name}
+                    </Text>
+                    <VStack style={styles.pair}>
+                        <Text style={styles.waited}>
+                            {`${props.entity.waited} m`}
+                        </Text>
+                        {props.entity.index !== undefined ?
+                            <MaterialCommunityIcons
+                                selectable={false}
+                                name={summoned ? "bell-circle" : "bell-circle-outline"}
+                                size={32}
+                                color={"#999999"}
+                                style={styles.icon}
+                                onPress={onBellPress}
+                            /> : <></>
+                        }
+                    </VStack>
+                </HStack>
+                {props.selected && <View style={styles.overlay} />}
+            </Box>
+        </ConditionalWrapper>
     );
 }
 
@@ -221,6 +243,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     avatar: {
+        flex: 1,
         borderRadius: 10,
     },
     index: {
@@ -228,9 +251,19 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     name: {
-        flex: 1,
+        flex: 5,  // Trying to move the name to the left, closer to the index
+    },
+    pair: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    waited: {
+        flex: 1
     },
     icon: {
+        flex: 1
     },
     overlay: {
         position: 'absolute',

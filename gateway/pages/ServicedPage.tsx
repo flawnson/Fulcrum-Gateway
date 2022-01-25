@@ -1,12 +1,13 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import useInterval from "../utilities/useInterval";
 import ServicedCatalogCardGroup from "../components/molecules/ServicedCatalogCardGroup";
-import {HomeScreenProps, ServicedStats} from "../types";
+import {HomeScreenProps, ServicedStats, EnqueuedStats, UserStatsTypes} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
+import EnqueuedCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
 
 
 export default function () {
-    const [props, setProps] = useState<ServicedStats[]>([])
+    const [props, setProps] = useState<UserStatsTypes[]>([])
     const route = useRoute<HomeScreenProps["route"]>()
 
     const query = `
@@ -29,14 +30,15 @@ export default function () {
     async function fetchServicedData () {
         try {
             const response = await fetch(`http://localhost:8080/api`,
-                                    {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'Access-Control-Allow-Origin': 'http://localhost:19006/',
-                                        },
-                                        credentials: 'include',
-                                        body: JSON.stringify({query: query, variables: variables})})
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({query: query, variables: variables})
+                })
             await response.json().then(
                 data => {
                     data = data.data.getQueue.users
@@ -63,7 +65,6 @@ export default function () {
     useInterval(fetchServicedData, useIsFocused() ? 5000 : null)
 
     return (
-        // Using active queues catalog cards because functionally matches
-        <ServicedCatalogCardGroup entities={props}/>
+        <EnqueuedCatalogCardGroup entities={props} setEntities={setProps}/>
     )
 }

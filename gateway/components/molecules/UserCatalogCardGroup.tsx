@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import EnqueuedCatalogCard from "../atoms/EnqueuedCatalogCard";
+import EnqueuedCatalogCard from "../atoms/UserCatalogCard";
 import { Center } from "native-base";
 import { FlatList } from "react-native-gesture-handler"
 import { StyleSheet, Pressable, PressableStateCallbackType} from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps } from "../../types";
+import {UserStatsTypes, EnqueuedStats, HomeScreenProps, ServicedStats} from "../../types";
 import EnqueuedMultiSelectButtons from "../../containers/EnqueuedMultiSelectButtons"
-import { EnqueuedStats } from "../../types";
 import {UserStatus} from "../../types";
 import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 
 
 type EnqueuedStatsProps = {
-    entities: Array<EnqueuedStats>
-    setEntities: React.Dispatch<React.SetStateAction<EnqueuedStats[]>>
+    entities: Array<UserStatsTypes>
+    setEntities: React.Dispatch<React.SetStateAction<UserStatsTypes[]>>
 }
 type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
 type ConditionalWrapperArgs = {
@@ -26,7 +25,7 @@ export default function (props: EnqueuedStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const parentNavigation = navigation.getParent()
     const [action, setAction] = useState<UserStatus | "SUMMONED">("ENQUEUED")
-    const [selectedItems, setSelectedItems] = useState<Array<EnqueuedStats["userId"]>>([])
+    const [selectedItems, setSelectedItems] = useState<Array<UserStatsTypes["userId"]>>([])
 
     function onActionPress(actionStatus: UserStatus | "SUMMONED") {
         setAction(actionStatus)
@@ -41,7 +40,7 @@ export default function (props: EnqueuedStatsProps) {
         }
     }, [selectedItems])
 
-    const handleOnPress = (item: EnqueuedStats) => {
+    const handleOnPress = (item: UserStatsTypes) => {
         if (selectedItems.length) {
             return selectItems(item)
         }
@@ -49,7 +48,7 @@ export default function (props: EnqueuedStatsProps) {
         // here you can add you code what do you want if user just do single tap
     }
 
-    const getSelected = (item: EnqueuedStats) => selectedItems.includes(item.userId)
+    const getSelected = (item: UserStatsTypes) => selectedItems.includes(item.userId)
 
     const deSelectItems = () => {
         setAction("ENQUEUED")
@@ -57,7 +56,7 @@ export default function (props: EnqueuedStatsProps) {
         navigation.setOptions({headerRight: undefined})
     }
 
-    const selectItems = (item: EnqueuedStats) => {
+    const selectItems = (item: UserStatsTypes) => {
         if (parentNavigation) {
             parentNavigation.setOptions({
                 headerRight: () => <EnqueuedMultiSelectButtons onActionPress={onActionPress}/>
@@ -66,7 +65,7 @@ export default function (props: EnqueuedStatsProps) {
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(
-                (listItem: EnqueuedStats["userId"]) => listItem !== item.userId,
+                (listItem: UserStatsTypes["userId"]) => listItem !== item.userId,
             )
             return setSelectedItems([...newListItems])
         }
@@ -81,12 +80,15 @@ export default function (props: EnqueuedStatsProps) {
         <Center>
             <ConditionalWrapper
                 condition={selectedItems.length}
-                wrapper={(children: Children) => <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>{children}</Pressable>}
+                wrapper={(children: Children) =>
+                    <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}} >
+                        {children}
+                    </Pressable>}
             >
                 <FlatList
                     data={props.entities}
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={({item}: {item: EnqueuedStats}) => {
+                    renderItem={({item}: {item: UserStatsTypes}) => {
                         return <EnqueuedCatalogCard
                                     entities={props.entities}
                                     setEntities={props.setEntities}

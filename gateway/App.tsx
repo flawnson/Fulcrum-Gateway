@@ -161,7 +161,7 @@ function App() {
                                     </>
                                 ) : (
                                     <>
-                                        <Stack.Screen name="HomePage" component={HomePage} />
+                                        <Stack.Screen name="HomePage" component={QueuesPage} />
                                         <Stack.Screen name="QueuesPage" component={QueuesPage} />
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />

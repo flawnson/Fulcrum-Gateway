@@ -5,12 +5,13 @@ import { StyleSheet, Pressable,
 import { HStack, Text,
         Box, Center,
         Avatar, View } from 'native-base';
-import { QueueInfo, QueueState, UserStatus } from "../../../types";
+import { QueueInfo, QueueState, UserStatus } from "../../types";
 import { Swipeable, RectButton,
         State, HandlerStateChangeEvent,
         LongPressGestureHandlerEventPayload,
         TapGestureHandlerEventPayload,
         LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
+import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 import calculateTimeToNow from "../../utilities/calculateTimeToNow";
 import { scale } from "../../utilities/scales";
 
@@ -29,6 +30,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: QueuesCatalogProps) {
     const [online, setOnline] = useState<boolean>(true)
+    const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState<boolean>(false)
     const swipeableRef = useRef(null)
 
     const stateQuery = `
@@ -40,7 +42,7 @@ export default function (props: QueuesCatalogProps) {
         }
     `
 
-    async function changeQueueState (state: QueueState) {
+    async function changeQueueState (state: QueueState | "DELETED") {
         try {
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
@@ -84,13 +86,14 @@ export default function (props: QueuesCatalogProps) {
         );
     });
 
-    const onChangeStatePress = (state: QueueState) => {
+    const onChangeStatePress = (state: QueueState | "DELETED") => {
         props.entities.find(user => user.queueId === props.entity.queueId)!.state = state
         changeQueueState(state).then()
-        if (state === "INACTIVE"){
+        if (state === "DELETED"){
             props.setEntities(
                 [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
             )
+            setShowConfirmDeleteModal(true)
         } else if (state === "PAUSED") {
             // @ts-ignore
             swipeableRef?.current?.close()
@@ -122,65 +125,68 @@ export default function (props: QueuesCatalogProps) {
     }
 
     return (
-        <Swipeable
-            ref={swipeableRef}
-            renderLeftActions={renderLeftActions}
-            renderRightActions={renderRightActions}
-            onSwipeableLeftOpen={() => onChangeStatePress("PAUSED")}
-            onSwipeableRightOpen={() => onChangeStatePress("INACTIVE")}
-        >
-            <LongPressGestureHandler
-                onHandlerStateChange={({ nativeEvent }) => {
-                    if (nativeEvent.state === State.ACTIVE) {
-                        props.onLongPress()
-                    }
-                }}
-                minDurationMs={700}
+        <>
+            <ConfirmDeleteAlert/>
+            <Swipeable
+                ref={swipeableRef}
+                renderLeftActions={renderLeftActions}
+                renderRightActions={renderRightActions}
+                onSwipeableLeftOpen={() => onChangeStatePress("PAUSED")}
+                onSwipeableRightOpen={() => onChangeStatePress("DELETED")}
             >
-                <TapGestureHandler
+                <LongPressGestureHandler
                     onHandlerStateChange={({ nativeEvent }) => {
-                        if (nativeEvent.state === State.END) {
-                            props.onPress()
+                        if (nativeEvent.state === State.ACTIVE) {
+                            props.onLongPress()
                         }
                     }}
+                    minDurationMs={700}
                 >
-                    <Box
-                        rounded="lg"
-                        borderRadius="lg"
-                        overflow="hidden"
-                        borderColor="coolGray.200"
-                        borderWidth="1"
-                        _dark={{
-                            borderColor: "coolGray.600",
-                            backgroundColor: "gray.700",
+                    <TapGestureHandler
+                        onHandlerStateChange={({ nativeEvent }) => {
+                            if (nativeEvent.state === State.END) {
+                                props.onPress()
+                            }
                         }}
-                        _web={{
-                            shadow: "2",
-                            borderWidth: "0",
-                        }}
-                        _light={{
-                            backgroundColor: "gray.50",
-                        }}
-                        style={styles.card}
                     >
-                        <HStack style={styles.group}>
-                            <Text>   </Text>  {/* Needed for spacing*/}
-                            <Avatar style={styles.avatar} source={require("../../assets/images/generic-user-icon.jpg")}>
-                                <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
-                            </Avatar>
-                            <Text suppressHighlighting={true} style={styles.name}>
-                                {props.entity.name}
-                            </Text>
-                            <Text style={styles.lifespan}>
-                                {/*{props.entity.lifespan}*/}
-                                {timerComponents.length ? timerComponents : <Text>Can't get lifespan...</Text>}
-                            </Text>
-                        </HStack>
-                        {props.selected && <View style={styles.overlay} />}
-                    </Box>
-                </TapGestureHandler>
-            </LongPressGestureHandler>
-        </Swipeable>
+                        <Box
+                            rounded="lg"
+                            borderRadius="lg"
+                            overflow="hidden"
+                            borderColor="coolGray.200"
+                            borderWidth="1"
+                            _dark={{
+                                borderColor: "coolGray.600",
+                                backgroundColor: "gray.700",
+                            }}
+                            _web={{
+                                shadow: "2",
+                                borderWidth: "0",
+                            }}
+                            _light={{
+                                backgroundColor: "gray.50",
+                            }}
+                            style={styles.card}
+                        >
+                            <HStack style={styles.group}>
+                                <Text>   </Text>  {/* Needed for spacing*/}
+                                <Avatar style={styles.avatar} source={require("../../assets/images/generic-user-icon.jpg")}>
+                                    <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
+                                </Avatar>
+                                <Text suppressHighlighting={true} style={styles.name}>
+                                    {props.entity.name}
+                                </Text>
+                                <Text style={styles.lifespan}>
+                                    {/*{props.entity.lifespan}*/}
+                                    {timerComponents.length ? timerComponents : <Text>Can't get lifespan...</Text>}
+                                </Text>
+                            </HStack>
+                            {props.selected && <View style={styles.overlay} />}
+                        </Box>
+                    </TapGestureHandler>
+                </LongPressGestureHandler>
+            </Swipeable>
+        </>
     )
 }
 
