@@ -14,7 +14,7 @@ export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
     const { t, i18n } = useTranslation(["userDashboardMenu"]);
-    const [deferModalVisible, setDeferModalVisible] = React.useState(false)
+    const [showDeferPositionModal, setShowDeferPositionModal] = React.useState(false)
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
 
     const query = `
@@ -43,11 +43,6 @@ export default function () {
         }
     }
 
-    const onLeaveQueuePress = () => {
-        setIsAlertOpen(true)
-        leaveQueue()
-    }
-
     return (
         <>
             <Menu
@@ -63,7 +58,7 @@ export default function () {
                     )
                 }}
             >
-                <Menu.Item onPress={() => setDeferModalVisible(true)}>
+                <Menu.Item onPress={() => setShowDeferPositionModal(true)}>
                     <HStack space={3}>
                         <MaterialCommunityIcons
                             name={'account-switch'}
@@ -100,7 +95,7 @@ export default function () {
                     </HStack>
                 </Menu.Item>
             </Menu>
-            <DeferPositionModal modalVisible={deferModalVisible} setModalVisible={setDeferModalVisible}/>
+            <DeferPositionModal showModal={showDeferPositionModal} setShowModal={setShowDeferPositionModal}/>
             <LeaveQueueAlert isAlertOpen={isAlertOpen} setIsAlertOpen={setIsAlertOpen}/>
         </>
     )

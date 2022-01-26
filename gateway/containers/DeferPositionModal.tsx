@@ -1,31 +1,29 @@
 import * as React from 'react'
+import { Text, Modal, Button } from 'native-base'
 import { useTranslation } from "react-i18next";
-import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps } from "../types";
 
-type GenericTimePickerModalProps = {
-    modalVisible: boolean
-    setModalVisible: Function
+type DeferPositionModal = {
+    showModal: boolean
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function (props: GenericTimePickerModalProps) {
-    const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const [visible, setVisible] = React.useState(false)
-    const { t, i18n } = useTranslation(["deferPositionModal", "common"]);
-    const onDismiss = React.useCallback(() => {
-        props.setModalVisible(false)
-    }, [setVisible])
+export default function (props: DeferPositionModal) {
+    const { t } = useTranslation(["deferPositionModal", "common"]);
 
     const query = `
-        mutation defer_user($time: String!) {
-            deferPosition(time: $time) {
-                userId: id
-                status
+        mutation defer_user($numSpots: Int!) {
+            indexDeferPosition(numSpots: $numSpots){
+                ... on User {
+                    id
+                }
+                ... on Error {
+                    error
+                }
             }
         }
     `
     const variables = `{
-        "time": "1970-01-01T00:00:00.000Z"
+        "numSpots": 1
     }`
 
     async function deferPosition () {
@@ -43,19 +41,35 @@ export default function (props: GenericTimePickerModalProps) {
         }
     }
 
-    const onConfirm = React.useCallback(
-        ({ hours, minutes }) => {
-            props.setModalVisible(false);
-            console.log({ hours, minutes });
-            deferPosition()
-            navigation.navigate("UserDashboard")
-        },
-        [setVisible]
-    );
-
 
     return (
-        <>
-        </>
+        <Modal isOpen={props.showModal} onClose={() => props.setShowModal(false)}>
+            <Modal.Content>
+                <Modal.CloseButton />
+                <Modal.Header>{t("header")}</Modal.Header>
+                <Modal.Body>
+                    <Text>
+                        {t("body")}
+                    </Text>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button.Group space={2}>
+                        <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+                            props.setShowModal(false);
+                        }}>
+                            {t("cancel", {ns: "common"})}
+                        </Button>
+                        <Button onPress={() => {
+                            deferPosition().then(null)
+                            props.setShowModal(false);
+                        }}>
+                            <Text style={{color: "white"}}>
+                                {t("confirm", {ns: "common"})}
+                            </Text>
+                        </Button>
+                    </Button.Group>
+                </Modal.Footer>
+            </Modal.Content>
+        </Modal>
     )
 }

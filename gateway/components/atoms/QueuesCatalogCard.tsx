@@ -29,7 +29,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: QueuesCatalogProps) {
-    const [paused, setPaused] = useState<boolean>(true)
+    const [queueState, setQueueState] = useState<QueueState>(props.entity.state)
     const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState<boolean>(false)
     const swipeableRef = useRef(null)
 
@@ -53,8 +53,10 @@ export default function (props: QueuesCatalogProps) {
     async function changeQueueState (state: QueueState | "DELETED") {
         try {
             const body = state === "PAUSED"
-                ? {query: pauseQuery, variables: {queueId: props.entity.queueId, state: "PAUSED"}}
-                : state === "DELETED" ? {query: deleteQuery, variables: {queueId: props.entity.queueId}}
+                ? {query: pauseQuery, variables: {queueId: props.entity.queueId,
+                                                  state: queueState === "PAUSED" ? "ACTIVE" : "PAUSED"}}
+                : state === "DELETED"
+                ? {query: deleteQuery, variables: {queueId: props.entity.queueId}}
                 : {error: "error"}  // Trigger error if state is not PAUSED or DELETED
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
@@ -77,14 +79,15 @@ export default function (props: QueuesCatalogProps) {
         props.entities.find(user => user.queueId === props.entity.queueId)!.state = state
         changeQueueState(state).then()
         if (state === "DELETED"){
+            console.log("WORKING")
+            setShowConfirmDeleteModal(true)
             props.setEntities(
                 [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
             )
-            setShowConfirmDeleteModal(true)
         } else if (state === "PAUSED") {
             // @ts-ignore
             swipeableRef?.current?.close()
-            setPaused(!paused)
+            setQueueState(queueState === "PAUSED" ? "ACTIVE" : "PAUSED")
         }
     }
 
@@ -123,7 +126,7 @@ export default function (props: QueuesCatalogProps) {
     const renderRightActions = (progress: any, dragX: any) => {
         return (
             <Animated.Text style={[styles.actionText, {opacity: nextCardOpacity}]}>
-                Deactivate
+                Delete
             </Animated.Text>
         );
     }
@@ -131,7 +134,7 @@ export default function (props: QueuesCatalogProps) {
     const renderLeftActions = (progress: any, dragX: any) => {
         return (
             <Animated.Text style={[styles.actionText, {opacity: nextCardOpacity}]}>
-                {paused ? "Pause" : "Unpause"}
+                {queueState === "PAUSED" ? "Unpause" : "Pause"}
             </Animated.Text>
         );
     }
@@ -187,7 +190,7 @@ export default function (props: QueuesCatalogProps) {
                                     style={styles.avatar}
                                     source={require("../../assets/images/generic-user-icon.jpg")}
                                 >
-                                    <Avatar.Badge size="lg" bg={paused ? "green.500" : "red.500"}/>
+                                    <Avatar.Badge size="lg" bg={queueState === "ACTIVE" ? "green.500" : "red.500"}/>
                                 </Avatar>
                                 <Text suppressHighlighting={true} style={styles.name}>
                                     {props.entity.name}

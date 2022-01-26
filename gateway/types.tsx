@@ -75,7 +75,7 @@ export type QueueInfo = {
     queueId: string,
     name: string,
     create_time: string,
-    state: string,
+    state: QueueState,
 }
 
 

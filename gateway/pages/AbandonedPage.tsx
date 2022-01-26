@@ -1,9 +1,9 @@
 import React, { SetStateAction, useEffect, useState } from "react";
-import AbandonedCatalogCardGroup from "../components/molecules/AbandonedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
 import {AbandonedStats, EnqueuedStats, HomeScreenProps, UserStatsTypes} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
-import EnqueuedCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
+import UserCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
+
 
 export default function () {
     const [props, setProps] = useState<UserStatsTypes[]>([])
@@ -74,6 +74,6 @@ export default function () {
 
     return (
         // Using active queues catalog cards because functionally matches
-        <EnqueuedCatalogCardGroup entities={props} setEntities={setProps}/>
+        <UserCatalogCardGroup entities={props} setEntities={setProps}/>
     )
 }

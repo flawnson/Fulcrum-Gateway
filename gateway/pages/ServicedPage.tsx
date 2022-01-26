@@ -1,9 +1,8 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import useInterval from "../utilities/useInterval";
-import ServicedCatalogCardGroup from "../components/molecules/ServicedCatalogCardGroup";
 import {HomeScreenProps, ServicedStats, EnqueuedStats, UserStatsTypes} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
-import EnqueuedCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
+import UserCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
 
 
 export default function () {
@@ -65,6 +64,6 @@ export default function () {
     useInterval(fetchServicedData, useIsFocused() ? 5000 : null)
 
     return (
-        <EnqueuedCatalogCardGroup entities={props} setEntities={setProps}/>
+        <UserCatalogCardGroup entities={props} setEntities={setProps}/>
     )
 }
