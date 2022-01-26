@@ -162,5 +162,8 @@
   },
   "generalErrorAlert": {
     "title": "Oops! Something went wrong"
+  },
+  "confirmDeleteAlert": {
+    "header": "CONFIRM YOUR DELETE"
   }
 }

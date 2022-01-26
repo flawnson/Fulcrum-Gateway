@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { TimePickerModal } from './TimePickerModal'
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "../types";
@@ -56,17 +55,7 @@ export default function (props: GenericTimePickerModalProps) {
 
 
     return (
-        <TimePickerModal
-            visible={props.modalVisible}
-            onDismiss={onDismiss}
-            onConfirm={onConfirm}
-            hours={12} // default: current hours
-            minutes={14} // default: current minutes
-            uppercase={false}
-            label={t("label")} // optional, default 'Select time'
-            cancelLabel={t("cancel", {ns: "common"})} // optional, default: 'Cancel'
-            confirmLabel={t("ok", {ns: "common"})} // optional, default: 'Ok'
-            animationType="fade" // optional, default is 'none'
-        />
+        <>
+        </>
     )
 }

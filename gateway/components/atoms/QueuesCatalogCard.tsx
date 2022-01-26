@@ -29,11 +29,11 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: QueuesCatalogProps) {
-    const [online, setOnline] = useState<boolean>(true)
+    const [paused, setPaused] = useState<boolean>(true)
     const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState<boolean>(false)
     const swipeableRef = useRef(null)
 
-    const stateQuery = `
+    const pauseQuery = `
         mutation change_queue_state($queueId: String, $state: String!) {
             changeQueueState(queueId: $queueId, state: $state) {
                 id
@@ -41,9 +41,21 @@ export default function (props: QueuesCatalogProps) {
             }
         }
     `
+    const deleteQuery = `
+        mutation delete_queue($queueId: String!) { 
+            deleteQueue(queueId: $queueId) { 
+                id
+            }
+        }
+    `
+    //@ts-ignore
 
     async function changeQueueState (state: QueueState | "DELETED") {
         try {
+            const body = state === "PAUSED"
+                ? {query: pauseQuery, variables: {queueId: props.entity.queueId, state: "PAUSED"}}
+                : state === "DELETED" ? {query: deleteQuery, variables: {queueId: props.entity.queueId}}
+                : {error: "error"}  // Trigger error if state is not PAUSED or DELETED
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
@@ -51,13 +63,28 @@ export default function (props: QueuesCatalogProps) {
                     'Access-Control-Allow-Origin': 'http://localhost:19006/',
                 },
                 credentials: 'include',
-                body: JSON.stringify({query: stateQuery, variables: {queueId: props.entity.queueId, state: state}})
+                body: JSON.stringify(body)
             });
             // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
             // enter your logic for when there is an error (ex. error toast)
             return error
+        }
+    }
+
+    const onChangeState = (state: QueueState) => {
+        props.entities.find(user => user.queueId === props.entity.queueId)!.state = state
+        changeQueueState(state).then()
+        if (state === "DELETED"){
+            props.setEntities(
+                [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
+            )
+            setShowConfirmDeleteModal(true)
+        } else if (state === "PAUSED") {
+            // @ts-ignore
+            swipeableRef?.current?.close()
+            setPaused(!paused)
         }
     }
 
@@ -86,21 +113,6 @@ export default function (props: QueuesCatalogProps) {
         );
     });
 
-    const onChangeStatePress = (state: QueueState | "DELETED") => {
-        props.entities.find(user => user.queueId === props.entity.queueId)!.state = state
-        changeQueueState(state).then()
-        if (state === "DELETED"){
-            props.setEntities(
-                [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
-            )
-            setShowConfirmDeleteModal(true)
-        } else if (state === "PAUSED") {
-            // @ts-ignore
-            swipeableRef?.current?.close()
-            setOnline(!online)
-        }
-    }
-
     const position = new Animated.ValueXY()
     let nextCardOpacity = position.x.interpolate({
         inputRange: [-SCREEN_WIDTH, 0, SCREEN_WIDTH],
@@ -119,20 +131,20 @@ export default function (props: QueuesCatalogProps) {
     const renderLeftActions = (progress: any, dragX: any) => {
         return (
             <Animated.Text style={[styles.actionText, {opacity: nextCardOpacity}]}>
-                {online ? "Pause" : "Unpause"}
+                {paused ? "Pause" : "Unpause"}
             </Animated.Text>
         );
     }
 
     return (
         <>
-            <ConfirmDeleteAlert/>
+            <ConfirmDeleteAlert showAlert={showConfirmDeleteModal} setShowAlert={setShowConfirmDeleteModal}/>
             <Swipeable
                 ref={swipeableRef}
                 renderLeftActions={renderLeftActions}
                 renderRightActions={renderRightActions}
-                onSwipeableLeftOpen={() => onChangeStatePress("PAUSED")}
-                onSwipeableRightOpen={() => onChangeStatePress("DELETED")}
+                onSwipeableLeftOpen={() => onChangeState("PAUSED")}
+                onSwipeableRightOpen={() => onChangeState("DELETED")}
             >
                 <LongPressGestureHandler
                     onHandlerStateChange={({ nativeEvent }) => {
@@ -170,8 +182,12 @@ export default function (props: QueuesCatalogProps) {
                         >
                             <HStack style={styles.group}>
                                 <Text>   </Text>  {/* Needed for spacing*/}
-                                <Avatar style={styles.avatar} source={require("../../assets/images/generic-user-icon.jpg")}>
-                                    <Avatar.Badge bg={online ? "green.500" : "red.500"}/>
+                                <Avatar
+                                    size={scale(60)}
+                                    style={styles.avatar}
+                                    source={require("../../assets/images/generic-user-icon.jpg")}
+                                >
+                                    <Avatar.Badge size="lg" bg={paused ? "green.500" : "red.500"}/>
                                 </Avatar>
                                 <Text suppressHighlighting={true} style={styles.name}>
                                     {props.entity.name}
