@@ -167,9 +167,9 @@ export class CreateUserResolver {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
           // The .code property can be accessed in a type-safe manner
           if (e.code === 'P2002') {
-            console.log('Cannot join: Phone number ' + args.phoneNumber + ' is taken.');
+            console.log('Cannot create: Phone number ' + args.phoneNumber + ' is taken.');
             let error = {
-              error: errors.PHONE_NUMBER_NOT_UNIQUE
+              error: errors.USER_ALREADY_EXISTS
             };
             return error;
           }
@@ -246,7 +246,7 @@ export class CreateUserResolver {
         }
         console.log('Phone number ' + args.phoneNumber + ' is already taken. User is already verified and in queue.');
         let error = {
-          error: errors.PHONE_NUMBER_NOT_UNIQUE
+          error: errors.USER_ALREADY_EXISTS
         };
         return error;
       }
@@ -266,10 +266,12 @@ export class CreateUserResolver {
       if (createUser != null){
         await generateSMS(args.phoneNumber, createUser.id);
       }
+      else {
+        console.log("Can't send verification SMS: User account failed to create. ")
+      }
+
 
       return createUser;
-
-
 
     })
   }
