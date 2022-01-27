@@ -1,12 +1,12 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import useInterval from "../utilities/useInterval";
-import {HomeScreenProps, ServicedStats, EnqueuedStats, UserStatsTypes} from "../types";
+import {HomeScreenProps, ServicedStats, EnqueuedStats, UserStats} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
 import UserCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
 
 
 export default function () {
-    const [props, setProps] = useState<UserStatsTypes[]>([])
+    const [props, setProps] = useState<UserStats[]>([])
     const route = useRoute<HomeScreenProps["route"]>()
 
     const query = `
@@ -41,13 +41,15 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.getQueue.users
-                    data = data.filter((d: ServicedStats) => d.status === "SERVICED")
-                    let servicedStats: ServicedStats[] = []
-                    data.forEach((servicedData: ServicedStats) => {
+                    data = data.filter((d: UserStats) => d.status === "SERVICED")
+                    let servicedStats: UserStats[] = []
+                    data.forEach((servicedData: UserStats) => {
                         const joinTime: any = new Date(servicedData.joinTime)
-                        const renegedTime: any = new Date(servicedData.renegedTime)
-                        const servicedTime = new Date(Math.abs(renegedTime - joinTime))
-                        servicedData.servicedTime = `${Math.floor(servicedTime.getMinutes())}`
+                        // Null assertion because renegedTime does not exist for Enqueued users
+                        const renegedTime: any = new Date(servicedData.renegedTime!)
+                        const waited = new Date(Math.abs(renegedTime - joinTime))
+                        servicedData.waited = Math.floor(waited.getMinutes())
+                        servicedData.renegedTime = `${renegedTime.getHours()}:${renegedTime.getHours()}:${renegedTime.getHours()}`
                         servicedStats.push(servicedData)
                     })
                     setProps(servicedStats)

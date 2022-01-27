@@ -79,7 +79,6 @@ export default function (props: QueuesCatalogProps) {
         props.entities.find(user => user.queueId === props.entity.queueId)!.state = state
         changeQueueState(state).then()
         if (state === "DELETED"){
-            console.log("WORKING")
             setShowConfirmDeleteModal(true)
             props.setEntities(
                 [...props.entities.filter(user => user.queueId !== props.entity.queueId)]

@@ -1,12 +1,12 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import EnqueuedCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
-import {EnqueuedStats, HomeScreenProps, UserStatsTypes} from "../types";
+import {EnqueuedStats, HomeScreenProps, UserStats} from "../types";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 
 
 export default function () {
-    const [props, setProps] = useState<UserStatsTypes[]>([])
+    const [props, setProps] = useState<UserStats[]>([])
     const route = useRoute<HomeScreenProps["route"]>()
 
     const query = `
@@ -42,15 +42,16 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.getQueue.users
-                    data = data.filter((d: EnqueuedStats) => d.status === "ENQUEUED" || d.status === "DEFERRED")
-                    const user_stats: EnqueuedStats[] = []
-                    data.forEach((userData: EnqueuedStats) => {
+                    data = data.filter((d: UserStats) => d.status === "ENQUEUED" || d.status === "DEFERRED")
+                    const user_stats: UserStats[] = []
+                    data.forEach((userData: UserStats) => {
                         // Must cast dates to any type to do arithmetic otherwise Typescript complains
                         const now: any = new Date()
                         const join: any = new Date(userData.joinTime)
                         const waited = new Date(Math.abs(now - join))
-                        userData.waited = `${Math.floor(waited.getMinutes())}`
-                        const lastOnline: any = new Date(userData.lastOnline)
+                        userData.waited = Math.floor(waited.getMinutes())
+                        // Null assertion because lastOnline is not needed for Abandoned and Serviced users
+                        const lastOnline: any = new Date(userData.lastOnline!)
                         // Milliseconds to minutes and check if less than 15 mins, convert to bool
                         userData.online = ((Math.abs(now - lastOnline)/1000)/60) <= 15
                         user_stats.push(userData)

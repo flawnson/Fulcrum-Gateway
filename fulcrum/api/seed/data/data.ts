@@ -15,6 +15,7 @@ export let user_table = [
     index: 0,
     join_time: pastDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    reneged_time: futureDate,
     status: UserStatus.SERVICED
   },
   {
@@ -27,7 +28,6 @@ export let user_table = [
     last_online: nowDate,
     index: 1,
     join_time: pastDate,
-    reneged_time: futureDate,
     status: UserStatus.ENQUEUED
   },
   {
@@ -40,7 +40,6 @@ export let user_table = [
     last_online: nowDate,
     index: 2,
     join_time: pastDate,
-    reneged_time: futureDate,
     status: UserStatus.ENQUEUED
   },
   {
@@ -55,6 +54,7 @@ export let user_table = [
     join_time: pastDate,
     summoned_time: nowDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    reneged_time: futureDate,
     status: UserStatus.SERVICED
   },
   {
@@ -69,6 +69,7 @@ export let user_table = [
     join_time: pastDate,
     summoned_time: nowDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    reneged_time: futureDate,
     status: UserStatus.SERVICED
   },
   {
@@ -81,6 +82,7 @@ export let user_table = [
     index: 0,
     join_time: pastDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    reneged_time: futureDate,
     status: UserStatus.ABANDONED
   },
   {
@@ -93,7 +95,6 @@ export let user_table = [
     last_online: nowDate,
     index: 1,
     join_time: pastDate,
-    reneged_time: futureDate,
     status: UserStatus.ENQUEUED
   },
   {
@@ -106,7 +107,6 @@ export let user_table = [
     last_online: nowDate,
     index: 2,
     join_time: pastDate,
-    reneged_time: futureDate,
     status: UserStatus.ENQUEUED
   },
   {
@@ -119,7 +119,6 @@ export let user_table = [
     last_online: nowDate,
     index: 3,
     join_time: pastDate,
-    reneged_time: futureDate,
     status: UserStatus.ENQUEUED
   },
   {
@@ -134,6 +133,7 @@ export let user_table = [
     join_time: pastDate,
     summoned_time: nowDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    reneged_time: futureDate,
     status: UserStatus.SERVICED
   },
   {
@@ -148,6 +148,7 @@ export let user_table = [
     join_time: pastDate,
     summoned_time: nowDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    reneged_time: futureDate,
     status: UserStatus.SERVICED
   },
   {
@@ -160,6 +161,7 @@ export let user_table = [
     index: 0,
     join_time: pastDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    reneged_time: futureDate,
     status: UserStatus.ABANDONED
   },
   {
@@ -172,6 +174,7 @@ export let user_table = [
     index: 0,
     join_time: pastDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    reneged_time: futureDate,
     status: UserStatus.ABANDONED
   },
   {
@@ -183,7 +186,6 @@ export let user_table = [
     last_online: nowDate,
     index: 4,
     join_time: pastDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
     status: UserStatus.ENQUEUED
   },
   {
@@ -196,6 +198,7 @@ export let user_table = [
     index: 0,
     join_time: pastDate,
     total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    reneged_time: futureDate,
     status: UserStatus.SERVICED
   },
   {
@@ -207,7 +210,6 @@ export let user_table = [
     last_online: nowDate,
     index: 5,
     join_time: pastDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
     status: UserStatus.ENQUEUED
   },
   {
@@ -220,6 +222,7 @@ export let user_table = [
     index: 0,
     join_time: pastDate,
     total_wait: 5000,
+    reneged_time: futureDate,
     status: UserStatus.SERVICED
   },
   {
@@ -232,7 +235,6 @@ export let user_table = [
     last_online: nowDate,
     index: 1,
     join_time: pastDate,
-    reneged_time: futureDate,
     status: UserStatus.ENQUEUED
   },
   {
@@ -245,7 +247,6 @@ export let user_table = [
     last_online: nowDate,
     index: 2,
     join_time: pastDate,
-    reneged_time: futureDate,
     status: UserStatus.ENQUEUED
   },
   {
@@ -258,7 +259,6 @@ export let user_table = [
     last_online: nowDate,
     index: 3,
     join_time: pastDate,
-    reneged_time: futureDate,
     status: UserStatus.ENQUEUED
   },
   {
@@ -271,7 +271,6 @@ export let user_table = [
     last_online: nowDate,
     index: 1,
     join_time: pastDate,
-    reneged_time: futureDate,
     status: UserStatus.ENQUEUED
   }
 ];

@@ -128,7 +128,7 @@ export default function () {
     }
 
     // Run on first render
-    useEffect(() => {fetchQueueData()}, [])
+    useEffect(() => {fetchQueueData().then()}, [])
     // Poll only if user is currently on this screen
     useInterval(fetchQueueData, useIsFocused() ? 5000 : null)
 

@@ -18,7 +18,7 @@ export default function () {
 
     return (
         <Center style={styles.container}>
-            <EnqueueForm navigation={navigation} setShowModal={() => {}}/>
+            <EnqueueForm navigation={navigation} />
             <Text style={styles.subText}>
                 <Text style={styles.linkText} onPress={() => setShowLoginModal(true)}>
                     {t("login", {ns: "common"})}

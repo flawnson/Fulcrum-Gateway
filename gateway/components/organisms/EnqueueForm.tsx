@@ -12,7 +12,7 @@ import LoadingSpinner from "../atoms/LoadingSpinner";
 
 type EnqueueFormProps = {
     navigation: HomeScreenProps["navigation"]
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowModal?: React.Dispatch<React.SetStateAction<boolean>>  // Modal for Organizer/Assistant side user creation
 }
 
 type EnqueueFormData = {
@@ -253,6 +253,8 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                                 onPress={() => {
                                     validatePhoneNumber() ? setPhoneNumberFormOpen(false) : null
                                     validatePhoneNumber() ? onSubmit() : null
+                                    // If form is in modal (and modal dispatch is provided in props) then close modal
+                                    !!setShowModal ? setShowModal(false) : null
                                 }
                             }
                             mt="5"

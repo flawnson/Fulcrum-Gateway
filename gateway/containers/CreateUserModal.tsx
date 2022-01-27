@@ -1,7 +1,5 @@
 import React from 'react'
 import { Modal } from 'native-base'
-import CreateQueueForm from '../components/organisms/CreateQueueForm'
-import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps, RootStackParamList } from "../types";
 import { useTranslation } from "react-i18next";
 import EnqueueForm from "../components/organisms/EnqueueForm";
