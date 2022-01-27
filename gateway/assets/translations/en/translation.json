@@ -43,7 +43,10 @@
     "phone_number": "Your phone number",
     "helper": "Queue ID must be 10 characters.",
     "or": " or ",
-    "footer": " to create your own virtual queue at"
+    "footer": " to create your own virtual queue at",
+    "cannot_enqueue_message": "Something wrong happened (we should be more specific about this)",
+    "join_code_not_exist_message": "It looks like the join code you entered doesn't match any queue we have on record. Please check your code and try again, or use the QR code scanner.",
+    "queue_paused_or_inactive_message": "It looks like the queue you're trying to join is either paused or inactive. Please try again or ask the organizer for details."
   },
   "createQueuePage": {
     "business_name_label": "Queue name",
@@ -77,7 +80,8 @@
     "title": "Edit a Queue"
   },
   "deferPositionModal": {
-    "label": "How long would you like to defer for?"
+    "header": "Defer Position",
+    "body": "Are you sure you want to defer your position once? This will swap your position with the queuer behind you."
   },
   "enqueuedMultiSelectButtons": {
     "kick": "Kick Queuers",
@@ -157,9 +161,10 @@
   "verifySMSModal": {
     "title": "Verify your phone number"
   },
-  "cannotEnqueueAlert": {
-    "title": "Oops! Something went wrong",
-    "joinCodeNotExistMessage": "It looks like the join code you entered doesn't match any queue we have on record. Please check your code and try again, or use the QR code scanner.",
-    "queuePauseOrInactivemessage": "It looks like the queue you're trying to join is either paused or inactive. Please try again or ask the organizer for details."
+  "generalErrorAlert": {
+    "title": "Oops! Something went wrong"
+  },
+  "confirmDeleteAlert": {
+    "header": "CONFIRM YOUR DELETE"
   }
 }

@@ -1,11 +1,12 @@
 import React, { SetStateAction, useEffect, useState } from "react";
-import CatalogEntityCardGroup from "../components/molecules/AbandonedCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
-import {AbandonedStats, EnqueuedStats, HomeScreenProps} from "../types";
+import {AbandonedStats, EnqueuedStats, HomeScreenProps, UserStats} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
+import UserCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
+
 
 export default function () {
-    const [props, setProps] = useState<AbandonedStats[]>([])
+    const [props, setProps] = useState<UserStats[]>([])
     const route = useRoute<HomeScreenProps["route"]>()
 
     const query = `
@@ -14,9 +15,8 @@ export default function () {
                 users(orderBy: $orderBy) {
                     userId: id
                     name
-                    index
-                    last_online
-                    join_time
+                    joinTime: join_time
+                    renegedTime: reneged_time
                     status
                 }
             }
@@ -40,25 +40,20 @@ export default function () {
             await response.json().then(
                 data => {
                     data = data.data.getQueue.users
-                    data = data.filter((d: AbandonedStats) => d.status === "ABANDONED" ||
+                    data = data.filter((d: UserStats) => d.status === "ABANDONED" ||
                                                               d.status === "KICKED" ||
                                                               d.status === "NOSHOW")
-                    let abandoned_stats: AbandonedStats[] = []
-                    data.forEach((abandoned_data: any) => {
-                        const now: any = new Date()
-                        const join: any = new Date(abandoned_data.create_time)
-                        const lifespan = new Date(Math.abs(now - join))
-                        abandoned_data.lifespan = `${Math.floor(lifespan.getMinutes())}`
-                        const stats: SetStateAction<any> = Object.fromEntries([
-                            "id",
-                            "name",
-                            "state",
-                            "lifespan"]
-                            .filter(key => key in abandoned_data)
-                            .map(key => [key, abandoned_data[key]]))
-                        abandoned_stats.push(stats)
+                    let abandonedStats: UserStats[] = []
+                    data.forEach((abandonedData: UserStats) => {
+                        const joinTime: any = new Date(abandonedData.joinTime)
+                        // Null assertion because renegedTime does not exist for Enqueued users
+                        const renegedTime: any = new Date(abandonedData.renegedTime!)
+                        const waited = new Date(Math.abs(renegedTime - joinTime))
+                        abandonedData.waited = Math.floor(waited.getMinutes())
+                        abandonedData.renegedTime = `${renegedTime.getHours()}:${renegedTime.getHours()}:${renegedTime.getHours()}`
+                        abandonedStats.push(abandonedData)
                     })
-                    setProps(abandoned_stats)
+                    setProps(abandonedStats)
                 }
             )
         } catch(error) {
@@ -73,6 +68,6 @@ export default function () {
 
     return (
         // Using active queues catalog cards because functionally matches
-        <CatalogEntityCardGroup entities={props}/>
+        <UserCatalogCardGroup entities={props} setEntities={setProps}/>
     )
 }
