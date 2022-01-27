@@ -3,9 +3,10 @@ import { HStack, Button,
         Text } from "native-base";
 import { StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
+import { QueueState } from "../types";
 
 type MultiSelectButtonType = {
-    onActionPress: Function
+    onActionPress: React.Dispatch<React.SetStateAction<QueueState>>
 }
 
 export default function (props: MultiSelectButtonType) {
@@ -20,7 +21,7 @@ export default function (props: MultiSelectButtonType) {
             <Button style={styles.button} onPress={() => props.onActionPress("PAUSED")}>
                 <Text bold color={'white'}>{t("pause")}</Text>
             </Button>
-            <Button style={styles.button} onPress={() => props.onActionPress("INACTIVE")}>
+            <Button style={styles.button} onPress={() => props.onActionPress("DELETED")}>
                 <Text bold color={'white'}>{t("end")}</Text>
             </Button>
         </Button.Group>

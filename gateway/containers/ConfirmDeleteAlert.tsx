@@ -1,15 +1,31 @@
 import React from 'react'
-import {Modal} from 'native-base'
+import {AlertDialog} from 'native-base'
+import {useTranslation} from "react-i18next";
 
-export default function () {
+
+type ConfirmDeleteAlert = {
+    showAlert: boolean,
+    setShowAlert: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function (props: ConfirmDeleteAlert) {
+    const cancelRef = React.useRef(null)
+    const { t, i18n } = useTranslation(["confirmDeleteAlert", "common"]);
+
     return (
-        <Modal>
-            <Modal.Body>
-
-            </Modal.Body>
-            <Modal.Footer>
-
-            </Modal.Footer>
-        </Modal>
-    )
+        <AlertDialog
+            leastDestructiveRef={cancelRef}
+            isOpen={props.showAlert}
+            onClose={() => {props.setShowAlert(false)}}
+        >
+            <AlertDialog.Content>
+                <AlertDialog.CloseButton />
+                <AlertDialog.Header>{t("header")}</AlertDialog.Header>
+                <AlertDialog.Body>
+                </AlertDialog.Body>
+                <AlertDialog.Footer>
+                </AlertDialog.Footer>
+            </AlertDialog.Content>
+        </AlertDialog>
+)
 }

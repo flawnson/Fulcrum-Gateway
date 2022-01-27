@@ -1,22 +1,35 @@
 import React from 'react'
-import { Center, Text } from 'native-base'
+import {Center, Image, Text, VStack} from 'native-base'
 import { StyleSheet } from "react-native";
+import {scale} from "../utilities/scales";
 
 export default function () {
     return (
-        <Center style={styles.container}>
-            <Text style={styles.text}>
-                Nothing to see here...
-            </Text>
+        <Center>
+            <VStack style={styles.pair}>
+                <Image
+                    src={require("../assets/images/cat-gif.gif")}
+                    style={styles.image}
+                    alt="Cute cat gif!"
+                />
+                <Text style={styles.text}>
+                    Nothing to see here...
+                </Text>
+            </VStack>
         </Center>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
+    pair: {
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+    },
+    image: {
+        flex: 1,
+        width: scale(300),
+        height: scale(300)
     },
     text: {
         flex: 1,

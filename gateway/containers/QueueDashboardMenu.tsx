@@ -16,7 +16,7 @@ export default function () {
     const { t, i18n } = useTranslation(["queueDashboardMenu"]);
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const [queuePaused, toggleQueuePaused] = useState<boolean>(false)
-    const [showEditQueueModal, setShowEditQueueModal] = useState(false);
+    // const [showEditQueueModal, setShowEditQueueModal] = useState(false);
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
 
     async function setQueuePaused () {
@@ -91,7 +91,7 @@ export default function () {
 
     function onLogoutPress () {
         signOut()
-        logout()
+        logout().then()
         navigation.navigate("EndScreen")
     }
 
@@ -176,9 +176,9 @@ export default function () {
             <CreateUserModal showModal={showCreateUserModal}
                             setShowModal={setShowCreateUserModal}
                             navigation={navigation}/>
-            <EditQueueModal showModal={showEditQueueModal}
-                            setShowModal={setShowEditQueueModal}
-                            navigation={navigation}/>
+            {/*<EditQueueModal showModal={showEditQueueModal}*/}
+            {/*                setShowModal={setShowEditQueueModal}*/}
+            {/*                navigation={navigation}/>*/}
         </>
     )
 }

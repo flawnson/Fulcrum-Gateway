@@ -12,14 +12,13 @@ import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [props, setProps] = useState<QueueInfo[]>([])
+    const [showCreateQueueModal, setShowCreateQueueModal] = useState(false);
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
-    const [showModal, setShowModal] = useState(false);
-
     const query = `
-        query get_queue_data {
+        query get_queue_data($orderBy: [QueueOrderByWithRelationInput!]) {
             getOrganizer {
-                queues {
+                queues(orderBy: $orderBy) {
                     queueId: id
                     name
                     state
@@ -28,6 +27,12 @@ export default function () {
             }
         }
     `
+    const variables = {
+        "orderBy":
+        {
+            "create_time": "asc"
+        }
+    }
 
     async function fetchQueuesData () {
         try {
@@ -39,7 +44,7 @@ export default function () {
                                          'Access-Control-Allow-Origin': 'http://localhost:19006/',
                                          },
                                          credentials: 'include',
-                                         body: JSON.stringify({query: query})
+                                         body: JSON.stringify({query: query, variables: variables})
                                      })
             await response.json().then(
                 data => {
@@ -60,13 +65,13 @@ export default function () {
         <>
             <ActiveQueuesCatalogCardGroup entities={props} setEntities={setProps}/>
             <Fab
-                onPress={() => setShowModal(!showModal)}
+                onPress={() => setShowCreateQueueModal(!showCreateQueueModal)}
                 position="absolute"
                 size="sm"
                 icon={<Icon color="white" as={<AntDesign name="plus" />} size="sm" />}
                 renderInPortal={useIsFocused()}
             />
-            <CreateQueueModal showModal={showModal} setShowModal={setShowModal} />
+            <CreateQueueModal showModal={showCreateQueueModal} setShowModal={setShowCreateQueueModal} />
         </>
     )
 }

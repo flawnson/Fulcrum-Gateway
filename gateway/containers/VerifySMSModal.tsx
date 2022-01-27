@@ -7,6 +7,7 @@ import { CodeField, Cursor,
         useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import { useTranslation } from "react-i18next";
 import { UserInfo } from "../types"
+import {scale} from "../utilities/scales";
 
 
 const CELL_COUNT = 6
@@ -19,6 +20,7 @@ type VerifySMSModalProps = {
 
 export default function (props: VerifySMSModalProps) {
     const [value, setValue] = useState('');
+    const [verified, setVerified] = useState(false)
     const { t, i18n } = useTranslation(["verifySMSModal"]);
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
     const [cellOnLayoutHandler, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -44,7 +46,9 @@ export default function (props: VerifySMSModalProps) {
                     credentials: 'include',
                     body: JSON.stringify({query: query, variables: {confirmCode: value}})
                 })
-            return await response.json()
+            return await response.json().then(data => {
+                setVerified(data.data.confirmUser)
+            })
         } catch(error) {
             console.log(error)
         }
@@ -58,7 +62,7 @@ export default function (props: VerifySMSModalProps) {
 
     return (
         <Modal
-            defaultIsOpen
+            defaultIsOpen={verified}
             isOpen={props.showModal}
             onClose={() => props.setShowModal(false)}
             closeOnOverlayClick={false}
@@ -112,7 +116,9 @@ export default function (props: VerifySMSModalProps) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onPress={onSubmit}>
-                        Submit
+                        <Text style={{color: "white"}}>
+                            Submit
+                        </Text>
                     </Button>
                 </Modal.Footer>
             </Modal.Content>
@@ -127,18 +133,18 @@ const styles = StyleSheet.create({
     },
     title: {
         textAlign: 'center',
-        fontSize: 24
+        fontSize: scale(24)
     },
     subtitle: {
         textAlign: 'center',
-        fontSize: 20
+        fontSize: scale(20)
     },
     codeFieldRoot: {
         marginTop: 20,
     },
     cellRoot: {
-        width: 60,
-        height: 60,
+        width: scale(30),
+        height: scale(30),
         justifyContent: 'center',
         alignItems: 'center',
         borderBottomColor: '#ccc',
@@ -146,7 +152,7 @@ const styles = StyleSheet.create({
     },
     cellText: {
         color: '#000',
-        fontSize: 36,
+        fontSize: scale(30),
         textAlign: 'center',
     },
     focusCell: {

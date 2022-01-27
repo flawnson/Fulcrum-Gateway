@@ -68,11 +68,11 @@ export default function () {
             await response.json().then(
                 data => {
                     const userData = data.data.getUser
-                    const queueData = data.data.queue
+                    const queueData = data.data.getUser.queue
                     // If summoned is toggled true, immediately navigate to Summon Screen
                     if (userData.summoned) {navigation.navigate("SummonScreen")}
                     // Set the queue state
-                    setState(queueData.queue.state)
+                    setState(queueData.state)
                     // Calculate join time and get the minutes
                     userData.waited = calculateTimeToNow(userData.join_time).m
                     // Get the last digit to determine the index suffix

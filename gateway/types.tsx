@@ -26,7 +26,19 @@ export type HomeNavigationProps = NativeStackNavigationProp<RootStackParamList, 
 export type HomeScreenRouteProps = RouteProp<RootStackParamList, 'HomePage'>;
 
 
-export type UserStatsTypes = EnqueuedStats | ServicedStats | AbandonedStats
+// export type UserStats = EnqueuedStats | ServicedStats | AbandonedStats
+export type UserStats = {
+    userId: string,
+    name: string,
+    index?: undefined,  // Needed for UserCatalogCard
+    joinTime: string,
+    renegedTime?: string,
+    lastOnline?: string,
+    waited: number,
+    online?: boolean,  // Needed for UserCatalogCard
+    status: UserStatus
+}
+
 
 /*** ENQUEUED CATALOG PAGE TYPES ***/
 
@@ -47,12 +59,11 @@ export type EnqueuedStats = {
 export type ServicedStats = {
     userId: string,
     name: string,
-    index: undefined,
+    index: undefined,  // Needed for UserCatalogCard
     joinTime: string,
     renegedTime: string,
-    servicedTime: string,
     waited: number,
-    online: undefined,
+    online: undefined,  // Needed for UserCatalogCard
     status: UserStatus
 }
 
@@ -62,9 +73,11 @@ export type ServicedStats = {
 export type AbandonedStats = {
     userId: string,
     name: string,
-    index: undefined,
+    index: undefined,  // Needed for UserCatalogCard
+    joinTime: string,
+    renegedTime: string,
     waited: number,
-    online: undefined,
+    online: undefined,  // Needed for UserCatalogCard
     status: UserStatus
 }
 
@@ -75,7 +88,7 @@ export type QueueInfo = {
     queueId: string,
     name: string,
     create_time: string,
-    state: string,
+    state: QueueState,
 }
 
 
@@ -97,7 +110,7 @@ export type UserInfo = {
 
 export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"
 
-export type QueueState = "ACTIVE" | "PAUSED"
+export type QueueState = "ACTIVE" | "PAUSED" | "DELETED"
 
 export type PossibleInputTypes = 'keyboard' | 'picker'
 export type InputTypeMap = {

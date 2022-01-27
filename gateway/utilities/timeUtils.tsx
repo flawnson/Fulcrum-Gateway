@@ -45,9 +45,9 @@ export function useInputColors(highlighted: boolean) {
 
     const color = React.useMemo<string>(() => {
         if (highlighted && !theme.colors.dark) {
-            return theme.colors.primary["400"]
+            return theme.colors.primary[400]
         }
-        return theme.colors.darkText["400"]
+        return theme.colors.darkText[400]
     }, [highlighted, theme])
 
     return { backgroundColor, color }

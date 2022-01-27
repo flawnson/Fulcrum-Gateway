@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import EnqueuedCatalogCard from "../atoms/UserCatalogCard";
 import { Center } from "native-base";
 import { FlatList } from "react-native-gesture-handler"
 import { StyleSheet, Pressable, PressableStateCallbackType} from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {UserStatsTypes, EnqueuedStats, HomeScreenProps, ServicedStats} from "../../types";
-import EnqueuedMultiSelectButtons from "../../containers/EnqueuedMultiSelectButtons"
-import {UserStatus} from "../../types";
+import {UserStats, UserStatus, HomeScreenProps} from "../../types";
+import UserCatalogCard from "../atoms/UserCatalogCard";
+import CatalogCardMultiSelectButtons from "../../containers/CatalogCardMultiSelectButtons"
 import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 
 
-type EnqueuedStatsProps = {
-    entities: Array<UserStatsTypes>
-    setEntities: React.Dispatch<React.SetStateAction<UserStatsTypes[]>>
+type UserCatalogCardProps = {
+    entities: Array<UserStats>
+    setEntities: React.Dispatch<React.SetStateAction<UserStats[]>>
 }
 type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
 type ConditionalWrapperArgs = {
@@ -21,11 +20,11 @@ type ConditionalWrapperArgs = {
     children: any
 }
 
-export default function (props: EnqueuedStatsProps) {
+export default function (props: UserCatalogCardProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const parentNavigation = navigation.getParent()
     const [action, setAction] = useState<UserStatus | "SUMMONED">("ENQUEUED")
-    const [selectedItems, setSelectedItems] = useState<Array<UserStatsTypes["userId"]>>([])
+    const [selectedItems, setSelectedItems] = useState<Array<UserStats["userId"]>>([])
 
     function onActionPress(actionStatus: UserStatus | "SUMMONED") {
         setAction(actionStatus)
@@ -40,7 +39,7 @@ export default function (props: EnqueuedStatsProps) {
         }
     }, [selectedItems])
 
-    const handleOnPress = (item: UserStatsTypes) => {
+    const handleOnPress = (item: UserStats) => {
         if (selectedItems.length) {
             return selectItems(item)
         }
@@ -48,7 +47,7 @@ export default function (props: EnqueuedStatsProps) {
         // here you can add you code what do you want if user just do single tap
     }
 
-    const getSelected = (item: UserStatsTypes) => selectedItems.includes(item.userId)
+    const getSelected = (item: UserStats) => selectedItems.includes(item.userId)
 
     const deSelectItems = () => {
         setAction("ENQUEUED")
@@ -56,16 +55,16 @@ export default function (props: EnqueuedStatsProps) {
         navigation.setOptions({headerRight: undefined})
     }
 
-    const selectItems = (item: UserStatsTypes) => {
+    const selectItems = (item: UserStats) => {
         if (parentNavigation) {
             parentNavigation.setOptions({
-                headerRight: () => <EnqueuedMultiSelectButtons onActionPress={onActionPress}/>
+                headerRight: () => <CatalogCardMultiSelectButtons onActionPress={onActionPress}/>
             })
         }
 
         if (selectedItems.includes(item.userId)) {
             const newListItems = selectedItems.filter(
-                (listItem: UserStatsTypes["userId"]) => listItem !== item.userId,
+                (listItem: UserStats["userId"]) => listItem !== item.userId,
             )
             return setSelectedItems([...newListItems])
         }
@@ -88,8 +87,8 @@ export default function (props: EnqueuedStatsProps) {
                 <FlatList
                     data={props.entities}
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={({item}: {item: UserStatsTypes}) => {
-                        return <EnqueuedCatalogCard
+                    renderItem={({item}: {item: UserStats}) => {
+                        return <UserCatalogCard
                                     entities={props.entities}
                                     setEntities={props.setEntities}
                                     onPress={() => handleOnPress(item)}

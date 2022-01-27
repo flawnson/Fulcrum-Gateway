@@ -7,9 +7,7 @@ import {
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
 } from 'react-native'
-import { View, Text } from 'native-base'
-// import { Button, overlay, useTheme } from 'react-native-paper'
-import { Button, useTheme } from 'native-base'
+import { View, Text, Button, useTheme } from 'native-base'
 import TimePicker from '../components/organisms/TimePicker'
 import { Center } from "native-base";
 import { ClockTypeMap, PossibleClockTypes } from "../types";
@@ -119,16 +117,14 @@ export function TimePickerModal({
                             style={[
                                 styles.modalContent,
                                 {
-                                    // backgroundColor: theme.dark
-                                    //     ? overlay(10, theme.colors.surface)
-                                    //     : theme.colors.surface,
-                                    // borderRadius: theme.roundness,
+                                    backgroundColor: "white",
+                                    borderRadius: 3,
                                 },
                             ]}
                         >
                             <Center>
                                 <View style={styles.labelContainer}>
-                                    <Text style={[styles.label, { color: 'red' }]}>
+                                    <Text style={[styles.label, { color: 'black' }]}>
                                         {uppercase ? label.toUpperCase() : label}
                                     </Text>
                                 </View>
@@ -146,14 +142,22 @@ export function TimePickerModal({
                             <Center>
                                 <View style={styles.bottom}>
                                     <View style={styles.fill} />
-                                    <Button onPress={onDismiss} >{cancelLabel}</Button>
-                                    <Button
-                                        onPress={() =>
-                                            onConfirm({ hours: localHours, minutes: localMinutes })
-                                        }
-                                    >
-                                        {confirmLabel}
-                                    </Button>
+                                    <Button.Group>
+                                        <Button onPress={onDismiss} >
+                                            <Text style={{color: "white"}}>
+                                                {cancelLabel}
+                                            </Text>
+                                        </Button>
+                                        <Button
+                                            onPress={() =>
+                                                onConfirm({ hours: localHours, minutes: localMinutes })
+                                            }
+                                        >
+                                            <Text style={{color: "white"}}>
+                                                {confirmLabel}
+                                            </Text>
+                                        </Button>
+                                    </Button.Group>
                                 </View>
                             </Center>
                         </Animated.View>
