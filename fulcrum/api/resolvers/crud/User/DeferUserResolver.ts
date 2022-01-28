@@ -15,6 +15,7 @@ import * as helpers from "../../../helpers";
 import { userAccessPermission } from "../../../middleware/userAccessPermission";
 import { Error } from "../../../types";
 import { errors } from "../../../constants";
+import { UserStatus } from '@prisma/client'
 
 @ArgsType()
 class TimeDeferUserArgs {
@@ -103,7 +104,8 @@ export class DeferUserResolver {
                 },
                 select: {
                   id: true,
-                  index: true
+                  index: true,
+                  status: true
                 }
               }
             }
@@ -138,6 +140,9 @@ export class DeferUserResolver {
         swapUserIndex = allUsers[allUsers.length - 1].index;
       }
 
+      // update the deferred user's status
+      allUsers[deferUserIndex - 1].status = UserStatus.DEFERRED;
+
       // swap index
       allUsers[deferUserIndex - 1].index = swapUserIndex;
       allUsers[swapUserIndex - 1].index = deferUserIndex;
@@ -154,7 +159,8 @@ export class DeferUserResolver {
             id: allUsers[u].id
           },
           data: {
-            index: allUsers[u].index
+            index: allUsers[u].index,
+            status: allUsers[u].status
           }
         });
       }
@@ -257,6 +263,9 @@ export class DeferUserResolver {
       }
 
       let deferredUser = allUsers[deferUserIndex - 1];
+      // update the deferred user's status
+      allUsers[deferUserIndex - 1].status = UserStatus.DEFERRED;
+      
       // bump up the rest of the users
       for (let i = deferUserIndex; i < swapIndex; i++){
         allUsers[i - 1] = allUsers[i];
@@ -273,7 +282,8 @@ export class DeferUserResolver {
             id: allUsers[u].id
           },
           data: {
-            index: allUsers[u].index
+            index: allUsers[u].index,
+            status: allUsers[u].status
           }
         });
       }
