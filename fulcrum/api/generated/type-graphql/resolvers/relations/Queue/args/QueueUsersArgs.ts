@@ -35,5 +35,5 @@ export class QueueUsersArgs {
   @TypeGraphQL.Field(_type => [UserScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "name" | "summoned" | "phone_number" | "party_size" | "last_online" | "index" | "join_time" | "reneged_time" | "total_wait" | "status" | "summoned_time" | "queue_id"> | undefined;
+  distinct?: Array<"id" | "name" | "summoned" | "phone_number" | "party_size" | "last_online" | "index" | "join_time" | "finish_time" | "status" | "summoned_time" | "queue_id"> | undefined;
 }

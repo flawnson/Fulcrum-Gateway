@@ -7,7 +7,6 @@ import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { DateTimeNullableFilter } from "../inputs/DateTimeNullableFilter";
 import { EnumUserStatusFilter } from "../inputs/EnumUserStatusFilter";
 import { IntFilter } from "../inputs/IntFilter";
-import { IntNullableFilter } from "../inputs/IntNullableFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
@@ -73,12 +72,7 @@ export class UserScalarWhereInput {
   @TypeGraphQL.Field(_type => DateTimeNullableFilter, {
     nullable: true
   })
-  reneged_time?: DateTimeNullableFilter | undefined;
-
-  @TypeGraphQL.Field(_type => IntNullableFilter, {
-    nullable: true
-  })
-  total_wait?: IntNullableFilter | undefined;
+  finish_time?: DateTimeNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => EnumUserStatusFilter, {
     nullable: true

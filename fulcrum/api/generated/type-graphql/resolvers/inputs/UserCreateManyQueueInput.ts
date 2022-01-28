@@ -51,12 +51,7 @@ export class UserCreateManyQueueInput {
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
   })
-  reneged_time?: Date | undefined;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
-  })
-  total_wait?: number | undefined;
+  finish_time?: Date | undefined;
 
   @TypeGraphQL.Field(_type => UserStatus, {
     nullable: true

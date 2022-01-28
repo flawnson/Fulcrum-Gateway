@@ -3,6 +3,7 @@ import { QueueState, UserStatus } from "@prisma/client";
 const nowDate = new Date()
 const pastDate = new Date(nowDate.setDate(nowDate.getDate() - 1))
 const futureDate = new Date(nowDate.setDate(nowDate.getDate() + 1))
+const futureDate2 = new Date(futureDate.getTime()+(30*60*1000)); // add 30 minutes
 
 export let user_table = [
   {
@@ -14,8 +15,10 @@ export let user_table = [
     last_online: nowDate,
     index: 0,
     join_time: pastDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
-    reneged_time: futureDate,
+    //total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    summoned: true,
+    summoned_time: futureDate,
+    finish_time: futureDate2,
     status: UserStatus.SERVICED
   },
   {
@@ -52,9 +55,9 @@ export let user_table = [
     last_online: nowDate,
     index: 0,
     join_time: pastDate,
-    summoned_time: nowDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
-    reneged_time: futureDate,
+    summoned_time: futureDate,
+    //total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    finish_time: futureDate2,
     status: UserStatus.SERVICED
   },
   {
@@ -67,9 +70,8 @@ export let user_table = [
     last_online: nowDate,
     index: 0,
     join_time: pastDate,
-    summoned_time: nowDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
-    reneged_time: futureDate,
+    summoned_time: futureDate,
+    finish_time: futureDate2,
     status: UserStatus.SERVICED
   },
   {
@@ -81,8 +83,7 @@ export let user_table = [
     last_online: nowDate,
     index: 0,
     join_time: pastDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
-    reneged_time: futureDate,
+    finish_time: futureDate2,
     status: UserStatus.ABANDONED
   },
   {
@@ -131,9 +132,8 @@ export let user_table = [
     last_online: nowDate,
     index: 0,
     join_time: pastDate,
-    summoned_time: nowDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
-    reneged_time: futureDate,
+    summoned_time: futureDate,
+    finish_time: futureDate2,
     status: UserStatus.SERVICED
   },
   {
@@ -146,9 +146,8 @@ export let user_table = [
     last_online: nowDate,
     index: 0,
     join_time: pastDate,
-    summoned_time: nowDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
-    reneged_time: futureDate,
+    summoned_time: futureDate,
+    finish_time: futureDate2,
     status: UserStatus.SERVICED
   },
   {
@@ -160,8 +159,7 @@ export let user_table = [
     last_online: nowDate,
     index: 0,
     join_time: pastDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
-    reneged_time: futureDate,
+    finish_time: futureDate2,
     status: UserStatus.ABANDONED
   },
   {
@@ -173,8 +171,7 @@ export let user_table = [
     last_online: nowDate,
     index: 0,
     join_time: pastDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
-    reneged_time: futureDate,
+    finish_time: futureDate2,
     status: UserStatus.ABANDONED
   },
   {
@@ -197,8 +194,9 @@ export let user_table = [
     last_online: nowDate,
     index: 0,
     join_time: pastDate,
-    total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
-    reneged_time: futureDate,
+    summoned_time: futureDate,
+    //total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    finish_time: futureDate2,
     status: UserStatus.SERVICED
   },
   {
@@ -221,8 +219,9 @@ export let user_table = [
     last_online: nowDate,
     index: 0,
     join_time: pastDate,
-    total_wait: 5000,
-    reneged_time: futureDate,
+    summoned_time: futureDate,
+    //total_wait: parseInt("" + ((nowDate.valueOf() - pastDate.valueOf()) / 1000)),
+    finish_time: futureDate2,
     status: UserStatus.SERVICED
   },
   {

@@ -20,19 +20,16 @@ export async function updateUserStatus(userId: string, newStatus: UserStatus){
         // total_wait = time of leave - join_time (in seconds)
         const leaveTime = new Date();
         const joinTime = user.join_time;
-        const totalWait = parseInt("" + ((leaveTime.valueOf() - joinTime.valueOf()) / 1000));
+        // const totalWait = parseInt("" + ((leaveTime.valueOf() - joinTime.valueOf()) / 1000));
 
-        // set user's index to 0 as a default value
-        // also set summoned to false, summoned_time to null
+        // set user's index to 0 as a default value        
         const updateUser = await prisma.user.update({
           where: {
             id: userId
           },
           data: {
             status: newStatus,
-            total_wait: totalWait,
-            summoned: false,
-            summoned_time: null,
+            finish_time: leaveTime,
             index: 0
           }
         });
