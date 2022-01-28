@@ -16,10 +16,17 @@ export async function calculateAverageWait(queueId: string){
   let numUsersCount = 0;
   for (let i = 0; i < results.users.length; i++){
     if (results.users[i] != null){
-      if (results.users[i].total_wait != null){
-        averageWaitTime += results.users[i].total_wait!; // possibly null if no "!" is used
+      if (results.users[i].finish_time != null){
+        // get total time taken
+        const totalWait = parseInt("" + ((results.users[i].finish_time!.valueOf() - results.users[i].join_time.valueOf()) / 1000))
+        averageWaitTime += totalWait;
         numUsersCount++;
       }
+
+      // if (results.users[i].total_wait != null){
+      //   averageWaitTime += results.users[i].total_wait!; // possibly null if no "!" is used
+      //   numUsersCount++;
+      // }
     }
   }
 

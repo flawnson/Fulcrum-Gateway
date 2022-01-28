@@ -9,8 +9,7 @@ export enum UserScalarFieldEnum {
   last_online = "last_online",
   index = "index",
   join_time = "join_time",
-  reneged_time = "reneged_time",
-  total_wait = "total_wait",
+  finish_time = "finish_time",
   status = "status",
   summoned_time = "summoned_time",
   queue_id = "queue_id"

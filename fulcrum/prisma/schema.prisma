@@ -51,8 +51,7 @@ model User {
   last_online   DateTime?
   index         Int        @default(0)
   join_time     DateTime   @default(now())
-  reneged_time  DateTime?
-  total_wait    Int?
+  finish_time   DateTime?
   /// @TypeGraphQL.omit(output: true)
   status        UserStatus @default(UNVERIFIED)
   summoned_time DateTime?

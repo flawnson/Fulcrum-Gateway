@@ -52,12 +52,7 @@ export class User {
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
   })
-  reneged_time?: Date | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
-  })
-  total_wait?: number | null;
+  finish_time?: Date | null;
 
   status?: "UNVERIFIED" | "KICKED" | "ENQUEUED" | "SERVICED" | "DEFERRED" | "ABANDONED" | "NOSHOW";
 
