@@ -76,4 +76,49 @@ export class SummonUserResolver {
 
     return null;
   }
+
+  @Authorized(["ORGANIZER", "ASSISTANT"])
+  @UseMiddleware(userAccessPermission)
+  @Mutation(returns => User, {
+    nullable: true
+  })
+  async unsummon(@Ctx() ctx: Context, @Args() args: SummonUserArgs): Promise<User | null> {
+
+    // check if user is ENQUEUED
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: args.userId
+      },
+      include: {
+        queue: true
+      }
+    });
+
+    if (user != null) {
+      if (user.status == "ENQUEUED" || user.status == "DEFERRED") {
+
+        const currentTime = new Date();
+        // unsummon user
+        const setSummoned = await ctx.prisma.user.update({
+          where: {
+            id: args.userId
+          },
+          data: {
+            summoned_time: null,
+            summoned: false
+          }
+        });
+
+        return setSummoned;
+      }
+      else {
+        console.log("User with id " + args.userId + " is not ENQUEUED/DEFERRED status. Can't be unsummoned. ");
+      }
+    }
+    else {
+      console.log("User with id " + args.userId + " does not exist");
+    }
+
+    return null;
+  }
 }
