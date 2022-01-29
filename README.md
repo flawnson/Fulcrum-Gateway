@@ -86,6 +86,7 @@ TWILIO_AUTH_TOKEN="twilio auth token"
 TWILIO_PHONE_NUMBER="phone number used to send out SMS"
 REDIS_IP="ip for redis, for local it's just 127.0.0.1"
 REDIS_PORT"port for redis, for local (and most cases) it's just 6379"
+REDIS_URL="the redis connection url used in ioredis (locally is: redis://:@127.0.0.1:6379)"
 ```
 
 and run node (Before you actually run though you'll want to set up the database in the following section):
