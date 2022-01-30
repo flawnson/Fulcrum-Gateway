@@ -278,7 +278,7 @@ function applyTypeClassEnhanceConfig<
 const modelsInfo = {
   Organizer: ["id", "name", "email"],
   Queue: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "organizer_id"],
-  User: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "summoned_time", "queue_id"]
+  User: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "summoned_time", "queue_id"]
 };
 
 type ModelNames = keyof typeof models;
@@ -322,7 +322,7 @@ const outputsInfo = {
   AggregateQueue: ["_count", "_avg", "_sum", "_min", "_max"],
   QueueGroupBy: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "organizer_id", "_count", "_avg", "_sum", "_min", "_max"],
   AggregateUser: ["_count", "_avg", "_sum", "_min", "_max"],
-  UserGroupBy: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id", "_count", "_avg", "_sum", "_min", "_max"],
+  UserGroupBy: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id", "_count", "_avg", "_sum", "_min", "_max"],
   AffectedRowsOutput: ["count"],
   OrganizerCount: ["queues"],
   OrganizerCountAggregate: ["id", "name", "email", "password", "confirmed", "_all"],
@@ -334,11 +334,11 @@ const outputsInfo = {
   QueueSumAggregate: ["capacity", "max_party_size", "grace_period", "offline_time"],
   QueueMinAggregate: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "organizer_id"],
   QueueMaxAggregate: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "organizer_id"],
-  UserCountAggregate: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id", "_all"],
-  UserAvgAggregate: ["party_size", "index", "total_wait"],
-  UserSumAggregate: ["party_size", "index", "total_wait"],
-  UserMinAggregate: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id"],
-  UserMaxAggregate: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id"]
+  UserCountAggregate: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id", "_all"],
+  UserAvgAggregate: ["party_size", "index"],
+  UserSumAggregate: ["party_size", "index"],
+  UserMinAggregate: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id"],
+  UserMaxAggregate: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id"]
 };
 
 type OutputTypesNames = keyof typeof outputTypes;
@@ -389,11 +389,11 @@ const inputsInfo = {
   QueueWhereUniqueInput: ["id", "join_code"],
   QueueOrderByWithAggregationInput: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "organizer_id", "_count", "_avg", "_max", "_min", "_sum"],
   QueueScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "organizer_id"],
-  UserWhereInput: ["AND", "OR", "NOT", "id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id", "queue"],
-  UserOrderByWithRelationInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id", "queue"],
+  UserWhereInput: ["AND", "OR", "NOT", "id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id", "queue"],
+  UserOrderByWithRelationInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id", "queue"],
   UserWhereUniqueInput: ["id", "phone_number"],
-  UserOrderByWithAggregationInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id", "_count", "_avg", "_max", "_min", "_sum"],
-  UserScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id"],
+  UserOrderByWithAggregationInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id", "_count", "_avg", "_max", "_min", "_sum"],
+  UserScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id"],
   OrganizerCreateInput: ["id", "name", "email", "password", "confirmed", "queues"],
   OrganizerUpdateInput: ["id", "name", "email", "password", "confirmed", "queues"],
   OrganizerCreateManyInput: ["id", "name", "email", "password", "confirmed"],
@@ -402,10 +402,10 @@ const inputsInfo = {
   QueueUpdateInput: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "users", "organizer"],
   QueueCreateManyInput: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "organizer_id"],
   QueueUpdateManyMutationInput: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password"],
-  UserCreateInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue"],
-  UserUpdateInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue"],
-  UserCreateManyInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id"],
-  UserUpdateManyMutationInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time"],
+  UserCreateInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue"],
+  UserUpdateInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue"],
+  UserCreateManyInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id"],
+  UserUpdateManyMutationInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time"],
   StringFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "mode", "not"],
   BoolFilter: ["equals", "not"],
   QueueListRelationFilter: ["every", "some", "none"],
@@ -435,11 +435,11 @@ const inputsInfo = {
   DateTimeNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
   EnumUserStatusFilter: ["equals", "in", "notIn", "not"],
   QueueRelationFilter: ["is", "isNot"],
-  UserCountOrderByAggregateInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id"],
-  UserAvgOrderByAggregateInput: ["party_size", "index", "total_wait"],
-  UserMaxOrderByAggregateInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id"],
-  UserMinOrderByAggregateInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id"],
-  UserSumOrderByAggregateInput: ["party_size", "index", "total_wait"],
+  UserCountOrderByAggregateInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id"],
+  UserAvgOrderByAggregateInput: ["party_size", "index"],
+  UserMaxOrderByAggregateInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id"],
+  UserMinOrderByAggregateInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id"],
+  UserSumOrderByAggregateInput: ["party_size", "index"],
   StringNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "mode", "not", "_count", "_min", "_max"],
   DateTimeNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_min", "_max"],
   EnumUserStatusWithAggregatesFilter: ["equals", "in", "notIn", "not", "_count", "_min", "_max"],
@@ -487,7 +487,7 @@ const inputsInfo = {
   QueueUpdateWithWhereUniqueWithoutOrganizerInput: ["where", "data"],
   QueueUpdateManyWithWhereWithoutOrganizerInput: ["where", "data"],
   QueueScalarWhereInput: ["AND", "OR", "NOT", "id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "organizer_id"],
-  UserCreateWithoutQueueInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time"],
+  UserCreateWithoutQueueInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time"],
   UserCreateOrConnectWithoutQueueInput: ["where", "create"],
   UserCreateManyQueueInputEnvelope: ["data", "skipDuplicates"],
   OrganizerCreateWithoutQueuesInput: ["id", "name", "email", "password", "confirmed"],
@@ -495,7 +495,7 @@ const inputsInfo = {
   UserUpsertWithWhereUniqueWithoutQueueInput: ["where", "update", "create"],
   UserUpdateWithWhereUniqueWithoutQueueInput: ["where", "data"],
   UserUpdateManyWithWhereWithoutQueueInput: ["where", "data"],
-  UserScalarWhereInput: ["AND", "OR", "NOT", "id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time", "queue_id"],
+  UserScalarWhereInput: ["AND", "OR", "NOT", "id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time", "queue_id"],
   OrganizerUpsertWithoutQueuesInput: ["update", "create"],
   OrganizerUpdateWithoutQueuesInput: ["id", "name", "email", "password", "confirmed"],
   QueueCreateWithoutUsersInput: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "organizer"],
@@ -504,8 +504,8 @@ const inputsInfo = {
   QueueUpdateWithoutUsersInput: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "organizer"],
   QueueCreateManyOrganizerInput: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password"],
   QueueUpdateWithoutOrganizerInput: ["id", "join_code", "name", "address", "state", "capacity", "max_party_size", "grace_period", "offline_time", "create_time", "password", "users"],
-  UserCreateManyQueueInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time"],
-  UserUpdateWithoutQueueInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "reneged_time", "total_wait", "status", "summoned_time"]
+  UserCreateManyQueueInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time"],
+  UserUpdateWithoutQueueInput: ["id", "name", "summoned", "phone_number", "party_size", "last_online", "index", "join_time", "finish_time", "status", "summoned_time"]
 };
 
 type InputTypesNames = keyof typeof inputTypes;

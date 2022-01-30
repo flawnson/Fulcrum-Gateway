@@ -16,9 +16,4 @@ export class UserSumAggregate {
     nullable: true
   })
   index!: number | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
-  })
-  total_wait!: number | null;
 }
