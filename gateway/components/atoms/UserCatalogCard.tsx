@@ -99,7 +99,7 @@ export default function (props: UserCatalogCardProps) {
     const onChangeStatus = (status: UserStatus) => {
         props.entities.find(user => user.userId === props.entity.userId)!.status = status
         changeUserStatus(status).then()
-        if (status === "KICKED"){
+        if (status === "KICKED") {
             setShowConfirmDeleteModal(true)
             props.setEntities(
                 [...props.entities.filter(user => user.userId !== props.entity.userId)]

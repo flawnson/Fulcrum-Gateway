@@ -22,6 +22,8 @@ type QueuesCatalogProps = {
     onLongPress: (event?: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => void,
     deSelectItems: () => void,
     selected: boolean,
+    showConfirmDeleteAlert: boolean
+    setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>
     entity: QueueInfo
 }
 
@@ -30,7 +32,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: QueuesCatalogProps) {
     const [queueState, setQueueState] = useState<QueueState>(props.entity.state)
-    const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState<boolean>(false)
+    // const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState<boolean>(false)
     const swipeableRef = useRef(null)
 
     const pauseQuery = `
@@ -77,17 +79,17 @@ export default function (props: QueuesCatalogProps) {
 
     const onChangeState = (state: QueueState) => {
         props.entities.find(user => user.queueId === props.entity.queueId)!.state = state
-        changeQueueState(state).then()
-        if (state === "DELETED"){
-            setShowConfirmDeleteModal(true)
-            props.setEntities(
-                [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
-            )
-        } else if (state === "PAUSED") {
-            // @ts-ignore
-            swipeableRef?.current?.close()
-            setQueueState(queueState === "PAUSED" ? "ACTIVE" : "PAUSED")
-        }
+        // changeQueueState(state).then()
+        props.setShowConfirmDeleteAlert(true)
+        // if (state === "DELETED"){
+        //     props.setEntities(
+        //         [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
+        //     )
+        // } else if (state === "PAUSED") {
+        //     // @ts-ignore
+        //     swipeableRef?.current?.close()
+        //     setQueueState(queueState === "PAUSED" ? "ACTIVE" : "PAUSED")
+        // }
     }
 
     const [timeLeft, setTimeLeft] = useState<object>(calculateTimeToNow(props.entity.create_time))
@@ -140,7 +142,7 @@ export default function (props: QueuesCatalogProps) {
 
     return (
         <>
-            <ConfirmDeleteAlert showAlert={showConfirmDeleteModal} setShowAlert={setShowConfirmDeleteModal}/>
+            <ConfirmDeleteAlert showAlert={props.showConfirmDeleteAlert} setShowAlert={props.setShowConfirmDeleteAlert}/>
             <Swipeable
                 ref={swipeableRef}
                 renderLeftActions={renderLeftActions}

@@ -1,5 +1,5 @@
 import React, {SetStateAction, useEffect, useState} from "react"
-import ActiveQueuesCatalogCardGroup from "../components/molecules/QueuesCatalogCardGroup"
+import QueuesCatalogCardGroup from "../components/molecules/QueuesCatalogCardGroup"
 import {Fab, Icon} from "native-base"
 import {AntDesign} from "@expo/vector-icons"
 import {useIsFocused, useNavigation} from "@react-navigation/native";
@@ -7,12 +7,21 @@ import {HomeScreenProps, QueueInfo} from "../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
 import useInterval from "../utilities/useInterval";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
+import ConfirmDeleteAlert from "../containers/ConfirmDeleteAlert";
+
+
+type QueuesPageProps = {
+    queueInfo: QueueInfo[],
+    showConfirmDeleteAlert: boolean
+    setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const [props, setProps] = useState<QueueInfo[]>([])
+    const [props, setProps] = useState<QueuesPageProps["queueInfo"]>([])
     const [showCreateQueueModal, setShowCreateQueueModal] = useState(false);
+    const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<boolean>(false)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     const query = `
@@ -58,12 +67,17 @@ export default function () {
 
     // Run on first render
     useEffect(() => {fetchQueuesData().then(null)}, [])
-    // Poll only if user is currently on this screen
-    useInterval(fetchQueuesData, useIsFocused() ? 15000 : null)
+    // Poll only if user is currently on this screen and alert is not shown (to prevent flickering)
+    useInterval(fetchQueuesData, useIsFocused() && !showConfirmDeleteAlert ? 5000 : null)
 
     return (
         <>
-            <ActiveQueuesCatalogCardGroup entities={props} setEntities={setProps}/>
+            <QueuesCatalogCardGroup
+                entities={props}
+                setEntities={setProps}
+                showConfirmDeleteAlert={showConfirmDeleteAlert}
+                setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
+            />
             <Fab
                 onPress={() => setShowCreateQueueModal(!showCreateQueueModal)}
                 position="absolute"
@@ -72,6 +86,7 @@ export default function () {
                 renderInPortal={useIsFocused()}
             />
             <CreateQueueModal showModal={showCreateQueueModal} setShowModal={setShowCreateQueueModal} />
+            <ConfirmDeleteAlert showAlert={showConfirmDeleteAlert} setShowAlert={setShowConfirmDeleteAlert}/>
         </>
     )
 }

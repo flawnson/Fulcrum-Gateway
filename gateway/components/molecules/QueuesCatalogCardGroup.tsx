@@ -13,6 +13,8 @@ import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 type QueuesStatsProps = {
     entities: QueueInfo[]
     setEntities: React.Dispatch<React.SetStateAction<QueueInfo[]>>
+    showConfirmDeleteAlert: boolean
+    setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
@@ -28,7 +30,6 @@ export default function (props: QueuesStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [action, setAction] = useState<QueueState>("ACTIVE")
     const [paused, setPaused] = useState<boolean>(true)
-    const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState<boolean>(false)
     const [selectedItems, setSelectedItems] = useState<Array<QueueInfo["queueId"]>>([])
 
     useEffect(() => {
@@ -135,7 +136,6 @@ export default function (props: QueuesStatsProps) {
     return (
         props.entities.length === 0 ? <NothingToSeeScreen /> :
             <Center>
-                <ConfirmDeleteAlert showAlert={showConfirmDeleteModal} setShowAlert={setShowConfirmDeleteModal}/>
                 <ConditionalWrapper
                     condition={selectedItems.length}
                     wrapper={(children: Children) => <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>{children}</Pressable>}
@@ -151,6 +151,8 @@ export default function (props: QueuesStatsProps) {
                                 onLongPress={() => selectItems(item)}
                                 deSelectItems={deSelectItems}
                                 selected={getSelected(item)}
+                                showConfirmDeleteAlert={props.showConfirmDeleteAlert}
+                                setShowConfirmDeleteAlert={props.setShowConfirmDeleteAlert}
                                 entity={item}/>
                             }
                         }
