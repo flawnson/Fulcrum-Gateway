@@ -78,6 +78,24 @@ app.use(
     })
 )
 
+// app.use(
+//     session({
+//       name: 'fiefoe_cookie',
+//       store: new RedisStore({
+//         client: redis,
+//         disableTouch: true,
+//       }),
+//       cookie: {
+//         maxAge: 10000000000, //long time
+//         secure: true,
+//         httpOnly: true
+//       },
+//       saveUninitialized: false,
+//       secret: process.env.SESSION_SECRET, //you would want to hide this in production
+//       resave: false
+//     })
+// )
+
 app.get('/', (req, res) => {
   res.redirect('/api')
 })

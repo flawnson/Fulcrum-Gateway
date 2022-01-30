@@ -70,6 +70,26 @@ const CreateUserResult = createUnionType({
   }
 });
 
+async function generateSMS(phoneNumber: string, userId: string){
+  // generate 6 digit verification code
+  let confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
+  //check if this verification code is already in use by another user
+  while (true) {
+    const checkCode = await redis.get(confirmCode);
+    if (checkCode) {
+      console.log("Code " + confirmCode + " already exists, generating new one");
+      // already exists, generate new code
+      confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
+    }
+    else {
+      break;
+    }
+  }
+  // save code to redis
+  await redis.set(confirmUserPrefix + confirmCode, userId, "ex", 60 * 60 * 0.5); // 0.5 hour expiration
+  // send SMS here
+  await sendSMS(phoneNumber, confirmCode + " is your Fiefoe verification code.", "Confirm");
+}
 
 @Resolver()
 export class CreateUserResolver {
@@ -147,9 +167,9 @@ export class CreateUserResolver {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
           // The .code property can be accessed in a type-safe manner
           if (e.code === 'P2002') {
-            console.log('Cannot join: Phone number ' + args.phoneNumber + ' is taken.');
+            console.log('Cannot create: Phone number ' + args.phoneNumber + ' is taken.');
             let error = {
-              error: errors.PHONE_NUMBER_NOT_UNIQUE
+              error: errors.USER_ALREADY_EXISTS
             };
             return error;
           }
@@ -210,55 +230,48 @@ export class CreateUserResolver {
       const currentTime = new Date();
       const queueId = result.id;
 
-      try {
-        // create a new user (by default unverified)
-        const createUser = await prisma.user.create({
-          data: {
-            name: args.name,
-            queue_id: queueId,
-            phone_number: args.phoneNumber,
-            join_time: currentTime,
-            index: index
-          }
-        });
-
-        // generate a verification code
-        if (createUser != null){
-          // generate 6 digit verification code
-          let confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
-          //check if this verification code is already in use by another user
-          while (true) {
-            const checkCode = await redis.get(confirmCode);
-            if (checkCode) {
-              console.log("Code " + confirmCode + " already exists, generating new one");
-              // already exists, generate new code
-              confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
-            }
-            else {
-              break;
-            }
-          }
-          // save code to redis
-          await redis.set(confirmUserPrefix + confirmCode, createUser.id, "ex", 60 * 60 * 0.5); // 0.5 hour expiration
-          // send SMS here
-          await sendSMS(args.phoneNumber, confirmCode + " is your Fiefoe verification code.", "Confirm");
+      // check existing user
+      const existingUser = await prisma.user.findUnique({
+        where: {
+          phone_number: args.phoneNumber
         }
-        return createUser;
+      });
 
-      } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-          // The .code property can be accessed in a type-safe manner
-          if (e.code === 'P2002') {
-            console.log('Cannot join: Phone number ' + args.phoneNumber + ' is taken.');
-            let error = {
-              error: errors.PHONE_NUMBER_NOT_UNIQUE
-            };
-            return error;
-          }
+      // if already exists and UNVERIFIED
+      if (existingUser){
+        if (existingUser.status == "UNVERIFIED"){
+          console.log('Phone number ' + args.phoneNumber + ' is already taken. User not verified, resending verification code if user exists.');
+          await generateSMS(args.phoneNumber, existingUser.id);
+          return existingUser;
         }
-        throw e;
+        console.log('Phone number ' + args.phoneNumber + ' is already taken. User is already verified and in queue.');
+        let error = {
+          error: errors.USER_ALREADY_EXISTS
+        };
+        return error;
       }
 
+      // create a new user (by default unverified)
+      const createUser = await prisma.user.create({
+        data: {
+          name: args.name,
+          queue_id: queueId,
+          phone_number: args.phoneNumber,
+          join_time: currentTime,
+          index: index
+        }
+      });
+
+      // generate a verification code
+      if (createUser != null){
+        await generateSMS(args.phoneNumber, createUser.id);
+      }
+      else {
+        console.log("Can't send verification SMS: User account failed to create. ")
+      }
+
+
+      return createUser;
 
     })
   }

@@ -41,10 +41,9 @@ const userEnhanceConfig: ModelConfig<"User"> = {
     last_online: [Authorized(["ORGANIZER", "ASSISTANT"])],
     index: [Authorized()],
     join_time: [Authorized()],
-    reneged_time: [Authorized(["ORGANIZER", "ASSISTANT"])],
     queue_id: [Authorized(["ORGANIZER", "ASSISTANT"])],
     queue: [Authorized()],
-    total_wait: [Authorized(["ORGANIZER", "ASSISTANT"])],
+    finish_time: [Authorized(["ORGANIZER", "ASSISTANT"])],
     summoned_time: [Authorized()]
   }
 };

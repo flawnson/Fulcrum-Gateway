@@ -16,9 +16,4 @@ export class UserAvgAggregate {
     nullable: true
   })
   index!: number | null;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
-  })
-  total_wait!: number | null;
 }
