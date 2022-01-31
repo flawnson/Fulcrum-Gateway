@@ -22,8 +22,8 @@ type QueuesCatalogProps = {
     onLongPress: (event?: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => void,
     deSelectItems: () => void,
     selected: boolean,
-    showConfirmDeleteAlert: boolean
-    setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>
+    showConfirmDeleteAlert: {show: boolean, callback: Function}
+    setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<any>>
     entity: QueueInfo
 }
 
@@ -79,17 +79,21 @@ export default function (props: QueuesCatalogProps) {
 
     const onChangeState = (state: QueueState) => {
         props.entities.find(user => user.queueId === props.entity.queueId)!.state = state
-        // changeQueueState(state).then()
-        props.setShowConfirmDeleteAlert(true)
-        // if (state === "DELETED"){
-        //     props.setEntities(
-        //         [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
-        //     )
-        // } else if (state === "PAUSED") {
-        //     // @ts-ignore
-        //     swipeableRef?.current?.close()
-        //     setQueueState(queueState === "PAUSED" ? "ACTIVE" : "PAUSED")
-        // }
+        if (state === "DELETED"){
+            props.setShowConfirmDeleteAlert(
+                {
+                    show: true,
+                    callback: () => props.setEntities(
+                        [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
+                    )
+                }
+            )
+        } else if (state === "PAUSED") {
+            // @ts-ignore
+            swipeableRef?.current?.close()
+            setQueueState(queueState === "PAUSED" ? "ACTIVE" : "PAUSED")
+        }
+        changeQueueState(state).then()
     }
 
     const [timeLeft, setTimeLeft] = useState<object>(calculateTimeToNow(props.entity.create_time))

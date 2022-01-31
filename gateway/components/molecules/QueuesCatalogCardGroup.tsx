@@ -13,8 +13,8 @@ import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 type QueuesStatsProps = {
     entities: QueueInfo[]
     setEntities: React.Dispatch<React.SetStateAction<QueueInfo[]>>
-    showConfirmDeleteAlert: boolean
-    setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>
+    showConfirmDeleteAlert: {show: boolean, callback: Function},
+    setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<any>>
 }
 
 type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
@@ -29,7 +29,7 @@ type ConditionalWrapperArgs = {
 export default function (props: QueuesStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [action, setAction] = useState<QueueState>("ACTIVE")
-    const [paused, setPaused] = useState<boolean>(true)
+    // const [paused, setPaused] = useState<boolean>(true)
     const [selectedItems, setSelectedItems] = useState<Array<QueueInfo["queueId"]>>([])
 
     useEffect(() => {
@@ -77,18 +77,23 @@ export default function (props: QueuesStatsProps) {
 
     const onChangeState = (state: QueueState) => {
         if (state === "DELETED"){
-            console.log([...props.entities.filter(queue => !selectedItems.includes(queue.queueId))])
-            props.setEntities(
-                [...props.entities.filter(queue => !selectedItems.includes(queue.queueId))]
+            props.setShowConfirmDeleteAlert(
+                {
+                    show: true,
+                    callback: () => {
+                        props.setEntities(
+                            [...props.entities.filter(queue => !selectedItems.includes(queue.queueId))]
+                        )
+                        for (const selectedItem of selectedItems) {
+                            props.entities.find(user => user.queueId === selectedItem)!.state = state
+                            changeQueueState(selectedItem, state).then()
+                        }
+                    }
+                }
             )
-            // setShowConfirmDeleteModal(true)
         } else if (state === "PAUSED") {
-            setPaused(!paused)
-        }
-        deSelectItems()
-        for (const selectedItem of selectedItems) {
-            props.entities.find(user => user.queueId === selectedItem)!.state = state
-            changeQueueState(selectedItem, state).then()
+            // setPaused(!paused)
+            deSelectItems()
         }
     }
 

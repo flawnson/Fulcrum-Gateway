@@ -20,8 +20,8 @@ type QueuesPageProps = {
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [props, setProps] = useState<QueuesPageProps["queueInfo"]>([])
-    const [showCreateQueueModal, setShowCreateQueueModal] = useState(false);
-    const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<boolean>(false)
+    const [showCreateQueueModal, setShowCreateQueueModal] = useState<boolean>(false);
+    const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     const query = `

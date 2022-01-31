@@ -10,7 +10,6 @@ export let user_table = [
     id: "user17",
     name: "Spongebob Squarepants",
     queue_id: "costco_queue2",
-    summoned: false,
     phone_number: "49385772365",
     party_size: 1,
     last_online: nowDate,
