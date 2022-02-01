@@ -18,6 +18,11 @@ class SummonUserArgs {
     nullable: false
   })
   userId!: string;
+
+  @Field({
+    nullable: false
+  })
+  summoned!: boolean;
 }
 
 
@@ -29,7 +34,7 @@ export class SummonUserResolver {
   @Mutation(returns => User, {
     nullable: true
   })
-  async summon(@Ctx() ctx: Context, @Args() args: SummonUserArgs): Promise<User | null> {
+  async toggleSummon(@Ctx() ctx: Context, @Args() args: SummonUserArgs): Promise<User | null> {
 
     // check if user is ENQUEUED
     const user = await ctx.prisma.user.findUnique({
@@ -45,80 +50,54 @@ export class SummonUserResolver {
       if (user.status == "ENQUEUED" || user.status == "DEFERRED") {
 
         const currentTime = new Date();
-        // set user summoned_time
-        const setSummoned = await ctx.prisma.user.update({
-          where: {
-            id: args.userId
-          },
-          data: {
-            summoned_time: currentTime,
-            summoned: true
-          }
-        });
+        let setSummoned;
 
-        // send SMS message to user
-        if (!user.phone_number){
-          console.log("User with id " + args.userId + " does not have a phone number.");
+        if (args.summoned === true){
+          // summon
+          // set user summoned_time
+          setSummoned = await ctx.prisma.user.update({
+            where: {
+              id: args.userId
+            },
+            data: {
+              summoned_time: currentTime,
+              summoned: true
+            }
+          });
+
+          // send SMS message to user
+          if (!user.phone_number){
+            console.log("User with id " + args.userId + " does not have a phone number.");
+          }
+          else {
+            await sendSMS(user.phone_number, user.queue.name + ": It is your turn now! You are now at the front of the line, please proceed. Thanks for waiting!", "Summon");
+          }
         }
         else {
-          await sendSMS(user.phone_number, user.queue.name + ": It is your turn now! You are now at the front of the line, please proceed. Thanks for waiting!", "Summon");
+          // unsummon
+          setSummoned = await ctx.prisma.user.update({
+            where: {
+              id: args.userId
+            },
+            data: {
+              summoned_time: null,
+              summoned: false
+            }
+          });
+
         }
 
         return setSummoned;
       }
       else {
-        console.log("User with id " + args.userId + " is not ENQUEUED/DEFERRED status. Can't be summoned. ");
+        console.log("User with id " + args.userId + " is not ENQUEUED/DEFERRED status. Can't be summoned/unsummoned. ");
       }
     }
     else {
       console.log("User with id " + args.userId + " does not exist");
     }
-
+    
     return null;
   }
 
-  @Authorized(["ORGANIZER", "ASSISTANT"])
-  @UseMiddleware(userAccessPermission)
-  @Mutation(returns => User, {
-    nullable: true
-  })
-  async unsummon(@Ctx() ctx: Context, @Args() args: SummonUserArgs): Promise<User | null> {
-
-    // check if user is ENQUEUED
-    const user = await ctx.prisma.user.findUnique({
-      where: {
-        id: args.userId
-      },
-      include: {
-        queue: true
-      }
-    });
-
-    if (user != null) {
-      if (user.status == "ENQUEUED" || user.status == "DEFERRED") {
-
-        const currentTime = new Date();
-        // unsummon user
-        const setSummoned = await ctx.prisma.user.update({
-          where: {
-            id: args.userId
-          },
-          data: {
-            summoned_time: null,
-            summoned: false
-          }
-        });
-
-        return setSummoned;
-      }
-      else {
-        console.log("User with id " + args.userId + " is not ENQUEUED/DEFERRED status. Can't be unsummoned. ");
-      }
-    }
-    else {
-      console.log("User with id " + args.userId + " does not exist");
-    }
-
-    return null;
-  }
 }

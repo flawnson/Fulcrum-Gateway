@@ -3,6 +3,7 @@ import { MiddlewareFn } from "type-graphql";
 
 import { Context } from "../context.interface";
 import * as helpers from "../helpers";
+import { errors } from "../constants";
 
 export const userAccessPermission: MiddlewareFn<Context> = async ({ args, context }, next) => {
   // if accessed by organizer
@@ -28,5 +29,5 @@ export const userAccessPermission: MiddlewareFn<Context> = async ({ args, contex
     return next();
   }
 
-  throw new Error("No permission to access user.");
+  throw new Error(errors.CANNOT_ACCESS_USER);
 };
