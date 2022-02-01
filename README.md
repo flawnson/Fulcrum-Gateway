@@ -80,12 +80,10 @@ NODE_ENV="development or production"
 SMTP_USERNAME="username for smtp service you're using"
 SMTP_PASSWORD="password for smtp service you're using"
 SMTP_SERVER="smtp server host"
-SENDER_EMAIL="the sender email (ex: hello@fiefoe.com)"
+SENDER_EMAIL="the sender email, which must be authorized by the SMTP service (ex: hello@fiefoe.com)"
 TWILIO_ACCOUNT_SID="twilio account sid"
 TWILIO_AUTH_TOKEN="twilio auth token"
 TWILIO_PHONE_NUMBER="phone number used to send out SMS"
-REDIS_IP="ip for redis, for local it's just 127.0.0.1"
-REDIS_PORT"port for redis, for local (and most cases) it's just 6379"
 REDIS_URL="the redis connection url used in ioredis (locally is: redis://:@127.0.0.1:6379)"
 ```
 

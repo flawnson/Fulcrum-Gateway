@@ -4,7 +4,7 @@ export async function sendEmail(email: string, url: string, task: string) {
 
   let transporter = null;
 
-  if (process.env.NODE_ENV === "production"){
+  if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test"){
     //production environment
     transporter = nodemailer.createTransport({
       host: process.env.SMTP_SERVER,
@@ -35,21 +35,23 @@ export async function sendEmail(email: string, url: string, task: string) {
   let mailOptions = {};
 
   if (task === "confirm"){
+    let body = `<p>Please use this link to complete the sign-up process: <a href="${url}">${url}</a></p>`;
     mailOptions = {
       from: '"Fiefoe" <' + process.env.SENDER_EMAIL + '>', // sender address
       to: email, // list of receivers
       subject: "Confirm your email to finish signup", // Subject line
-      text: "Please click the link below to confirm your email:", // plain text body
-      html: `<a Please finish your account signup at the following link: href="${url}">${url}</a>` // html body
+      text: "Please use this link to complete the sign-up process: " + url, // plain text body
+      html: body // html body
     };
   }
   else if (task == "reset"){
+    let body = `<p>Please use this link to reset your password: <a href="${url}">${url}</a></p>`;
     mailOptions = {
       from: '"Fiefoe" <' + process.env.SENDER_EMAIL + '>', // sender address
       to: email, // list of receivers
       subject: "Reset your password", // Subject line
-      text: "Please click the link below to reset your password:", // plain text body
-      html: `<Please click the link below to reset your password: a href="${url}">${url}</a>` // html body
+      text: "Please use this link to reset your password: " + url, // plain text body
+      html: body // html body
     };
   }
 
@@ -58,6 +60,7 @@ export async function sendEmail(email: string, url: string, task: string) {
   console.log("Email sent: %s", info.messageId);
   // Preview only available when sending through an Ethereal account
   if (process.env.NODE_ENV === "development") {
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    console.log("Preview URL: ")
+    console.log("%s", nodemailer.getTestMessageUrl(info));
   }
 }

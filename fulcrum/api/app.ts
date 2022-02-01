@@ -46,7 +46,7 @@ const app = express();
 const port = 8080;
 
 const originUrl =
-process.env.NODE_ENV === "production"
+(process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test")
   ? process.env.FRONTEND_PROD_URL
   : process.env.FRONTEND_LOCAL_URL;
 
@@ -61,13 +61,13 @@ const RedisStore = connectRedis(session)
 
 app.use(
     session({
-      name: 'qid',
+      name: 'fiefoe',
       store: new RedisStore({
         client: redis,
         disableTouch: true,
       }),
       cookie: {
-        maxAge: 10000000000, //long time
+        maxAge: 3000000000, //long time (~1 month)
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",  //cookie only works in https (we are developing) - set to true for production
         sameSite: 'lax'
@@ -77,24 +77,6 @@ app.use(
       resave: false
     })
 )
-
-// app.use(
-//     session({
-//       name: 'fiefoe_cookie',
-//       store: new RedisStore({
-//         client: redis,
-//         disableTouch: true,
-//       }),
-//       cookie: {
-//         maxAge: 10000000000, //long time
-//         secure: true,
-//         httpOnly: true
-//       },
-//       saveUninitialized: false,
-//       secret: process.env.SESSION_SECRET, //you would want to hide this in production
-//       resave: false
-//     })
-// )
 
 app.get('/', (req, res) => {
   res.redirect('/api')
