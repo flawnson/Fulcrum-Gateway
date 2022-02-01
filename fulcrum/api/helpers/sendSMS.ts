@@ -10,7 +10,7 @@ export async function sendSMS(phoneNumber: string, message: string, task: string
     phoneNumber = "+" + phoneNumber;
   }
 
-  if (process.env.NODE_ENV === "production"){
+  if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test"){
     client.messages.create({
        body: message,
        from: twilioNumber,

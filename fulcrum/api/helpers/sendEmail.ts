@@ -4,7 +4,7 @@ export async function sendEmail(email: string, url: string, task: string) {
 
   let transporter = null;
 
-  if (process.env.NODE_ENV === "production"){
+  if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test"){
     //production environment
     transporter = nodemailer.createTransport({
       host: process.env.SMTP_SERVER,

@@ -7,7 +7,7 @@ export const createConfirmationUrl = async (organizerId: string) => {
   const token = v4();
   await redis.set(confirmOrganizerPrefix + token, organizerId, "ex", 60 * 60 * 12); // 12 hour expiration
 
-  if (process.env.NODE_ENV === "production"){
+  if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test"){
     // TODO: FILL THIS IN
     // RETURN PRODUCTION URL
     //for now return the same localhost url
