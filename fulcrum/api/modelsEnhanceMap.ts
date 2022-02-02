@@ -24,7 +24,7 @@ const queueEnhanceConfig: ModelConfig<"Queue"> = {
     state: [Authorized()],
     capacity: [Authorized(["ORGANIZER", "ASSISTANT"])],
     max_party_size: [Authorized()],
-    grace_period: [Authorized(["ORGANIZER", "ASSISTANT"])],
+    grace_period: [Authorized()],
     offline_time: [Authorized(["ORGANIZER", "ASSISTANT"])],
     create_time: [Authorized(["ORGANIZER", "ASSISTANT"])],
     users: [Authorized(["ORGANIZER", "ASSISTANT"])],

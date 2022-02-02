@@ -9,22 +9,18 @@ import {
 
 import { Organizer } from "../../../generated/type-graphql/models/Organizer";
 import { Prisma } from "@prisma/client";
-
 import { Context } from "../../../context.interface";
+import { errors } from "../../../constants";
+import { OrganizerResult } from "../../../types";
 
 @Resolver()
 export class DeleteOrganizerResolver {
 
   @Authorized("ORGANIZER")
-  @Mutation(returns => Organizer, {
+  @Mutation(returns => OrganizerResult, {
     nullable: true
   })
-  async deleteOrganizer(@Ctx() ctx: Context): Promise<Organizer | null> {
-
-    if (!ctx.req.session.organizerId){
-      console.log("Can't delete organizer: Not logged in.");
-      return null;
-    }
+  async deleteOrganizer(@Ctx() ctx: Context): Promise<typeof OrganizerResult> {
 
     // Delete the organizer (cascades automatically)
     const deleteOrganizer = await ctx.prisma.organizer.delete({

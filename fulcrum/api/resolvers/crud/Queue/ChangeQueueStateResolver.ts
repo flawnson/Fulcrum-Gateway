@@ -10,9 +10,9 @@ import { Queue } from "../../../generated/type-graphql/models/Queue";
 import { QueueState } from "@prisma/client";
 import * as helpers from "../../../helpers";
 import { queueAccessPermission } from "../../../middleware/queueAccessPermission";
-
-
 import { Context } from "../../../context.interface";
+import { errors } from "../../../constants";
+import { QueueResult } from "../../../types";
 
 @ArgsType()
 class ChangeQueueStateArgs {
@@ -33,10 +33,10 @@ export class ChangeQueueStateResolver {
 
   @Authorized(["ORGANIZER", "ASSISTANT"])
   @UseMiddleware(queueAccessPermission)
-  @Mutation(returns => Queue, {
+  @Mutation(returns => QueueResult, {
     nullable: true
   })
-  async changeQueueState(@Ctx() ctx: Context, @Args() args: ChangeQueueStateArgs): Promise<Queue | null> {
+  async changeQueueState(@Ctx() ctx: Context, @Args() args: ChangeQueueStateArgs): Promise<typeof QueueResult> {
     let queryQueueId = "";
 
     if (ctx.req.session.queueId) {
@@ -55,6 +55,13 @@ export class ChangeQueueStateResolver {
         state: args.state
       }
     })
+
+    if(!updateQueue){
+      let error = {
+        error: errors.CANNOT_UPDATE_QUEUE
+      };
+      return error;
+    }
 
     return updateQueue;
 

@@ -11,7 +11,8 @@ import { User } from "../../../generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
 import { UserStatus } from "@prisma/client";
 import { confirmUserPrefix } from "../../../constants";
-
+import { errors } from "../../../constants";
+import { UserResult } from "../../../types";
 
 
 @ArgsType()
@@ -26,14 +27,17 @@ class ConfirmUserArgs {
 
 @Resolver()
 export class ConfirmUserResolver {
-  @Mutation(() => Boolean)
-  async confirmUser(@Ctx() ctx: Context, @Args() args: ConfirmUserArgs): Promise<boolean> {
+  @Mutation(returns => UserResult)
+  async confirmUser(@Ctx() ctx: Context, @Args() args: ConfirmUserArgs): Promise<typeof UserResult> {
 
     const userId = await redis.get(confirmUserPrefix + args.confirmCode);
 
     if (!userId) {
       console.log("Can't confirm user: Invalid confirmation code");
-      return false;
+      let error = {
+        error: errors.USER_CONFIRM_FAILED
+      };
+      return error;
     }
 
     const update = await ctx.prisma.user.update({
@@ -50,6 +54,6 @@ export class ConfirmUserResolver {
     // create session
     ctx.req.session!.userId = userId;
 
-    return true;
+    return update;
   }
 }

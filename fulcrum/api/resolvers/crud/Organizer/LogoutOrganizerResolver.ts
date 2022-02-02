@@ -6,7 +6,7 @@ import {
   InputType, Field
 } from "type-graphql";
 import { Context } from "../../../context.interface";
-
+import { cookieName } from "../../../constants";
 
 @Resolver()
 export class LogoutOrganizerResolver {
@@ -25,7 +25,7 @@ export class LogoutOrganizerResolver {
             return rej(false);
           }
 
-          ctx.res.clearCookie("qid");
+          ctx.res.clearCookie(cookieName);
           return res(true);
         })
       );

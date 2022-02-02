@@ -11,7 +11,8 @@ import { Min, Max } from "class-validator";
 import Redis from "redis";
 import bcrypt from "bcryptjs";
 import { Context } from "../../../context.interface";
-
+import { errors } from "../../../constants";
+import { QueueResult } from "../../../types";
 
 @ArgsType()
 class CreateQueueArgs {
@@ -59,10 +60,10 @@ class CreateQueueArgs {
 export class CreateQueueResolver {
 
   @Authorized("ORGANIZER")
-  @Mutation(returns => Queue, {
+  @Mutation(returns => QueueResult, {
     nullable: true
   })
-  async createQueue(@Ctx() ctx: Context, @Args() args: CreateQueueArgs): Promise<Queue | null> {
+  async createQueue(@Ctx() ctx: Context, @Args() args: CreateQueueArgs): Promise<typeof QueueResult> {
 
     return await ctx.prisma.$transaction(async (prisma) => {
       // generate 6 digit join code
@@ -93,7 +94,10 @@ export class CreateQueueResolver {
 
       // check if organizer exists
       if (!ctx.req.session.organizerId){
-        return null;
+        let error = {
+          error: errors.ORGANIZER_ALREADY_EXISTS
+        };
+        return error;
       }
 
       const createQueue = await prisma.queue.create({

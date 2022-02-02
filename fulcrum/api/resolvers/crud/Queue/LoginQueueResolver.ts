@@ -9,6 +9,8 @@ import {
 import { Queue } from "../../../generated/type-graphql/models/Queue";
 import bcrypt from "bcryptjs";
 import { Context } from "../../../context.interface";
+import { errors } from "../../../constants";
+import { QueueResult } from "../../../types";
 
 @ArgsType()
 class LoginQueueArgs {
@@ -25,8 +27,8 @@ class LoginQueueArgs {
 
 @Resolver()
 export class LoginQueueResolver {
-  @Mutation(() => Queue, { nullable: true })
-  async loginQueue(@Ctx() ctx: Context, @Args() args: LoginQueueArgs): Promise<Queue | null> {
+  @Mutation(returns => QueueResult, { nullable: true })
+  async loginQueue(@Ctx() ctx: Context, @Args() args: LoginQueueArgs): Promise<typeof QueueResult> {
     const queue = await ctx.prisma.queue.findUnique({
       where: {
         join_code: args.joinCode
@@ -34,13 +36,19 @@ export class LoginQueueResolver {
     });
 
     if (!queue) {
-      return null;
+      let error = {
+        error: errors.QUEUE_DOES_NOT_EXIST
+      };
+      return error;
     }
 
     const valid = await bcrypt.compare(args.password, queue.password);
 
     if (!valid) {
-      return null;
+      let error = {
+        error: errors.INCORRECT_PASSWORD
+      };
+      return error;
     }
 
     ctx.req.session!.queueId = queue.id;

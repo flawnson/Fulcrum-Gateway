@@ -1,5 +1,6 @@
 import prisma from '../prismaClient';
 import { UserStatus } from '@prisma/client'
+import { errors } from "../constants";
 
 export async function updateUserStatus(userId: string, newStatus: UserStatus){
   return await prisma.$transaction(async (prisma) => {
@@ -22,7 +23,7 @@ export async function updateUserStatus(userId: string, newStatus: UserStatus){
         const joinTime = user.join_time;
         // const totalWait = parseInt("" + ((leaveTime.valueOf() - joinTime.valueOf()) / 1000));
 
-        // set user's index to 0 as a default value        
+        // set user's index to 0 as a default value
         const updateUser = await prisma.user.update({
           where: {
             id: userId
@@ -57,6 +58,9 @@ export async function updateUserStatus(userId: string, newStatus: UserStatus){
 
     }
 
-    return null;
+    let error = {
+      error: errors.USER_DOES_NOT_EXIST
+    };
+    return error;
   })
 }

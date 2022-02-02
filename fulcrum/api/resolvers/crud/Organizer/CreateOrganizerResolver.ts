@@ -87,6 +87,10 @@ export class CreateOrganizerResolver {
       }
       else {
         console.log("Can't send confirmation email: Organizer account failed to create. ")
+        let error = {
+          error: errors.ORGANIZER_CREATION_FAILED
+        };
+        return error;
       }
 
       return organizer;

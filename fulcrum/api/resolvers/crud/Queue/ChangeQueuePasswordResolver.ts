@@ -13,6 +13,8 @@ import { Organizer } from "../../../generated/type-graphql/models/Organizer";
 import { Queue } from "../../../generated/type-graphql/models/Queue";
 import { Context } from "../../../context.interface";
 import { queueAccessPermission } from "../../../middleware/queueAccessPermission";
+import { errors } from "../../../constants";
+import { QueueResult } from "../../../types";
 
 @ArgsType()
 class ChangeQueuePasswordArgs {
@@ -32,8 +34,8 @@ class ChangeQueuePasswordArgs {
 export class ChangeQueuePasswordResolver {
   @Authorized("ORGANIZER")
   @UseMiddleware(queueAccessPermission)
-  @Mutation(() => Queue, { nullable: true })
-  async changeQueuePassword(@Ctx() ctx: Context, @Args() args: ChangeQueuePasswordArgs,): Promise<Queue | null> {
+  @Mutation(returns => QueueResult, { nullable: true })
+  async changeQueuePassword(@Ctx() ctx: Context, @Args() args: ChangeQueuePasswordArgs,): Promise<typeof QueueResult> {
 
     const hashedPassword = await bcrypt.hash(args.password, 12);
     const updateQueue = await ctx.prisma.queue.update({
@@ -44,6 +46,14 @@ export class ChangeQueuePasswordResolver {
         password: hashedPassword
       }
     });
+
+    if(!updateQueue){
+      console.log("Queue password change failed");
+      let error = {
+        error: errors.PASSWORD_CHANGE_FAILED
+      };
+      return error;
+    }
 
     return updateQueue;
 

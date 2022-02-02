@@ -12,7 +12,8 @@ import * as helpers from "../../../helpers";
 
 import { Context } from "../../../context.interface";
 import { userAccessPermission } from "../../../middleware/userAccessPermission";
-
+import { errors } from "../../../constants";
+import { UserResult } from "../../../types";
 
 @ArgsType()
 class ChangeStatusArgs {
@@ -33,10 +34,10 @@ export class ChangeUserStatusResolver {
 
   @Authorized()
   @UseMiddleware(userAccessPermission)
-  @Mutation(returns => User, {
+  @Mutation(returns => UserResult, {
     nullable: true
   })
-  async changeStatus(@Ctx() ctx: Context, @Args() args: ChangeStatusArgs): Promise<User | null> {
+  async changeStatus(@Ctx() ctx: Context, @Args() args: ChangeStatusArgs): Promise<typeof UserResult> {
 
     let queryUserId = "";
 
