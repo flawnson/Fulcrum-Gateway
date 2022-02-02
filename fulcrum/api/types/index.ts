@@ -1,1 +1,1 @@
-export { Error } from "./Error";
+export { UserResult, QueueResult, OrganizerResult } from "./ReturnTypes";

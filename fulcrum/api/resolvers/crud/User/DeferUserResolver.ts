@@ -13,7 +13,7 @@ import { Queue } from "../../../generated/type-graphql/models/Queue";
 import { Context } from "../../../context.interface";
 import * as helpers from "../../../helpers";
 import { userAccessPermission } from "../../../middleware/userAccessPermission";
-import { Error } from "../../../types";
+import { UserResult } from "../../../types";
 import { errors } from "../../../constants";
 import { UserStatus } from '@prisma/client'
 
@@ -49,20 +49,6 @@ class IndexDeferUserArgs {
   numSpots!: number;
 }
 
-const DeferUserResult = createUnionType({
-  name: "DeferUserResult", // the name of the GraphQL union
-  types: () => [User, Error] as const, // function that returns tuple of object types classes
-  // our implementation of detecting returned object type
-  resolveType: value => {
-    if ("error" in value) {
-      return Error; // we can return object type class (the one with `@ObjectType()`)
-    }
-    if ("id" in value) {
-      return User; // or the schema name of the type as a string
-    }
-    return null;
-  }
-});
 
 @Resolver()
 export class DeferUserResolver {
@@ -70,10 +56,10 @@ export class DeferUserResolver {
 
   @Authorized()
   @UseMiddleware(userAccessPermission)
-  @Mutation(returns => DeferUserResult, {
+  @Mutation(returns => UserResult, {
     nullable: true
   })
-  async indexDeferPosition(@Ctx() ctx: Context, @Args() args: IndexDeferUserArgs): Promise<typeof DeferUserResult> {
+  async indexDeferPosition(@Ctx() ctx: Context, @Args() args: IndexDeferUserArgs): Promise<typeof UserResult> {
     return await ctx.prisma.$transaction(async (prisma) => {
       let queryUserId = "";
 
@@ -171,10 +157,10 @@ export class DeferUserResolver {
 
   @Authorized()
   @UseMiddleware(userAccessPermission)
-  @Mutation(returns => DeferUserResult, {
+  @Mutation(returns => UserResult, {
     nullable: true
   })
-  async timeDeferPosition(@Ctx() ctx: Context, @Args() args: TimeDeferUserArgs): Promise<typeof DeferUserResult> {
+  async timeDeferPosition(@Ctx() ctx: Context, @Args() args: TimeDeferUserArgs): Promise<typeof UserResult> {
     return await ctx.prisma.$transaction(async (prisma) => {
       let queryUserId = "";
 
@@ -265,7 +251,7 @@ export class DeferUserResolver {
       let deferredUser = allUsers[deferUserIndex - 1];
       // update the deferred user's status
       allUsers[deferUserIndex - 1].status = UserStatus.DEFERRED;
-      
+
       // bump up the rest of the users
       for (let i = deferUserIndex; i < swapIndex; i++){
         allUsers[i - 1] = allUsers[i];

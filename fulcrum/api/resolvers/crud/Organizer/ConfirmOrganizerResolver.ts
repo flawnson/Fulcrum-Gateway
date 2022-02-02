@@ -23,14 +23,14 @@ class ConfirmOrganizerArgs {
 
 @Resolver()
 export class ConfirmOrganizerResolver {
-  @Mutation(() => Boolean)
-  async confirmOrganizer(@Ctx() ctx: Context, @Args() args: ConfirmOrganizerArgs): Promise<boolean> {
+  @Mutation(returns => Organizer)
+  async confirmOrganizer(@Ctx() ctx: Context, @Args() args: ConfirmOrganizerArgs): Promise<Organizer | null> {
 
     const organizerId = await redis.get(args.token);
 
     if (!organizerId) {
       console.log("Can't confirm organizer account: Organizer confirmation token does not exist.")
-      return false;
+      return null;
     }
 
     const update = await ctx.prisma.organizer.update({
@@ -44,6 +44,6 @@ export class ConfirmOrganizerResolver {
 
     await redis.del(args.token);
 
-    return true;
+    return update;
   }
 }
