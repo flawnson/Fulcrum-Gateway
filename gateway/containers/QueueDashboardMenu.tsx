@@ -1,8 +1,7 @@
-import React, { SetStateAction, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HStack, Menu, Fab, HamburgerIcon, Text } from 'native-base';
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { HomeScreenProps } from "../types";
-import EditQueueModal from "./EditQueueModal";
+import {HomeScreenProps, ShareData} from "../types";
 import CreateUserModal from "./CreateUserModal"
 import { useTranslation } from "react-i18next";
 import { AuthContext } from "../App";
@@ -10,14 +9,72 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/useTheme";
 
 export default function () {
+    const { signedInAs } = React.useContext(AuthContext)
+    const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const { signOut } = React.useContext(AuthContext)
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
     const { t, i18n } = useTranslation(["queueDashboardMenu"]);
-    const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const [queuePaused, toggleQueuePaused] = useState<boolean>(false)
-    // const [showEditQueueModal, setShowEditQueueModal] = useState(false);
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
+    const [errors, setError] = useState<any>([]);
+    const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
+                                                                    currentQueueQR: 'Image address',
+                                                                    currentQueueJoinCode: "1234567890"})
+    useEffect(() => {
+        fetchShareData().then()
+    })
+
+    const organizerQuery = `
+        query get_queue_stats($queueId: String) {
+            getQueue(queueId: $queueId) {
+                name
+                joinCode: join_code
+            }
+        }
+    `
+
+    const assistantQuery = `
+        query get_queue_stats {
+            getQueue {
+                name
+                joinCode: join_code
+            }
+        }
+    `
+
+    const query = signedInAs === "ORGANIZER" ? organizerQuery :
+                  signedInAs === "ASSISTANT" ? assistantQuery :
+                  {null: null}
+    const variables = signedInAs === "ORGANIZER" ? {queueId: route.params!["queueId"]} : null
+
+    const fetchShareData = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                },
+                credentials: 'include',
+                body: JSON.stringify({query: query, variables: variables})
+            })
+            await response.json().then(
+                data => {
+                    data = data.data.getQueue
+                    setShareData( {
+                            ...shareData,
+                            "currentQueueName": data.name,
+                            "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
+                            "currentQueueJoinCode": data.joinCode
+                        }
+                    )
+                }
+            )
+        } catch (error) {
+            setError([...errors, error])
+        }
+    }
 
     async function setQueuePaused () {
         try {
@@ -30,7 +87,7 @@ export default function () {
 
     const pauseQueue = () => {
         toggleQueuePaused(!queuePaused)
-        setQueuePaused()
+        setQueuePaused().then()
     }
 
     const deleteQueueQuery = `
@@ -51,8 +108,10 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
                 },
+                credentials: 'include',
                 body: JSON.stringify({query: deleteQueueQuery, variables: deleteQueueVariables})
             });
             // enter you logic when the fetch is successful
@@ -63,7 +122,7 @@ export default function () {
     }
 
     function onEndScreenPress () {
-        deleteQueue()
+        deleteQueue().then()
         navigation.navigate("EndScreen")
     }
 
@@ -123,7 +182,6 @@ export default function () {
                         </Text>
                     </HStack>
                 </Menu.Item>
-                {/*<Menu.Item onPress={() => setShowEditQueueModal(true)}>{t("edit")}</Menu.Item>*/}
                 <Menu.Item onPress={() => onEndScreenPress()}>
                     <HStack space={3}>
                         <Ionicons
@@ -148,7 +206,7 @@ export default function () {
                         </Text>
                     </HStack>
                 </Menu.Item>
-                <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>
+                <Menu.Item onPress={() => navigation.navigate("ShareScreen", {shareData: shareData})}>
                     <HStack space={3}>
                         <MaterialCommunityIcons
                             name={'share-variant'}
@@ -176,9 +234,6 @@ export default function () {
             <CreateUserModal showModal={showCreateUserModal}
                             setShowModal={setShowCreateUserModal}
                             navigation={navigation}/>
-            {/*<EditQueueModal showModal={showEditQueueModal}*/}
-            {/*                setShowModal={setShowEditQueueModal}*/}
-            {/*                navigation={navigation}/>*/}
         </>
     )
 }

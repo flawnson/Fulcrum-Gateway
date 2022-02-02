@@ -15,7 +15,7 @@ import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 import calculateTimeToNow from "../../utilities/calculateTimeToNow";
 import { scale } from "../../utilities/scales";
 
-type QueuesCatalogProps = {
+type QueuesCatalogCardProps = {
     entities: Array<QueueInfo>
     setEntities: React.Dispatch<React.SetStateAction<QueueInfo[]>>
     onPress: (event?: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) => void,
@@ -30,9 +30,8 @@ type QueuesCatalogProps = {
 const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 
-export default function (props: QueuesCatalogProps) {
+export default function (props: QueuesCatalogCardProps) {
     const [queueState, setQueueState] = useState<QueueState>(props.entity.state)
-    // const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState<boolean>(false)
     const swipeableRef = useRef(null)
 
     const pauseQuery = `

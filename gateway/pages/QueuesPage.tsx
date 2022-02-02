@@ -12,7 +12,7 @@ import ConfirmDeleteAlert from "../containers/ConfirmDeleteAlert";
 
 type QueuesPageProps = {
     queueInfo: QueueInfo[],
-    showConfirmDeleteAlert: boolean
+    showConfirmDeleteAlert: {show: boolean, callback: Function},
     setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>
 }
 

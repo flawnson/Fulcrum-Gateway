@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { Text, Menu,
         HamburgerIcon, Fab,
         HStack } from 'native-base';
 import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps } from "../types";
+import { HomeScreenProps, ShareData } from "../types";
 import DeferPositionModal from "./DeferPositionModal";
 import LeaveQueueAlert from "./LeaveQueueAlert";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
@@ -16,30 +16,51 @@ export default function () {
     const { t, i18n } = useTranslation(["userDashboardMenu"]);
     const [showDeferPositionModal, setShowDeferPositionModal] = React.useState(false)
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
+    const [errors, setError] = useState<any>([]);
+    const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
+                                                                    currentQueueQR: 'Image address',
+                                                                    currentQueueJoinCode: "1234567890"})
+
+    useEffect(() => {
+        fetchShareData().then()
+    })
 
     const query = `
-        mutation change_status($status: String!) {
-            changeStatus(status: $status) {
-                id
+        query get_queue_stats {
+            getUser {
+                queue {
+                    name
+                    joinCode: join_code
+                }
             }
         }
     `
-    const variables = `{
-        "status": "ABANDONED"
-    }`
 
-    async function leaveQueue () {
+    const fetchShareData = async () => {
         try {
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
                 },
-                body: JSON.stringify({query: query, variables: variables})
-            });
-            return await response.json()
-        } catch(error) {
-            return error
+                credentials: 'include',
+                body: JSON.stringify({query: query})
+            })
+            await response.json().then(
+                data => {
+                    data = data.data.getQueue
+                    setShareData( {
+                            ...shareData,
+                            "currentQueueName": data.name,
+                            "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
+                            "currentQueueJoinCode": data.joinCode
+                        }
+                    )
+                }
+            )
+        } catch (error) {
+            setError([...errors, error])
         }
     }
 
@@ -82,7 +103,7 @@ export default function () {
                         </Text>
                     </HStack>
                 </Menu.Item>
-                <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>
+                <Menu.Item onPress={() => navigation.navigate("ShareScreen", {shareData: shareData})}>
                     <HStack space={3}>
                         <MaterialCommunityIcons
                             name={'share-variant'}

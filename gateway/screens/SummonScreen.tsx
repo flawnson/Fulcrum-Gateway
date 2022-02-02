@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native'
 import { Text, View, Center, VStack } from "native-base";
 import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps } from "../../types";
+import { HomeScreenProps } from "../types";
 import { useTranslation } from "react-i18next";
 
 
@@ -24,7 +24,6 @@ export default function() {
     const query = `
         query get_queue_stats($queueId: QueueWhereUniqueInput!) {
             queue(where: $queueId) {
-                state
                 name
                 address
                 grace_period

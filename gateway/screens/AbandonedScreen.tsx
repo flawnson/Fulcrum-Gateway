@@ -1,9 +1,7 @@
 import React from 'react';
-import {StyleSheet,
-        View,
-        Text} from 'react-native'
+import {StyleSheet, View, Text} from 'react-native'
 import {useNavigation} from "@react-navigation/native";
-import {HomeScreenProps} from "../../types";
+import {HomeScreenProps} from "../types";
 import {Center} from "native-base";
 import {useTranslation} from "react-i18next";
 

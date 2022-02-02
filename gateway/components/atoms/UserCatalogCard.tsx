@@ -20,6 +20,8 @@ type UserCatalogCardProps = {
     onLongPress: (event?: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => void,
     deSelectItems: () => void,
     selected: boolean,
+    showConfirmDeleteAlert?: {show: boolean, callback: Function}
+    setShowConfirmDeleteAlert?: React.Dispatch<React.SetStateAction<any>>
     entity: UserStats,
 }
 type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
@@ -34,12 +36,12 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: UserCatalogCardProps) {
     const [summoned, setSummoned] = useState<boolean>(false)
-    const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState<boolean>(false)
     const swipeableRef = useRef(null)
 
     const summonQuery = `
-        mutation summon_user($userId: String!) {
-            summon(userId: $userId) {
+        mutation toggle_summon_user($userId: String!, $summoned: Boolean!) {
+            toggleSummon(userId: $userId, summoned: $summoned) {
+                id
                 summoned
             }
         }
@@ -54,7 +56,7 @@ export default function (props: UserCatalogCardProps) {
                                              'Access-Control-Allow-Origin': 'http://localhost:19006/',
                                          },
                                          credentials: 'include',
-                                         body: JSON.stringify({query: summonQuery, variables: {userId: userId}})
+                                         body: JSON.stringify({query: summonQuery, variables: {"userId": userId, "summoned": summoned}})
                                      });
             // enter you logic when the fetch is successful
             return await response.json()
@@ -100,10 +102,16 @@ export default function (props: UserCatalogCardProps) {
         props.entities.find(user => user.userId === props.entity.userId)!.status = status
         changeUserStatus(status).then()
         if (status === "KICKED") {
-            setShowConfirmDeleteModal(true)
-            props.setEntities(
-                [...props.entities.filter(user => user.userId !== props.entity.userId)]
-            )
+            // Only needed if enqueued. Serviced and abandoned do not provide confirm delete props
+            props.setShowConfirmDeleteAlert ?
+            props.setShowConfirmDeleteAlert(
+                {
+                    show: true,
+                    callback: () => props.setEntities(
+                        [...props.entities.filter(user => user.userId !== props.entity.userId)]
+                    )
+                }
+            ) : null
         } else if (status === "SERVICED") {
             props.setEntities(
                 [...props.entities.filter(user => user.userId !== props.entity.userId)]
@@ -139,9 +147,12 @@ export default function (props: UserCatalogCardProps) {
 
     return (
         <>
-            <ConfirmDeleteAlert showAlert={showConfirmDeleteModal} setShowAlert={setShowConfirmDeleteModal}/>
+            {props.showConfirmDeleteAlert && props.setShowConfirmDeleteAlert ? <ConfirmDeleteAlert
+                showAlert={props.showConfirmDeleteAlert}
+                setShowAlert={props.setShowConfirmDeleteAlert}
+            /> : <></>}
             <ConditionalWrapper
-                condition={props.entity.index}
+                condition={props.entity.index}  // User index is only provided to enqueued users, not serviced or reneged
                 wrapper={
                 (children: Children) =>
                     <Swipeable
@@ -211,8 +222,8 @@ export default function (props: UserCatalogCardProps) {
                             <Text style={styles.waited}>
                                 {`${props.entity.waited} m`}
                             </Text>
-                            {props.entity.renegedTime
-                                ? <Text>{props.entity.renegedTime}</Text>
+                            {props.entity.finishTime
+                                ? <Text>{props.entity.finishTime}</Text>
                                 : <MaterialCommunityIcons
                                         selectable={false}
                                         name={summoned ? "bell-circle" : "bell-circle-outline"}
