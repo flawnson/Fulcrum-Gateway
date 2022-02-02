@@ -1,5 +1,5 @@
 // Library imports
-import React from 'react'
+import React, {useState} from 'react'
 import './i18n'
 import 'react-native-gesture-handler'
 import { registerRootComponent } from 'expo'
@@ -28,6 +28,7 @@ import { PreferencesContext } from "./utilities/useTheme"
 import linkConfig from "./utilities/linkConfig"
 import QueueDashboard from "./pages/QueueDashboard"
 import SplashScreen from "./screens/SpashScreen"
+import {UserTypes} from "./types"
 
 // Strict mode can be changed to trigger a warning or an error in case of any nativebase issues
 const nativebaseConfig: object = {
@@ -37,7 +38,7 @@ const nativebaseConfig: object = {
 // AuthContext used throughout the app, default values do nothing
 export const AuthContext = React.createContext(
     {
-        signedInAs: "",
+        signedInAs: "NONE" as UserTypes,
         signIn: (data: any) => {},
         signOut: () => {},
         signUp: (data: any) => {}
@@ -71,28 +72,28 @@ function App() {
         [toggleTheme, isThemeDark]
     );
 
+    const [userType, setUserType] = useState<UserTypes>("NONE")
+
     // Reducer to change authentication state according to what kind of user is logged in
     const [state, dispatch] = React.useReducer(
         (prevState: any, action: any) => {
             switch (action.type) {
                 case 'SIGN_IN': {
+                    setUserType(action.who)
                     switch (action.who) {
                         case 'ORGANIZER':
                             return {
                                 ...prevState,
-                                signedInAs: "ORGANIZER",
                                 isOrganizer: true,
                             };
                         case 'ASSISTANT':
                             return {
                                 ...prevState,
-                                signedInAs: "ASSISTANT",
                                 isAssistant: true,
                             };
                         case 'USER':
                             return {
                                 ...prevState,
-                                signedInAs: "USER",
                                 isUser: true,
                             };
                     }
@@ -107,7 +108,6 @@ function App() {
             }
         },
         {
-            signedInAs: "NONE",
             isUser: false,
             isOrganizer: false,
             isAssistant: false,
@@ -117,14 +117,13 @@ function App() {
     // Mirrors AuthContext, the actual implementation of methods
     const authContext = React.useMemo(
         () => ({
-            signedInAs: state.signedInAs,
-            signIn: (data: "ORGANIZER" | "ASSISTANT" | "USER") => dispatch({ type: 'SIGN_IN', who: data }),
-            signUp: (data: "ORGANIZER" | "ASSISTANT") => dispatch({ type: 'SIGN_IN', who: data }),
+            signIn: (data: Exclude<UserTypes, "NONE">) => dispatch({ type: 'SIGN_IN', who: data }),
+            signUp: (data: Exclude<UserTypes, "USER" | "NONE">) => dispatch({ type: 'SIGN_IN', who: data }),
             signOut: () => dispatch({ type: 'SIGN_OUT' }),
+            signedInAs: userType,
         }),
-        []
+        [state]
     );
-
 
     return (
         <AuthContext.Provider value={authContext}>

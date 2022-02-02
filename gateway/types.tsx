@@ -26,58 +26,17 @@ export type HomeNavigationProps = NativeStackNavigationProp<RootStackParamList, 
 export type HomeScreenRouteProps = RouteProp<RootStackParamList, 'HomePage'>;
 
 
-// export type UserStats = EnqueuedStats | ServicedStats | AbandonedStats
+export type UserTypes = "USER" | "ASSISTANT" | "ORGANIZER" | "NONE"
+
 export type UserStats = {
     userId: string,
     name: string,
     index?: undefined,  // Needed for UserCatalogCard
     joinTime: string,
-    renegedTime?: string,
+    finishTime?: string,
     lastOnline?: string,
     waited: number,
     online?: boolean,  // Needed for UserCatalogCard
-    status: UserStatus
-}
-
-
-/*** ENQUEUED CATALOG PAGE TYPES ***/
-
-export type EnqueuedStats = {
-    userId: string
-    name: string,
-    online: boolean,
-    index: number,
-    waited: string,
-    joinTime: string,
-    lastOnline: string,
-    status: UserStatus
-}
-
-
-/*** SERVICED CATALOG PAGE TYPES ***/
-
-export type ServicedStats = {
-    userId: string,
-    name: string,
-    index: undefined,  // Needed for UserCatalogCard
-    joinTime: string,
-    renegedTime: string,
-    waited: number,
-    online: undefined,  // Needed for UserCatalogCard
-    status: UserStatus
-}
-
-
-/*** ABANDONED CATALOG PAGE TYPES ***/
-
-export type AbandonedStats = {
-    userId: string,
-    name: string,
-    index: undefined,  // Needed for UserCatalogCard
-    joinTime: string,
-    renegedTime: string,
-    waited: number,
-    online: undefined,  // Needed for UserCatalogCard
     status: UserStatus
 }
 

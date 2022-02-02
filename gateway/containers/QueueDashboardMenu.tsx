@@ -16,7 +16,6 @@ export default function () {
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
     const { t, i18n } = useTranslation(["queueDashboardMenu"]);
     const [queuePaused, toggleQueuePaused] = useState<boolean>(false)
-    // const [showEditQueueModal, setShowEditQueueModal] = useState(false);
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
 
     async function setQueuePaused () {
@@ -30,7 +29,7 @@ export default function () {
 
     const pauseQueue = () => {
         toggleQueuePaused(!queuePaused)
-        setQueuePaused()
+        setQueuePaused().then()
     }
 
     const deleteQueueQuery = `
@@ -51,8 +50,10 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
                 },
+                credentials: 'include',
                 body: JSON.stringify({query: deleteQueueQuery, variables: deleteQueueVariables})
             });
             // enter you logic when the fetch is successful
@@ -63,7 +64,7 @@ export default function () {
     }
 
     function onEndScreenPress () {
-        deleteQueue()
+        deleteQueue().then()
         navigation.navigate("EndScreen")
     }
 
@@ -123,7 +124,6 @@ export default function () {
                         </Text>
                     </HStack>
                 </Menu.Item>
-                {/*<Menu.Item onPress={() => setShowEditQueueModal(true)}>{t("edit")}</Menu.Item>*/}
                 <Menu.Item onPress={() => onEndScreenPress()}>
                     <HStack space={3}>
                         <Ionicons
@@ -176,9 +176,6 @@ export default function () {
             <CreateUserModal showModal={showCreateUserModal}
                             setShowModal={setShowCreateUserModal}
                             navigation={navigation}/>
-            {/*<EditQueueModal showModal={showEditQueueModal}*/}
-            {/*                setShowModal={setShowEditQueueModal}*/}
-            {/*                navigation={navigation}/>*/}
         </>
     )
 }

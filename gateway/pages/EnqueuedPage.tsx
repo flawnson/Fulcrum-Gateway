@@ -1,7 +1,7 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import EnqueuedCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
-import {EnqueuedStats, HomeScreenProps, UserStats} from "../types";
+import {HomeScreenProps, UserStats} from "../types";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 
 

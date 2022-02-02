@@ -17,32 +17,6 @@ export default function () {
     const [showDeferPositionModal, setShowDeferPositionModal] = React.useState(false)
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
 
-    const query = `
-        mutation change_status($status: String!) {
-            changeStatus(status: $status) {
-                id
-            }
-        }
-    `
-    const variables = `{
-        "status": "ABANDONED"
-    }`
-
-    async function leaveQueue () {
-        try {
-            const response = await fetch(`http://localhost:8080/api`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({query: query, variables: variables})
-            });
-            return await response.json()
-        } catch(error) {
-            return error
-        }
-    }
-
     return (
         <>
             <Menu

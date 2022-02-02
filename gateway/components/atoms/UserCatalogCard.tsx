@@ -211,8 +211,8 @@ export default function (props: UserCatalogCardProps) {
                             <Text style={styles.waited}>
                                 {`${props.entity.waited} m`}
                             </Text>
-                            {props.entity.renegedTime
-                                ? <Text>{props.entity.renegedTime}</Text>
+                            {props.entity.finishTime
+                                ? <Text>{props.entity.finishTime}</Text>
                                 : <MaterialCommunityIcons
                                         selectable={false}
                                         name={summoned ? "bell-circle" : "bell-circle-outline"}

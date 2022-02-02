@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native'
 import { Text, Image, Center } from 'native-base'
 import { useTranslation } from "react-i18next";
 import {AuthContext} from "../App";
+import {useRoute} from "@react-navigation/native";
+import {HomeScreenProps} from "../types";
 
 type ShareData = {
     currentQueueName: string,
@@ -12,45 +14,22 @@ type ShareData = {
 
 export default function() {
     const { signedInAs } = React.useContext(AuthContext)
+    const route = useRoute<HomeScreenProps["route"]>()
+    console.log(signedInAs)
     const [props, setProps] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                              currentQueueQR: 'Image address',
                                                              currentQueueJoinCode: "1234567890"})
     const [errors, setError] = useState<any>([]);
     const { t, i18n } = useTranslation("shareScreen");
 
-    useCallback(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/api`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': 'http://localhost:19006/',
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify({query: organizerQuery, variables: JSON.stringify({"queueId": "costco_queue1"})})
-                })
-                await response.json().then(
-                    data => {
-                        console.log(data)
-                        data = data.data.getQueue
-                        setProps(
-                            props => ({
-                                    ...props,
-                                    "currentQueueName": data.name,
-                                    "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
-                                    "currentQueueJoinCode": data.joinCode}
-                            )
-                        )
-                    }
-                )
-            } catch (error) {
-                setError([...errors, error])
-            }
-        }
-        fetchData().then()
-        return () => {}
+    const fetchCallback = useCallback(() => {
+        fetchShareData().then()
     }, [])
+
+    useEffect(() => {
+        fetchCallback()
+        return () => {}
+    }, [fetchCallback]);
 
     const organizerQuery = `
         query get_queue_stats($queueId: String) {
@@ -80,6 +59,41 @@ export default function() {
             }
         }
     `
+
+    const query = signedInAs === "ORGANIZER" ? organizerQuery :
+                  signedInAs === "ASSISTANT" ? assistantQuery :
+                  signedInAs === "USER" ? userQuery : {null: null}
+    const variables = signedInAs === "ORGANIZER" ? {queueId: route.params!["queueId"]} : null
+
+    const fetchShareData = async () => {
+        console.log(query, variables)
+        try {
+            const response = await fetch(`http://localhost:8080/api`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                },
+                credentials: 'include',
+                body: JSON.stringify({query: query, variables: variables})
+            })
+            await response.json().then(
+                data => {
+                    console.log(data)
+                    data = data.data.getQueue
+                    setProps( {
+                            ...props,
+                            "currentQueueName": data.name,
+                            "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
+                            "currentQueueJoinCode": data.joinCode
+                        }
+                    )
+                }
+            )
+        } catch (error) {
+            setError([...errors, error])
+        }
+    }
 
 
     return (
