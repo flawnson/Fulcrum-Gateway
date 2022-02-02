@@ -1,5 +1,5 @@
 import React from 'react'
-import {AlertDialog, Button} from 'native-base'
+import {AlertDialog, Button, Text} from 'native-base'
 import {useTranslation} from "react-i18next";
 
 
@@ -27,6 +27,9 @@ export default function (props: ConfirmDeleteAlert) {
                 <AlertDialog.CloseButton />
                 <AlertDialog.Header>{t("header")}</AlertDialog.Header>
                 <AlertDialog.Body>
+                    <Text>
+                        {t("header")}
+                    </Text>
                 </AlertDialog.Body>
                 <AlertDialog.Footer>
                     <Button onPress={onConfirmPress}>

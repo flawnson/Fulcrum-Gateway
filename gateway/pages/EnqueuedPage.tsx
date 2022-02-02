@@ -7,6 +7,7 @@ import { useIsFocused, useRoute } from "@react-navigation/native";
 
 export default function () {
     const [props, setProps] = useState<UserStats[]>([])
+    const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
     const route = useRoute<HomeScreenProps["route"]>()
 
     const query = `
@@ -67,9 +68,14 @@ export default function () {
     // Run on first render
     useEffect(() => {fetchUserData().then(null)}, [])
     // Poll only if user is currently on this screen
-    useInterval(fetchUserData, useIsFocused() ? 5000 : null)
+    useInterval(fetchUserData, useIsFocused() && !showConfirmDeleteAlert ? 5000 : null)
 
     return (
-        <EnqueuedCatalogCardGroup entities={props} setEntities={setProps}/>
+        <EnqueuedCatalogCardGroup
+            entities={props}
+            setEntities={setProps}
+            showConfirmDeleteAlert={showConfirmDeleteAlert}
+            setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
+        />
     )
 }

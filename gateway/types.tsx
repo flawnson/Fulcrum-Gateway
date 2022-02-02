@@ -1,6 +1,7 @@
 import {RouteProp} from "@react-navigation/native"
 import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {Image} from "native-base";
+import React from "react";
 
 /* React Navigation types used throughout app*/
 export type RootStackParamList = {
@@ -39,6 +40,8 @@ export type UserStats = {
     waited: number,
     online?: boolean,  // Needed for UserCatalogCard
     status: UserStatus
+    showConfirmDeleteAlert: boolean
+    setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 

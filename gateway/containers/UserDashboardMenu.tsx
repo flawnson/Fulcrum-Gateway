@@ -9,7 +9,6 @@ import LeaveQueueAlert from "./LeaveQueueAlert";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { PreferencesContext } from "../utilities/useTheme";
-import {AuthContext} from "../App";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
