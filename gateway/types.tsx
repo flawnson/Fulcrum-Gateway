@@ -1,5 +1,6 @@
 import {RouteProp} from "@react-navigation/native"
 import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {Image} from "native-base";
 
 /* React Navigation types used throughout app*/
 export type RootStackParamList = {
@@ -10,7 +11,7 @@ export type RootStackParamList = {
     QueueDashboardTabs: undefined | {queueId: string};
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
-    ShareScreen: undefined | {queueId: string};
+    ShareScreen: undefined | {shareData: any};
     EndScreen: undefined;
     SummonScreen: undefined;
     EnqueuedPage: undefined;
@@ -65,6 +66,14 @@ export type UserInfo = {
     "phone_number": string,
     "join_time": string,
     "stats": DashboardStat[]
+}
+
+
+/*** SHARE PAGE TYPES ***/
+export type ShareData = {
+    currentQueueName: string,
+    currentQueueQR: string | typeof Image,
+    currentQueueJoinCode: string,
 }
 
 export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"

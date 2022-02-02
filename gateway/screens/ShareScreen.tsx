@@ -1,116 +1,32 @@
-import React, {SetStateAction, useEffect, useCallback, useState} from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native'
 import { Text, Image, Center } from 'native-base'
 import { useTranslation } from "react-i18next";
-import {AuthContext} from "../App";
 import {useRoute} from "@react-navigation/native";
 import {HomeScreenProps} from "../types";
 
-type ShareData = {
-    currentQueueName: string,
-    currentQueueQR: string | typeof Image,
-    currentQueueJoinCode: string,
-}
 
 export default function() {
-    const { signedInAs } = React.useContext(AuthContext)
+    // We get all share data via route params because all user types can access the Share Screen
+    // This also prevents rerender hell caused by having the fetch share data method in this screen with useEffect
     const route = useRoute<HomeScreenProps["route"]>()
-    console.log(signedInAs)
-    const [props, setProps] = useState<ShareData>({currentQueueName: "Bob's burgers",
-                                                             currentQueueQR: 'Image address',
-                                                             currentQueueJoinCode: "1234567890"})
-    const [errors, setError] = useState<any>([]);
     const { t, i18n } = useTranslation("shareScreen");
-
-    const fetchCallback = useCallback(() => {
-        fetchShareData().then()
-    }, [])
-
-    useEffect(() => {
-        fetchCallback()
-        return () => {}
-    }, [fetchCallback]);
-
-    const organizerQuery = `
-        query get_queue_stats($queueId: String) {
-            getQueue(queueId: $queueId) {
-                name
-                joinCode: join_code
-            }
-        }
-    `
-
-    const assistantQuery = `
-        query get_queue_stats {
-            getQueue {
-                name
-                joinCode: join_code
-            }
-        }
-    `
-
-    const userQuery = `
-        query get_queue_stats {
-            getUser {
-                queue {
-                    name
-                    joinCode: join_code
-                }
-            }
-        }
-    `
-
-    const query = signedInAs === "ORGANIZER" ? organizerQuery :
-                  signedInAs === "ASSISTANT" ? assistantQuery :
-                  signedInAs === "USER" ? userQuery : {null: null}
-    const variables = signedInAs === "ORGANIZER" ? {queueId: route.params!["queueId"]} : null
-
-    const fetchShareData = async () => {
-        console.log(query, variables)
-        try {
-            const response = await fetch(`http://localhost:8080/api`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
-                },
-                credentials: 'include',
-                body: JSON.stringify({query: query, variables: variables})
-            })
-            await response.json().then(
-                data => {
-                    console.log(data)
-                    data = data.data.getQueue
-                    setProps( {
-                            ...props,
-                            "currentQueueName": data.name,
-                            "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
-                            "currentQueueJoinCode": data.joinCode
-                        }
-                    )
-                }
-            )
-        } catch (error) {
-            setError([...errors, error])
-        }
-    }
-
 
     return (
         <Center style={styles.container}>
             <Text style={styles.header}>
-                {props.currentQueueName}
+                {route.params!["shareData"]["currentQueueName"]}
             </Text>
             <Text style={styles.message}>
                 {t('message')}
             </Text>
             <Image
                 style={styles.QRcode}
-                source={{uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${props.currentQueueQR}`}}
+                source={{uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${route.params!["shareData"]["currentQueueQR"]}`}}
                 alt={"QRCode"}
             />
             <Text style={styles.subText}>
-                {props.currentQueueJoinCode}
+                {route.params!["shareData"]["currentQueueJoinCode"]}
             </Text>
         </Center>
     )

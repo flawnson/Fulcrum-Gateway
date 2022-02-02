@@ -79,6 +79,7 @@ function App() {
         (prevState: any, action: any) => {
             switch (action.type) {
                 case 'SIGN_IN': {
+                    // This will be added to context to make the user type available to the application globally
                     setUserType(action.who)
                     switch (action.who) {
                         case 'ORGANIZER':
@@ -117,12 +118,12 @@ function App() {
     // Mirrors AuthContext, the actual implementation of methods
     const authContext = React.useMemo(
         () => ({
+            signedInAs: userType,
             signIn: (data: Exclude<UserTypes, "NONE">) => dispatch({ type: 'SIGN_IN', who: data }),
             signUp: (data: Exclude<UserTypes, "USER" | "NONE">) => dispatch({ type: 'SIGN_IN', who: data }),
             signOut: () => dispatch({ type: 'SIGN_OUT' }),
-            signedInAs: userType,
         }),
-        [state]
+        [state]  // Keep track of changes to state (specifically to update the signedInAs prop)
     );
 
     return (
