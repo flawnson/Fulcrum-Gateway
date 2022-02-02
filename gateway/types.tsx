@@ -10,7 +10,7 @@ export type RootStackParamList = {
     QueueDashboardTabs: undefined | {queueId: string};
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
-    ShareScreen: undefined
+    ShareScreen: undefined | {queueId: string};
     EndScreen: undefined;
     SummonScreen: undefined;
     EnqueuedPage: undefined;

@@ -1,7 +1,8 @@
-import React, {SetStateAction, useEffect, useState} from 'react';
+import React, {SetStateAction, useEffect, useCallback, useState} from 'react';
 import { StyleSheet } from 'react-native'
 import { Text, Image, Center } from 'native-base'
 import { useTranslation } from "react-i18next";
+import {AuthContext} from "../App";
 
 type ShareData = {
     currentQueueName: string,
@@ -10,13 +11,46 @@ type ShareData = {
 }
 
 export default function() {
+    const { signedInAs } = React.useContext(AuthContext)
     const [props, setProps] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                              currentQueueQR: 'Image address',
                                                              currentQueueJoinCode: "1234567890"})
     const [errors, setError] = useState<any>([]);
     const { t, i18n } = useTranslation("shareScreen");
 
-    useEffect(() => {fetchData().then(null)}, [])
+    useCallback(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/api`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({query: organizerQuery, variables: JSON.stringify({"queueId": "costco_queue1"})})
+                })
+                await response.json().then(
+                    data => {
+                        console.log(data)
+                        data = data.data.getQueue
+                        setProps(
+                            props => ({
+                                    ...props,
+                                    "currentQueueName": data.name,
+                                    "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
+                                    "currentQueueJoinCode": data.joinCode}
+                            )
+                        )
+                    }
+                )
+            } catch (error) {
+                setError([...errors, error])
+            }
+        }
+        fetchData().then()
+        return () => {}
+    }, [])
 
     const organizerQuery = `
         query get_queue_stats($queueId: String) {
@@ -47,39 +81,6 @@ export default function() {
         }
     `
 
-    const query = signedInAs === "ORGANIZER" ? organizerQuery :
-        signedInAs === "ASSISTANT" ? assistantQuery :
-            signedInAs === "USER" ? userQuery : {null: null}
-    const variables = signedInAs === "ORGANIZER" ? {queueId: route.params!["queueId"]} : null
-
-    const fetchData = async () => {
-        try {
-            console.log(query, variables)
-            const response = await fetch(`http://localhost:8080/api`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
-                },
-                credentials: 'include',
-                body: JSON.stringify({query: query, variables: variables})
-            })
-            await response.json().then(
-                data => {
-                    console.log(data)
-                    data = data.data.getQueue
-                    setProps({
-                        ...props,
-                        "currentQueueName": data.name,
-                        "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
-                        "currentQueueJoinCode": data.joinCode})
-                }
-            )
-        } catch (error) {
-            setError([...errors, error])
-        }
-    }
-
 
     return (
         <Center style={styles.container}>
@@ -89,11 +90,11 @@ export default function() {
             <Text style={styles.message}>
                 {t('message')}
             </Text>
-            {/*<Image*/}
-            {/*    style={styles.QRcode}*/}
-            {/*    source={{uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${props.currentQueueQR}`}}*/}
-            {/*    alt={"QRCode"}*/}
-            {/*/>*/}
+            <Image
+                style={styles.QRcode}
+                source={{uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${props.currentQueueQR}`}}
+                alt={"QRCode"}
+            />
             <Text style={styles.subText}>
                 {props.currentQueueJoinCode}
             </Text>

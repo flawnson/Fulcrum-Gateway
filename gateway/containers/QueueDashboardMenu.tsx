@@ -10,11 +10,11 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/useTheme";
 
 export default function () {
+    const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const { signOut } = React.useContext(AuthContext)
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
     const { t, i18n } = useTranslation(["queueDashboardMenu"]);
-    const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const [queuePaused, toggleQueuePaused] = useState<boolean>(false)
     // const [showEditQueueModal, setShowEditQueueModal] = useState(false);
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
@@ -148,7 +148,7 @@ export default function () {
                         </Text>
                     </HStack>
                 </Menu.Item>
-                <Menu.Item onPress={() => navigation.navigate("ShareScreen")}>
+                <Menu.Item onPress={() => navigation.navigate("ShareScreen", {queueId: route.params!["queueId"]})}>
                     <HStack space={3}>
                         <MaterialCommunityIcons
                             name={'share-variant'}
