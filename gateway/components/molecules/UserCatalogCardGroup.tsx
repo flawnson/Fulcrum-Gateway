@@ -12,6 +12,8 @@ import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 type UserCatalogCardProps = {
     entities: Array<UserStats>
     setEntities: React.Dispatch<React.SetStateAction<UserStats[]>>
+    showConfirmDeleteAlert?: {show: boolean, callback: Function},
+    setShowConfirmDeleteAlert?: React.Dispatch<React.SetStateAction<any>>
 }
 type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
 type ConditionalWrapperArgs = {
@@ -80,7 +82,7 @@ export default function (props: UserCatalogCardProps) {
             <ConditionalWrapper
                 condition={selectedItems.length}
                 wrapper={(children: Children) =>
-                    <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}} >
+                    <Pressable onPress={() => deSelectItems()} style={{flex: 1, padding: 15}} >
                         {children}
                     </Pressable>}
             >
@@ -93,8 +95,10 @@ export default function (props: UserCatalogCardProps) {
                                     setEntities={props.setEntities}
                                     onPress={() => handleOnPress(item)}
                                     onLongPress={() => selectItems(item)}
-                                    deSelectItems={deSelectItems}
+                                    deSelectItems={() => deSelectItems()}
                                     selected={getSelected(item)}
+                                    showConfirmDeleteAlert={props.showConfirmDeleteAlert}
+                                    setShowConfirmDeleteAlert={props.setShowConfirmDeleteAlert}
                                     entity={item}/>
                         }
                     }

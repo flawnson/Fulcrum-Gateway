@@ -1,6 +1,6 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import useInterval from "../utilities/useInterval";
-import {AbandonedStats, EnqueuedStats, HomeScreenProps, UserStats} from "../types";
+import {HomeScreenProps, UserStats} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
 import UserCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
 
@@ -16,7 +16,7 @@ export default function () {
                     userId: id
                     name
                     joinTime: join_time
-                    renegedTime: reneged_time
+                    finishTime: finish_time
                     status
                 }
             }
@@ -46,11 +46,11 @@ export default function () {
                     let abandonedStats: UserStats[] = []
                     data.forEach((abandonedData: UserStats) => {
                         const joinTime: any = new Date(abandonedData.joinTime)
-                        // Null assertion because renegedTime does not exist for Enqueued users
-                        const renegedTime: any = new Date(abandonedData.renegedTime!)
-                        const waited = new Date(Math.abs(renegedTime - joinTime))
+                        // Null assertion because finishTime does not exist for Enqueued users
+                        const finishTime: any = new Date(abandonedData.finishTime!)
+                        const waited = new Date(Math.abs(finishTime - joinTime))
                         abandonedData.waited = Math.floor(waited.getMinutes())
-                        abandonedData.renegedTime = `${renegedTime.getHours()}:${renegedTime.getHours()}:${renegedTime.getHours()}`
+                        abandonedData.finishTime = `${finishTime.getHours()}:${finishTime.getHours()}:${finishTime.getHours()}`
                         abandonedStats.push(abandonedData)
                     })
                     setProps(abandonedStats)

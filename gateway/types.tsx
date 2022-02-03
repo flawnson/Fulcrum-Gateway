@@ -1,5 +1,7 @@
 import {RouteProp} from "@react-navigation/native"
 import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {Image} from "native-base";
+import React from "react";
 
 /* React Navigation types used throughout app*/
 export type RootStackParamList = {
@@ -10,7 +12,7 @@ export type RootStackParamList = {
     QueueDashboardTabs: undefined | {queueId: string};
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
-    ShareScreen: undefined
+    ShareScreen: undefined | {shareData: any};
     EndScreen: undefined;
     SummonScreen: undefined;
     EnqueuedPage: undefined;
@@ -26,59 +28,20 @@ export type HomeNavigationProps = NativeStackNavigationProp<RootStackParamList, 
 export type HomeScreenRouteProps = RouteProp<RootStackParamList, 'HomePage'>;
 
 
-// export type UserStats = EnqueuedStats | ServicedStats | AbandonedStats
+export type UserTypes = "USER" | "ASSISTANT" | "ORGANIZER" | "NONE"
+
 export type UserStats = {
     userId: string,
     name: string,
     index?: undefined,  // Needed for UserCatalogCard
     joinTime: string,
-    renegedTime?: string,
+    finishTime?: string,
     lastOnline?: string,
     waited: number,
     online?: boolean,  // Needed for UserCatalogCard
     status: UserStatus
-}
-
-
-/*** ENQUEUED CATALOG PAGE TYPES ***/
-
-export type EnqueuedStats = {
-    userId: string
-    name: string,
-    online: boolean,
-    index: number,
-    waited: string,
-    joinTime: string,
-    lastOnline: string,
-    status: UserStatus
-}
-
-
-/*** SERVICED CATALOG PAGE TYPES ***/
-
-export type ServicedStats = {
-    userId: string,
-    name: string,
-    index: undefined,  // Needed for UserCatalogCard
-    joinTime: string,
-    renegedTime: string,
-    waited: number,
-    online: undefined,  // Needed for UserCatalogCard
-    status: UserStatus
-}
-
-
-/*** ABANDONED CATALOG PAGE TYPES ***/
-
-export type AbandonedStats = {
-    userId: string,
-    name: string,
-    index: undefined,  // Needed for UserCatalogCard
-    joinTime: string,
-    renegedTime: string,
-    waited: number,
-    online: undefined,  // Needed for UserCatalogCard
-    status: UserStatus
+    showConfirmDeleteAlert: boolean
+    setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
@@ -106,6 +69,14 @@ export type UserInfo = {
     "phone_number": string,
     "join_time": string,
     "stats": DashboardStat[]
+}
+
+
+/*** SHARE PAGE TYPES ***/
+export type ShareData = {
+    currentQueueName: string,
+    currentQueueQR: string | typeof Image,
+    currentQueueJoinCode: string,
 }
 
 export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"
