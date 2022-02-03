@@ -11,6 +11,8 @@ import { Context } from "../../../context.interface";
 import * as helpers from "../../../helpers";
 import { userAccessPermission } from "../../../middleware/userAccessPermission";
 import { sendSMS } from "../../../helpers";
+import { UserResult } from "../../../types";
+import { errors } from "../../../constants";
 
 @ArgsType()
 class SummonUserArgs {
@@ -31,10 +33,10 @@ export class SummonUserResolver {
 
   @Authorized(["ORGANIZER", "ASSISTANT"])
   @UseMiddleware(userAccessPermission)
-  @Mutation(returns => User, {
+  @Mutation(returns => UserResult, {
     nullable: true
   })
-  async toggleSummon(@Ctx() ctx: Context, @Args() args: SummonUserArgs): Promise<User | null> {
+  async toggleSummon(@Ctx() ctx: Context, @Args() args: SummonUserArgs): Promise<typeof UserResult> {
 
     // check if user is ENQUEUED
     const user = await ctx.prisma.user.findUnique({
@@ -68,6 +70,10 @@ export class SummonUserResolver {
           // send SMS message to user
           if (!user.phone_number){
             console.log("User with id " + args.userId + " does not have a phone number.");
+            let error = {
+              error: errors.USER_HAS_NO_PHONE_NUMBER
+            };
+            return error;
           }
           else {
             await sendSMS(user.phone_number, user.queue.name + ": It is your turn now! You are now at the front of the line, please proceed. Thanks for waiting!", "Summon");
@@ -91,13 +97,19 @@ export class SummonUserResolver {
       }
       else {
         console.log("User with id " + args.userId + " is not ENQUEUED/DEFERRED status. Can't be summoned/unsummoned. ");
+        let error = {
+          error: errors.USER_NOT_ENQUEUED
+        };
+        return error;
       }
     }
-    else {
-      console.log("User with id " + args.userId + " does not exist");
-    }
-    
-    return null;
+
+    console.log("User with id " + args.userId + " does not exist");
+
+    let error = {
+      error: errors.USER_DOES_NOT_EXIST
+    };
+    return error;
   }
 
 }

@@ -10,7 +10,8 @@ import { Queue } from "../../../generated/type-graphql/models/Queue";
 import { Context } from "../../../context.interface";
 import * as helpers from "../../../helpers";
 import { queueAccessPermission } from "../../../middleware/queueAccessPermission";
-
+import { errors } from "../../../constants";
+import { QueueResult } from "../../../types";
 
 @ArgsType()
 class GetQueueArgs {
@@ -25,10 +26,10 @@ export class GetQueueResolver {
 
   @Authorized(["ORGANIZER", "ASSISTANT"])
   @UseMiddleware(queueAccessPermission)
-  @Query(returns => Queue, {
+  @Query(returns => QueueResult, {
     nullable: true
   })
-  async getQueue(@Ctx() ctx: Context, @Args() args: GetQueueArgs): Promise<Queue | null> {
+  async getQueue(@Ctx() ctx: Context, @Args() args: GetQueueArgs): Promise<typeof QueueResult> {
 
     let queryQueueId = "";
 
@@ -45,6 +46,13 @@ export class GetQueueResolver {
         id: queryQueueId
       }
     });
+
+    if(!queue){
+      let error = {
+        error: errors.QUEUE_DOES_NOT_EXIST
+      };
+      return error;
+    }
 
     return queue;
 

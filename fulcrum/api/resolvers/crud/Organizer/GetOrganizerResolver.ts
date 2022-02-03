@@ -10,16 +10,17 @@ import { Organizer } from "../../../generated/type-graphql/models/Organizer";
 import { Context } from "../../../context.interface";
 import * as helpers from "../../../helpers";
 import { queueAccessPermission } from "../../../middleware/queueAccessPermission";
-
+import { errors } from "../../../constants";
+import { OrganizerResult } from "../../../types";
 
 @Resolver()
 export class GetOrganizerResolver {
 
   @Authorized("ORGANIZER")
-  @Query(returns => Organizer , {
+  @Query(returns => OrganizerResult , {
     nullable: true
   })
-  async getOrganizer(@Ctx() ctx: Context): Promise<Organizer | null> {
+  async getOrganizer(@Ctx() ctx: Context): Promise<typeof OrganizerResult> {
 
     const queryOrganizerId = ctx.req.session.organizerId;
 
@@ -28,6 +29,13 @@ export class GetOrganizerResolver {
         id: queryOrganizerId
       }
     });
+
+    if(!organizer){
+      let error = {
+        error: errors.ORGANIZER_DOES_NOT_EXIST
+      };
+      return error;
+    }
 
     return organizer;
 

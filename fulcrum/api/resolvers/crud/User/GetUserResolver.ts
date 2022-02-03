@@ -10,6 +10,9 @@ import { User } from "../../../generated/type-graphql/models/User";
 import { Context } from "../../../context.interface";
 import * as helpers from "../../../helpers";
 import { userAccessPermission } from "../../../middleware/userAccessPermission";
+import { UserResult } from "../../../types";
+import { errors } from "../../../constants";
+
 
 @ArgsType()
 class GetUserArgs {
@@ -24,10 +27,10 @@ export class GetUserResolver {
 
   @Authorized()
   @UseMiddleware(userAccessPermission)
-  @Query(returns => User, {
+  @Query(returns => UserResult, {
     nullable: true
   })
-  async getUser(@Ctx() ctx: Context, @Args() args: GetUserArgs): Promise<User | null> {
+  async getUser(@Ctx() ctx: Context, @Args() args: GetUserArgs): Promise<typeof UserResult> {
 
     let queryUserId = "";
 
@@ -44,6 +47,13 @@ export class GetUserResolver {
         id: queryUserId,
       }
     });
+
+    if(!user){
+      let error = {
+        error: errors.USER_DOES_NOT_EXIST
+      };
+      return error;
+    }
 
     return user;
 

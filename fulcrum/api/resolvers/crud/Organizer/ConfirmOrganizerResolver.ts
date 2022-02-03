@@ -9,7 +9,8 @@ import {
 import { redis } from "../../../redisClient";
 import { Organizer } from "../../../generated/type-graphql/models/Organizer";
 import { Context } from "../../../context.interface";
-
+import { OrganizerResult } from "../../../types";
+import { errors } from "../../../constants";
 
 @ArgsType()
 class ConfirmOrganizerArgs {
@@ -23,14 +24,17 @@ class ConfirmOrganizerArgs {
 
 @Resolver()
 export class ConfirmOrganizerResolver {
-  @Mutation(() => Boolean)
-  async confirmOrganizer(@Ctx() ctx: Context, @Args() args: ConfirmOrganizerArgs): Promise<boolean> {
+  @Mutation(returns => OrganizerResult)
+  async confirmOrganizer(@Ctx() ctx: Context, @Args() args: ConfirmOrganizerArgs): Promise<typeof OrganizerResult> {
 
     const organizerId = await redis.get(args.token);
 
     if (!organizerId) {
       console.log("Can't confirm organizer account: Organizer confirmation token does not exist.")
-      return false;
+      let error = {
+        error: errors.ACCOUNT_CONFIRM_FAILED
+      };
+      return error;
     }
 
     const update = await ctx.prisma.organizer.update({
@@ -44,6 +48,6 @@ export class ConfirmOrganizerResolver {
 
     await redis.del(args.token);
 
-    return true;
+    return update;
   }
 }

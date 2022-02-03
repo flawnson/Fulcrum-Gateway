@@ -23,6 +23,7 @@ import * as path from 'path';
 import prisma from './prismaClient';
 import { redis } from "./redisClient";
 import { authChecker } from "./middleware/authChecker";
+import { cookieName } from "./constants"
 
 const pregeneratedCrudResolvers = [
   // Currently not using any
@@ -61,7 +62,7 @@ const RedisStore = connectRedis(session)
 
 app.use(
     session({
-      name: 'fiefoe',
+      name: cookieName,
       store: new RedisStore({
         client: redis,
         disableTouch: true,

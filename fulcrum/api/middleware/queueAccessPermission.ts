@@ -3,6 +3,7 @@ import { MiddlewareFn } from "type-graphql";
 
 import { Context } from "../context.interface";
 import * as helpers from "../helpers";
+import { errors } from "../constants";
 
 export const queueAccessPermission: MiddlewareFn<Context> = async ({ args, context }, next) => {
   // if accessed by organizer
@@ -19,5 +20,5 @@ export const queueAccessPermission: MiddlewareFn<Context> = async ({ args, conte
     return next();
   }
 
-  throw new Error("No permission to access queue.");
+  throw new Error(errors.CANNOT_ACCESS_QUEUE);
 };

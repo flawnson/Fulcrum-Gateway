@@ -13,7 +13,7 @@ import bcrypt from "bcryptjs";
 import { Context } from "../../../context.interface";
 import { IsEmail } from "class-validator";
 import { IsEmailAlreadyExist, sendEmail, createConfirmationUrl } from "../../../helpers";
-import { Error } from "../../../types";
+import { OrganizerResult } from "../../../types";
 import { errors } from "../../../constants";
 
 
@@ -39,28 +39,14 @@ class CreateOrganizerArgs {
 
 }
 
-const CreateOrganizerResult = createUnionType({
-  name: "CreateOrganizerResult", // the name of the GraphQL union
-  types: () => [Organizer, Error] as const, // function that returns tuple of object types classes
-  // our implementation of detecting returned object type
-  resolveType: value => {
-    if ("error" in value) {
-      return Error; // we can return object type class (the one with `@ObjectType()`)
-    }
-    if ("id" in value) {
-      return Organizer; // or the schema name of the type as a string
-    }
-    return null;
-  }
-});
 
 @Resolver()
 export class CreateOrganizerResolver {
 
-  @Mutation(returns => CreateOrganizerResult, {
+  @Mutation(returns => OrganizerResult, {
     nullable: true
   })
-  async createOrganizer(@Ctx() ctx: Context, @Args() args: CreateOrganizerArgs): Promise<typeof CreateOrganizerResult> {
+  async createOrganizer(@Ctx() ctx: Context, @Args() args: CreateOrganizerArgs): Promise<typeof OrganizerResult> {
     return await ctx.prisma.$transaction(async (prisma) => {
       const existingOrganizer = await prisma.organizer.findUnique({
         where: {
@@ -101,6 +87,10 @@ export class CreateOrganizerResolver {
       }
       else {
         console.log("Can't send confirmation email: Organizer account failed to create. ")
+        let error = {
+          error: errors.ORGANIZER_CREATION_FAILED
+        };
+        return error;
       }
 
       return organizer;

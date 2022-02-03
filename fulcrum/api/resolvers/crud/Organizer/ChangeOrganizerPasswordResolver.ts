@@ -13,6 +13,8 @@ import { Organizer } from "../../../generated/type-graphql/models/Organizer";
 import { Queue } from "../../../generated/type-graphql/models/Queue";
 import { Context } from "../../../context.interface";
 import { forgotOrganizerPasswordPrefix } from "../../../constants";
+import { errors } from "../../../constants";
+import { OrganizerResult } from "../../../types";
 
 @ArgsType()
 class ChangeOrganizerPasswordArgs {
@@ -30,14 +32,19 @@ class ChangeOrganizerPasswordArgs {
 
 @Resolver()
 export class ChangeOrganizerPasswordResolver {
-  @Mutation(() => Organizer, { nullable: true })
-  async changeOrganizerPassword(@Ctx() ctx: Context, @Args() args: ChangeOrganizerPasswordArgs): Promise<Organizer | null> {
+  @Mutation(returns => OrganizerResult, {
+    nullable: true
+  })
+  async changeOrganizerPassword(@Ctx() ctx: Context, @Args() args: ChangeOrganizerPasswordArgs): Promise<typeof OrganizerResult> {
     // fetch id from redis via token
     const organizerId = await redis.get(forgotOrganizerPasswordPrefix + args.token);
 
     if (!organizerId) {
       console.log("Unable to change password: Organizer password change token does not exist.")
-      return null;
+      let error = {
+        error: errors.PASSWORD_CHANGE_FAILED
+      };
+      return error;
     }
 
     const organizer = await ctx.prisma.organizer.findUnique({
@@ -48,7 +55,10 @@ export class ChangeOrganizerPasswordResolver {
 
     if (!organizer) {
       console.log("Unable to change password: Organizer does not exist.")
-      return null;
+      let error = {
+        error: errors.ORGANIZER_DOES_NOT_EXIST
+      };
+      return error;
     }
 
     await redis.del(forgotOrganizerPasswordPrefix + args.token);

@@ -15,7 +15,7 @@ import { redis } from "../../../redisClient";
 import { confirmUserPrefix } from "../../../constants";
 import { queueAccessPermission } from "../../../middleware/queueAccessPermission";
 import { UserStatus, Prisma } from '@prisma/client';
-import { Error } from "../../../types";
+import { UserResult } from "../../../types";
 import { errors } from "../../../constants";
 
 @ArgsType()
@@ -55,21 +55,6 @@ class CreateUserArgs {
 }
 
 
-const CreateUserResult = createUnionType({
-  name: "CreateUserResult", // the name of the GraphQL union
-  types: () => [User, Error] as const, // function that returns tuple of object types classes
-  // our implementation of detecting returned object type
-  resolveType: value => {
-    if ("error" in value) {
-      return Error; // we can return object type class (the one with `@ObjectType()`)
-    }
-    if ("id" in value) {
-      return User; // or the schema name of the type as a string
-    }
-    return null;
-  }
-});
-
 async function generateSMS(phoneNumber: string, userId: string){
   // generate 6 digit verification code
   let confirmCode = Math.floor(100000 + Math.random() * 900000).toString();
@@ -96,10 +81,10 @@ export class CreateUserResolver {
 
   @Authorized(["ORGANIZER", "ASSISTANT"])
   @UseMiddleware(queueAccessPermission)
-  @Mutation(returns => CreateUserResult, {
+  @Mutation(returns => UserResult, {
     nullable: true
   })
-  async createUser(@Ctx() ctx: Context, @Args() args: CreateUserArgs): Promise<typeof CreateUserResult> {
+  async createUser(@Ctx() ctx: Context, @Args() args: CreateUserArgs): Promise<typeof UserResult> {
     let queryQueueId = "";
 
     if (ctx.req.session.queueId) {
@@ -181,10 +166,10 @@ export class CreateUserResolver {
     })
   }
 
-  @Mutation(returns => CreateUserResult, {
+  @Mutation(returns => UserResult, {
     nullable: true
   })
-  async joinQueue(@Ctx() ctx: Context, @Args() args: JoinQueueArgs): Promise<typeof CreateUserResult> {
+  async joinQueue(@Ctx() ctx: Context, @Args() args: JoinQueueArgs): Promise<typeof UserResult> {
     // make queries atomic so they immediately follow one another (prevents joining a queue that just got deleted)
     return await ctx.prisma.$transaction(async (prisma) => {
       // convert joincode to all lowercase for comparison

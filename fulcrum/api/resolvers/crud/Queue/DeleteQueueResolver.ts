@@ -12,6 +12,9 @@ import { Prisma } from "@prisma/client";
 import { Context } from "../../../context.interface";
 import { queueAccessPermission } from "../../../middleware/queueAccessPermission";
 
+import { errors } from "../../../constants";
+import { QueueResult } from "../../../types";
+
 @ArgsType()
 class DeleteQueueArgs {
   @Field({
@@ -25,10 +28,10 @@ export class DeleteQueueResolver {
 
   @Authorized("ORGANIZER")
   @UseMiddleware(queueAccessPermission)
-  @Mutation(returns => Queue, {
+  @Mutation(returns => QueueResult, {
     nullable: true
   })
-  async deleteQueue(@Ctx() ctx: Context, @Args() args: DeleteQueueArgs): Promise<Queue | null> {
+  async deleteQueue(@Ctx() ctx: Context, @Args() args: DeleteQueueArgs): Promise<typeof QueueResult> {
 
     // Delete the queue itself
     const deleteQueue = await ctx.prisma.queue.delete({
@@ -37,21 +40,12 @@ export class DeleteQueueResolver {
       },
     })
 
-    // NOTE: only organizer can delete queue
-    // // logout assistant if they're in the same session
-    // // clear queue id from session
-    // delete ctx.req.session!.queueId;
-    //
-    // // if this was the last id in the session, just destroy the session + cookie
-    // if (!ctx.req.session.organizerId && !ctx.req.session.queueId && !ctx.req.session.userId){
-    //   // if session variables are empty then destroy the session
-    //   await ctx.req.session!.destroy(err => {
-    //       if (err) {
-    //         console.log(err);
-    //       }
-    //   })
-    //   await ctx.res.clearCookie("qid");
-    // }
+    if(!deleteQueue){
+      let error = {
+        error: errors.QUEUE_DOES_NOT_EXIST
+      };
+      return error;
+    }
 
     return deleteQueue;
 

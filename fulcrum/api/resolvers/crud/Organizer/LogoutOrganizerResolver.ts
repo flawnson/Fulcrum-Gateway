@@ -6,11 +6,13 @@ import {
   InputType, Field
 } from "type-graphql";
 import { Context } from "../../../context.interface";
-
+import { cookieName } from "../../../constants";
 
 @Resolver()
 export class LogoutOrganizerResolver {
-  @Mutation(() => Boolean)
+  
+  @Authorized(["ORGANIZER"])
+  @Mutation(returns => Boolean)
   async logoutOrganizer(@Ctx() ctx: Context): Promise<Boolean> {
     // clear organizer id from session
     delete ctx.req.session!.organizerId;
@@ -25,7 +27,7 @@ export class LogoutOrganizerResolver {
             return rej(false);
           }
 
-          ctx.res.clearCookie("qid");
+          ctx.res.clearCookie(cookieName);
           return res(true);
         })
       );
