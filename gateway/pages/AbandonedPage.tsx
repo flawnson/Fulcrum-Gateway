@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useInterval from "../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
@@ -23,8 +23,7 @@ export default function () {
             }
         }
     `
-    //@ts-ignore
-    const variables = route.params ? {"queueId": route.params?.queueId, "orderBy": {"index": "asc"}}
+    const variables = route.params ? {"queueId": route.params!["queueId"], "orderBy": {"index": "asc"}}
                                    : {"queueId": "123456", "orderBy": {"index": "asc"}}
 
     async function fetchAbandonedData () {

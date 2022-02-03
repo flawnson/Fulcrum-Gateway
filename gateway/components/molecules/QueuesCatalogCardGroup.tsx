@@ -28,13 +28,13 @@ type ConditionalWrapperArgs = {
 
 export default function (props: QueuesStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const [action, setAction] = useState<QueueState>("ACTIVE")
-    // const [paused, setPaused] = useState<boolean>(true)
+    const [queueState, setQueueState] = useState<QueueState>("ACTIVE")
+    const [paused, setPaused] = useState<boolean>(true)
     const [selectedItems, setSelectedItems] = useState<Array<QueueInfo["queueId"]>>([])
 
     useEffect(() => {
-        onChangeState(action)
-    }, [action])
+        onChangeQueueState(queueState)
+    }, [queueState])
 
     const pauseQuery = `
         mutation change_queue_state($queueId: String, $state: String!) {
@@ -56,8 +56,9 @@ export default function (props: QueuesStatsProps) {
         try {
             const body = state === "PAUSED"
                 ? {query: pauseQuery, variables: {queueId: queueId, state: "PAUSED"}}
-                : state === "DELETED" ? {query: deleteQuery, variables: {queueId: queueId}}
-                    : {error: "error"}  // Trigger error if state is not PAUSED or DELETED
+                : state === "DELETED"
+                ? {query: deleteQuery, variables: {queueId: queueId}}
+                : {error: "error"}  // Trigger error if state is not PAUSED or DELETED
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
@@ -75,8 +76,8 @@ export default function (props: QueuesStatsProps) {
         }
     }
 
-    const onChangeState = (state: QueueState) => {
-        if (state === "DELETED"){
+    const onChangeQueueState = (queueState: QueueState) => {
+        if (queueState === "DELETED"){
             props.setShowConfirmDeleteAlert(
                 {
                     show: true,
@@ -85,14 +86,14 @@ export default function (props: QueuesStatsProps) {
                             [...props.entities.filter(queue => !selectedItems.includes(queue.queueId))]
                         )
                         for (const selectedItem of selectedItems) {
-                            props.entities.find(user => user.queueId === selectedItem)!.state = state
-                            changeQueueState(selectedItem, state).then()
+                            props.entities.find(user => user.queueId === selectedItem)!.state = queueState
+                            changeQueueState(selectedItem, queueState).then()
                         }
                     }
                 }
             )
-        } else if (state === "PAUSED") {
-            // setPaused(!paused)
+        } else if (queueState === "PAUSED") {
+            setPaused(!paused)
             deSelectItems()
         }
     }
@@ -117,13 +118,13 @@ export default function (props: QueuesStatsProps) {
 
     const deSelectItems = () => {
         setSelectedItems([])
-        setAction("ACTIVE")
+        setQueueState("ACTIVE")
         navigation.setOptions({headerRight: undefined})
     }
 
     const selectItems = (item: QueueInfo) => {
         navigation.setOptions(
-            {headerRight: (props) => <MultiSelectButtons onActionPress={setAction} /> }
+            {headerRight: (props) => <MultiSelectButtons onActionPress={setQueueState} /> }
         )
 
         if (selectedItems.includes(item.queueId)) {

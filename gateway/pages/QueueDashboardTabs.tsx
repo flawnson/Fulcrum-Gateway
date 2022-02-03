@@ -15,6 +15,7 @@ const Tab = createBottomTabNavigator();
 export default function QueueDashboardTabs() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const route = useRoute<HomeScreenProps["route"]>()
+    // Setting right header group (language and dark mode) for nested bottom tab navigator
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     return (

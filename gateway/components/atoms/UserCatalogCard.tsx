@@ -4,7 +4,6 @@ import { HStack, Text,
         Box, View,
         Avatar, VStack } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
 import {UserStatus, UserStats} from "../../types";
 import { Swipeable, RectButton,
         State, HandlerStateChangeEvent,
@@ -21,8 +20,8 @@ type UserCatalogCardProps = {
     onLongPress: (event?: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => void,
     deSelectItems: () => void,
     selected: boolean,
-    showConfirmDeleteAlert?: {show: boolean, callback: Function}
-    setShowConfirmDeleteAlert?: React.Dispatch<React.SetStateAction<any>>
+    showConfirmDeleteAlert?: {show: boolean, callback: Function}  // Only needed for enqueued page
+    setShowConfirmDeleteAlert?: React.Dispatch<React.SetStateAction<any>>  // Only needed for enqueued page
     entity: UserStats,
 }
 type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
@@ -37,7 +36,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: UserCatalogCardProps) {
     const [summoned, setSummoned] = useState<boolean>(false)
-    const swipeableRef = useRef(null)
+    const swipeableRef = useRef(null)  // Needed to automatically close swipe action
 
     const summonQuery = `
         mutation toggle_summon_user($userId: String!, $summoned: Boolean!) {
@@ -59,10 +58,8 @@ export default function (props: UserCatalogCardProps) {
                                          credentials: 'include',
                                          body: JSON.stringify({query: summonQuery, variables: {"userId": userId, "summoned": summoned}})
                                      });
-            // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
-            // enter your logic for when there is an error (ex. error toast)
             return error
         }
     }
@@ -91,10 +88,8 @@ export default function (props: UserCatalogCardProps) {
                 credentials: 'include',
                 body: JSON.stringify({query: statusQuery, variables: {userId: props.entity.userId, status: status}})
             });
-            // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
-            // enter your logic for when there is an error (ex. error toast)
             return error
         }
     }

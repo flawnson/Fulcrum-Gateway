@@ -7,11 +7,8 @@ import { Button, Tooltip,
         Box } from 'native-base'
 import { AntDesign } from '@expo/vector-icons';
 import { PreferencesContext } from "../../utilities/useTheme";
-import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 type DefaultCreateQueueFormData = {
@@ -35,7 +32,7 @@ type CreateQueueFormType = {
 }
 
 export default function ({ navigation, setShowModal }: CreateQueueFormType) {
-    const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
+    const { isThemeDark } = React.useContext(PreferencesContext)
     const [submitted, setSubmitted] = useState(false)
     const defaultData = {name: "Sample Queue name",
                          capacity: 10,
@@ -49,7 +46,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
     const [errors, setError] = useState<DefaultErrors>(defaultErrors);
     const [onChangeValue, setOnChangeValue] = useState(500)
     const [onChangeEndValue, setOnChangeEndValue] = useState(500)
-    const { t, i18n } = useTranslation(["createQueuePage", "common"]);
+    const { t } = useTranslation(["createQueuePage", "common"]);
 
     // Be careful with this it might trigger infinite render loop
     useEffect(() => {validate()}, [formData])

@@ -14,7 +14,7 @@ type CreateQueueModalProps = {
 
 export default function (props: CreateQueueModalProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { t, i18n } = useTranslation(["createQueueModal"]);
+    const { t } = useTranslation(["createQueueModal"]);
 
     return (
         <Modal isOpen={props.showModal} onClose={() => props.setShowModal(false)}>
