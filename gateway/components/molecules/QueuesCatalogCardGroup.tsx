@@ -143,7 +143,7 @@ export default function (props: QueuesStatsProps) {
             <Center>
                 <ConditionalWrapper
                     condition={selectedItems.length}
-                    wrapper={(children: Children) => <Pressable onPress={deSelectItems} style={{flex: 1, padding: 15}}>{children}</Pressable>}
+                    wrapper={(children: Children) => <Pressable onPress={() => deSelectItems()} style={{flex: 1, padding: 15}}>{children}</Pressable>}
                 >
                     <FlatList
                         data={props.entities}

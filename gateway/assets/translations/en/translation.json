@@ -3,6 +3,7 @@
     "cancel": "Cancel",
     "ok": "Ok",
     "submit": "Submit",
+    "submitting": "Submitting...",
     "confirm": "Confirm",
     "login": "Log in",
     "signup": "Sign up"
@@ -51,16 +52,24 @@
   "createQueuePage": {
     "business_name_label": "Queue name",
     "business_name_helper": "What's the name of your business, event, or venue?",
+    "business_name_placeholder": "Bob's Burgers",
     "queue_cap_label": "Max capacity",
     "queue_cap_helper": "Set a maximum line capacity. We will turn away anyone if your venue is at capacity.",
     "grace_period_label": "Grace period",
     "grace_period_helper": "Set a grace period for summoned queuers to reach your venue.",
+    "grace_period_placeholder": "No grace period (summoned queuers have unlimited time to arrive).",
     "party_size_label": "Party size",
     "party_size_helper": "Set a maximum party size that a queuer can represent",
+    "party_size_placeholder": "Queuers cannot queue for anyone other than themselves.",
     "offline_time_label": "Offline limit",
     "offline_time_helper": "Set a maximum time limit that a queuer can be offline for.",
+    "offline_time_placeholder": "Queuers can be offline for any amount of time.",
     "address_label": "Address",
-    "address_helper": "Set your address so that queuers can find your venue."
+    "address_helper": "Set your address so that queuers can find your venue.",
+    "address_placeholder": "King's Cross Station platform 9 3/4",
+    "password_label": "Address",
+    "password_helper": "Set your address so that queuers can find your venue.",
+    "password_placeholder": "Something super secret"
   },
   "userDashboard": {
     "status_text": "Almost there!",
@@ -165,6 +174,7 @@
     "title": "Oops! Something went wrong"
   },
   "confirmDeleteAlert": {
-    "header": "CONFIRM YOUR DELETE"
+    "header": "Are you sure you want to do this?",
+    "message": "Deleting a {{entity}} is permanent and cannot be undone."
   }
 }

@@ -1,4 +1,5 @@
 import React, { SetStateAction, useEffect, useState } from "react";
+import {ScrollView} from "native-base";
 import useInterval from "../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
@@ -66,6 +67,8 @@ export default function () {
     useInterval(fetchServicedData, useIsFocused() ? 5000 : null)
 
     return (
-        <UserCatalogCardGroup entities={props} setEntities={setProps}/>
+        <ScrollView>
+            <UserCatalogCardGroup entities={props} setEntities={setProps}/>
+        </ScrollView>
     )
 }

@@ -28,12 +28,12 @@ export default function (props: ConfirmDeleteAlert) {
                 <AlertDialog.Header>{t("header")}</AlertDialog.Header>
                 <AlertDialog.Body>
                     <Text>
-                        {t("header")}
+                        {t("message")}
                     </Text>
                 </AlertDialog.Body>
                 <AlertDialog.Footer>
                     <Button onPress={onConfirmPress}>
-                        CONFIRM
+                        {t("confirm", {ns: "common"})}
                     </Button>
                 </AlertDialog.Footer>
             </AlertDialog.Content>

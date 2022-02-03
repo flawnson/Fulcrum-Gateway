@@ -1,7 +1,7 @@
 import React from 'react';
 import { HStack, Box, Tooltip, Divider, Text } from 'native-base';
 import { StyleSheet } from "react-native";
-import { DashboardStat } from "../../../types";
+import { DashboardStat } from "../../types";
 import { scale } from "../../utilities/scales";
 
 type Props = {

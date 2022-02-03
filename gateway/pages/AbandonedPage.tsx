@@ -3,6 +3,7 @@ import useInterval from "../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
 import UserCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
+import {ScrollView} from "native-base";
 
 
 export default function () {
@@ -67,7 +68,8 @@ export default function () {
     useInterval(fetchAbandonedData, useIsFocused() ? 5000 : null)
 
     return (
-        // Using active queues catalog cards because functionally matches
-        <UserCatalogCardGroup entities={props} setEntities={setProps}/>
+        <ScrollView>
+            <UserCatalogCardGroup entities={props} setEntities={setProps}/>
+        </ScrollView>
     )
 }

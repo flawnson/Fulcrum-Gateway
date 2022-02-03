@@ -3,6 +3,7 @@ import EnqueuedCatalogCardGroup from "../components/molecules/UserCatalogCardGro
 import useInterval from "../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../types";
 import { useIsFocused, useRoute } from "@react-navigation/native";
+import {ScrollView} from "native-base";
 
 
 export default function () {
@@ -71,11 +72,13 @@ export default function () {
     useInterval(fetchUserData, useIsFocused() && !showConfirmDeleteAlert ? 5000 : null)
 
     return (
-        <EnqueuedCatalogCardGroup
-            entities={props}
-            setEntities={setProps}
-            showConfirmDeleteAlert={showConfirmDeleteAlert}
-            setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
-        />
+        <ScrollView>
+            <EnqueuedCatalogCardGroup
+                entities={props}
+                setEntities={setProps}
+                showConfirmDeleteAlert={showConfirmDeleteAlert}
+                setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
+            />
+        </ScrollView>
     )
 }

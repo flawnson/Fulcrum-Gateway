@@ -12,6 +12,7 @@ import { Swipeable, RectButton,
         TapGestureHandlerEventPayload,
         LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
+import { scale } from "../../utilities/scales"
 
 type UserCatalogCardProps = {
     entities: Array<UserStats>
@@ -204,6 +205,7 @@ export default function (props: UserCatalogCardProps) {
                 >
                     <HStack space='5' style={styles.group}>
                         <Avatar
+                            size={scale(60)}
                             style={styles.avatar}
                             source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}
                         >
@@ -223,11 +225,11 @@ export default function (props: UserCatalogCardProps) {
                                 {`${props.entity.waited} m`}
                             </Text>
                             {props.entity.finishTime
-                                ? <Text>{props.entity.finishTime}</Text>
+                                ? <Text style={styles.waited}>{props.entity.finishTime}</Text>
                                 : <MaterialCommunityIcons
                                         selectable={false}
                                         name={summoned ? "bell-circle" : "bell-circle-outline"}
-                                        size={32}
+                                        size={scale(32)}
                                         color={"#999999"}
                                         style={styles.icon}
                                         onPress={onBellPress}
@@ -244,14 +246,14 @@ export default function (props: UserCatalogCardProps) {
 
 const styles = StyleSheet.create({
     card: {
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: scale(10),
+        marginBottom: scale(10),
     },
     group: {
         margin: 10,
         display: 'flex',
-        height: 70,
-        width: 300,
+        height: scale(70),
+        width: scale(300),
         justifyContent: 'flex-start',
         alignItems: 'center',
         flexDirection: 'row'
@@ -261,10 +263,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     index: {
-        fontSize: 30,
+        fontSize: scale(30),
         flex: 1,
     },
     name: {
+        fontSize: scale(16),
+        margin: scale(10),
         flex: 5,  // Trying to move the name to the left, closer to the index
     },
     pair: {
@@ -274,6 +278,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     waited: {
+        fontSize: scale(16),
         flex: 1
     },
     icon: {
@@ -294,7 +299,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'red'
     },
     actionText: {
-        fontSize: 30
+        fontSize: scale(30),
+        display: 'flex',
+        alignItems: 'center'
     }
 })
 
