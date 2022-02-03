@@ -7,21 +7,18 @@ import { Button, Tooltip,
         Box } from 'native-base'
 import { AntDesign } from '@expo/vector-icons';
 import { PreferencesContext } from "../../utilities/useTheme";
-import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type DefaultData = {
-    submitted: boolean,
+type DefaultCreateQueueFormData = {
     name: string,
     capacity: number,
     gracePeriod: number,
     maxPartySize: number,
     offlineTime: number,
     address: string,
+    password: string,
 }
 
 type DefaultErrors = {
@@ -35,20 +32,21 @@ type CreateQueueFormType = {
 }
 
 export default function ({ navigation, setShowModal }: CreateQueueFormType) {
-    const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
-    const defaultData = {submitted: false,
-                         name: "Sample Queue name",
+    const { isThemeDark } = React.useContext(PreferencesContext)
+    const [submitted, setSubmitted] = useState(false)
+    const defaultData = {name: "Sample Queue name",
                          capacity: 10,
                          gracePeriod: 0,
                          maxPartySize: 1,
                          offlineTime: 3,
-                         address: "Sample address"}
+                         address: "Sample address",
+                         password: "123456789"}
     const defaultErrors = {nameInvalid: false}
-    const [formData, setData] = useState<DefaultData>(defaultData);
+    const [formData, setData] = useState<DefaultCreateQueueFormData>(defaultData);
     const [errors, setError] = useState<DefaultErrors>(defaultErrors);
     const [onChangeValue, setOnChangeValue] = useState(500)
     const [onChangeEndValue, setOnChangeEndValue] = useState(500)
-    const { t, i18n } = useTranslation(["createQueuePage", "common"]);
+    const { t } = useTranslation(["createQueuePage", "common"]);
 
     // Be careful with this it might trigger infinite render loop
     useEffect(() => {validate()}, [formData])
@@ -77,31 +75,37 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
     };
 
     const query = `
-        mutation create_queue($address: String!, $capacity: Int!, $name: String!, $organizerId: String! ) {
-            createQueue(address: $address, capacity: $capacity, name: $name, organizerId: $organizerId) {
-                id
+        mutation create_queue($address: String!, $capacity: Int!, $name: String!, $password: String!) {
+            createQueue(address: $address, capacity: $capacity, name: $name, password: $password) {
+                ... on Queue {
+                    id
+                }
+                ... on Error {
+                    error
+                }
             }
         }
     `
     const variables = `{
-        "address": "University of Waterloo",
-        "capacity": 250,
         "name": "V1 Residence Queue",
-        "organizerId": "costco_toronto",
+        "capacity": 250,
         "gracePeriod": 0,
         "maxPartySize": 1,
         "offlineTime": 3,
+        "address": "University of Waterloo",
         "password": "uwaterloo"
     }`
 
     async function createQueue () {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
+            const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
                 },
-                body: JSON.stringify(formData)
+                credentials: 'include',
+                body: JSON.stringify({query: query, variables: formData})
             });
             return await response.json()
         } catch(error) {
@@ -110,12 +114,14 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
     }
 
     const onSuccess = () => {
-        setData({...formData, submitted: true})
+        setData({...formData})
+        setSubmitted(true)
         const submissionData = createQueue()
         console.log(formData)
         console.log(submissionData);
         setShowModal(false)
-        setData({...formData, submitted: false})
+        setData({...formData})
+        setSubmitted(false)
         navigation.navigate("QueuesPage")
     }
 
@@ -124,7 +130,8 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
     }
 
     const onSubmit = () => {
-        setData({...formData, submitted: true})
+        setData({...formData})
+        setSubmitted(true)
         check() ? onSuccess() : onFailure();
     };
 
@@ -141,7 +148,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                         </Tooltip>
                     </HStack>
                     <Input
-                        placeholder={"Bob's Burgers"}
+                        placeholder={t("business_name_placeholder")}
                         onChangeText={(value) => setData({ ...formData, name: value })}
                     />
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Name Error"}</FormControl.ErrorMessage>
@@ -190,7 +197,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                         </Tooltip>
                     </HStack>
                     <Input
-                        placeholder={"None"}
+                        placeholder={t("grace_period_placeholder")}
                         onChangeText={(value) => setData({ ...formData, gracePeriod: parseInt(value) })}
                         keyboardType={"numeric"}
                     />
@@ -208,7 +215,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                         </Tooltip>
                     </HStack>
                     <Input
-                        placeholder={"No party"}
+                        placeholder={t("party_size_placeholder")}
                         onChangeText={(value) => setData({ ...formData, maxPartySize: parseInt(value) })}
                         keyboardType={"numeric"}
                     />
@@ -226,7 +233,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                         </Tooltip>
                     </HStack>
                     <Input
-                        placeholder={"No limit"}
+                        placeholder={t("offline_time_placeholder")}
                         onChangeText={(value) => setData({ ...formData, offlineTime: parseInt(value) })}
                         keyboardType={"numeric"}
                     />
@@ -244,10 +251,27 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                         </Tooltip>
                     </HStack>
                     <Input
-                        placeholder={"King's Cross Station platform 9 3/4"}
+                        placeholder={t("address_placeholder")}
                         onChangeText={(value) => setData({ ...formData, address: value })}
                     />
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Address error"}</FormControl.ErrorMessage>
+                </Stack>
+            </FormControl>
+            <FormControl isRequired>
+                <Stack>
+                    <HStack>
+                        <FormControl.Label _text={{bold: true}}>{t("password_label")}</FormControl.Label>
+                        <Tooltip label={t("password_helper")} openDelay={300}>
+                            <Box>
+                                <AntDesign name={isThemeDark ? "questioncircleo" : "questioncircle"} size={10}/>
+                            </Box>
+                        </Tooltip>
+                    </HStack>
+                    <Input
+                        placeholder={t("password_placeholder")}
+                        onChangeText={(value) => setData({ ...formData, address: value })}
+                    />
+                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Password error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
             <Button.Group space={2}>
@@ -259,10 +283,16 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                         setShowModal(false)
                     }}
                 >
-                    Cancel
+                    {t("cancel", {ns: "common"})}
                 </Button>
-                <Button onPress={onSubmit} mt="5" colorScheme="cyan" isLoading={formData.submitted} isLoadingText="Submitting">
-                    Submit
+                <Button
+                    onPress={() => onSubmit()}
+                    mt="5"
+                    colorScheme="cyan"
+                    isLoading={submitted}
+                    isLoadingText={t("submitting", {ns: "common"})}
+                >
+                    {t("submit", {ns: "common"})}
                 </Button>
             </Button.Group>
         </VStack>

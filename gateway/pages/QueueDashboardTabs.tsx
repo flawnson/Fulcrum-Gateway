@@ -8,12 +8,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {useNavigation, useRoute} from "@react-navigation/native";
 import { HomeScreenProps } from "../types";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
+import {scale} from "../utilities/scales"
 
 const Tab = createBottomTabNavigator();
 
 export default function QueueDashboardTabs() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const route = useRoute<HomeScreenProps["route"]>()
+    // Setting right header group (language and dark mode) for nested bottom tab navigator
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     return (
@@ -34,7 +36,7 @@ export default function QueueDashboardTabs() {
                     }
 
                     // @ts-ignore for some reason the name has trouble with the type of iconName
-                    return <MaterialCommunityIcons name={iconName} size={32} color={color} />
+                    return <MaterialCommunityIcons name={iconName} size={scale(20)} color={color} />
                 },
                 tabBarActiveTintColor: '#8743FF',
                 tabBarInactiveTintColor: 'gray',
