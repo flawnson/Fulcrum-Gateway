@@ -10,7 +10,9 @@ import { cookieName } from "../../../constants";
 
 @Resolver()
 export class LogoutOrganizerResolver {
-  @Mutation(() => Boolean)
+  
+  @Authorized(["ORGANIZER"])
+  @Mutation(returns => Boolean)
   async logoutOrganizer(@Ctx() ctx: Context): Promise<Boolean> {
     // clear organizer id from session
     delete ctx.req.session!.organizerId;

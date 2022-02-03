@@ -10,9 +10,9 @@ import { cookieName } from "../../../constants";
 
 @Resolver()
 export class LogoutQueueResolver {
-  @Mutation(() => Boolean)
+  @Authorized(["ASSISTANT"])
+  @Mutation(returns => Boolean)
   async logoutQueue(@Ctx() ctx: Context): Promise<Boolean> {
-
     // clear queue id from session
     delete ctx.req.session!.queueId;
 
