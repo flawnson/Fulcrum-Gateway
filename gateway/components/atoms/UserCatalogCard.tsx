@@ -4,7 +4,6 @@ import { HStack, Text,
         Box, View,
         Avatar, VStack } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { onLeftSwipe, onRightSwipe } from "../../utilities/swipeAnimation";
 import {UserStatus, UserStats} from "../../types";
 import { Swipeable, RectButton,
         State, HandlerStateChangeEvent,
@@ -12,6 +11,7 @@ import { Swipeable, RectButton,
         TapGestureHandlerEventPayload,
         LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
+import { scale } from "../../utilities/scales"
 
 type UserCatalogCardProps = {
     entities: Array<UserStats>
@@ -20,8 +20,8 @@ type UserCatalogCardProps = {
     onLongPress: (event?: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => void,
     deSelectItems: () => void,
     selected: boolean,
-    showConfirmDeleteAlert?: {show: boolean, callback: Function}
-    setShowConfirmDeleteAlert?: React.Dispatch<React.SetStateAction<any>>
+    showConfirmDeleteAlert?: {show: boolean, callback: Function}  // Only needed for enqueued page
+    setShowConfirmDeleteAlert?: React.Dispatch<React.SetStateAction<any>>  // Only needed for enqueued page
     entity: UserStats,
 }
 type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
@@ -36,7 +36,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: UserCatalogCardProps) {
     const [summoned, setSummoned] = useState<boolean>(false)
-    const swipeableRef = useRef(null)
+    const swipeableRef = useRef(null)  // Needed to automatically close swipe action
 
     const summonQuery = `
         mutation toggle_summon_user($userId: String!, $summoned: Boolean!) {
@@ -58,10 +58,8 @@ export default function (props: UserCatalogCardProps) {
                                          credentials: 'include',
                                          body: JSON.stringify({query: summonQuery, variables: {"userId": userId, "summoned": summoned}})
                                      });
-            // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
-            // enter your logic for when there is an error (ex. error toast)
             return error
         }
     }
@@ -90,10 +88,8 @@ export default function (props: UserCatalogCardProps) {
                 credentials: 'include',
                 body: JSON.stringify({query: statusQuery, variables: {userId: props.entity.userId, status: status}})
             });
-            // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
-            // enter your logic for when there is an error (ex. error toast)
             return error
         }
     }
@@ -204,6 +200,7 @@ export default function (props: UserCatalogCardProps) {
                 >
                     <HStack space='5' style={styles.group}>
                         <Avatar
+                            size={scale(60)}
                             style={styles.avatar}
                             source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}
                         >
@@ -223,11 +220,11 @@ export default function (props: UserCatalogCardProps) {
                                 {`${props.entity.waited} m`}
                             </Text>
                             {props.entity.finishTime
-                                ? <Text>{props.entity.finishTime}</Text>
+                                ? <Text style={styles.waited}>{props.entity.finishTime}</Text>
                                 : <MaterialCommunityIcons
                                         selectable={false}
                                         name={summoned ? "bell-circle" : "bell-circle-outline"}
-                                        size={32}
+                                        size={scale(32)}
                                         color={"#999999"}
                                         style={styles.icon}
                                         onPress={onBellPress}
@@ -244,14 +241,14 @@ export default function (props: UserCatalogCardProps) {
 
 const styles = StyleSheet.create({
     card: {
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: scale(10),
+        marginBottom: scale(10),
     },
     group: {
         margin: 10,
         display: 'flex',
-        height: 70,
-        width: 300,
+        height: scale(70),
+        width: scale(300),
         justifyContent: 'flex-start',
         alignItems: 'center',
         flexDirection: 'row'
@@ -261,10 +258,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     index: {
-        fontSize: 30,
+        fontSize: scale(30),
         flex: 1,
     },
     name: {
+        fontSize: scale(16),
+        margin: scale(10),
         flex: 5,  // Trying to move the name to the left, closer to the index
     },
     pair: {
@@ -274,6 +273,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     waited: {
+        fontSize: scale(16),
         flex: 1
     },
     icon: {
@@ -294,7 +294,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'red'
     },
     actionText: {
-        fontSize: 30
+        fontSize: scale(30),
+        display: 'flex',
+        alignItems: 'center'
     }
 })
 

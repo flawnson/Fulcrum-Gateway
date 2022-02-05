@@ -1,12 +1,14 @@
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import EnqueuedCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
 import useInterval from "../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../types";
 import { useIsFocused, useRoute } from "@react-navigation/native";
+import {ScrollView} from "native-base";
 
 
 export default function () {
     const [props, setProps] = useState<UserStats[]>([])
+    // The callback is so that we can call the method that deletes the cards from the flatlist when delete confirmed
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
     const route = useRoute<HomeScreenProps["route"]>()
 
@@ -24,8 +26,7 @@ export default function () {
             }
         }
     `
-    //@ts-ignore
-    const variables = route.params ? {"queueId": route.params?.queueId, "orderBy": {"index": "asc"}}
+    const variables = route.params ? {"queueId": route.params!["queueId"], "orderBy": {"index": "asc"}}
                                    : {"queueId": "123456", "orderBy": {"index": "asc"}}
 
     async function fetchUserData () {
@@ -66,16 +67,18 @@ export default function () {
     }
 
     // Run on first render
-    useEffect(() => {fetchUserData().then(null)}, [])
+    useEffect(() => {fetchUserData().then()}, [])
     // Poll only if user is currently on this screen
     useInterval(fetchUserData, useIsFocused() && !showConfirmDeleteAlert ? 5000 : null)
 
     return (
-        <EnqueuedCatalogCardGroup
-            entities={props}
-            setEntities={setProps}
-            showConfirmDeleteAlert={showConfirmDeleteAlert}
-            setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
-        />
+        <ScrollView>
+            <EnqueuedCatalogCardGroup
+                entities={props}
+                setEntities={setProps}
+                showConfirmDeleteAlert={showConfirmDeleteAlert}
+                setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
+            />
+        </ScrollView>
     )
 }

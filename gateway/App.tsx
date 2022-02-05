@@ -151,6 +151,7 @@ function App() {
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="ShareScreen" component={ShareScreen} />
+                                        <Stack.Screen name="EndScreen" component={EndScreen} />
                                     </>
                                 ) : state.isAssistant ? (
                                     <>
