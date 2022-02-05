@@ -3,14 +3,14 @@ import {
   FieldResolver, Ctx,
   Root, Int,
   Mutation, Arg, Args, ArgsType,
-  InputType, Field
+  InputType, Field, Authorized
 } from "type-graphql";
 import { Context } from "../../../context.interface";
 import { cookieName } from "../../../constants";
 
 @Resolver()
 export class LogoutOrganizerResolver {
-  
+
   @Authorized(["ORGANIZER"])
   @Mutation(returns => Boolean)
   async logoutOrganizer(@Ctx() ctx: Context): Promise<Boolean> {
