@@ -22,6 +22,7 @@ export default function () {
                         accessibilityLabel="More options menu" {...triggerProps}
                         leftIcon={<Text>{`${availableLanguages[i18n.language]} - ${i18n.language}`}</Text>}
                         variant="outline"
+                        style={{display: "flex", alignSelf: "center", height: "90%"}}
                     >
 
                     </Button>

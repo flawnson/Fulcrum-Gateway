@@ -27,7 +27,7 @@ import ConfirmationScreen from "./screens/ConfirmationScreen"
 import { PreferencesContext } from "./utilities/useTheme"
 import linkConfig from "./utilities/linkConfig"
 import QueueDashboard from "./pages/QueueDashboard"
-import SplashScreen from "./screens/SpashScreen"
+import SplashScreen from "./screens/SplashScreen"
 import {UserTypes} from "./types"
 
 // Strict mode can be changed to trigger a warning or an error in case of any nativebase issues
@@ -162,7 +162,8 @@ function App() {
                                     </>
                                 ) : (
                                     <>
-                                        <Stack.Screen name="HomePage" component={HomePage} />
+                                        <Stack.Screen name="HomePage" component={UserDashboard} />
+                                        <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
                                         <Stack.Screen name="QueuesPage" component={QueuesPage} />
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />

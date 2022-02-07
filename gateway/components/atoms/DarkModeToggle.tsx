@@ -3,6 +3,7 @@ import { Feather } from "@expo/vector-icons";
 import { StyleSheet, Switch } from "react-native";
 import { PreferencesContext } from "../../utilities/useTheme";
 import { useColorMode, HStack } from "native-base";
+import {scale} from "../../utilities/scales";
 
 export default function () {
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
@@ -37,9 +38,8 @@ const styles = StyleSheet.create({
     container: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        marginRight: 10
     },
     switch: {
     },
