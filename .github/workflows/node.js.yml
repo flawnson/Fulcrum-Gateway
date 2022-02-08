@@ -37,3 +37,5 @@ jobs:
       
     - run: npm test
       working-directory: fulcrum
+      env:
+        CI: true
