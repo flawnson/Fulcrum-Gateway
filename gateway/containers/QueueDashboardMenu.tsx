@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { HStack, Menu, Fab, HamburgerIcon, Text } from 'native-base';
 import { useNavigation, useRoute } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {HomeScreenProps, ShareData} from "../types";
 import CreateUserModal from "./CreateUserModal"
 import { useTranslation } from "react-i18next";
@@ -23,7 +24,7 @@ export default function () {
                                                                     currentQueueJoinCode: "1234567890"})
     useEffect(() => {
         fetchShareData().then()
-    })
+    }, [])
 
     const organizerQuery = `
         query get_queue_stats ($queueId: String){
@@ -56,6 +57,7 @@ export default function () {
     const query = signedInAs === "ORGANIZER" ? organizerQuery :
                   signedInAs === "ASSISTANT" ? assistantQuery :
                   {null: null}
+    // @ts-ignore
     const variables = signedInAs === "ORGANIZER" ? {queueId: route.params!["queueId"]} : null
 
     const fetchShareData = async () => {
@@ -138,6 +140,7 @@ export default function () {
 
     function onEndScreenPress () {
         deleteQueue().then()
+        AsyncStorage.clear().then()
         navigation.navigate("EndScreen")
     }
 

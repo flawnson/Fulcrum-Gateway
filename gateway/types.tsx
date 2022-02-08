@@ -5,14 +5,14 @@ import React from "react";
 
 /* React Navigation types used throughout app*/
 export type RootStackParamList = {
-    HomePage: undefined;
+    HomePage: undefined | {joinCode: string};
     LandingPage: undefined;
     UserDashboard: undefined;
     QueueDashboard: undefined;
     QueueDashboardTabs: undefined | {queueId: string};
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
-    ShareScreen: undefined | {shareData: any};
+    ShareScreen: undefined | {shareData: ShareData};
     EndScreen: undefined;
     SummonScreen: undefined;
     EnqueuedPage: undefined;

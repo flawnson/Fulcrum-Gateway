@@ -31,7 +31,7 @@ export default function () {
                     id
                     name
                     queues(orderBy: $orderBy) {
-                        queue_id: id
+                        queueId: id
                         name
                         state
                         create_time

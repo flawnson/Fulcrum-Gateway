@@ -21,9 +21,8 @@ export default function () {
 
     const handleBarCodeScanned = ({ type, data }: {type: string, data: string}) => {
         setScanned(true);
-        console.log(type)
         console.log(data)
-        navigation.navigate("HomePage")
+        navigation.navigate("HomePage", {joinCode: "123345"})
     };
 
     if (hasPermission === null) {

@@ -56,7 +56,7 @@ export default function () {
         query get_queue_stats ($queueId: String){
             getQueue(queueId: $queueId) {
                 ... on Queue {
-                    names
+                    name
                     users {
                         user_id: id
                         join_time

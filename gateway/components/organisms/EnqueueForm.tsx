@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import GeneralErrorAlert from "../atoms/GeneralErrorAlert";
 import {AuthContext} from "../../utilities/AuthContext";
 import LoadingSpinner from "../atoms/LoadingSpinner";
+import {useRoute} from "@react-navigation/native";
 
 
 type EnqueueFormProps = {
@@ -23,6 +24,7 @@ type EnqueueFormData = {
 
 
 export default function ({navigation, setShowModal}: EnqueueFormProps) {
+    const route = useRoute<HomeScreenProps["route"]>()
     const [formData, setData] = useState<EnqueueFormData>({})
     const { signIn } = React.useContext(AuthContext)
     const [submitted, setSubmitted] = useState<boolean>(false)
@@ -33,6 +35,12 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     const [isPhoneNumberFormOpen, setPhoneNumberFormOpen] = useState<boolean>(false)
     const [errors, setErrors] = useState<EnqueueFormData>({})
     const { t, i18n } = useTranslation(["homePage", "common"])
+
+    if (route.params) {
+        setJoinCodeFormOpen(false)
+        setNameFormOpen(true)
+        setData({...formData, joinCode: route.params!["joinCode"]})
+    }
 
     useCallback(() => {
         setTimeout(() => {
@@ -257,7 +265,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                                     !!setShowModal ? setShowModal(false) : null
                                 }
                             }
-                            mt="5"
+                                mt="5"
                                 isLoading={submitted}
                                 isLoadingText="Submitting...">
                             <Text bold color={'white'}>
