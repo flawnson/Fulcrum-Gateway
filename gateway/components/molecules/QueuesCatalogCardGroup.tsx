@@ -5,7 +5,7 @@ import { StyleSheet, Pressable, PressableStateCallbackType } from "react-native"
 import { useNavigation } from "@react-navigation/native";
 import {HomeScreenProps, QueueInfo, QueueState} from "../../types";
 import { FlatList } from "react-native-gesture-handler";
-import MultiSelectButtons from "../../containers/QueueMultiSelectButtons";
+import MultiSelectButtons from "../organisms/QueueMultiSelectButtons";
 import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 

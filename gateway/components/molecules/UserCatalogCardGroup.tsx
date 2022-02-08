@@ -5,7 +5,7 @@ import { StyleSheet, Pressable, PressableStateCallbackType} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {UserStats, UserStatus, HomeScreenProps} from "../../types";
 import UserCatalogCard from "../atoms/UserCatalogCard";
-import CatalogCardMultiSelectButtons from "../../containers/CatalogCardMultiSelectButtons"
+import CatalogCardMultiSelectButtons from "../organisms/CatalogCardMultiSelectButtons"
 import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 
 

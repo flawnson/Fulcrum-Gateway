@@ -6,7 +6,6 @@ import React from "react";
 /* React Navigation types used throughout app*/
 export type RootStackParamList = {
     HomePage: undefined | {joinCode: string};
-    LandingPage: undefined;
     UserDashboard: undefined;
     QueueDashboard: undefined;
     QueueDashboardTabs: undefined | {queueId: string};

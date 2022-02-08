@@ -127,7 +127,7 @@ function App() {
             try {
                 const initialUrl = await Linking.getInitialURL();
 
-                if (initialUrl == null) {
+                // if (initialUrl == null) {
                     // Only restore state if there's no deep link
                     const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
                     const state = savedStateString ? JSON.parse(savedStateString) : undefined;
@@ -135,7 +135,7 @@ function App() {
                     if (state !== undefined) {
                         setInitialState(state);
                     }
-                }
+                // }
             } finally {
                 setIsReady(true);
             }

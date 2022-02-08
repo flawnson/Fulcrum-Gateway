@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import {AuthContext} from "../utilities/AuthContext";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/PreferencesContext";
+import LeaveQueueAlert from "./LeaveQueueAlert";
 
 export default function () {
     const { signedInAs } = React.useContext(AuthContext)
@@ -18,6 +19,7 @@ export default function () {
     const { t, i18n } = useTranslation(["queueDashboardMenu"]);
     const [queuePaused, toggleQueuePaused] = useState<boolean>(false)
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
+    const [isAlertOpen, setIsAlertOpen] = React.useState(false)
     const [errors, setError] = useState<any>([]);
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueQR: 'Image address',
@@ -102,48 +104,6 @@ export default function () {
         setQueuePaused().then()
     }
 
-    const deleteQueueQuery = `
-        mutation delete_queue($queueId: String!) {
-            deleteQueue(queueId: $queueId){
-                ... on Queue {
-                    id
-                }
-                ... on Error {
-                    error
-                }
-            }
-        }
-    `
-    const deleteQueueVariables = `{
-    "queue_id": {
-            "id": "costco_queue1"
-        }
-    }`
-
-    const deleteQueue = async () => {
-        try {
-            const response = await fetch(`http://localhost:8080/api`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
-                },
-                credentials: 'include',
-                body: JSON.stringify({query: deleteQueueQuery, variables: deleteQueueVariables})
-            });
-            // enter you logic when the fetch is successful
-            return await response.json()
-        } catch(error) {
-            console.log(error)
-        }
-    }
-
-    function onEndScreenPress () {
-        deleteQueue().then()
-        AsyncStorage.clear().then()
-        navigation.navigate("EndScreen")
-    }
-
     const logoutQuery = `
         mutation logout_organizer {
             logoutOrganizer
@@ -169,6 +129,7 @@ export default function () {
     function onLogoutPress () {
         signOut()
         logout().then()
+        AsyncStorage.clear().then()
         navigation.navigate("EndScreen")
     }
 
@@ -200,7 +161,7 @@ export default function () {
                         </Text>
                     </HStack>
                 </Menu.Item>
-                <Menu.Item onPress={() => onEndScreenPress()}>
+                <Menu.Item isDisabled={signedInAs === "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
                     <HStack space={3}>
                         <Ionicons
                             name={'close-circle'}
@@ -252,6 +213,10 @@ export default function () {
             <CreateUserModal showModal={showCreateUserModal}
                             setShowModal={setShowCreateUserModal}
                             navigation={navigation}/>
+            <LeaveQueueAlert
+                isAlertOpen={isAlertOpen}
+                setIsAlertOpen={setIsAlertOpen}
+            />
         </>
     )
 }
