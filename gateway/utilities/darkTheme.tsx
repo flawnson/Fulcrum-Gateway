@@ -1,3 +1,4 @@
+import React from 'react'
 import {
     useFonts,
     Poppins_100Thin,
@@ -19,6 +20,7 @@ import {
     Poppins_900Black,
     Poppins_900Black_Italic
 } from '@expo-google-fonts/poppins'
+import SplashScreen from "../screens/SplashScreen";
 
 export default function () {
     // Can choose to load locally by using require('path to font file")
@@ -42,6 +44,11 @@ export default function () {
         "Poppins_900Black": Poppins_900Black,
         "Poppins_900Black_Italic": Poppins_900Black_Italic
     })
+
+    // Load fonts asynchronously
+    if (!fontsLoaded) {
+        return <SplashScreen />;
+    }
 
     return ({
             colors: {

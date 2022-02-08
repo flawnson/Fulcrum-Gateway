@@ -13,8 +13,8 @@ import { Swipeable, RectButton,
         LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 import calculateTimeToNow from "../../utilities/calculateTimeToNow";
-import useWindowSize from "../../utilities/useWindowSize";
 import { scale } from "../../utilities/scales";
+import useDimensions from "../../utilities/useDimensions";
 
 type QueuesCatalogCardProps = {
     entities: Array<QueueInfo>
@@ -31,7 +31,7 @@ type QueuesCatalogCardProps = {
 
 export default function (props: QueuesCatalogCardProps) {
     const [queueState, setQueueState] = useState<QueueState>(props.entity.state)
-    const { width, height } = useWindowSize()
+    const { width, height } = useDimensions()
     const swipeableRef = useRef(null)
 
     const pauseQuery = `
