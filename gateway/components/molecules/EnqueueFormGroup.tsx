@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     },
     subText: {
         marginTop: 200,
+        textAlign: "center"
     },
     linkText: {
         fontWeight: 'bold',

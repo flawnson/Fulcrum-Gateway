@@ -2,7 +2,7 @@ import React from 'react';
 import { HStack, Box, Tooltip, Divider, Text } from 'native-base';
 import { StyleSheet } from "react-native";
 import { DashboardStat } from "../../types";
-import { scale } from "../../utilities/scales";
+import {moderateScale, scale} from "../../utilities/scales";
 
 type Props = {
     stat: DashboardStat
@@ -62,14 +62,14 @@ const styles = StyleSheet.create({
     },
     statPrefix: {
         flex: 1,
-        fontSize: scale(10),
+        fontSize: moderateScale(10),
         alignSelf: 'center'
     },
     statText: {
-        fontSize: scale(20),
+        fontSize: moderateScale(20),
 
     },
     statSuffix: {
-        fontSize: scale(10),
+        fontSize: moderateScale(10),
     },
 })

@@ -131,7 +131,6 @@ export default function () {
                 />
                 <Avatar
                     style={styles.avatar}
-                    size='xl'
                     source={require('../assets/images/store_004.jpg')}
                 >
                     <Avatar.Badge bg={state === "ACTIVE" ? "green.500" : "red.500"}/>
@@ -162,6 +161,8 @@ const styles = StyleSheet.create({
     },
     avatar: {
         flex: 1,
+        width: scale(200),
+        height: scale(60),
         borderRadius: 10,
     },
     animationFormat: {

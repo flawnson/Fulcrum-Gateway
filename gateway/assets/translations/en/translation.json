@@ -42,7 +42,7 @@
     "queue_id": "Queue ID",
     "name": "Your name",
     "phone_number": "Your phone number",
-    "helper": "Queue ID must be 10 characters.",
+    "helper": "Queue ID must be 6 characters.",
     "or": " or ",
     "footer": " to create your own virtual queue at",
     "cannot_enqueue_message": "Something wrong happened (we should be more specific about this)",

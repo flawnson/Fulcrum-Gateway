@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, TouchableHighlight} from 'react-native'
-import {View} from 'native-base'
+import {Pressable, Icon, Text, View} from 'native-base'
 import EnqueueGroup from "../components/molecules/EnqueueFormGroup";
 import QRCodeScanner from "../components/organisms/QRCodeScanner";
 import {PreferencesContext} from "../utilities/useTheme";
@@ -8,6 +8,7 @@ import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../types";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
+import {scale} from "../utilities/scales";
 
 
 export default function () {
@@ -17,14 +18,18 @@ export default function () {
 
     return (
         <View style={styles.container}>
-            <EnqueueGroup/>
-            <TouchableHighlight style={styles.qrButton} onPress={() => navigation.navigate("QRCodeScanner")}>
-                <MaterialCommunityIcons
-                    name={'qrcode-scan'}
-                    size={32}
+            <Pressable
+                style={styles.qrButton}
+                onPress={() => navigation.navigate("QRCodeScanner")}
+            >
+                <Icon
+                    as={MaterialCommunityIcons}
+                    size={scale(6)}
+                    name={"qrcode-scan"}
                     color={isThemeDark ? 'white': 'black'}
                 />
-            </TouchableHighlight>
+            </Pressable>
+            <EnqueueGroup/>
         </View>
     )
 }
@@ -32,21 +37,15 @@ export default function () {
 
 const styles = StyleSheet.create({
     container: {
-        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignContent: "center",
         margin: "3%"
     },
-    switch: {
-        position: "absolute",
-        right: "15px",
-    },
-    switchName: {
-        position: "absolute",
-        right: "60px",
-    },
     qrButton: {
-        position: "absolute",
-        top: "8px",
-        right: "16px",
+        flex: 1,
+        alignSelf: "flex-end"
     },
 });
 
