@@ -25,11 +25,16 @@ export default ({navigation, setShowModal}: SignInFormType) => {
     const [errors, setErrors] = useState<object>({});
 
     const query = `
-        mutation login_queue($joinCode: String!, $password: String!) {
-            loginQueue(joinCode: $joinCode, password: $password){
-                id
-            }
-        }
+      mutation login_queue($joinCode: String!, $password: String!) {
+          loginQueue(joinCode: $joinCode, password: $password){
+              ... on Queue {
+                  id
+              }
+              ... on Error {
+                  error
+              }
+          }
+      }
     `
 
     async function logIn () {

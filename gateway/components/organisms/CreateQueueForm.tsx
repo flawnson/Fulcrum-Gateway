@@ -75,8 +75,15 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
     };
 
     const query = `
-        mutation create_queue($address: String!, $capacity: Int!, $name: String!, $password: String!) {
-            createQueue(address: $address, capacity: $capacity, name: $name, password: $password) {
+        mutation create_queue($address: String!,
+                            $capacity: Int!,
+                            $name: String!,
+                            $password: String!
+                            ) {
+            createQueue(address: $address,
+                        capacity: $capacity,
+                        name: $name,
+                        password: $password){
                 ... on Queue {
                     id
                 }

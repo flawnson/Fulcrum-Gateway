@@ -39,15 +39,25 @@ export default function (props: QueuesStatsProps) {
     const pauseQuery = `
         mutation change_queue_state($queueId: String, $state: String!) {
             changeQueueState(queueId: $queueId, state: $state) {
-                id
-                state
+                ... on Queue {
+                    id
+                    state
+                }
+                ... on Error {
+                    error
+                }
             }
         }
     `
     const deleteQuery = `
-        mutation delete_queue($queueId: String!) { 
-            deleteQueue(queueId: $queueId) { 
-                id
+        mutation delete_queue($queueId: String!) {
+            deleteQueue(queueId: $queueId){
+                ... on Queue {
+                    id
+                }
+                ... on Error {
+                    error
+                }
             }
         }
     `
@@ -171,4 +181,3 @@ export default function (props: QueuesStatsProps) {
 
 const styles = StyleSheet.create({
 })
-

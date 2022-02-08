@@ -29,9 +29,16 @@ export default function (props: VerifySMSModalProps) {
     });
 
     const query = `
-            mutation confirm_user($confirmCode: String!) {
-            confirmUser(confirmCode: $confirmCode)
-        }
+      mutation confirm_user($confirmCode: String!) {
+          confirmUser(confirmCode: $confirmCode){
+              ... on User {
+                  id
+              }
+              ... on Error {
+                  error
+              }
+          }
+      }
     `
 
     const submitSMSVerification = async () => {

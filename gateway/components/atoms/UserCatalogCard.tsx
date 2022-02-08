@@ -39,12 +39,17 @@ export default function (props: UserCatalogCardProps) {
     const swipeableRef = useRef(null)  // Needed to automatically close swipe action
 
     const summonQuery = `
-        mutation toggle_summon_user($userId: String!, $summoned: Boolean!) {
-            toggleSummon(userId: $userId, summoned: $summoned) {
-                id
-                summoned
-            }
-        }
+      mutation toggle_summon_user($userId: String!, $summoned: Boolean!) {
+          toggleSummon(userId: $userId, summoned: $summoned) {
+              ... on User {
+                  id
+                  summoned
+              }
+              ... on Error {
+                  error
+              }
+          }
+      }
     `
 
     async function toggleSummonUser (userId: string) {
@@ -299,4 +304,3 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 })
-

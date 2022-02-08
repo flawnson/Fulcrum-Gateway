@@ -17,7 +17,7 @@ import { Context } from "../../../context.interface";
 export class CustomQueueResolver {
 
   // average wait statistics
-  @Authorized(["ORGANIZER", "ASSISTANT"])
+  @Authorized()
   @FieldResolver(type => Int, { nullable: true })
   async average_wait(@Root() queue: Queue, @Ctx() { req, prisma }: Context): Promise<number | null> {
     const averageWaitTime = await helpers.calculateAverageWait(queue.id);

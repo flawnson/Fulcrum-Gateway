@@ -34,11 +34,16 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
     const [errors, setErrors] = useState<OrganizerSignUpErrorData>({});
 
     const query = `
-        mutation create_organizer($email: String!, $name: String!, $password: String!){
-            createOrganizer(email: $email, name: $name, password: $password){
-                id
-            }
-        }
+      mutation create_organizer($email: String!, $name: String!, $password: String!){
+          createOrganizer(email: $email, name: $name, password: $password){
+              ... on Organizer {
+                  id
+              }
+              ... on Error {
+                  error
+              }
+          }
+      }
     `
 
     async function signUp () {
