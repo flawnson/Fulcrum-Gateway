@@ -21,7 +21,12 @@ export default (props: LeaveQueueAlertProps) => {
     const query = `
         mutation change_status($status: String!) {
             changeStatus(status: $status) {
-                id
+                ... on User {
+                    id
+                }
+                ... on Error {
+                    error
+                }
             }
         }
     `

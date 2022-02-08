@@ -32,11 +32,16 @@ export default ({navigation, setShowModal}: LogInFormType) => {
     const [errors, setErrors] = useState<OrganizerLogInErrorData>({});
 
     const query = `
-        mutation login_organizer($email: String!, $password: String!) {
-            loginOrganizer(email: $email, password: $password){
-                id
-            }
-        }
+      mutation login_organizer($email: String!, $password: String!) {
+          loginOrganizer(email: $email, password: $password){
+              ... on Organizer {
+                  id
+              }
+              ... on Error {
+                  error
+              }
+          }
+      }
     `
 
     async function logIn () {

@@ -27,11 +27,18 @@ export default function () {
     const query = `
         query get_queue_data($orderBy: [QueueOrderByWithRelationInput!]) {
             getOrganizer {
-                queues(orderBy: $orderBy) {
-                    queueId: id
+                ... on Organizer {
+                    id
                     name
-                    state
-                    create_time
+                    queues(orderBy: $orderBy) {
+                        queue_id: id
+                        name
+                        state
+                        create_time
+                    }
+                }
+                ... on Error {
+                    error
                 }
             }
         }

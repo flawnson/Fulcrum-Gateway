@@ -15,14 +15,21 @@ export default function () {
     const query = `
         query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
             getQueue(queueId: $queueId) {
-                users(orderBy: $orderBy) {
-                    userId: id
-                    name
-                    index
-                    lastOnline: last_online
-                    joinTime: join_time
-                    status
+                ... on Queue {
+                    state
+                    users(orderBy: $orderBy) {
+                      userId: id
+                      name
+                      index
+                      lastOnline: last_online
+                      joinTime: join_time
+                      status
+                    }
                 }
+                ... on Error {
+                    error
+                }
+
             }
         }
     `

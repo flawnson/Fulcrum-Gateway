@@ -26,10 +26,15 @@ export default function () {
     })
 
     const organizerQuery = `
-        query get_queue_stats($queueId: String) {
+        query get_queue_stats ($queueId: String){
             getQueue(queueId: $queueId) {
-                name
-                joinCode: join_code
+                ... on Queue {
+                    name
+                    joinCode: join_code
+                }
+                ... on Error {
+                    error
+                }
             }
         }
     `
@@ -37,8 +42,13 @@ export default function () {
     const assistantQuery = `
         query get_queue_stats {
             getQueue {
-                name
-                joinCode: join_code
+                ... on Queue {
+                    name
+                    joinCode: join_code
+                }
+                ... on Error {
+                    error
+                }
             }
         }
     `
@@ -91,9 +101,14 @@ export default function () {
     }
 
     const deleteQueueQuery = `
-        mutation deleteQueue($id: String!) {
-            deleteQueue(id: $id) {
-            id
+        mutation delete_queue($queueId: String!) {
+            deleteQueue(queueId: $queueId){
+                ... on Queue {
+                    id
+                }
+                ... on Error {
+                    error
+                }
             }
         }
     `
@@ -237,6 +252,3 @@ export default function () {
         </>
     )
 }
-
-
-

@@ -37,24 +37,34 @@ export default function () {
     const assistantQuery = `
         query get_queue_stats {
             getQueue {
-                name
-                users {
-                    user_id: id
-                    join_time
-                    status
+                ... on Queue {
+                    name
+                    users {
+                        user_id: id
+                        join_time
+                        status
+                    }
+                }
+                ... on Error {
+                    error
                 }
             }
         }
     `
     // Organizers must provide a queueId because they have access to all queues
     const organizerQuery = `
-        query get_queue_stats ($queueId: String) {
+        query get_queue_stats ($queueId: String){
             getQueue(queueId: $queueId) {
-                name
-                users {
-                    user_id: id
-                    join_time
-                    status
+                ... on Queue {
+                    names
+                    users {
+                        user_id: id
+                        join_time
+                        status
+                    }
+                }
+                ... on Error {
+                    error
                 }
             }
         }
@@ -160,6 +170,3 @@ const styles = StyleSheet.create({
         marginBottom: 25,
     },
 })
-
-
-

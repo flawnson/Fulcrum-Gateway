@@ -26,14 +26,17 @@ export default function () {
     })
 
     const query = `
-        query get_queue_stats {
-            getUser {
-                queue {
-                    name
-                    joinCode: join_code
-                }
-            }
-        }
+      query get_queue_stats {
+          getQueue {
+              ... on Queue {
+                  name
+                  joinCode: join_code
+              }
+              ... on Error {
+                  error
+              }
+          }
+      }
     `
 
     const fetchShareData = async () => {
@@ -121,6 +124,3 @@ export default function () {
         </>
     )
 }
-
-
-

@@ -37,17 +37,22 @@ export default function () {
     const [state, setState] = useState("ACTIVE")
 
     const query = `
-        query get_stats {
+        query get_user_stats {
             getUser {
-                phone_number
-                name
-                index
-                estimated_wait
-                join_time
-                summoned
-                queue {
-                    state
-                    average_wait
+                ... on User {
+                    phone_number
+                    name
+                    index
+                    estimated_wait
+                    join_time
+                    summoned
+                    queue {
+                        state
+                        average_wait
+                    }
+                }
+                ... on Error {
+                    error
                 }
             }
         }
@@ -172,6 +177,3 @@ const styles = StyleSheet.create({
         marginBottom: 25,
     },
 })
-
-
-
