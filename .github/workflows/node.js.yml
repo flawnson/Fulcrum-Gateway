@@ -28,6 +28,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: 'fulcrum/package-lock.json'
     - run: npm ci
       working-directory: fulcrum
       
