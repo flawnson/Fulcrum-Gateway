@@ -1,7 +1,7 @@
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { StyleSheet, Switch } from "react-native";
-import { PreferencesContext } from "../../utilities/useTheme";
+import { PreferencesContext } from "../../utilities/PreferencesContext";
 import { useColorMode, HStack } from "native-base";
 import {scale} from "../../utilities/scales";
 

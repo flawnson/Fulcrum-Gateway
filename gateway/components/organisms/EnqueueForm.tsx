@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { VStack, FormControl,
         Input, Button,
         Center, Text,
@@ -6,7 +6,7 @@ import { VStack, FormControl,
 import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
 import GeneralErrorAlert from "../atoms/GeneralErrorAlert";
-import { AuthContext } from "../../App";
+import {AuthContext} from "../../utilities/AuthContext";
 import LoadingSpinner from "../atoms/LoadingSpinner";
 
 
@@ -34,8 +34,8 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     const [errors, setErrors] = useState<EnqueueFormData>({})
     const { t, i18n } = useTranslation(["homePage", "common"])
 
-    useEffect(() => {
-        setInterval(() => {
+    useCallback(() => {
+        setTimeout(() => {
             if (loading) {
                 setLoading(false)
                 setSubmitted(false)

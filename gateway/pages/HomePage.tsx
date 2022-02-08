@@ -3,7 +3,7 @@ import {StyleSheet, TouchableHighlight} from 'react-native'
 import {Pressable, Icon, Text, View} from 'native-base'
 import EnqueueGroup from "../components/molecules/EnqueueFormGroup";
 import QRCodeScanner from "../components/organisms/QRCodeScanner";
-import {PreferencesContext} from "../utilities/useTheme";
+import {PreferencesContext} from "../utilities/PreferencesContext";
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../types";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
@@ -20,11 +20,11 @@ export default function () {
         <View style={styles.container}>
             <Pressable
                 style={styles.qrButton}
-                onPress={() => navigation.navigate("QRCodeScanner")}
+                onPress={() => {console.log("PRESSED"); navigation.navigate("QRCodeScanner")}}
             >
                 <Icon
                     as={MaterialCommunityIcons}
-                    size={scale(6)}
+                    size={scale(36)}
                     name={"qrcode-scan"}
                     color={isThemeDark ? 'white': 'black'}
                 />

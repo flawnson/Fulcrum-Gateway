@@ -5,7 +5,7 @@ import { Box, Heading,
         HStack } from "native-base"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
-import { AuthContext } from "../../App";
+import {AuthContext} from "../../utilities/AuthContext";
 
 
 type SignInFormType = {

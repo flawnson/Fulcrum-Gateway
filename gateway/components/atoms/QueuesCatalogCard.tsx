@@ -13,6 +13,7 @@ import { Swipeable, RectButton,
         LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 import calculateTimeToNow from "../../utilities/calculateTimeToNow";
+import useWindowSize from "../../utilities/useWindowSize";
 import { scale } from "../../utilities/scales";
 
 type QueuesCatalogCardProps = {
@@ -27,11 +28,10 @@ type QueuesCatalogCardProps = {
     entity: QueueInfo
 }
 
-const SCREEN_HEIGHT = Dimensions.get('window').height
-const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: QueuesCatalogCardProps) {
     const [queueState, setQueueState] = useState<QueueState>(props.entity.state)
+    const { width, height } = useWindowSize()
     const swipeableRef = useRef(null)
 
     const pauseQuery = `
@@ -132,7 +132,7 @@ export default function (props: QueuesCatalogCardProps) {
 
     const position = new Animated.ValueXY()
     let nextCardOpacity = position.x.interpolate({
-        inputRange: [-SCREEN_WIDTH, 0, SCREEN_WIDTH],
+        inputRange: [-width, 0, width],
         outputRange: [0, 0.5, 1],
         extrapolate: 'clamp'
     })

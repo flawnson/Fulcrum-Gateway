@@ -62,14 +62,14 @@ const styles = StyleSheet.create({
     },
     statPrefix: {
         flex: 1,
-        fontSize: moderateScale(10),
+        fontSize: scale(10),
         alignSelf: 'center'
     },
     statText: {
-        fontSize: moderateScale(20),
+        fontSize: scale(20),
 
     },
     statSuffix: {
-        fontSize: moderateScale(10),
+        fontSize: scale(10),
     },
 })

@@ -7,7 +7,7 @@ import { Box, Heading,
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
 import { useState } from "react";
-import { AuthContext } from "../../App";
+import {AuthContext} from "../../utilities/AuthContext";
 
 
 type LogInFormType = {

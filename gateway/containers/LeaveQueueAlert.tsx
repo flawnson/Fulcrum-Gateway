@@ -3,6 +3,7 @@ import { AlertDialog, Button, Center } from "native-base"
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../types";
 import {useTranslation} from "react-i18next";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type LeaveQueueAlertProps = {
     isAlertOpen: boolean,
@@ -54,6 +55,7 @@ export default (props: LeaveQueueAlertProps) => {
 
     const onLeave = () => {
         props.setIsAlertOpen(false)
+        AsyncStorage.clear().then()
         leaveQueue().then()
         navigation.navigate("AbandonedScreen")
     }

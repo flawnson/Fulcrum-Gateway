@@ -4,9 +4,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {HomeScreenProps, ShareData} from "../types";
 import CreateUserModal from "./CreateUserModal"
 import { useTranslation } from "react-i18next";
-import { AuthContext } from "../App";
+import {AuthContext} from "../utilities/AuthContext";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import { PreferencesContext } from "../utilities/useTheme";
+import { PreferencesContext } from "../utilities/PreferencesContext";
 
 export default function () {
     const { signedInAs } = React.useContext(AuthContext)

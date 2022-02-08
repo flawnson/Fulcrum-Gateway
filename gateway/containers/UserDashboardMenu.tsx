@@ -8,7 +8,8 @@ import DeferPositionModal from "./DeferPositionModal";
 import LeaveQueueAlert from "./LeaveQueueAlert";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
-import { PreferencesContext } from "../utilities/useTheme";
+import { PreferencesContext } from "../utilities/PreferencesContext";
+import {AuthContext} from "../utilities/AuthContext";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
@@ -20,10 +21,12 @@ export default function () {
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
+    const {signedInAs} = React.useContext(AuthContext)
+    console.log(signedInAs)
 
     useEffect(() => {
         fetchShareData().then()
-    })
+    }, [])
 
     const query = `
       query get_queue_stats {
@@ -52,7 +55,7 @@ export default function () {
             })
             await response.json().then(
                 data => {
-                    data = data.data.getQueue
+                    data = data.getQueue.queue
                     setShareData( {
                             ...shareData,
                             "currentQueueName": data.name,

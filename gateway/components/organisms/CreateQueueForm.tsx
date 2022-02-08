@@ -6,7 +6,7 @@ import { Button, Tooltip,
         HStack, Select,
         Box } from 'native-base'
 import { AntDesign } from '@expo/vector-icons';
-import { PreferencesContext } from "../../utilities/useTheme";
+import { PreferencesContext } from "../../utilities/PreferencesContext";
 import { useTranslation } from "react-i18next";
 import { RootStackParamList } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
