@@ -28,15 +28,22 @@ afterAll(async () => {
 // Organizer Defer
 describe("Defer User (Organizer)", () => {
 
+
+  // login as organizer
   beforeEach(async () => {
     const email = "test@gmail.com";
     const password = "password123";
 
     let data = {
       query: `mutation login_organizer($email: String!, $password: String!) {
-                 loginOrganizer(email: $email, password: $password){
-                   id
-                 }
+                loginOrganizer(email: $email, password: $password){
+                    ... on Organizer {
+                        id
+                    }
+                    ... on Error {
+                        error
+                    }
+                }
               }`,
       variables: {
           "email": email,
@@ -47,7 +54,8 @@ describe("Defer User (Organizer)", () => {
 
     await dbSetup(); // will auto clear db before re-populating
     const response = await agent.post("/api").send(data);
-
+    expect(response.statusCode).toBe(200);
+    expect(response.body).not.toHaveProperty("errors");
     //console.log("Logged in as organizer");
   });
 
@@ -85,8 +93,8 @@ describe("Defer User (Organizer)", () => {
     // const response = await authenticatedSession.post("/api").send(data);
     const response = await agent.post("/api").send(data);
 
-    //console.log(response);
     expect(response.statusCode).toBe(200);
+    expect(response.body).not.toHaveProperty("errors");
 
     // check the queue's new order
     // get list of enqueued users in ascending order of index
@@ -308,7 +316,14 @@ async function createAndConfirmUser(variables: object){
   }
 
   const confirmQuery = `mutation confirm_user($confirmCode: String!) {
-                            confirmUser(confirmCode: $confirmCode)
+                          confirmUser(confirmCode: $confirmCode){
+                              ... on User {
+                                id
+                              }
+                              ... on Error {
+                                error
+                              }
+                          }
                         }`;
 
 
@@ -386,6 +401,7 @@ describe("Defer User (User)", () => {
     const response = await agent.post("/api").send(data);
 
     expect(response.statusCode).toBe(200);
+    expect(response.body).not.toHaveProperty("errors");
 
     // check the queue's new order
     // get list of enqueued users in ascending order of index
@@ -466,6 +482,8 @@ describe("Defer User (User)", () => {
     const response = await agent.post("/api").send(data);
 
     expect(response.statusCode).toBe(200);
+    expect(response.body).not.toHaveProperty("errors");
+
     // check the queue's new order
     // get list of enqueued users in ascending order of index
     const userId = response.body["data"]["indexDeferPosition"]["id"];
@@ -550,6 +568,7 @@ describe("Defer User (User)", () => {
     const response = await agent.post("/api").send(data);
 
     expect(response.statusCode).toBe(200);
+    expect(response.body).not.toHaveProperty("errors");
 
     // check the queue's new order
     // get list of enqueued users in ascending order of index
