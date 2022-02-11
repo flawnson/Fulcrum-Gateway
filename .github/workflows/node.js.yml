@@ -13,6 +13,14 @@ jobs:
   build:
 
     runs-on: ${{matrix.os}}
+    defaults:
+      run:
+        working-directory: fulcrum
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
     strategy:
       matrix:
@@ -30,12 +38,11 @@ jobs:
         cache: 'npm'
         cache-dependency-path: 'fulcrum/package-lock.json'
     - run: npm ci
-      working-directory: fulcrum
       
     - run: npm run build --if-present
-      working-directory: fulcrum
+    
+    - run: npx prisma db push
       
     - run: npm test
-      working-directory: fulcrum
       env:
         CI: true
