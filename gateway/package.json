@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "The frontend of Fiefoe",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "predeploy": "expo build:web",
+    "deploy-hosting": "npm run predeploy && firebase deploy --only hosting"
   },
   "author": "",
   "license": "ISC",
