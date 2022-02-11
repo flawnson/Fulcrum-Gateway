@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, TouchableHighlight} from 'react-native'
-import {Pressable, Icon, Text, View} from 'native-base'
+import {Pressable, Icon, IconButton, View} from 'native-base'
 import EnqueueGroup from "../components/molecules/EnqueueFormGroup";
 import QRCodeScanner from "../components/organisms/QRCodeScanner";
-import {PreferencesContext} from "../utilities/useTheme";
+import {PreferencesContext} from "../utilities/PreferencesContext";
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../types";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
@@ -18,17 +18,19 @@ export default function () {
 
     return (
         <View style={styles.container}>
-            <Pressable
-                style={styles.qrButton}
-                onPress={() => navigation.navigate("QRCodeScanner")}
-            >
-                <Icon
+            <IconButton
+                icon={
+                    <Icon
+                    style={styles.qrIcon}
                     as={MaterialCommunityIcons}
-                    size={scale(6)}
+                    size={scale(36)}
                     name={"qrcode-scan"}
                     color={isThemeDark ? 'white': 'black'}
-                />
-            </Pressable>
+                    />
+                }
+                onPress={() => navigation.navigate("QRCodeScanner")}
+                style={styles.qrButton}
+            />
             <EnqueueGroup/>
         </View>
     )
@@ -44,8 +46,13 @@ const styles = StyleSheet.create({
         margin: "3%"
     },
     qrButton: {
-        flex: 1,
-        alignSelf: "flex-end"
+        // flex: 1,
+        alignSelf: "flex-end",
+    },
+    qrIcon: {
+        position: 'relative',
+        top: 0,
+        left: 0
     },
 });
 

@@ -3,7 +3,7 @@ import { HStack, Button,
         Text } from "native-base";
 import { StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
-import { QueueState } from "../types";
+import { QueueState } from "../../types";
 
 type MultiSelectButtonType = {
     onActionPress: React.Dispatch<React.SetStateAction<QueueState>>

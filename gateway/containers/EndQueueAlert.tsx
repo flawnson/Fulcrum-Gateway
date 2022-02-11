@@ -13,16 +13,12 @@ type LeaveQueueAlertProps = {
 
 export default (props: LeaveQueueAlertProps) => {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const { t, i18n } = useTranslation(["leaveQueueAlert", "common"]);
+    const { t, i18n } = useTranslation(["endQueueAlert", "common"]);
 
-    const onClose = () => {
-        props.setIsAlertOpen(false)
-    }
-
-    const query = `
-        mutation change_status($status: String!) {
-            changeStatus(status: $status) {
-                ... on User {
+    const deleteQueueQuery = `
+        mutation delete_queue($queueId: String!) {
+            deleteQueue(queueId: $queueId){
+                ... on Queue {
                     id
                 }
                 ... on Error {
@@ -31,33 +27,41 @@ export default (props: LeaveQueueAlertProps) => {
             }
         }
     `
-    const variables = `{
-        "status": "ABANDONED"
+    const deleteQueueVariables = `{
+    "queue_id": {
+            "id": "costco_queue1"
+        }
     }`
 
-    async function leaveQueue () {
+    const deleteQueue = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
+            const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': 'http://localhost:19006/',
                 },
                 credentials: 'include',
-                body: JSON.stringify({query: query, variables: variables})
+                body: JSON.stringify({query: deleteQueueQuery, variables: deleteQueueVariables})
             });
+            // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
-            return error
+            console.log(error)
         }
     }
 
 
-    const onLeave = () => {
+    const onClose = () => {
+        props.setIsAlertOpen(false)
+    }
+
+    const onConfirm = () => {
         props.setIsAlertOpen(false)
         AsyncStorage.clear().then()
-        leaveQueue().then()
-        navigation.navigate("AbandonedScreen")
+        deleteQueue().then()
+        navigation.reset({index: 1, routes: [{name: "HomePage"}]})
+        navigation.navigate("EndScreen")
     }
 
     const cancelRef = React.useRef(null)
@@ -84,7 +88,7 @@ export default (props: LeaveQueueAlertProps) => {
                             >
                                 {t("cancel", {ns: "common"})}
                             </Button>
-                            <Button colorScheme="danger" onPress={() => onLeave()}>
+                            <Button colorScheme="danger" onPress={() => onConfirm()}>
                                 {t("confirm", {ns: "common"})}
                             </Button>
                         </Button.Group>

@@ -1,13 +1,13 @@
 import React, { SetStateAction, useEffect, useState } from 'react'
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { HomeScreenProps } from "../../types";
+import { HomeScreenProps } from "../types";
 import { StyleSheet } from 'react-native'
 import { Center, Heading } from "native-base";
 import QueueDashboardGroup from "../components/organisms/QueueDashboardStats";
 import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval";
 import { zipObject } from "lodash"
-import { DashboardStat } from "../../types";
+import { DashboardStat } from "../types";
 import { useTranslation } from "react-i18next";
 
 type QueueData = {
@@ -96,7 +96,7 @@ export default function () {
     return (
         <Center style={styles.animationFormat}>
             <Heading style={styles.headingFormat}>{props.name}</Heading>
-            <QueueDashboardGroup {...props.stats}/>
+            {/*<QueueDashboardGroup {...props.stats}/>*/}
             <QueueDashboardMenu />
         </Center>
     )

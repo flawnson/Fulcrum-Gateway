@@ -25,21 +25,22 @@ Here's a rough table of the frameworks used in this project roughly in order of 
 along with some resources I followed (thank you to the creators of said resources!).
 
 ## Frameworks
-| Framework | Description | Resources |
-| --- | ----------- | ---------- |
-| React Native | Foundation for the frontend stack. We use only functional components and hooks. | https://reactnative.dev/docs/environment-setup |
-| NativeBase | UI and component library built on React Native. | https://docs.nativebase.io/install-expo |
-| React Native for Web | Supported by all frontend frameworks we're using for optimizing mobile web view. |  |
-| React Navigation | The frontend routing and navigation framework (basically React Router for mobile). | https://reactnavigation.org/docs/getting-started/ |
-| i18next | Used for multi-language support. | https://brainsandbeards.com/blog/i18n-in-react-native-apps |
-| Expo | Used for easier cross-platform development. | https://docs.expo.dev/get-started/installation/ |
-| ExpressJS | Used to write our backend API. | https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way |
-| NodeJS | To support Express for our backend. |  |
-| GraphQL | Used with express JS for cleaner access to API | https://blog.bitsrc.io/migrating-existing-rest-apis-to-graphql-2c5de3db647d |
-| Prisma | Our choice of ORM and database connector working in conjunction with GraphQL | N/A |
-| Postgres | As a persistent database that will communicate primarily with redis for updates | N/A |
-| Jest | Our choice of testing framework for both frontend and backend | N/A |
-| Winston | Our choice of logging framework | N/A |
+| Framework            | Description                                                                                                                                             | Resources |
+|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------| ---------- |
+| React Native         | Foundation for the frontend stack. We use only functional components and hooks.                                                                         | https://reactnative.dev/docs/environment-setup |
+| NativeBase           | UI and component library built on React Native.                                                                                                         | https://docs.nativebase.io/install-expo |
+| React Native for Web | Supported by all frontend frameworks we're using for optimizing mobile web view.                                                                        |  |
+| React Navigation     | The frontend routing and navigation framework (basically React Router for mobile).                                                                      | https://reactnavigation.org/docs/getting-started/ |
+| i18next              | Used for multi-language support. Translations are hand written and stored in JSONs that are configured inside i18n.ts                                   | https://brainsandbeards.com/blog/i18n-in-react-native-apps |
+| Expo                 | Used for easier cross-platform development. Third party libraries used include bar code scanner, icons, fonts, linking, async storage, and bottom tabs. | https://docs.expo.dev/get-started/installation/ |
+| ExpressJS            | Used to write our backend API.                                                                                                                          | https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way |
+| NodeJS               | To support Express for our backend.                                                                                                                     |  |
+| GraphQL              | Used with express JS for cleaner access to API                                                                                                          | https://blog.bitsrc.io/migrating-existing-rest-apis-to-graphql-2c5de3db647d |
+| Redis                | Via the ioredis package, used in conjunction with express sessions to create and distribute cookies for the differen user types.                        | N/A |
+| Prisma               | Our choice of ORM and database connector working in conjunction with GraphQL                                                                            | N/A |
+| Postgres             | As a persistent database that will communicate primarily through Prisma.                                                                                | N/A |
+| Jest                 | Our choice of testing framework for both frontend and backend                                                                                           | N/A |
+| Winston              | Our choice of logging framework                                                                                                                         | N/A |
 
 ## Structure
 The frontend aesthetic is built to mimic Kahoot, and the directory structure follows atomic design principles.
@@ -49,13 +50,13 @@ The backend design is built with the axiom; all queuers belong to a queue, and a
 Once you've git cloned the repo:
 `git clone repo-name`
 
-you can navigate to the root direcotry:
+you can navigate to the root directory (either gateway or fulcrum depending on whether you want to run the frontend or the backend):
 `cd root-dir-name`
 
 and run npm install:
 `npm install`
 
-## Usage
+## UI Usage
 Once dependencies are installed, you can install then run with either expo:
 `npm install --global expo-cli`
 `expo start`
@@ -63,6 +64,16 @@ Once dependencies are installed, you can install then run with either expo:
 or with react native:
 `npx react-native start`
 `npx react-native run-android` or run-ios
+
+To run on a device that is connect via USB, follow [this](https://reactnative.dev/docs/running-on-device) guide: 
+
+Be sure to run:
+`adb devices` to get the devices, and
+`adb -s <device name> reverse tcp:8081 tcp:8081` to open a connection to it.
+
+Then scan the QR code in the expo terminal and voila!
+
+## API Usage
 
 To start the backend, navigate to the backend directory "fulcrum":
 `cd fulcrum`
@@ -150,6 +161,7 @@ changes to the PostgreSQL database structure yet (which will be done with prisma
 
 ## Git structure
 I use 4 branches to work:
+0. `production` is the almighty deployment branch. Changes can only come directly from main.
 1. `main` is a working version of the project ready for demos.
 2. `feature` is the frontend development branch.
 3. `backend` is the backend development branch.

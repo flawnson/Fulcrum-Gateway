@@ -13,12 +13,29 @@ jobs:
   build:
 
     runs-on: ${{matrix.os}}
+    defaults:
+      run:
+        working-directory: fulcrum
+    env:
+      FRONTEND_LOCAL_URL: ${{secrets.FRONTEND_LOCAL_URL}}
+      FRONTEND_PROD_URL: ${{secrets.FRONTEND_PROD_URL}}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+      SENDER_EMAIL: ${{secrets.SENDER_EMAIL}}
+      SMTP_PASSWORD: ${{secrets.SMTP_PASSWORD}}
+      SMTP_SERVER: ${{secrets.SMTP_SERVER}}
+      SMTP_USERNAME: ${{secrets.SMTP_USERNAME}}
+      TWILIO_ACCOUNT_SID: ${{secrets.TWILIO_ACCOUNT_SID}}
+      TWILIO_AUTH_TOKEN: ${{secrets.TWILIO_AUTH_TOKEN}}
+      TWILIO_PHONE_NUMBER: ${{secrets.TWILIO_PHONE_NUMBER}}
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]
 
 
     steps:
@@ -30,12 +47,11 @@ jobs:
         cache: 'npm'
         cache-dependency-path: 'fulcrum/package-lock.json'
     - run: npm ci
-      working-directory: fulcrum
       
     - run: npm run build --if-present
-      working-directory: fulcrum
+    
+    - run: npx prisma db push
       
     - run: npm test
-      working-directory: fulcrum
       env:
         CI: true

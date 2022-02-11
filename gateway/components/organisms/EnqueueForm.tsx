@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { VStack, FormControl,
         Input, Button,
         Center, Text,
@@ -6,8 +6,9 @@ import { VStack, FormControl,
 import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
 import GeneralErrorAlert from "../atoms/GeneralErrorAlert";
-import { AuthContext } from "../../App";
+import {AuthContext} from "../../utilities/AuthContext";
 import LoadingSpinner from "../atoms/LoadingSpinner";
+import {useRoute} from "@react-navigation/native";
 
 
 type EnqueueFormProps = {
@@ -23,6 +24,7 @@ type EnqueueFormData = {
 
 
 export default function ({navigation, setShowModal}: EnqueueFormProps) {
+    const route = useRoute<HomeScreenProps["route"]>()
     const [formData, setData] = useState<EnqueueFormData>({})
     const { signIn } = React.useContext(AuthContext)
     const [submitted, setSubmitted] = useState<boolean>(false)
@@ -34,8 +36,15 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     const [errors, setErrors] = useState<EnqueueFormData>({})
     const { t, i18n } = useTranslation(["homePage", "common"])
 
-    useEffect(() => {
-        setInterval(() => {
+    if (route.params) {
+        setJoinCodeFormOpen(false)
+        setNameFormOpen(true)
+        setData({...formData, joinCode: route.params!["joinCode"]})
+        console.log("AUTOFILLED")
+    }
+
+    useCallback(() => {
+        setTimeout(() => {
             if (loading) {
                 setLoading(false)
                 setSubmitted(false)
@@ -257,7 +266,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                                     !!setShowModal ? setShowModal(false) : null
                                 }
                             }
-                            mt="5"
+                                mt="5"
                                 isLoading={submitted}
                                 isLoadingText="Submitting...">
                             <Text bold color={'white'}>

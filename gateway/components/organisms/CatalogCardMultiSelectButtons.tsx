@@ -3,7 +3,7 @@ import { HStack, Button,
         Text } from "native-base";
 import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
-import {UserStatus} from "../types";
+import {UserStatus} from "../../types";
 
 type MultiSelectButtonType = {
     onActionPress: (actionStatus: UserStatus | "SUMMONED") => void

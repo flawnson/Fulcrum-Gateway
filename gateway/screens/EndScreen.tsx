@@ -17,7 +17,7 @@ export default function() {
             </Text>
             <Text style={styles.subText}>
                 {t('footer')}
-            <Text style={styles.linkText} onPress={() => navigation.popToTop()}> fiefoe.com</Text>
+            <Text style={styles.linkText} onPress={() => navigation.navigate("HomePage")}> fiefoe.com</Text>
             </Text>
         </Center>
     )
