@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test": "jest --detectOpenHandles --testPathPattern=api/tests",
+    "test": "jest --detectOpenHandles --testPathPattern=api/tests --runInBand",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "start": "node_modules/ts-node/dist/bin.js index.ts"
   },
