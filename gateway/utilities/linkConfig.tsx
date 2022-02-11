@@ -4,9 +4,6 @@ export default {
         HomePage: {
             path: '',
         },
-        LandingPage: {
-            path: 'landingpage'
-        },
         QueueDashboard: {
             path: 'queuedashboard'
         },

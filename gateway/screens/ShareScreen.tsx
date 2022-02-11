@@ -1,3 +1,4 @@
+// @ts-nocheck to prevent errors for route-params
 import React from 'react';
 import { StyleSheet } from 'react-native'
 import { Text, Image, Center } from 'native-base'

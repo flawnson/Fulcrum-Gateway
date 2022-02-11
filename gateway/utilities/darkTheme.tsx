@@ -1,3 +1,4 @@
+import React from 'react'
 import {
     useFonts,
     Poppins_100Thin,
@@ -19,6 +20,7 @@ import {
     Poppins_900Black,
     Poppins_900Black_Italic
 } from '@expo-google-fonts/poppins'
+import SplashScreen from "../screens/SplashScreen";
 
 export default function () {
     // Can choose to load locally by using require('path to font file")
@@ -43,24 +45,25 @@ export default function () {
         "Poppins_900Black_Italic": Poppins_900Black_Italic
     })
 
+    // Load fonts asynchronously
+    if (!fontsLoaded) {
+        return <SplashScreen />;
+    }
+
     return ({
             colors: {
                 // Add new color
                 primary: {
-                    50: '#ffffff',
-                    100: '#faf0ff',
-                    200: '#eed2ff',
-                    300: '#e1b4ff',
-                    400: '#d296ff',
-                    500: '#ca86ff',
-                    600: '#c277ff',
-                    700: '#b055ff',
-                    800: '#9b2cff',
-                    900: '#8f00ff',
-                },
-                // Redefinig only one shade, rest of the color will remain same.
-                amber: {
-                    400: '#d97706',
+                    50: '#eef2ff',
+                    100: '#e0e7ff',
+                    200: '#c7d2fe',
+                    300: '#a5b4fc',
+                    400: '#818cf8',
+                    500: '#6366f1',
+                    600: '#4f46e5',
+                    700: '#4338ca',
+                    800: '#3730a3',
+                    900: '#312e81',
                 },
             },
             config: {

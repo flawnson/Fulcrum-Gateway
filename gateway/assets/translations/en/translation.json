@@ -101,6 +101,10 @@
     "header": "Leave Queue",
     "dialog": "Are you sure you want to abandon your position in line? You will have to enter the code again and start from the end of the line if you choose to rejoin."
   },
+  "endQueueAlert": {
+    "header": "End Queue",
+    "dialog": "Are you sure you want to end this queue? All enqueued users will be kicked and this queue will be permanently deleted."
+  },
   "queueDashboardMenu": {
     "create": "Create User",
     "edit": "Edit Queue",

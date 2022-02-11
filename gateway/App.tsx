@@ -8,6 +8,7 @@ import { NativeBaseProvider } from 'native-base'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Text } from 'native-base'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Component imports
 import HomePage from './pages/HomePage'
@@ -24,26 +25,17 @@ import QueueDashboardTabs from "./pages/QueueDashboardTabs"
 import QRCodeScanner from "./components/organisms/QRCodeScanner"
 import ErrorScreen from "./screens/ErrorScreen"
 import ConfirmationScreen from "./screens/ConfirmationScreen"
-import { PreferencesContext } from "./utilities/useTheme"
+import {PreferencesContext} from "./utilities/PreferencesContext"
 import linkConfig from "./utilities/linkConfig"
 import QueueDashboard from "./pages/QueueDashboard"
 import SplashScreen from "./screens/SplashScreen"
 import {UserTypes} from "./types"
+import {AuthContext} from "./utilities/AuthContext";
 
 // Strict mode can be changed to trigger a warning or an error in case of any nativebase issues
 const nativebaseConfig: object = {
     strictMode: 'off',
 }
-
-// AuthContext used throughout the app, default values do nothing
-export const AuthContext = React.createContext(
-    {
-        signedInAs: "NONE" as UserTypes,
-        signIn: (data: any) => {},
-        signOut: () => {},
-        signUp: (data: any) => {}
-    }
-)
 
 function App() {
 
@@ -126,11 +118,55 @@ function App() {
         [state]  // Keep track of changes to state (specifically to update the signedInAs prop)
     );
 
+    const PERSISTENCE_KEY = 'NAVIGATION_STATE';
+    const [isReady, setIsReady] = React.useState(false);
+    const [initialState, setInitialState] = React.useState();
+
+    React.useEffect(() => {
+        const restoreState = async () => {
+            try {
+                const initialUrl = await Linking.getInitialURL();
+
+                // if (initialUrl == null) {
+                    // Only restore state if there's no deep link
+                    const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
+                    const state = savedStateString ? JSON.parse(savedStateString) : undefined;
+
+                    if (state !== undefined) {
+                        setInitialState(state);
+                    }
+                // }
+            } finally {
+                setIsReady(true);
+            }
+        };
+
+        if (!isReady) {
+            restoreState();
+        }
+    }, [isReady]);
+
+    if (!isReady) {
+        return (
+            <NativeBaseProvider config={nativebaseConfig} theme={theme.nativebase}>
+                <SplashScreen />
+            </NativeBaseProvider>
+        )
+    }
+
     return (
         <AuthContext.Provider value={authContext}>
             <PreferencesContext.Provider value={preferences}>
                 <NativeBaseProvider config={nativebaseConfig} theme={theme.nativebase}>
-                    <NavigationContainer linking={linking} fallback={<Text>Blah blah blah...</Text>} theme={theme.navigation}>
+                    <NavigationContainer
+                        linking={linking}
+                        fallback={<Text>Blah blah blah...</Text>}
+                        theme={theme.navigation}
+                        initialState={initialState}
+                        onStateChange={(state) =>
+                            AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
+                        }
+                    >
                         <Stack.Navigator initialRouteName={"HomePage"}>
                             <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe"}} >
                                 {state.isUser ? (
@@ -162,12 +198,13 @@ function App() {
                                     </>
                                 ) : (
                                     <>
-                                        <Stack.Screen name="HomePage" component={UserDashboard} />
+                                        <Stack.Screen name="HomePage" component={HomePage} />
                                         <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
                                         <Stack.Screen name="QueuesPage" component={QueuesPage} />
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
+                                        <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
                                     </>
                                 )}
                             </Stack.Group>
