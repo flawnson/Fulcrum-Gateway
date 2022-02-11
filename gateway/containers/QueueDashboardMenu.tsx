@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { HStack, Menu, Fab, HamburgerIcon, Text } from 'native-base';
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, StackActions } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {HomeScreenProps, ShareData} from "../types";
 import CreateUserModal from "./CreateUserModal"
@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import {AuthContext} from "../utilities/AuthContext";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/PreferencesContext";
-import LeaveQueueAlert from "./LeaveQueueAlert";
+import EndQueueAlert from "./EndQueueAlert";
 
 export default function () {
     const { signedInAs } = React.useContext(AuthContext)
@@ -24,6 +24,7 @@ export default function () {
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
+
     useEffect(() => {
         fetchShareData().then()
     }, [])
@@ -115,22 +116,27 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
                 },
+                credentials: 'include',
                 body: JSON.stringify({query: logoutQuery})
             });
             // enter you logic when the fetch is successful
-            return await response.json()
+            return await response.json().then(() => {
+                    signOut()
+                    AsyncStorage.clear().then()
+                    // navigation.reset({index: 1, routes: [{name: "HomePage"}]})
+                    StackActions.popToTop() && navigation.navigate("HomePage")
+                }
+            )
         } catch(error) {
             console.log(error)
         }
     }
 
     function onLogoutPress () {
-        signOut()
         logout().then()
-        AsyncStorage.clear().then()
-        navigation.navigate("EndScreen")
     }
 
     return (
@@ -213,7 +219,7 @@ export default function () {
             <CreateUserModal showModal={showCreateUserModal}
                             setShowModal={setShowCreateUserModal}
                             navigation={navigation}/>
-            <LeaveQueueAlert
+            <EndQueueAlert
                 isAlertOpen={isAlertOpen}
                 setIsAlertOpen={setIsAlertOpen}
             />

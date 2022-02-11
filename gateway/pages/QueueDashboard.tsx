@@ -8,6 +8,7 @@ import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval";
 import {zipObject} from "lodash"
 import {useTranslation} from "react-i18next";
+import {AuthContext} from "../utilities/AuthContext";
 
 type UserData = {
     user_id: string,
@@ -19,6 +20,8 @@ type UserData = {
 export default function () {
     const route = useRoute<HomeScreenProps["route"]>()
     const { t } = useTranslation(["queueDashboard"]);
+    const {signedInAs} = React.useContext(AuthContext)
+    console.log(signedInAs)
 
     const defaultProps = {
         name: "Some Queue",
@@ -85,6 +88,7 @@ export default function () {
                                          })
             await response.json().then(
                 data => {
+                    console.log(data)
                     const name = data.data.getQueue.name
                     data = data.data.getQueue.users
                     // Count the number users with of each type of status

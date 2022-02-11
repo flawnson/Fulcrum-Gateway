@@ -22,7 +22,8 @@ export default function () {
     const handleBarCodeScanned = ({ type, data }: {type: string, data: string}) => {
         setScanned(true);
         console.log(data)
-        navigation.navigate("HomePage", {joinCode: "123345"})
+        const joinCode = /[^/]*$/.exec(data)![0]  // Regex to extract the string after the last forward slash
+        navigation.navigate("HomePage", {joinCode: joinCode})
     };
 
     if (hasPermission === null) {

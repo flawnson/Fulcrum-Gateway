@@ -40,6 +40,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
         setJoinCodeFormOpen(false)
         setNameFormOpen(true)
         setData({...formData, joinCode: route.params!["joinCode"]})
+        console.log("AUTOFILLED")
     }
 
     useCallback(() => {

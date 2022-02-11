@@ -55,7 +55,12 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData}),
             });
-            return await response.json()
+            return await response.json().then(data => {
+                setShowModal(false)
+                setSubmitted(false)
+                navigation.navigate("QueuesPage")
+                }
+            )
         } catch (error) {
             return error
         }
@@ -87,9 +92,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
 
     const onSuccess = () => {
         signIn('ORGANIZER')
-        setShowModal(false)
-        setSubmitted(false)
-        // navigation.navigate("QueuesPage")  We are automatically sent to the QueuesPage
+        logIn().then()
     }
 
     const onFailure = () => {
@@ -98,7 +101,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
 
     const onLogInPress = () => {
         setSubmitted(true)
-        validate() && logIn() ? onSuccess() : onFailure();
+        validate() ? onSuccess() : onFailure();
     }
 
     return (
