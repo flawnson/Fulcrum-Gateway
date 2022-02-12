@@ -7,10 +7,10 @@ import {ScrollView} from "native-base";
 
 
 export default function () {
+    const route = useRoute<HomeScreenProps["route"]>()
     const [props, setProps] = useState<UserStats[]>([])
     // The callback is so that we can call the method that deletes the cards from the flatlist when delete confirmed
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
-    const route = useRoute<HomeScreenProps["route"]>()
 
     const query = `
         query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
@@ -33,6 +33,7 @@ export default function () {
             }
         }
     `
+    // @ts-ignore
     const variables = route.params ? {"queueId": route.params!["queueId"], "orderBy": {"index": "asc"}}
                                    : {"queueId": "123456", "orderBy": {"index": "asc"}}
 
@@ -75,7 +76,7 @@ export default function () {
 
     // Run on first render
     useEffect(() => {fetchUserData().then()}, [])
-    // Poll only if user is currently on this screen
+    // Poll only if user is currently on this screen and if Alert isn't being shown
     useInterval(fetchUserData, useIsFocused() && !showConfirmDeleteAlert ? 5000 : null)
 
     return (

@@ -179,6 +179,7 @@ function App() {
                                         <Stack.Screen name="QueuesPage" component={QueuesPage} />
                                         <Stack.Screen name="ConfirmationScreen" component={ConfirmationScreen} />
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
+                                        <Stack.Screen name="HomePage" component={HomePage} />
                                     </>
                                 ) : state.isOrganizer ? (
                                     <>
@@ -188,6 +189,7 @@ function App() {
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
+                                        <Stack.Screen name="HomePage" component={HomePage} />
                                     </>
                                 ) : state.isAssistant ? (
                                     <>
@@ -195,6 +197,7 @@ function App() {
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="ShareScreen" component={ShareScreen} />
+                                        <Stack.Screen name="HomePage" component={HomePage} />
                                     </>
                                 ) : (
                                     <>

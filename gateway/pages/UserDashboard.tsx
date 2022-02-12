@@ -33,12 +33,14 @@ export default function () {
             ],
         }
     const [props, setProps] = useState(defaultProps)
+    // State kept separate from general props because it is only needed at the page level and in this file
     const [state, setState] = useState("ACTIVE")
 
     const query = `
         query get_user_stats {
             getUser {
                 ... on User {
+                    id
                     phone_number
                     name
                     index
@@ -74,7 +76,7 @@ export default function () {
                     const userData = data.data.getUser
                     const queueData = data.data.getUser.queue
                     // If summoned is toggled true, immediately navigate to Summon Screen
-                    if (userData.summoned) {navigation.navigate("SummonScreen")}
+                    if (userData.summoned) {navigation.navigate("SummonScreen", {userId: userData.id})}
                     // Set the queue state
                     setState(queueData.state)
                     // Calculate join time and get the minutes

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native'
 import { Text, View, Center, VStack } from "native-base";
-import { useNavigation } from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import { HomeScreenProps } from "../types";
 import { useTranslation } from "react-i18next";
 
@@ -14,12 +14,13 @@ type SummonData = {
 
 
 export default function() {
+    const route = useRoute<HomeScreenProps["route"]>()
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const [props, setProps] = useState<SummonData>({})
     const [errors, setError] = useState<any>([]);
     const { t, i18n } = useTranslation("summonScreen");
 
-    useEffect(() => {fetchData()}, [])
+    useEffect(() => {fetchData().then()}, [])
 
     const query = `
         query get_queue_stats($queueId: QueueWhereUniqueInput!) {
@@ -33,12 +34,8 @@ export default function() {
             }
         }
     `
-    const variables = `{
-        "queueId":
-        {
-            "id": 1
-        }
-    }`
+    // @ts-ignore
+    const variables = route.params ? {userId: route.params!["userId"]} : null
 
     const fetchData = async () => {
         try {
@@ -48,6 +45,7 @@ export default function() {
                     // If summoned is toggled false, navigate back to User Dashboard
                     if (!data.data.user.summoned) {navigation.navigate("UserDashboard")}
                     data = data.data.queue.name
+                    // Calculate arrive by time, current time plus grace period
                     const now: any = new Date()
                     const join: any = new Date(data.data.queue.grace_period)
                     const arriveByTime = new Date(Math.abs(now + join))
@@ -79,7 +77,7 @@ export default function() {
                     </Text>
                     <Text style={styles.subText}>
                         {t('footer')}
-                        <Text style={styles.linkText} onPress={() => navigation.navigate('LandingPage')}> fiefoe.com</Text>
+                        <Text style={styles.linkText} onPress={() => navigation.navigate('HomePage')}> fiefoe.com</Text>
                     </Text>
                 </VStack>
             </Center>

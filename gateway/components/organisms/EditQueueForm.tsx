@@ -161,7 +161,7 @@ export default function ({navigation, setShowModal}: CreateQueueFormType) {
                     >
                         {[...Array(10).keys()].map(number => <Select.Item key={number} label={number.toString()} value="ux" />)}
                     </Select>
-                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Part size error"}</FormControl.ErrorMessage>
+                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Party size error"}</FormControl.ErrorMessage>
                 </Stack>
             </FormControl>
             <Button.Group space={2}>

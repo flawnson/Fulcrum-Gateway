@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { Text, Menu,
         HamburgerIcon, Fab,
         HStack } from 'native-base';
-import { useNavigation } from "@react-navigation/native";
+import {useIsFocused, useNavigation} from "@react-navigation/native";
 import { HomeScreenProps, ShareData } from "../types";
 import DeferPositionModal from "./DeferPositionModal";
 import LeaveQueueAlert from "./LeaveQueueAlert";
@@ -81,6 +81,7 @@ export default function () {
                             size='sm'
                             icon={<HamburgerIcon size="sm" />}
                             {...triggerProps}
+                            renderInPortal={useIsFocused()}  // So that the FAB only renders when screen is focused
                         />
                     )
                 }}

@@ -12,7 +12,7 @@ import {scale} from "../utilities/scales";
 
 
 export default function () {
-    const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
+    const { isThemeDark } = React.useContext(PreferencesContext);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 

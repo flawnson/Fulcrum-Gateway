@@ -30,6 +30,7 @@ export default function () {
             }
         }
     `
+    // @ts-ignore
     const variables = route.params ? {"queueId": route.params!["queueId"], "orderBy": {"index": "asc"}}
                                    : {"queueId": "123456", "orderBy": {"index": "asc"}}
 

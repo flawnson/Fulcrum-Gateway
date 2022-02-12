@@ -8,12 +8,12 @@ export type RootStackParamList = {
     HomePage: undefined | {joinCode: string};
     UserDashboard: undefined;
     QueueDashboard: undefined;
-    QueueDashboardTabs: undefined | {queueId: string};
+    QueueDashboardTabs: undefined | {queueId: QueueInfo["queueId"]};
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
-    ShareScreen: undefined | {shareData: ShareData};
+    ShareScreen: {shareData: ShareData};
     EndScreen: undefined;
-    SummonScreen: undefined;
+    SummonScreen: undefined | {userId: UserStats["userId"]};
     EnqueuedPage: undefined;
     QueuesPage: undefined;
     QRCodeScanner: undefined;

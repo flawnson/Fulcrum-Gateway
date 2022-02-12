@@ -37,6 +37,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     const { t, i18n } = useTranslation(["homePage", "common"])
 
     if (route.params) {
+        // If route contains params (from ShareScreen) then automatically input the joincode
         setJoinCodeFormOpen(false)
         setNameFormOpen(true)
         setData({...formData, joinCode: route.params!["joinCode"]})
@@ -44,6 +45,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     }
 
     useCallback(() => {
+        // Alert will show if nothing has happened within 10 seconds of submitting the enqueue form.
         setTimeout(() => {
             if (loading) {
                 setLoading(false)
@@ -75,10 +77,11 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({query: query, variables: formData})
+                body: JSON.stringify({query: query, variables: formData})  // Directly pass formData as variables
             });
             await response.json().then(
                 data => {
+                    // If response is valid and returns an id, then set auth context, submit, and navigate to dashboard
                     if (data?.data?.createUser || data?.data?.joinQueue.id) {
                         signIn('USER')
                         setSubmitted(true)
@@ -143,12 +146,19 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                 phoneNumber: t('phone_number_too_long'),
             });
             return false;
+        } else if (isNaN(formData.phoneNumber as any)) {
+            setErrors({
+                ...errors,
+                phoneNumber: t('phone_number_not_number'),
+            });
+            return false;
         }
         return true;
     };
 
     const onSubmit = () => {
-        joinQueue()
+        // Attempt to join queue first, and if successful, update UI
+        joinQueue().then()
     };
 
     return (

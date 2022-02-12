@@ -14,7 +14,6 @@ The backend API (Fulcrum) and frontend UI (Gateway) for FieFoe.
     <li>
       <a href="#git-structure">Git Structure</a>
     </li>
-    <li><a href="#directory-structure">Directory Structure</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
   </ol>
 </details>
@@ -43,8 +42,8 @@ along with some resources I followed (thank you to the creators of said resource
 | Winston              | Our choice of logging framework                                                                                                                         | N/A |
 
 ## Structure
-The frontend aesthetic is built to mimic Kahoot, and the directory structure follows atomic design principles.
-The backend design is built with the axiom; all queuers belong to a queue, and all queues belong to an organizer.
+The frontend structure is designed to mimic Kahoot, and the directory structure follows atomic design principles.
+The backend design is built with the simple hierarchy; all queuers belong to a queue, and all queues belong to an organizer.
 
 ## Installation
 Once you've git cloned the repo:
@@ -98,7 +97,7 @@ TWILIO_PHONE_NUMBER="phone number used to send out SMS"
 REDIS_URL="the redis connection url used in ioredis (locally is: redis://:@127.0.0.1:6379)"
 ```
 
-and run node (Before you actually run though you'll want to set up the database in the following section):
+and run node (Before you actually run through you'll want to set up the database in the following section):
 `ts-node index.ts`
 
 or if you want to use nodemon:
@@ -182,14 +181,24 @@ All asset files not provided by CDNs lives here.
 ### ./components/
 All code associated with components lives here.
 A component is defined as something that should not be used independently (i.e it must be combined with other components)
-Components are categorized in accordance with atomic design principles.
+Components are categorized roughly, with atomic design principles in mind.
+### ./components/atoms
+Atoms are small components (not necessarily singular) that should not be used individually, rather as building blocks further up the hierarchy.
+### ./components/molecules
+Molecules are groups of atoms that form components with more complex behaviours.
+### ./components/organisms
+Organisms are groups of molecules and atoms. They may be used individually in pages or containers.
 ### ./containers/
 All screen-based AND page-based items can be placed inside containers, which act as wrappers that provide additional functionality.
 Screen overlays, headers, modals, menus, alerts, pop-ups, etc. are also stored here.
 ### ./pages/
-Pages are combinations of components that hold state.
+Pages are combinations of components that hold state. Pages use polling or make frequent fetches to the API
 ### ./screens/
-Screens are standalone static sites that may also use components, but hold no state.
+Screens are standalone static sites that may also use components, but hold no state, or only render once (no polling)
 
 # Roadmap
-Coming soon!
+These are just written documents for now. Neither of these plans have approximate or strict timelines for now.
+## Product Roadmap
+[Notion draft](https://flawnson.notion.site/Product-Roadmap-4a2d7583657f4caa8ad4da62f630bdc3)
+## Technical Roadmap
+[Notion draft](https://flawnson.notion.site/Technical-Roadmap-4176a6b73fac4ed39101aa0e4f89d494)

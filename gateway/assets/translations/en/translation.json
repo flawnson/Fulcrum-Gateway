@@ -39,6 +39,7 @@
     "name_too_long": "Please choose a shorter name!",
     "phone_number_missing": "We need your number to notify you",
     "phone_number_too_long": "You have a very long phone number!",
+    "phone_number_not_number": "That doesn't look like a phone number...",
     "queue_id": "Queue ID",
     "name": "Your name",
     "phone_number": "Your phone number",

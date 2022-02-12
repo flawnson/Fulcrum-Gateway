@@ -64,6 +64,7 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
+                    console.log(data)
                     setProps(data.data.getOrganizer.queues)
                 }
             )
@@ -90,7 +91,7 @@ export default function () {
                 position="absolute"
                 size="sm"
                 icon={<Icon color="white" as={<AntDesign name="plus" />} size="sm" />}
-                renderInPortal={useIsFocused()}
+                renderInPortal={useIsFocused()}  // So that the FAB only renders in the current screen
             />
             <CreateQueueModal showModal={showCreateQueueModal} setShowModal={setShowCreateQueueModal} />
             <ConfirmDeleteAlert showAlert={showConfirmDeleteAlert} setShowAlert={setShowConfirmDeleteAlert}/>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { HStack, Menu, Fab, HamburgerIcon, Text } from 'native-base';
-import { useNavigation, useRoute, StackActions } from "@react-navigation/native";
+import {useNavigation, useRoute, StackActions, useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {HomeScreenProps, ShareData} from "../types";
 import CreateUserModal from "./CreateUserModal"
@@ -21,6 +21,7 @@ export default function () {
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
     const [errors, setError] = useState<any>([]);
+    // Share data defined and fetched at this level to avoid rerender hell in ShareScreen image component
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
@@ -151,6 +152,7 @@ export default function () {
                             icon={<HamburgerIcon size="sm" />}
                             {...triggerProps}
                             style={{bottom: "7%", right: "3%"}}
+                            renderInPortal={useIsFocused()}  // So that the FAB only renders when screen is focused
                         />
                     )
                 }}
