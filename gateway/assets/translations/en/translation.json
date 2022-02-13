@@ -107,12 +107,12 @@
     "dialog": "Are you sure you want to end this queue? All enqueued users will be kicked and this queue will be permanently deleted."
   },
   "queueDashboardMenu": {
-    "create": "Create User",
-    "edit": "Edit Queue",
-    "end": "End Queue",
-    "pause": "Pause Queue",
-    "share": "Share Queue",
-    "logout": "Logout"
+    "create_user": "Create User",
+    "end_queue": "End Queue",
+    "pause_queue": "Pause Queue",
+    "share_queue": "Share Queue",
+    "change_password": "Change queue password",
+    "logout_queue": "Logout"
   },
   "queueMultiSelectButtons": {
     "pause": "Pause Queues",

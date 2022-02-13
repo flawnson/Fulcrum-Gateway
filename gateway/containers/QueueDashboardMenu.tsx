@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { HStack, Menu, Fab, HamburgerIcon, Text } from 'native-base';
+import { HStack, Menu, Divider, Fab, HamburgerIcon, Text } from 'native-base';
 import {useNavigation, useRoute, StackActions, useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {HomeScreenProps, ShareData} from "../types";
@@ -157,66 +157,85 @@ export default function () {
                     )
                 }}
             >
-                <Menu.Item onPress={() => setShowCreateUserModal(true)}>
-                    <HStack space={3}>
-                        <Ionicons
-                            name={'person-add'}
-                            size={20}
-                            color={isThemeDark ? 'white': 'black'}
-                        />
-                        <Text>
-                            {t("create")}
-                        </Text>
-                    </HStack>
-                </Menu.Item>
-                <Menu.Item isDisabled={signedInAs === "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
-                    <HStack space={3}>
-                        <Ionicons
-                            name={'close-circle'}
-                            size={20}
-                            color={isThemeDark ? 'white': 'black'}
-                        />
-                        <Text>
-                            {t("end")}
-                        </Text>
-                    </HStack>
-                </Menu.Item>
-                <Menu.Item onPress={() => pauseQueue()}>
-                    <HStack space={3}>
-                        <MaterialCommunityIcons
-                            name={'pause-circle'}
-                            size={20}
-                            color={isThemeDark ? 'white': 'black'}
-                        />
-                        <Text>
-                            {t("pause")}
-                        </Text>
-                    </HStack>
-                </Menu.Item>
-                <Menu.Item onPress={() => navigation.navigate("ShareScreen", {shareData: shareData})}>
-                    <HStack space={3}>
-                        <MaterialCommunityIcons
-                            name={'share-variant'}
-                            size={20}
-                            color={isThemeDark ? 'white': 'black'}
-                        />
-                        <Text>
-                            {t("share")}
-                        </Text>
-                    </HStack>
-                </Menu.Item>
-                <Menu.Item onPress={() => onLogoutPress()}>
-                    <HStack space={3}>
-                        <MaterialCommunityIcons
-                            name={'logout-variant'}
-                            size={20}
-                            color={isThemeDark ? 'white': 'black'}
-                        />
-                        <Text>
-                            {t("logout")}
-                        </Text>
-                    </HStack>
-                </Menu.Item>
+                <Menu.Group title="Assistants">
+                    <Menu.Item onPress={() => setShowCreateUserModal(true)}>
+                        <HStack space={3}>
+                            <Ionicons
+                                name={'person-add'}
+                                size={20}
+                                color={isThemeDark ? 'white': 'black'}
+                            />
+                            <Text>
+                                {t("create")}
+                            </Text>
+                        </HStack>
+                    </Menu.Item>
+                    <Menu.Item onPress={() => pauseQueue()}>
+                        <HStack space={3}>
+                            <MaterialCommunityIcons
+                                name={'pause-circle'}
+                                size={20}
+                                color={isThemeDark ? 'white': 'black'}
+                            />
+                            <Text>
+                                {t("pause_queue")}
+                            </Text>
+                        </HStack>
+                    </Menu.Item>
+                    <Menu.Item onPress={() => navigation.navigate("ShareScreen", {shareData: shareData})}>
+                        <HStack space={3}>
+                            <MaterialCommunityIcons
+                                name={'share-variant'}
+                                size={20}
+                                color={isThemeDark ? 'white': 'black'}
+                            />
+                            <Text>
+                                {t("share_queue")}
+                            </Text>
+                        </HStack>
+                    </Menu.Item>
+                    <Menu.Item onPress={() => onLogoutPress()}>
+                        <HStack space={3}>
+                            <MaterialCommunityIcons
+                                name={'logout-variant'}
+                                size={20}
+                                color={isThemeDark ? 'white': 'black'}
+                            />
+                            <Text>
+                                {t("logout")}
+                            </Text>
+                        </HStack>
+                    </Menu.Item>
+                </Menu.Group>
+                <Divider mt="3" w="100%" />
+                <Menu.Group title="Organizers">
+                    {/*Can only end (delete queue) if user is an organizer*/}
+                    <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
+                        <HStack space={3}>
+                            <Ionicons
+                                name={'close-circle'}
+                                size={20}
+                                color={isThemeDark ? 'white': 'black'}
+                            />
+                            <Text style={signedInAs !== "ORGANIZER" ? {color: "grey.400"} : {}}>
+                                {t("end_queue")}
+                            </Text>
+                        </HStack>
+                    </Menu.Item>
+                    {/*Can only change queue password if you're the organizer*/}
+                    <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
+                        <HStack space={3}>
+                            <Ionicons
+                                name={'close-circle'}
+                                size={20}
+                                color={isThemeDark ? 'white': 'black'}
+                            />
+                            <Text style={signedInAs !== "ORGANIZER" ? {color: "grey.400"} : {}}>
+                                {t("change_password")}
+                            </Text>
+                        </HStack>
+                    </Menu.Item>
+                </Menu.Group>
             </Menu>
             <CreateUserModal showModal={showCreateUserModal}
                             setShowModal={setShowCreateUserModal}

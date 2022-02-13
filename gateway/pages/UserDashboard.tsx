@@ -76,7 +76,7 @@ export default function () {
                     const userData = data.data.getUser
                     const queueData = data.data.getUser.queue
                     // If summoned is toggled true, immediately navigate to Summon Screen
-                    if (userData.summoned) {navigation.navigate("SummonScreen", {userId: userData.id})}
+                    if (userData.summoned) {navigation.navigate("SummonScreen", {queueId: queueData.id, userId: userData.id})}
                     // Set the queue state
                     setState(queueData.state)
                     // Calculate join time and get the minutes

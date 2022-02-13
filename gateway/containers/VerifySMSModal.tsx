@@ -63,8 +63,10 @@ export default function (props: VerifySMSModalProps) {
 
 
     function onSubmit () {
-        submitSMSVerification().then(null)
-        props.setShowModal(false)
+        submitSMSVerification().then(() => {
+                props.setShowModal(false)
+            }
+        )
     }
 
     return (
@@ -98,7 +100,7 @@ export default function (props: VerifySMSModalProps) {
                                 renderCell={({index, symbol, isFocused}: {index: number, symbol: string, isFocused: boolean})=> (
                                     <View
                                         // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
-                                        onLayout={getCellOnLayoutHandler(index)}
+                                        onLayout={() => getCellOnLayoutHandler(index)}
                                         key={index}
                                         style={[styles.cellRoot, isFocused && styles.focusCell]}>
                                         <Text style={styles.cellText}>
@@ -122,7 +124,7 @@ export default function (props: VerifySMSModalProps) {
                     </Link>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onPress={onSubmit}>
+                    <Button onPress={() => onSubmit()}>
                         <Text style={{color: "white"}}>
                             Submit
                         </Text>

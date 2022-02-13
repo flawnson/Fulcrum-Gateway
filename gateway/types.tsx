@@ -13,7 +13,7 @@ export type RootStackParamList = {
     AbandonedScreen: undefined;
     ShareScreen: {shareData: ShareData};
     EndScreen: undefined;
-    SummonScreen: undefined | {userId: UserStats["userId"]};
+    SummonScreen: undefined | {queueId: QueueInfo["queueId"], userId: UserStats["userId"]};
     EnqueuedPage: undefined;
     QueuesPage: undefined;
     QRCodeScanner: undefined;
