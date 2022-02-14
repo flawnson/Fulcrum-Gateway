@@ -8,6 +8,8 @@ import CreateQueueModal from "../containers/CreateQueueModal";
 import useInterval from "../utilities/useInterval";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import ConfirmDeleteAlert from "../containers/ConfirmDeleteAlert";
+import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
+import {useTranslation} from "react-i18next";
 
 
 type QueuesPageProps = {
@@ -18,11 +20,15 @@ type QueuesPageProps = {
 
 
 export default function () {
+    const { t } = useTranslation("queuesPage")
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [props, setProps] = useState<QueuesPageProps["queueInfo"]>([])
+    const [errors, setError] = useState<any>([]);
+    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     const [showCreateQueueModal, setShowCreateQueueModal] = useState<boolean>(false);
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
+    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const query = `
         query get_queue_data($orderBy: [QueueOrderByWithRelationInput!]) {
@@ -64,12 +70,12 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
-                    console.log(data)
+                    if (!!data.errors.length) {setError(data.errors[0])}  // Check for errors on response
                     setProps(data.data.getOrganizer.queues)
                 }
             )
         } catch(error) {
-            console.log(error)
+            setError([...errors, error])
         }
     }
 
@@ -80,6 +86,11 @@ export default function () {
 
     return (
         <>
+            <GeneralErrorAlert
+                showAlert={showErrorAlert}
+                setShowAlert={setShowErrorAlert}
+                message={t(!errors.length ? "cannot_fetch_queue_message" : errors[0])} // Render default message
+            />
             <QueuesCatalogCardGroup
                 entities={props}
                 setEntities={setProps}

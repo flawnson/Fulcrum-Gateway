@@ -189,6 +189,7 @@ function App() {
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
+                                        <Stack.Screen name="NotFound" component={ErrorScreen} />
                                         <Stack.Screen name="HomePage" component={HomePage} />
                                     </>
                                 ) : state.isAssistant ? (
@@ -197,6 +198,7 @@ function App() {
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="ShareScreen" component={ShareScreen} />
+                                        <Stack.Screen name="NotFound" component={ErrorScreen} />
                                         <Stack.Screen name="HomePage" component={HomePage} />
                                     </>
                                 ) : (
@@ -208,6 +210,7 @@ function App() {
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
                                         <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
+                                        <Stack.Screen name="NotFound" component={ErrorScreen} />
                                     </>
                                 )}
                             </Stack.Group>

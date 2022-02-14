@@ -12,14 +12,18 @@ import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
 import {scale} from "../utilities/scales";
 import calculateTimeToNow from "../utilities/calculateTimeToNow";
+import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 
 
 export default function () {
-    const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const { t } = useTranslation(["userDashboard"]);
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const [errors, setError] = useState<any>([]);
+    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     const [showModal, setShowModal] = useState<boolean>(true)  // If params are defined, no need to verify SMS
     // Render the header (dark mode toggle and language picker)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
+    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const defaultProps: UserInfo = {
         name: "Someone",
@@ -73,46 +77,63 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
-                    const userData = data.data.getUser
-                    const queueData = data.data.getUser.queue
-                    // If summoned is toggled true, immediately navigate to Summon Screen
-                    if (userData.summoned) {navigation.navigate("SummonScreen", {queueId: queueData.id, userId: userData.id})}
-                    // Set the queue state
-                    setState(queueData.state)
-                    // Calculate join time and get the minutes
-                    userData.waited = calculateTimeToNow(userData.join_time).m
-                    // Get the last digit to determine the index suffix
-                    const terminalDigit = parseInt(userData.index.toString().charAt(userData.index.toString().length - 1))
-                    const suffix = userData.index === 1 ? "st"
-                                   : userData.index === 11 ? "th"
-                                   : terminalDigit === 1 ? "st"
-                                   : terminalDigit === 2 ? "nd"
-                                   : terminalDigit === 3 ? "rd"
-                                   : "th"
-                    // Set user data to be displayed and passed to subcomponents
-                    setProps({"name": userData.name,
-                                    "phone_number": userData.phone_number,
-                                    "join_time": userData.join_time,
-                                    "stats": [{"prefix": t("index_prefix"),
-                                               "stat": userData.index,
-                                               "suffix": suffix,
-                                               "tooltip": t("index_tooltip")},
-                                              {"prefix": t("waited_prefix"),
-                                               "stat": userData.waited,
-                                               "suffix": "m",
-                                               "tooltip": t("waited_tooltip")},
-                                              {"prefix": t("average_prefix"),
-                                               "stat": queueData.average_wait,
-                                               "suffix": "m",
-                                               "tooltip": t("average_tooltip")},
-                                              {"prefix": t("eta_prefix"),
-                                               "stat": userData.estimated_wait,
-                                               "suffix": "m",
-                                               "tooltip": t("eta_tooltip")}]})
+                    if (!!data.errors.length) {
+                        // Check for errors on response
+                        setError(data.errors[0])
+                    } else {
+                        const userData = data.data.getUser
+                        const queueData = data.data.getUser.queue
+                        // If summoned is toggled true, immediately navigate to Summon Screen
+                        if (userData.summoned) {
+                            navigation.navigate("SummonScreen", {queueId: queueData.id, userId: userData.id})
+                        }
+                        // Set the queue state
+                        setState(queueData.state)
+                        // Calculate join time and get the minutes
+                        userData.waited = calculateTimeToNow(userData.join_time).m
+                        // Get the last digit to determine the index suffix
+                        const terminalDigit = parseInt(userData.index.toString().charAt(userData.index.toString().length - 1))
+                        const suffix = userData.index === 1 ? "st"
+                            : userData.index === 11 ? "th"
+                                : terminalDigit === 1 ? "st"
+                                    : terminalDigit === 2 ? "nd"
+                                        : terminalDigit === 3 ? "rd"
+                                            : "th"
+                        // Set user data to be displayed and passed to subcomponents
+                        setProps({
+                            "name": userData.name,
+                            "phone_number": userData.phone_number,
+                            "join_time": userData.join_time,
+                            "stats": [{
+                                "prefix": t("index_prefix"),
+                                "stat": userData.index,
+                                "suffix": suffix,
+                                "tooltip": t("index_tooltip")
+                            },
+                                {
+                                    "prefix": t("waited_prefix"),
+                                    "stat": userData.waited,
+                                    "suffix": "m",
+                                    "tooltip": t("waited_tooltip")
+                                },
+                                {
+                                    "prefix": t("average_prefix"),
+                                    "stat": queueData.average_wait,
+                                    "suffix": "m",
+                                    "tooltip": t("average_tooltip")
+                                },
+                                {
+                                    "prefix": t("eta_prefix"),
+                                    "stat": userData.estimated_wait,
+                                    "suffix": "m",
+                                    "tooltip": t("eta_tooltip")
+                                }]
+                        })
+                    }
                 }
             )
         } catch(error) {
-            console.log(error)
+            setError([...errors, error])
         }
     }
 
@@ -123,6 +144,11 @@ export default function () {
 
     return (
         <Center style={styles.animationFormat}>
+            <GeneralErrorAlert
+                showAlert={showErrorAlert}
+                setShowAlert={setShowErrorAlert}
+                message={t(!errors.length ? "cannot_fetch_serviced_message" : errors[0])} // Render default message
+            />
             <Heading style={styles.headingFormat}>{props.name}'s Queue</Heading>
             <HStack style={styles.container}>
                 <Image

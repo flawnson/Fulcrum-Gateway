@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, Link,
         Modal, Center } from 'native-base'
 import { StyleSheet, SafeAreaView,
@@ -8,6 +8,7 @@ import { CodeField, Cursor,
 import { useTranslation } from "react-i18next";
 import { UserInfo } from "../types"
 import {scale} from "../utilities/scales";
+import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 
 
 const CELL_COUNT = 6
@@ -19,14 +20,14 @@ type VerifySMSModalProps = {
 }
 
 export default function (props: VerifySMSModalProps) {
+    const { t } = useTranslation(["verifySMSModal"]);
     const [value, setValue] = useState('');
     const [verified, setVerified] = useState(false)
-    const { t, i18n } = useTranslation(["verifySMSModal"]);
+    const [errors, setError] = useState<any>([]);
+    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
-    const [cellOnLayoutHandler, getCellOnLayoutHandler] = useClearByFocusCell({
-        value,
-        setValue,
-    });
+    const [cellOnLayoutHandler, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
+    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const query = `
         mutation confirm_user($confirmCode: String!) {
@@ -54,10 +55,11 @@ export default function (props: VerifySMSModalProps) {
                     body: JSON.stringify({query: query, variables: {confirmCode: value}})
                 })
             return await response.json().then(data => {
+                if (!!data.errors.length) {setError(data.errors[0])}  // Check for errors on response
                 setVerified(data.data.confirmUser)
             })
         } catch(error) {
-            console.log(error)
+            setError([...errors, error])
         }
     }
 
@@ -77,6 +79,11 @@ export default function (props: VerifySMSModalProps) {
             closeOnOverlayClick={false}
             isKeyboardDismissable={false}
         >
+            <GeneralErrorAlert
+                showAlert={showErrorAlert}
+                setShowAlert={setShowErrorAlert}
+                message={t(!errors.length ? "cannot_fetch_verify_sms_message" : errors[0])} // Render default message
+            />
             <Modal.Content maxWidth="500px">
                 <Modal.Header>{t("title")}</Modal.Header>
                 <Modal.Body>

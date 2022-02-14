@@ -4,11 +4,17 @@ import {HomeScreenProps, UserStats} from "../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
 import UserCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
 import {ScrollView} from "native-base";
+import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
+import {useTranslation} from "react-i18next";
 
 
 export default function () {
-    const [props, setProps] = useState<UserStats[]>([])
+    const { t } = useTranslation("abandonedPage")
     const route = useRoute<HomeScreenProps["route"]>()
+    const [errors, setError] = useState<any>([]);
+    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
+    const [props, setProps] = useState<UserStats[]>([])
+    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const query = `
         query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
@@ -47,6 +53,7 @@ export default function () {
                                           body: JSON.stringify({query: query, variables: variables})})
             await response.json().then(
                 data => {
+                    if (!!data.errors.length) {setError(data.errors[0])}  // Check for errors on response
                     data = data.data.getQueue.users
                     data = data.filter((d: UserStats) => d.status === "ABANDONED" ||
                                                               d.status === "KICKED" ||
@@ -65,7 +72,7 @@ export default function () {
                 }
             )
         } catch(error) {
-            console.log(error)
+            setError([...errors, error])
         }
     }
 
@@ -75,8 +82,15 @@ export default function () {
     useInterval(fetchAbandonedData, useIsFocused() ? 5000 : null)
 
     return (
-        <ScrollView>
-            <UserCatalogCardGroup entities={props} setEntities={setProps}/>
-        </ScrollView>
+        <>
+            <GeneralErrorAlert
+                showAlert={showErrorAlert}
+                setShowAlert={setShowErrorAlert}
+                message={t(!errors.length ? "cannot_fetch_serviced_message" : errors[0])} // Render default message
+            />
+            <ScrollView>
+                <UserCatalogCardGroup entities={props} setEntities={setProps}/>
+            </ScrollView>
+        </>
     )
 }

@@ -9,6 +9,7 @@ import {AuthContext} from "../utilities/AuthContext";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/PreferencesContext";
 import EndQueueAlert from "./EndQueueAlert";
+import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 
 export default function () {
     const { signedInAs } = React.useContext(AuthContext)
@@ -21,10 +22,12 @@ export default function () {
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
     const [errors, setError] = useState<any>([]);
+    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     // Share data defined and fetched at this level to avoid rerender hell in ShareScreen image component
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
+    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     useEffect(() => {
         fetchShareData().then()
@@ -77,14 +80,19 @@ export default function () {
             })
             await response.json().then(
                 data => {
-                    data = data.data.getQueue
-                    setShareData( {
-                            ...shareData,
-                            "currentQueueName": data.name,
-                            "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
-                            "currentQueueJoinCode": data.joinCode
-                        }
-                    )
+                    if (!!data.errors.length) {
+                        // Check for errors on response
+                        setError(data.errors[0])
+                    } else {
+                        data = data.data.getQueue
+                        setShareData({
+                                ...shareData,
+                                "currentQueueName": data.name,
+                                "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
+                                "currentQueueJoinCode": data.joinCode
+                            }
+                        )
+                    }
                 }
             )
         } catch (error) {
@@ -124,15 +132,20 @@ export default function () {
                 body: JSON.stringify({query: logoutQuery})
             });
             // enter you logic when the fetch is successful
-            return await response.json().then(() => {
-                    signOut()
-                    AsyncStorage.clear().then()
-                    // navigation.reset({index: 1, routes: [{name: "HomePage"}]})
-                    StackActions.popToTop() && navigation.navigate("HomePage")
+            return await response.json().then(data => {
+                    // Check for errors on response
+                    if (!!data.errors.length) {
+                        setError(data.errors[0])
+                    } else {
+                        signOut()
+                        AsyncStorage.clear().then()
+                        navigation.reset({index: 1, routes: [{name: "HomePage"}]})
+                        StackActions.popToTop() && navigation.navigate("HomePage")
+                    }
                 }
             )
         } catch(error) {
-            console.log(error)
+            setError([...errors, error])
         }
     }
 
@@ -243,6 +256,11 @@ export default function () {
             <EndQueueAlert
                 isAlertOpen={isAlertOpen}
                 setIsAlertOpen={setIsAlertOpen}
+            />
+            <GeneralErrorAlert
+                showAlert={showErrorAlert}
+                setShowAlert={setShowErrorAlert}
+                message={t(!errors.length ? "cannot_fetch_serviced_message" : errors[0])} // Render default message
             />
         </>
     )

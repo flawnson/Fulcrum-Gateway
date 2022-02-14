@@ -104,7 +104,8 @@
   },
   "endQueueAlert": {
     "header": "End Queue",
-    "dialog": "Are you sure you want to end this queue? All enqueued users will be kicked and this queue will be permanently deleted."
+    "dialog": "Are you sure you want to end this queue? All enqueued users will be kicked and this queue will be permanently deleted.",
+    "cannot_end_queue_message": "Something went wrong and we can't seem to be able to end the queue right now... Please try again soon."
   },
   "queueDashboardMenu": {
     "create_user": "Create User",
@@ -122,6 +123,18 @@
     "defer": "Defer Position",
     "leave": "Leave Queue",
     "share": "Share Queue"
+  },
+  "queuesPage": {
+    "cannot_fetch_queue_message": "Something went wrong and we can't seem to be able to update the queue data right now... We're working on a fix."
+  },
+  "servicedPage": {
+    "cannot_fetch_serviced_message": "Something went wrong and we can't seem to be able to update the serviced data right now... We're working on a fix."
+  },
+  "abandonedPage": {
+    "cannot_fetch_abandoned_message": "Something went wrong and we can't seem to be able to update the abandoned data right now... We're working on a fix."
+  },
+  "enqueuedPage": {
+    "cannot_fetch_enqueued_message": "Something went wrong and we can't seem to be able to update the enqueued data right now... We're working on a fix."
   },
   "queueDashboard": {
     "enqueued_prefix": "Enqueued",
@@ -173,7 +186,8 @@
     "organizer": "Organizer"
   },
   "verifySMSModal": {
-    "title": "Verify your phone number"
+    "title": "Verify your phone number",
+    "cannot_fetch_verify_sms_message": "Something went wrong and we can't seem to be able to verify your SMS right now... We're working on a fix."
   },
   "generalErrorAlert": {
     "title": "Oops! Something went wrong"
