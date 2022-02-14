@@ -113,7 +113,8 @@
     "pause_queue": "Pause Queue",
     "share_queue": "Share Queue",
     "change_password": "Change queue password",
-    "logout_queue": "Logout"
+    "logout_queue": "Logout",
+    "cannot_fetch_share_data_message": "Something went wrong and we can't seem to be able to end the queue right now... Please try again soon"
   },
   "queueMultiSelectButtons": {
     "pause": "Pause Queues",

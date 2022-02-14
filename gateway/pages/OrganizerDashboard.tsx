@@ -22,7 +22,7 @@ export default function () {
     const { t } = useTranslation(["organizerDashboard"]);
     const [errors, setError] = useState<any>([]);
     const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
-    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const defaultProps = {
         name: "Some Organizer",

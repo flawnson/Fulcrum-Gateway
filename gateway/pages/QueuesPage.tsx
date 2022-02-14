@@ -28,7 +28,7 @@ export default function () {
     const [showCreateQueueModal, setShowCreateQueueModal] = useState<boolean>(false);
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
-    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const query = `
         query get_queue_data($orderBy: [QueueOrderByWithRelationInput!]) {
@@ -70,7 +70,7 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
-                    if (!!data.errors.length) {setError(data.errors[0])}  // Check for errors on response
+                    if (!!data.errors?.length) {setError(data.errors[0])}  // Check for errors on response
                     setProps(data.data.getOrganizer.queues)
                 }
             )

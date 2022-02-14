@@ -27,7 +27,7 @@ export default function (props: VerifySMSModalProps) {
     const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
     const [cellOnLayoutHandler, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
-    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const query = `
         mutation confirm_user($confirmCode: String!) {

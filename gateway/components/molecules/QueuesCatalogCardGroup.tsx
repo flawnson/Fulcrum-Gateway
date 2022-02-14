@@ -82,7 +82,7 @@ export default function (props: QueuesStatsProps) {
             return await response.json()
         } catch(error) {
             // enter your logic for when there is an error (ex. error toast)
-            return error
+            console.log(error)
         }
     }
 

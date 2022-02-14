@@ -27,7 +27,7 @@ export default function () {
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
-    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     useEffect(() => {
         fetchShareData().then()
@@ -80,7 +80,7 @@ export default function () {
             })
             await response.json().then(
                 data => {
-                    if (!!data.errors.length) {
+                    if (!!data.errors?.length) {
                         // Check for errors on response
                         setError(data.errors[0])
                     } else {
@@ -134,7 +134,7 @@ export default function () {
             // enter you logic when the fetch is successful
             return await response.json().then(data => {
                     // Check for errors on response
-                    if (!!data.errors.length) {
+                    if (!!data.errors?.length) {
                         setError(data.errors[0])
                     } else {
                         signOut()
@@ -179,7 +179,7 @@ export default function () {
                                 color={isThemeDark ? 'white': 'black'}
                             />
                             <Text>
-                                {t("create")}
+                                {t("create_user")}
                             </Text>
                         </HStack>
                     </Menu.Item>
@@ -215,7 +215,7 @@ export default function () {
                                 color={isThemeDark ? 'white': 'black'}
                             />
                             <Text>
-                                {t("logout")}
+                                {t("logout_queue")}
                             </Text>
                         </HStack>
                     </Menu.Item>
@@ -260,7 +260,7 @@ export default function () {
             <GeneralErrorAlert
                 showAlert={showErrorAlert}
                 setShowAlert={setShowErrorAlert}
-                message={t(!errors.length ? "cannot_fetch_serviced_message" : errors[0])} // Render default message
+                message={t(!errors.length ? "cannot_fetch_share_data_message" : errors[0])} // Render default message
             />
         </>
     )

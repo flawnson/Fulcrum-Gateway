@@ -53,7 +53,7 @@ export default function () {
                                           body: JSON.stringify({query: query, variables: variables})})
             await response.json().then(
                 data => {
-                    if (!!data.errors.length) {setError(data.errors[0])}  // Check for errors on response
+                    if (!!data.errors?.length) {setError(data.errors[0])}  // Check for errors on response
                     data = data.data.getQueue.users
                     data = data.filter((d: UserStats) => d.status === "ABANDONED" ||
                                                               d.status === "KICKED" ||

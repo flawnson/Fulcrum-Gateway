@@ -22,52 +22,50 @@ export default function (props: CannotEnqueueAlertProps) {
     }, 5000)
 
     return (
-        <Center>
-            <PresenceTransition
-                visible={props.showAlert}
-                initial={{
-                    opacity: 0,
-                }}
-                animate={{
-                    opacity: 1,
-                    transition: {
-                        duration: 250,
-                    },
-                }}
-                style={styles.container}
-            >
-                <Alert w="100%" status="error" colorScheme="error">
-                    <VStack space={2} flexShrink={1} w="100%">
-                        <HStack
-                            flexShrink={1}
-                            space={2}
-                            alignItems="center"
-                            justifyContent="space-between"
-                        >
-                            <HStack flexShrink={1} space={2} alignItems="center">
-                                <Alert.Icon />
-                                <Text fontSize="md" fontWeight="medium" color="coolGray.800">
-                                    {t("title")}
-                                </Text>
-                            </HStack>
-                            <IconButton
-                                variant="unstyled"
-                                icon={<CloseIcon size="3" color="coolGray.600" />}
-                                onPress={() => props.setShowAlert(false)}
-                            />
+        <PresenceTransition
+            visible={props.showAlert}
+            initial={{
+                opacity: 0,
+            }}
+            animate={{
+                opacity: 1,
+                transition: {
+                    duration: 250,
+                },
+            }}
+            style={styles.container}
+        >
+            <Alert w="100%" status="error" colorScheme="error">
+                <VStack space={2} flexShrink={1} w="100%">
+                    <HStack
+                        flexShrink={1}
+                        space={2}
+                        alignItems="center"
+                        justifyContent="space-between"
+                    >
+                        <HStack flexShrink={1} space={2} alignItems="center">
+                            <Alert.Icon />
+                            <Text fontSize="md" fontWeight="medium" color="coolGray.800">
+                                {t("title")}
+                            </Text>
                         </HStack>
-                        <Box
-                            pl="6"
-                            _text={{
-                                color: "coolGray.600",
-                            }}
-                        >
-                            props.message
-                        </Box>
-                    </VStack>
-                </Alert>
-            </PresenceTransition>
-        </Center>
+                        <IconButton
+                            variant="unstyled"
+                            icon={<CloseIcon size="3" color="coolGray.600" />}
+                            onPress={() => props.setShowAlert(false)}
+                        />
+                    </HStack>
+                    <Box
+                        pl="6"
+                        _text={{
+                            color: "coolGray.600",
+                        }}
+                    >
+                        {props.message}
+                    </Box>
+                </VStack>
+            </Alert>
+        </PresenceTransition>
     )
 }
 

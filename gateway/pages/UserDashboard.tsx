@@ -23,7 +23,7 @@ export default function () {
     const [showModal, setShowModal] = useState<boolean>(true)  // If params are defined, no need to verify SMS
     // Render the header (dark mode toggle and language picker)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
-    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const defaultProps: UserInfo = {
         name: "Someone",

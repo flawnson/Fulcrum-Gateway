@@ -17,7 +17,7 @@ export default (props: LeaveQueueAlertProps) => {
     const [errors, setError] = useState<any>([]);
     const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     const { t } = useTranslation(["endQueueAlert", "common"]);
-    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const deleteQueueQuery = `
         mutation delete_queue($queueId: String!) {
