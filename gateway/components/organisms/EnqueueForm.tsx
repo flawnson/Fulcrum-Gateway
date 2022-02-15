@@ -27,7 +27,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     const { t } = useTranslation(["homePage", "common"])
     const route = useRoute<HomeScreenProps["route"]>()
     const [formData, setData] = useState<EnqueueFormData>({})
-    const { signIn } = React.useContext(AuthContext)
+    const { setAuth } = React.useContext(AuthContext)
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false)
     const [showAlert, setShowAlert] = useState<boolean>(false)
@@ -83,7 +83,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                 data => {
                     // If response is valid and returns an id, then set auth context, submit, and navigate to dashboard
                     if (data?.data?.createUser || data?.data?.joinQueue.id) {
-                        signIn('USER')
+                        setAuth('USER')
                         setSubmitted(true)
                         navigation.navigate("UserDashboard")
                     } else {

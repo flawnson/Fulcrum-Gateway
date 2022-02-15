@@ -21,8 +21,8 @@ export default function () {
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
-    const {signedInAs} = React.useContext(AuthContext)
-    console.log(signedInAs)
+    const {auth} = React.useContext(AuthContext)
+    console.log(auth)
 
     useEffect(() => {
         fetchShareData().then()

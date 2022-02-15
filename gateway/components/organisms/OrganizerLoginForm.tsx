@@ -26,7 +26,8 @@ type OrganizerLogInErrorData = {
 }
 
 export default ({navigation, setShowModal}: LogInFormType) => {
-    const { signIn } = React.useContext(AuthContext)
+    const { auth, setAuth } = React.useContext(AuthContext)
+    console.log(auth)
     const [formData, setData] = useState<OrganizerFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [errors, setErrors] = useState<OrganizerLogInErrorData>({});
@@ -91,7 +92,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
     };
 
     const onSuccess = () => {
-        signIn('ORGANIZER')
+        setAuth("ORGANIZER")
         logIn().then()
     }
 

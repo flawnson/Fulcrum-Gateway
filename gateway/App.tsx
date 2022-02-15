@@ -1,5 +1,5 @@
 // Library imports
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import './i18n'
 import 'react-native-gesture-handler'
 import { registerRootComponent } from 'expo'
@@ -30,7 +30,7 @@ import linkConfig from "./utilities/linkConfig"
 import QueueDashboard from "./pages/QueueDashboard"
 import SplashScreen from "./screens/SplashScreen"
 import {UserTypes} from "./types"
-import {AuthContext} from "./utilities/AuthContext";
+import {AuthContext, AuthProvider} from "./utilities/AuthContext";
 
 // Strict mode can be changed to trigger a warning or an error in case of any nativebase issues
 const nativebaseConfig: object = {
@@ -38,6 +38,8 @@ const nativebaseConfig: object = {
 }
 
 function App() {
+
+    const {auth} = useContext(AuthContext)
 
     // Stack navigator to navigate between pages and screens in the app
     const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -92,6 +94,7 @@ function App() {
                     }
                 };
                 case 'SIGN_OUT':
+                    setUserType("NONE")
                     return {
                         ...prevState,
                         isUser: false,
@@ -155,7 +158,7 @@ function App() {
     }
 
     return (
-        <AuthContext.Provider value={authContext}>
+        <AuthProvider>
             <PreferencesContext.Provider value={preferences}>
                 <NativeBaseProvider config={nativebaseConfig} theme={theme.nativebase}>
                     <NavigationContainer
@@ -169,7 +172,8 @@ function App() {
                     >
                         <Stack.Navigator initialRouteName={"HomePage"}>
                             <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe"}} >
-                                {state.isUser ? (
+                                {console.log(auth)}
+                                {auth === "USER" ? (
                                     <>
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
@@ -181,7 +185,7 @@ function App() {
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
                                         <Stack.Screen name="HomePage" component={HomePage} />
                                     </>
-                                ) : state.isOrganizer ? (
+                                ) : auth === "ORGANIZER" ? (
                                     <>
                                         <Stack.Screen name="QueuesPage" component={QueuesPage} />
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
@@ -192,7 +196,7 @@ function App() {
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
                                         <Stack.Screen name="HomePage" component={HomePage} />
                                     </>
-                                ) : state.isAssistant ? (
+                                ) : auth === "ASSISTANT" ? (
                                     <>
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
@@ -205,9 +209,6 @@ function App() {
                                     <>
                                         <Stack.Screen name="HomePage" component={HomePage} />
                                         <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
-                                        <Stack.Screen name="QueuesPage" component={QueuesPage} />
-                                        <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
-                                        <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
                                         <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
@@ -218,7 +219,7 @@ function App() {
                     </NavigationContainer>
                 </NativeBaseProvider>
             </PreferencesContext.Provider>
-        </AuthContext.Provider>
+        </AuthProvider>
     );
 }
 
