@@ -19,7 +19,7 @@ type AssistantFormData = {
 }
 
 export default ({navigation, setShowModal}: SignInFormType) => {
-    const { setAuth } = React.useContext(AuthContext)
+    const { signIn } = React.useContext(AuthContext)
     const [formData, setData] = useState<AssistantFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [errors, setErrors] = useState<object>({});
@@ -78,7 +78,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
     };
 
     const onSuccess = () => {
-        setAuth('ASSISTANT')
+        signIn('ASSISTANT')
         setShowModal(false)
         setSubmitted(false)
         navigation.navigate("QueueDashboard")

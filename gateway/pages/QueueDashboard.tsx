@@ -20,8 +20,8 @@ type UserData = {
 export default function () {
     const route = useRoute<HomeScreenProps["route"]>()
     const { t } = useTranslation(["queueDashboard"]);
-    const {auth} = React.useContext(AuthContext)
-    console.log(auth)
+    const {signedInAs} = React.useContext(AuthContext)
+    console.log(signedInAs)
 
     const defaultProps = {
         name: "Some Queue",

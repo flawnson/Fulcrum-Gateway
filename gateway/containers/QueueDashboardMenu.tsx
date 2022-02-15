@@ -12,9 +12,10 @@ import EndQueueAlert from "./EndQueueAlert";
 import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 
 export default function () {
+    const { signedInAs } = React.useContext(AuthContext)
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const { auth, setAuth } = React.useContext(AuthContext)
+    const { signOut } = React.useContext(AuthContext)
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
     const { t, i18n } = useTranslation(["queueDashboardMenu"]);
     const [queuePaused, toggleQueuePaused] = useState<boolean>(false)
@@ -60,11 +61,11 @@ export default function () {
         }
     `
 
-    const query = auth === "ORGANIZER" ? organizerQuery :
-                  auth === "ASSISTANT" ? assistantQuery :
+    const query = signedInAs === "ORGANIZER" ? organizerQuery :
+                  signedInAs === "ASSISTANT" ? assistantQuery :
                   {null: null}
     // @ts-ignore
-    const variables = auth === "ORGANIZER" ? {queueId: route.params!["queueId"]} : null
+    const variables = signedInAs === "ORGANIZER" ? {queueId: route.params!["queueId"]} : null
 
     const fetchShareData = async () => {
         try {
@@ -136,7 +137,7 @@ export default function () {
                     if (!!data.errors?.length) {
                         setError(data.errors[0])
                     } else {
-                        setAuth("NONE")
+                        signOut()
                         AsyncStorage.clear().then()
                         navigation.reset({index: 1, routes: [{name: "HomePage"}]})
                         StackActions.popToTop() && navigation.navigate("HomePage")
@@ -222,27 +223,27 @@ export default function () {
                 <Divider mt="3" w="100%" />
                 <Menu.Group title="Organizers">
                     {/*Can only end (delete queue) if user is an organizer*/}
-                    <Menu.Item isDisabled={auth !== "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
+                    <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
                         <HStack space={3}>
                             <Ionicons
                                 name={'close-circle'}
                                 size={20}
                                 color={isThemeDark ? 'white': 'black'}
                             />
-                            <Text style={auth !== "ORGANIZER" ? {color: "grey.400"} : {}}>
+                            <Text style={signedInAs !== "ORGANIZER" ? {color: "grey.400"} : {}}>
                                 {t("end_queue")}
                             </Text>
                         </HStack>
                     </Menu.Item>
                     {/*Can only change queue password if you're the organizer*/}
-                    <Menu.Item isDisabled={auth !== "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
+                    <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
                         <HStack space={3}>
                             <Ionicons
                                 name={'close-circle'}
                                 size={20}
                                 color={isThemeDark ? 'white': 'black'}
                             />
-                            <Text style={auth !== "ORGANIZER" ? {color: "grey.400"} : {}}>
+                            <Text style={signedInAs !== "ORGANIZER" ? {color: "grey.400"} : {}}>
                                 {t("change_password")}
                             </Text>
                         </HStack>

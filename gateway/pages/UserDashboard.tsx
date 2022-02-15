@@ -147,7 +147,7 @@ export default function () {
             <GeneralErrorAlert
                 showAlert={showErrorAlert}
                 setShowAlert={setShowErrorAlert}
-                message={t(!errors.length ? "cannot_fetch_serviced_message" : errors[0])} // Render default message
+                message={t(!errors.length ? "cannot_fetch_user_data" : errors[0])} // Render default message
             />
             <Heading style={styles.headingFormat}>{props.name}'s Queue</Heading>
             <HStack style={styles.container}>
