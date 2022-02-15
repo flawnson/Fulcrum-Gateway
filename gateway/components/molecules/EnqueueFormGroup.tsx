@@ -28,7 +28,7 @@ export default function () {
                     {t("signup", {ns: "common"})}
                 </Text>
                 {t('footer')}
-                <Text style={styles.linkText} onPress={() => navigation.navigate('LandingPage')}> fiefoe.com</Text>
+                <Text style={styles.linkText} onPress={() => navigation.navigate('HomePage')}> fiefoe.com</Text>
             </Text>
             <OrganizerLoginModal showModal={showLoginModal} setShowModal={setShowLoginModal}/>
             <OrganizerSignUpModal showModal={showSignUpModal} setShowModal={setShowSignUpModal}/>

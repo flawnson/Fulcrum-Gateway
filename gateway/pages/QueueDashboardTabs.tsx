@@ -9,12 +9,16 @@ import {useNavigation, useRoute} from "@react-navigation/native";
 import { HomeScreenProps } from "../types";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import {scale} from "../utilities/scales"
+import {useTheme} from "native-base";
+import {PreferencesContext} from "../utilities/PreferencesContext";
 
 const Tab = createBottomTabNavigator();
 
 export default function QueueDashboardTabs() {
-    const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const {colors} = useTheme()
+    const { isThemeDark } = React.useContext(PreferencesContext);
     const route = useRoute<HomeScreenProps["route"]>()
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()
     // Setting right header group (language and dark mode) for nested bottom tab navigator
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
@@ -38,7 +42,7 @@ export default function QueueDashboardTabs() {
                     // @ts-ignore for some reason the name has trouble with the type of iconName
                     return <MaterialCommunityIcons name={iconName} size={scale(20)} color={color} />
                 },
-                tabBarActiveTintColor: '#8743FF',
+                tabBarActiveTintColor: isThemeDark ? colors.primary[200] : colors.primary[700],
                 tabBarInactiveTintColor: 'gray',
                 headerShown: false,
                 headerBackVisible: true,

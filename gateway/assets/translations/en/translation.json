@@ -160,7 +160,7 @@
     "scan_again": "Tap to Scan Again"
   },
   "errorScreen": {
-    "message": "Uh... This is awkward! It seems like whatever you're trying to access can't be found. Maybe find your way back at fiefoe.com."
+    "message": "Uh... This is awkward! It seems like whatever you're trying to access can't be found. Maybe find your way back at"
   },
   "signUpModal": {
     "title": "Sign Up"

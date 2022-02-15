@@ -74,7 +74,7 @@ export default function () {
                 Button: {
                     baseStyle: {},
                     defaultProps: {
-                        colorScheme: 'purple',
+                        colorScheme: 'primary',
                     },
                     variants: {},
                     sizes: {},

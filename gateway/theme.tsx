@@ -13,7 +13,7 @@ export function navigationTheme (colorMode: string) {  // https://reactnavigatio
         ...(colorMode === 'dark' ? DarkTheme : DefaultTheme),  // Should do useColorScheme() hook from react native
         colors: {
             ...(colorMode === 'dark' ? DarkTheme.colors : DefaultTheme.colors),
-            background: (colorMode === 'dark' ? '#372B47' : '#ffffff'),
+            background: (colorMode === 'dark' ? '#191741' : '#ffffff'),
         }
     })
 }
