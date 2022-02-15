@@ -16,7 +16,7 @@ export default function () {
     const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     // The callback is so that we can call the method that deletes the cards from the flatlist when delete confirmed
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
-    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const query = `
         query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
@@ -91,7 +91,7 @@ export default function () {
             <GeneralErrorAlert
                 showAlert={showErrorAlert}
                 setShowAlert={setShowErrorAlert}
-                message={t(!errors.length ? "cannot_fetch_serviced_message" : errors[0])} // Render default message
+                message={t(!errors.length ? "cannot_fetch_enqueued_message" : errors[0])} // Render default message
             />
             <ScrollView>
                 <EnqueuedCatalogCardGroup

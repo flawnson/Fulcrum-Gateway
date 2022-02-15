@@ -14,7 +14,7 @@ export default function () {
     const [errors, setError] = useState<any>([]);
     const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     const [props, setProps] = useState<UserStats[]>([])
-    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const query = `
         query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {

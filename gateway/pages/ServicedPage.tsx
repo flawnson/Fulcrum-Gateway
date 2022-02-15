@@ -14,7 +14,7 @@ export default function () {
     const [errors, setError] = useState<any>([]);
     const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     const route = useRoute<HomeScreenProps["route"]>()
-    useEffect(() => {if (!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const query = `
         query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
