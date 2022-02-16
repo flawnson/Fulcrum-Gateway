@@ -21,6 +21,7 @@ beforeAll(async () => {
 afterAll(async () => {
   // close redis connection
   await redis.disconnect();
+  await redis.quit();
   // close prisma connection
   await prisma.$disconnect();
 });

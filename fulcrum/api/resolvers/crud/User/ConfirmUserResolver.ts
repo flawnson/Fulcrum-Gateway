@@ -53,6 +53,7 @@ export class ConfirmUserResolver {
 
     // create session
     ctx.req.session!.userId = userId;
+    console.log("User confirmed");
 
     return update;
   }
