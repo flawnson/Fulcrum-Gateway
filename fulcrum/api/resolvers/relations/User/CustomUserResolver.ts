@@ -34,7 +34,7 @@ export class CustomUserResolver {
     if (estimatedWait == null){
       return null;
     }
-    return estimatedWait;
+    return Math.floor(estimatedWait);
   }
 
   @Authorized()
@@ -45,7 +45,7 @@ export class CustomUserResolver {
     if (eta == null){
       return null;
     }
-    return eta;
+    return Math.floor(eta);
   }
 
   @Authorized()
