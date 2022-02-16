@@ -1,9 +1,10 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import { AlertDialog, Button, Center } from "native-base"
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../types";
 import {useTranslation} from "react-i18next";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 
 type LeaveQueueAlertProps = {
     isAlertOpen: boolean,
@@ -13,7 +14,10 @@ type LeaveQueueAlertProps = {
 
 export default (props: LeaveQueueAlertProps) => {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const { t, i18n } = useTranslation(["endQueueAlert", "common"]);
+    const [errors, setError] = useState<any>([]);
+    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
+    const { t } = useTranslation(["endQueueAlert", "common"]);
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const deleteQueueQuery = `
         mutation delete_queue($queueId: String!) {
@@ -47,7 +51,7 @@ export default (props: LeaveQueueAlertProps) => {
             // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
-            console.log(error)
+            setError([...errors, error])
         }
     }
 
@@ -67,6 +71,11 @@ export default (props: LeaveQueueAlertProps) => {
     const cancelRef = React.useRef(null)
     return (
         <Center>
+            <GeneralErrorAlert
+                showAlert={showErrorAlert}
+                setShowAlert={setShowErrorAlert}
+                message={t(!errors.length ? "cannot_end_queue_message" : errors[0])}
+            />
             <AlertDialog
                 leastDestructiveRef={cancelRef}
                 isOpen={props.isAlertOpen}

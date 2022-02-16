@@ -57,6 +57,7 @@ export default (props: LeaveQueueAlertProps) => {
         props.setIsAlertOpen(false)
         AsyncStorage.clear().then()
         leaveQueue().then()
+        navigation.reset({index: 1, routes: [{name: "HomePage"}]})
         navigation.navigate("AbandonedScreen")
     }
 

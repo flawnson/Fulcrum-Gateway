@@ -81,10 +81,14 @@
     "index_tooltip": "This is you position in line.",
     "waited_tooltip": "This is how long you've waited in line, from the moment you joined to now.",
     "average_tooltip": "The average wait in minutes of all your fellow queuers in this line.",
-    "eta_tooltip": "The estimated time of your arrival, calculated by combining the average along with a few other stats."
+    "eta_tooltip": "The estimated time of your arrival, calculated by combining the average along with a few other stats.",
+    "cannot_fetch_user_data": "Something went wrong and we can't seem to be able to get your data right now... Please try again soon."
   },
   "createQueueModal": {
     "title": "Create a Queue"
+  },
+  "createUserModal": {
+    "title": "Create a User"
   },
   "editQueueModal": {
     "title": "Edit a Queue"
@@ -104,15 +108,17 @@
   },
   "endQueueAlert": {
     "header": "End Queue",
-    "dialog": "Are you sure you want to end this queue? All enqueued users will be kicked and this queue will be permanently deleted."
+    "dialog": "Are you sure you want to end this queue? All enqueued users will be kicked and this queue will be permanently deleted.",
+    "cannot_end_queue_message": "Something went wrong and we can't seem to be able to end the queue right now... Please try again soon."
   },
   "queueDashboardMenu": {
-    "create": "Create User",
-    "edit": "Edit Queue",
-    "end": "End Queue",
-    "pause": "Pause Queue",
-    "share": "Share Queue",
-    "logout": "Logout"
+    "create_user": "Create User",
+    "end_queue": "End Queue",
+    "pause_queue": "Pause Queue",
+    "share_queue": "Share Queue",
+    "change_password": "Change queue password",
+    "logout_queue": "Logout",
+    "cannot_fetch_share_data_message": "Something went wrong and we can't seem to be able to end the queue right now... Please try again soon"
   },
   "queueMultiSelectButtons": {
     "pause": "Pause Queues",
@@ -122,6 +128,18 @@
     "defer": "Defer Position",
     "leave": "Leave Queue",
     "share": "Share Queue"
+  },
+  "queuesPage": {
+    "cannot_fetch_queue_message": "Something went wrong and we can't seem to be able to update the queue data right now... We're working on a fix."
+  },
+  "servicedPage": {
+    "cannot_fetch_serviced_message": "Something went wrong and we can't seem to be able to update the serviced data right now... We're working on a fix."
+  },
+  "abandonedPage": {
+    "cannot_fetch_abandoned_message": "Something went wrong and we can't seem to be able to update the abandoned data right now... We're working on a fix."
+  },
+  "enqueuedPage": {
+    "cannot_fetch_enqueued_message": "Something went wrong and we can't seem to be able to update the enqueued data right now... We're working on a fix."
   },
   "queueDashboard": {
     "enqueued_prefix": "Enqueued",
@@ -145,7 +163,7 @@
     "scan_again": "Tap to Scan Again"
   },
   "errorScreen": {
-    "message": "Uh... This is awkward! It seems like whatever you're trying to access can't be found. Maybe find your way back at fiefoe.com."
+    "message": "Uh... This is awkward! It seems like whatever you're trying to access can't be found. Maybe find your way back at"
   },
   "signUpModal": {
     "title": "Sign Up"
@@ -173,7 +191,8 @@
     "organizer": "Organizer"
   },
   "verifySMSModal": {
-    "title": "Verify your phone number"
+    "title": "Verify your phone number",
+    "cannot_fetch_verify_sms_message": "Something went wrong and we can't seem to be able to verify your SMS right now... We're working on a fix."
   },
   "generalErrorAlert": {
     "title": "Oops! Something went wrong"
@@ -181,5 +200,36 @@
   "confirmDeleteAlert": {
     "header": "Are you sure you want to do this?",
     "message": "Deleting a {{entity}} is permanent and cannot be undone."
+  },
+  "changeQueuePasswordModal": {
+    "title": "Change queue password",
+    "password_label": "New queue password",
+    "password_helper": "Enter your new password",
+    "password_placeholder": "Super secret password",
+    "confirm_password_label": "Confirm new queue password",
+    "confirm_password_helper": "Re-enter your new password",
+    "confirm_password_placeholder": "Super secret password again",
+    "new_password_not_provided": "You forgot to provide a new password!",
+    "confirm_password_not_provided": "You need to confirm your new password!",
+    "confirm_password_does_not_match": "The passwords you provided don't match!"
+  },
+  "forgotPasswordModal": {
+    "title": "Reset your password",
+    "label": "Email",
+    "email_helper": "Please provide your email and we will send you a link to change your password.",
+    "email_not_provided": "Oops! Looks like you forgot to provide an email...",
+    "email_not_valid": "Oops! Looks like you didn't enter a valid email..."
+  },
+  "changePasswordScreen": {
+    "title": "Change your password",
+    "password_label": "New password",
+    "password_helper": "Enter your new password",
+    "password_placeholder": "Super secret password",
+    "confirm_password_label": "Confirm new password",
+    "confirm_password_helper": "Re-enter your new password",
+    "confirm_password_placeholder": "Super secret password again",
+    "new_password_not_provided": "You forgot to provide a new password!",
+    "confirm_password_not_provided": "You need to confirm your new password!",
+    "confirm_password_does_not_match": "The passwords you provided don't match!"
   }
 }

@@ -15,7 +15,7 @@ type CreateUserModalProps = {
 
 export default function (props: CreateUserModalProps) {
     // const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { t, i18n } = useTranslation(["createQueueModal"]);
+    const { t } = useTranslation(["createUserModal"]);
 
     return (
         <Modal isOpen={props.showModal} onClose={() => props.setShowModal(false)}>

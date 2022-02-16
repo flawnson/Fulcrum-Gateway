@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Text,
         Center, Heading,
         Modal } from "native-base";
+import {PreferencesContext} from "../utilities/PreferencesContext";
 
 
 type CreateQueueModalProps = {
@@ -15,6 +16,7 @@ type CreateQueueModalProps = {
 }
 
 export default (props: CreateQueueModalProps) => {
+    const { isThemeDark } = React.useContext(PreferencesContext);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const { t, i18n } = useTranslation(["logInModal"]);
     const [isOrganizer, setIsOrganizer] = useState(true)
@@ -60,7 +62,7 @@ export default (props: CreateQueueModalProps) => {
                                 onPress={() => setIsOrganizer(false)}
                                 variant={isOrganizer ? "outline" : "solid"}
                             >
-                                <Text style={{color: isOrganizer ? "black" : "white"}}>
+                                <Text style={{color: isOrganizer && isThemeDark ? "white" : "black"}}>
                                     {t("assistant")}
                                 </Text>
                             </Button>

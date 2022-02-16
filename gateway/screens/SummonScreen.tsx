@@ -34,8 +34,8 @@ export default function() {
             }
         }
     `
-    // @ts-ignore
-    const variables = route.params ? {userId: route.params!["userId"]} : null
+    // @ts-ignore trying to get the queueId and userId from the UserDashboard
+    const variables = route.params ? {queueId: route.params!["queueId"], userId: route.params!["userId"]} : null
 
     const fetchData = async () => {
         try {

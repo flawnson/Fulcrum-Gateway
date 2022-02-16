@@ -9,6 +9,7 @@ import useInterval from "../utilities/useInterval";
 import { zipObject } from "lodash"
 import { DashboardStat } from "../types";
 import { useTranslation } from "react-i18next";
+import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 
 type QueueData = {
     queue_id: string,
@@ -18,7 +19,10 @@ type QueueData = {
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { t, i18n } = useTranslation(["organizerDashboard"]);
+    const { t } = useTranslation(["organizerDashboard"]);
+    const [errors, setError] = useState<any>([]);
+    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const defaultProps = {
         name: "Some Organizer",
@@ -55,6 +59,7 @@ export default function () {
             const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
             await response.json().then(
                 data => {
+                    if (!!data.errors.length) {setError(data.errors[0])}  // Check for errors on response
                     const name = data.data.queue.name
                     data = data.data.queue.users
                     const states = ["ACTIVE", "PAUSED", "INACTIVE"]
@@ -84,7 +89,7 @@ export default function () {
                 }
             )
         } catch(error) {
-            console.log(error)
+            setError([...errors, error])
         }
     }
 
@@ -95,6 +100,11 @@ export default function () {
 
     return (
         <Center style={styles.animationFormat}>
+            <GeneralErrorAlert
+                showAlert={showErrorAlert}
+                setShowAlert={setShowErrorAlert}
+                message={t(!errors.length ? "cannot_fetch_serviced_message" : errors[0])} // Render default message
+            />
             <Heading style={styles.headingFormat}>{props.name}</Heading>
             {/*<QueueDashboardGroup {...props.stats}/>*/}
             <QueueDashboardMenu />

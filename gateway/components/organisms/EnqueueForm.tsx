@@ -24,6 +24,7 @@ type EnqueueFormData = {
 
 
 export default function ({navigation, setShowModal}: EnqueueFormProps) {
+    const { t } = useTranslation(["homePage", "common"])
     const route = useRoute<HomeScreenProps["route"]>()
     const [formData, setData] = useState<EnqueueFormData>({})
     const { signIn } = React.useContext(AuthContext)
@@ -34,7 +35,6 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     const [isNameFormOpen, setNameFormOpen] = useState<boolean>(false)
     const [isPhoneNumberFormOpen, setPhoneNumberFormOpen] = useState<boolean>(false)
     const [errors, setErrors] = useState<EnqueueFormData>({})
-    const { t, i18n } = useTranslation(["homePage", "common"])
 
     if (route.params) {
         // If route contains params (from ShareScreen) then automatically input the joincode

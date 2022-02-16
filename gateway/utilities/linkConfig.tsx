@@ -51,6 +51,9 @@ export default {
         QRCodeScanner: {
             path: 'qrcodescanner'
         },
+        ChangePasswordScreen: {
+            path: 'changepasswordscreen'
+        },
         ConfirmationScreen: {
             path: 'confirmationscreen'
         },

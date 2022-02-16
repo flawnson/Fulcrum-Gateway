@@ -4,13 +4,19 @@ import useInterval from "../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../types";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import {ScrollView} from "native-base";
+import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
+import {useTranslation} from "react-i18next";
 
 
 export default function () {
+    const { t } = useTranslation("enqueuedPage")
     const route = useRoute<HomeScreenProps["route"]>()
     const [props, setProps] = useState<UserStats[]>([])
+    const [errors, setError] = useState<any>([]);
+    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     // The callback is so that we can call the method that deletes the cards from the flatlist when delete confirmed
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
+    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
 
     const query = `
         query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
@@ -51,6 +57,7 @@ export default function () {
                 })
             await response.json().then(
                 data => {
+                    if (!!data.errors?.length) {setError(data.errors[0])}  // Check for errors on response
                     data = data.data.getQueue.users
                     data = data.filter((d: UserStats) => d.status === "ENQUEUED" || d.status === "DEFERRED")
                     const user_stats: UserStats[] = []
@@ -70,7 +77,7 @@ export default function () {
                 }
             )
         } catch(error) {
-            console.log(error)
+            setError([...errors, error])
         }
     }
 
@@ -80,13 +87,20 @@ export default function () {
     useInterval(fetchUserData, useIsFocused() && !showConfirmDeleteAlert ? 5000 : null)
 
     return (
-        <ScrollView>
-            <EnqueuedCatalogCardGroup
-                entities={props}
-                setEntities={setProps}
-                showConfirmDeleteAlert={showConfirmDeleteAlert}
-                setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
+        <>
+            <GeneralErrorAlert
+                showAlert={showErrorAlert}
+                setShowAlert={setShowErrorAlert}
+                message={t(!errors.length ? "cannot_fetch_enqueued_message" : errors[0])} // Render default message
             />
-        </ScrollView>
+            <ScrollView>
+                <EnqueuedCatalogCardGroup
+                    entities={props}
+                    setEntities={setProps}
+                    showConfirmDeleteAlert={showConfirmDeleteAlert}
+                    setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
+                />
+            </ScrollView>
+        </>
     )
 }

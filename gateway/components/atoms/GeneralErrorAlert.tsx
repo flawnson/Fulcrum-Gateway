@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import { Alert, VStack,
         HStack, Text,
         IconButton, CloseIcon,
-        Box, PresenceTransition } from 'native-base'
+        Box, Center,
+        PresenceTransition } from 'native-base'
 import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 
@@ -13,7 +14,13 @@ type CannotEnqueueAlertProps = {
 }
 
 export default function (props: CannotEnqueueAlertProps) {
-    const { t, i18n } = useTranslation(["generalErrorAlert"])
+    const { t } = useTranslation(["generalErrorAlert"])
+
+    // Automatically close Alert after 5 seconds
+    setTimeout(() => {
+        props.setShowAlert(false)
+    }, 5000)
+
     return (
         <PresenceTransition
             visible={props.showAlert}
@@ -54,7 +61,7 @@ export default function (props: CannotEnqueueAlertProps) {
                             color: "coolGray.600",
                         }}
                     >
-                        props.message
+                        {props.message}
                     </Box>
                 </VStack>
             </Alert>
@@ -67,6 +74,10 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 50,
         position: 'absolute',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 });
 
