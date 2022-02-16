@@ -18,6 +18,7 @@ export type RootStackParamList = {
     QueuesPage: undefined;
     QRCodeScanner: undefined;
     ConfirmationScreen: undefined;
+    ChangePasswordScreen: undefined;
     SplashScreen: undefined;
     NotFound: undefined;
 };

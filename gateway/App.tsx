@@ -25,6 +25,7 @@ import QueueDashboardTabs from "./pages/QueueDashboardTabs"
 import QRCodeScanner from "./components/organisms/QRCodeScanner"
 import ErrorScreen from "./screens/ErrorScreen"
 import ConfirmationScreen from "./screens/ConfirmationScreen"
+import ChangePasswordScreen from "./screens/ChangePasswordScreen"
 import {PreferencesContext} from "./utilities/PreferencesContext"
 import linkConfig from "./utilities/linkConfig"
 import QueueDashboard from "./pages/QueueDashboard"
@@ -144,6 +145,7 @@ function App() {
 
                 if (initialUrl == null) {
                     // Only restore state if there's no deep link
+                    // Without this condition, refreshes and attempts to access the app via a deep link send you to the ErrorScreen
                     const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
                     const state = savedStateString ? JSON.parse(savedStateString) : undefined;
 
@@ -222,11 +224,10 @@ function App() {
                                     <>
                                         <Stack.Screen name="HomePage" component={HomePage} />
                                         <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
-                                        <Stack.Screen name="QueuesPage" component={QueuesPage} />
-                                        <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
-                                        <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
                                         <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />
+                                        <Stack.Screen name="ConfirmationScreen" component={ConfirmationScreen} />
+                                        <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
                                     </>
                                 )}

@@ -87,6 +87,9 @@
   "createQueueModal": {
     "title": "Create a Queue"
   },
+  "createUserModal": {
+    "title": "Create a User"
+  },
   "editQueueModal": {
     "title": "Edit a Queue"
   },
@@ -197,5 +200,36 @@
   "confirmDeleteAlert": {
     "header": "Are you sure you want to do this?",
     "message": "Deleting a {{entity}} is permanent and cannot be undone."
+  },
+  "changeQueuePasswordModal": {
+    "title": "Change queue password",
+    "password_label": "New queue password",
+    "password_helper": "Enter your new password",
+    "password_placeholder": "Super secret password",
+    "confirm_password_label": "Confirm new queue password",
+    "confirm_password_helper": "Re-enter your new password",
+    "confirm_password_placeholder": "Super secret password again",
+    "new_password_not_provided": "You forgot to provide a new password!",
+    "confirm_password_not_provided": "You need to confirm your new password!",
+    "confirm_password_does_not_match": "The passwords you provided don't match!"
+  },
+  "forgotPasswordModal": {
+    "title": "Reset your password",
+    "label": "Email",
+    "email_helper": "Please provide your email and we will send you a link to change your password.",
+    "email_not_provided": "Oops! Looks like you forgot to provide an email...",
+    "email_not_valid": "Oops! Looks like you didn't enter a valid email..."
+  },
+  "changePasswordScreen": {
+    "title": "Change your password",
+    "password_label": "New password",
+    "password_helper": "Enter your new password",
+    "password_placeholder": "Super secret password",
+    "confirm_password_label": "Confirm new password",
+    "confirm_password_helper": "Re-enter your new password",
+    "confirm_password_placeholder": "Super secret password again",
+    "new_password_not_provided": "You forgot to provide a new password!",
+    "confirm_password_not_provided": "You need to confirm your new password!",
+    "confirm_password_does_not_match": "The passwords you provided don't match!"
   }
 }

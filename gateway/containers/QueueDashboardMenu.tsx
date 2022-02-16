@@ -10,19 +10,23 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/PreferencesContext";
 import EndQueueAlert from "./EndQueueAlert";
 import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
+import ChangeQueuePasswordModal from "./ChangeQueuePasswordModal";
+import {useTheme} from "native-base";
 
 export default function () {
+    const { colors } = useTheme()
     const { signedInAs } = React.useContext(AuthContext)
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const { signOut } = React.useContext(AuthContext)
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
     const { t, i18n } = useTranslation(["queueDashboardMenu"]);
-    const [queuePaused, toggleQueuePaused] = useState<boolean>(false)
+    const [queuePaused, toggleQueuePaused] = useState(false)
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
+    const [showChangeQueuePasswordModal, setShowChangeQueuePasswordModal] = useState(false);
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
     const [errors, setError] = useState<any>([]);
-    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
+    const [showErrorAlert, setShowErrorAlert] = useState(false)
     // Share data defined and fetched at this level to avoid rerender hell in ShareScreen image component
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueQR: 'Image address',
@@ -230,20 +234,20 @@ export default function () {
                                 size={20}
                                 color={isThemeDark ? 'white': 'black'}
                             />
-                            <Text style={signedInAs !== "ORGANIZER" ? {color: "grey.400"} : {}}>
+                            <Text style={signedInAs !== "ORGANIZER" ? {color: colors.gray["400"]} : {}}>
                                 {t("end_queue")}
                             </Text>
                         </HStack>
                     </Menu.Item>
                     {/*Can only change queue password if you're the organizer*/}
-                    <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
+                    <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setShowChangeQueuePasswordModal(true)}>
                         <HStack space={3}>
                             <Ionicons
                                 name={'close-circle'}
                                 size={20}
                                 color={isThemeDark ? 'white': 'black'}
                             />
-                            <Text style={signedInAs !== "ORGANIZER" ? {color: "grey.400"} : {}}>
+                            <Text style={signedInAs !== "ORGANIZER" ? {color: colors.gray["400"]} : {}}>
                                 {t("change_password")}
                             </Text>
                         </HStack>
@@ -252,7 +256,11 @@ export default function () {
             </Menu>
             <CreateUserModal showModal={showCreateUserModal}
                             setShowModal={setShowCreateUserModal}
-                            navigation={navigation}/>
+                            navigation={navigation}
+            />
+            <ChangeQueuePasswordModal showModal={showCreateUserModal}
+                                      setShowModal={setShowCreateUserModal}
+            />
             <EndQueueAlert
                 isAlertOpen={isAlertOpen}
                 setIsAlertOpen={setIsAlertOpen}
