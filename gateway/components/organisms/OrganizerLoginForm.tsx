@@ -6,9 +6,11 @@ import { Box, Heading,
         HStack } from "native-base"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
-import { useState } from "react";
+import {useCallback, useState} from "react";
 import {AuthContext} from "../../utilities/AuthContext";
 import ForgotPasswordModal from "../../containers/ForgotPasswordModal";
+import GeneralErrorAlert from "../atoms/GeneralErrorAlert";
+import {useTranslation} from "react-i18next";
 
 
 type LogInFormType = {
@@ -27,11 +29,23 @@ type OrganizerLogInErrorData = {
 }
 
 export default ({navigation, setShowModal}: LogInFormType) => {
+    const { t } = useTranslation(["organizerLoginForm", "common"]);
     const { signIn } = React.useContext(AuthContext)
     const [formData, setData] = useState<OrganizerFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
+    const [showAlert, setShowAlert] = useState<boolean>(false)
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState<boolean>(false)
     const [errors, setErrors] = useState<OrganizerLogInErrorData>({});
+
+    useCallback(() => {
+        // Alert will show if nothing has happened within 10 seconds of submitting the enqueue form.
+        setTimeout(() => {
+            if (submitted) {
+                setSubmitted(false)
+                setShowAlert(true)
+            }
+        }, 10000)
+    }, [submitted])
 
     const query = `
         mutation login_organizer($email: String!, $password: String!) {
@@ -73,19 +87,19 @@ export default ({navigation, setShowModal}: LogInFormType) => {
         if (formData.email === undefined) {
             setErrors({
                 ...errors,
-                email: 'Oops! Looks like you forgot to provide an email...',
+                email: t("email_not_defined_error"),
             });
             return false;
         } else if (!re.test(formData.email)){
             setErrors({
                 ...errors,
-                email: "Oops! Looks like you didn't enter a valid email...",
+                email: t("invalid_email_error"),
             });
             return false;
         } else if (formData.password === undefined) {
             setErrors({
                 ...errors,
-                password: 'Oops! Looks like you forgot to provide a password...',
+                password: t("password_not_defined_error"),
             });
             return false;
         }
@@ -108,21 +122,26 @@ export default ({navigation, setShowModal}: LogInFormType) => {
 
     return (
         <>
+            <GeneralErrorAlert
+                showAlert={showAlert}
+                setShowAlert={setShowAlert}
+                message={t("cannot_enqueue_message")}
+            />
             <Box safeArea p="2" py="8" w="90%" maxW="290">
                 <VStack space={3} mt="5">
                     <FormControl isInvalid={"email" in errors}>
-                        <FormControl.Label>Email</FormControl.Label>
+                        <FormControl.Label>{t("email")}</FormControl.Label>
                         <Input
-                            placeholder="Ex. your_email@example.com"
+                            placeholder={t("email_placeholder")}
                             onChangeText={(value) => setData({ ...formData, email: value })}
                         />
                         <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.email}</FormControl.ErrorMessage>
                     </FormControl>
                     <FormControl isInvalid={"password" in errors}>
-                        <FormControl.Label>Password</FormControl.Label>
+                        <FormControl.Label>{t("password")}</FormControl.Label>
                         <Input
                             type="password"
-                            placeholder="Definitely not 12345"
+                            placeholder={t("password_placeholder")}
                             onChangeText={(value) => setData({ ...formData, password: value })}
                         />
                         <Link
@@ -135,7 +154,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                             mt="1"
                             onPress={() => {setShowForgotPasswordModal(true)}}
                         >
-                            Forget Password?
+                            {t("forgot_password")}
                         </Link>
                         <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.password}</FormControl.ErrorMessage>
                     </FormControl>
@@ -146,7 +165,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                         isLoading={submitted}
                         isLoadingText="Logging in..."
                     >
-                        Log in
+                        {t("login", {ns: "common"})}
                     </Button>
                     <HStack mt="6" justifyContent="center">
                         <Text
@@ -156,7 +175,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                                 color: "warmGray.200",
                             }}
                         >
-                            I'm a new organizer.{" "}
+                            {t("new_organizer")}
                         </Text>
                         <Link
                             _text={{
@@ -166,7 +185,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                             }}
                             href="#"
                         >
-                            Sign Up
+                            {t("signup", {ns: "common"})}
                         </Link>
                     </HStack>
                 </VStack>

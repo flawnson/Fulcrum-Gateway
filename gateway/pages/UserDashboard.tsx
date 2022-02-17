@@ -77,6 +77,7 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
+                    console.log(data)
                     if (!!data.errors.length) {
                         // Check for errors on response
                         setError(data.errors[0])
