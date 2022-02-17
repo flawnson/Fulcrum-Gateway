@@ -24,6 +24,7 @@ import prisma from './prismaClient';
 import { redis } from "./redisClient";
 import { authChecker } from "./middleware/authChecker";
 import { cookieName } from "./constants"
+import { rateLimiter } from './middleware/rateLimiter';
 
 const pregeneratedCrudResolvers = [
   // Currently not using any
@@ -78,6 +79,13 @@ app.use(
       resave: false
     })
 )
+
+// // use rate limiter if in test or production only
+// if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test"){
+//     app.use(rateLimiter);
+// }
+
+app.use(rateLimiter);
 
 app.get('/', (req, res) => {
   res.redirect('/api')
