@@ -168,7 +168,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                 setShowAlert={setShowAlert}
                 message={t("cannot_enqueue_message")}
             />
-            <LoadingSpinner show={loading} />
+            <LoadingSpinner show={loading} light={false}/>
             {isJoinCodeFormOpen && (
                 <>
                     <ScaleFade in={isJoinCodeFormOpen} duration={500}>

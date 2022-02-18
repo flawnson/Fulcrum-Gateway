@@ -1,5 +1,6 @@
+import React, {useState, useEffect} from "react";
 import {VStack, Center, Button, FormControl, Input} from "native-base";
-import React, {useState} from "react";
+import {Linking} from "react-native";
 import {useTranslation} from "react-i18next";
 
 
@@ -15,6 +16,18 @@ export default function () {
     const [formData, setData] = useState<ChangePasswordData>({});
     const [errors, setErrors] = useState<ChangePasswordData>({});
     const [submitted, setSubmitted] = useState(false)
+
+    useEffect(() => {
+        // Run once to extract token from deep link provided in email to change password
+        async function setInitialURLToken () {
+            return await Linking.getInitialURL().then(data => {
+                    const result = data!.substring(data!.lastIndexOf('/') + 1)
+                    setData({...formData, token: result})
+                }
+            )
+        }
+        setInitialURLToken().then()
+    }, [])
 
     const query = `
         mutation change_password($password: String!, $token: String!){
