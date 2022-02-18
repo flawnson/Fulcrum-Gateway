@@ -16,7 +16,7 @@ if(process.env.NODE_ENV === "development"){
 }
 
 const client = new Twilio(accountSid!, authToken!);
-const messagebird = initMB(messageBirdToken!);
+// const messagebird = initMB(messageBirdToken!);
 
 export async function sendSMS(phoneNumber: string, message: string, task: string) {
   //if phone number doesn't start with a + then add it.
