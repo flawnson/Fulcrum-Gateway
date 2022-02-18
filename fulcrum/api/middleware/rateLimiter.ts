@@ -3,7 +3,7 @@ import { errors } from "../constants";
 
 export const rateLimiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
-  max: 20000, //20000 request allowed (to take into account for polling)
+  max: 10000, //20000 request allowed (to take into account for polling)
   message: {
     error: errors.REQUEST_LIMIT_EXCEEDED
   },
