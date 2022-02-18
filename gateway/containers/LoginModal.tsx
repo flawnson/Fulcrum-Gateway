@@ -16,9 +16,9 @@ type CreateQueueModalProps = {
 }
 
 export default (props: CreateQueueModalProps) => {
+    const { t } = useTranslation(["logInModal"]);
     const { isThemeDark } = React.useContext(PreferencesContext);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { t, i18n } = useTranslation(["logInModal"]);
     const [isOrganizer, setIsOrganizer] = useState(true)
 
     return (

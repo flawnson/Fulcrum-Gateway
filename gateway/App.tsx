@@ -32,6 +32,7 @@ import QueueDashboard from "./pages/QueueDashboard"
 import SplashScreen from "./screens/SplashScreen"
 import {UserTypes} from "./types"
 import {AuthContext} from "./utilities/AuthContext";
+import LogoAndName from "./components/atoms/LogoAndName";
 
 // Strict mode can be changed to trigger a warning or an error in case of any nativebase issues
 const nativebaseConfig: object = {
@@ -135,7 +136,7 @@ function App() {
     };
 
     useEffect(() => {
-        getAuthState();
+        getAuthState().then()
     }, []);
 
     React.useEffect(() => {
@@ -143,7 +144,7 @@ function App() {
             try {
                 const initialUrl = await Linking.getInitialURL();
 
-                if (initialUrl == null) {
+                // if (initialUrl == null) {
                     // Only restore state if there's no deep link
                     // Without this condition, refreshes and attempts to access the app via a deep link send you to the ErrorScreen
                     const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
@@ -152,7 +153,8 @@ function App() {
                     if (state !== undefined) {
                         setInitialState(state);
                     }
-                }
+                // }
+
             } finally {
                 setIsReady(true);
             }
@@ -187,7 +189,10 @@ function App() {
                         }
                     >
                         <Stack.Navigator initialRouteName={"HomePage"}>
-                            <Stack.Group screenOptions={{ headerShown: true, headerBackVisible: true, title: "FieFoe"}} >
+                            <Stack.Group screenOptions={{ headerShown: true,
+                                                          headerBackVisible: true,
+                                                          title: "FieFoe",
+                                                          headerTitle: (props) => <LogoAndName />}} >
                                 {userType === "USER" ? (
                                     <>
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
@@ -199,6 +204,7 @@ function App() {
                                         <Stack.Screen name="ConfirmationScreen" component={ConfirmationScreen} />
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
                                         <Stack.Screen name="HomePage" component={HomePage} />
+                                        <Stack.Screen name="SplashScreen" component={SplashScreen} />
                                     </>
                                 ) : userType === "ORGANIZER" ? (
                                     <>
@@ -210,6 +216,7 @@ function App() {
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
                                         <Stack.Screen name="HomePage" component={HomePage} />
+                                        <Stack.Screen name="SplashScreen" component={SplashScreen} />
                                     </>
                                 ) : userType === "ASSISTANT" ? (
                                     <>
@@ -219,10 +226,12 @@ function App() {
                                         <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
                                         <Stack.Screen name="HomePage" component={HomePage} />
+                                        <Stack.Screen name="SplashScreen" component={SplashScreen} />
                                     </>
                                 ) : (
                                     <>
                                         <Stack.Screen name="HomePage" component={HomePage} />
+                                        <Stack.Screen name="SplashScreen" component={SplashScreen} />
                                         <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
                                         <Stack.Screen name="AbandonedScreen" component={AbandonedScreen} />

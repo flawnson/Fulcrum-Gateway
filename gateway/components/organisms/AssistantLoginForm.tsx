@@ -1,11 +1,12 @@
-import React, { useState } from "react"
-import { Box, Heading,
-        VStack, FormControl,
-        Input, Button,
-        HStack } from "native-base"
+import React, {useCallback, useState} from "react"
+import { Box, VStack,
+        FormControl, Input,
+        Button } from "native-base"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
 import {AuthContext} from "../../utilities/AuthContext";
+import GeneralErrorAlert from "../atoms/GeneralErrorAlert";
+import {useTranslation} from "react-i18next";
 
 
 type SignInFormType = {
@@ -19,10 +20,22 @@ type AssistantFormData = {
 }
 
 export default ({navigation, setShowModal}: SignInFormType) => {
+    const { t } = useTranslation(["logInModal"]);
     const { signIn } = React.useContext(AuthContext)
     const [formData, setData] = useState<AssistantFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
+    const [showAlert, setShowAlert] = useState<boolean>(false)
     const [errors, setErrors] = useState<object>({});
+
+    useCallback(() => {
+        // Alert will show if nothing has happened within 10 seconds of submitting the enqueue form.
+        setTimeout(() => {
+            if (submitted) {
+                setSubmitted(false)
+                setShowAlert(true)
+            }
+        }, 10000)
+    }, [submitted])
 
     const query = `
       mutation login_queue($joinCode: String!, $password: String!) {
@@ -58,19 +71,19 @@ export default ({navigation, setShowModal}: SignInFormType) => {
         if (formData.joinCode === undefined) {
             setErrors({
                 ...errors,
-                email: 'Oops! Looks like you forgot to provide a joinCode...',
+                email: t("joinCode_not_defined_error"),
             });
             return false;
         } else if (formData.joinCode?.length !== 6){
             setErrors({
                 ...errors,
-                email: "Oops! Looks like you didn't enter a valid email...",
+                email: t("invalid_email_error"),
             });
             return false;
         } else if (formData.password === undefined) {
             setErrors({
                 ...errors,
-                password: 'Oops! Looks like you forgot to provide a password...',
+                password: t("password_not_defined_error"),
             });
             return false;
         }
@@ -93,33 +106,40 @@ export default ({navigation, setShowModal}: SignInFormType) => {
     }
 
     return (
-        <Box safeArea p="2" py="8" w="90%" maxW="290">
-            <VStack space={3} mt="5">
-                <FormControl>
-                    <FormControl.Label>Join code</FormControl.Label>
-                    <Input
-                        placeholder="Ex. 777777"
-                        onChangeText={(value) => setData({ ...formData, joinCode: value })}
-                     />
-                </FormControl>
-                <FormControl>
-                    <FormControl.Label>Password</FormControl.Label>
-                    <Input
-                        type="password"
-                        placeholder="Shhh it's a secret"
-                        onChangeText={(value) => setData({ ...formData, password: value })}
-                    />
-                </FormControl>
-                <Button
-                    mt="2"
-                    colorScheme="indigo"
-                    onPress={() => (onSignInPress)}
-                    isLoading={submitted}
-                    isLoadingText="Logging in..."
-                >
-                    Sign in
-                </Button>
-            </VStack>
-        </Box>
+        <>
+            <GeneralErrorAlert
+                showAlert={showAlert}
+                setShowAlert={setShowAlert}
+                message={t("cannot_enqueue_message")}
+            />
+            <Box safeArea p="2" py="8" w="90%" maxW="290">
+                <VStack space={3} mt="5">
+                    <FormControl>
+                        <FormControl.Label>Join code</FormControl.Label>
+                        <Input
+                            placeholder="Ex. 777777"
+                            onChangeText={(value) => setData({ ...formData, joinCode: value })}
+                         />
+                    </FormControl>
+                    <FormControl>
+                        <FormControl.Label>Password</FormControl.Label>
+                        <Input
+                            type="password"
+                            placeholder="Shhh it's a secret"
+                            onChangeText={(value) => setData({ ...formData, password: value })}
+                        />
+                    </FormControl>
+                    <Button
+                        mt="2"
+                        colorScheme="indigo"
+                        onPress={() => (onSignInPress)}
+                        isLoading={submitted}
+                        isLoadingText="Logging in..."
+                    >
+                        Sign in
+                    </Button>
+                </VStack>
+            </Box>
+        </>
     )
 }

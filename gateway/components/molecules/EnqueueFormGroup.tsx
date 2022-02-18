@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native'
-import { Center, Text } from 'native-base'
+import { View, Text } from 'native-base'
 import EnqueueForm from '../organisms/EnqueueForm'
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
 import OrganizerLoginModal from "../../containers/LoginModal";
 import OrganizerSignUpModal from "../../containers/OrganizerSignUpModal";
+import LogoAndName from "../atoms/LogoAndName";
+import {scale} from "../../utilities/scales";
 
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const { t, i18n } = useTranslation(["homePage", "common"]);
     const [showLoginModal, setShowLoginModal] = useState(false)
     const [showSignUpModal, setShowSignUpModal] = useState(false)
 
     return (
-        <Center style={styles.container}>
+        <View style={styles.container}>
+            <LogoAndName styles={styles.logo}/>
             <EnqueueForm navigation={navigation} />
             <Text style={styles.subText}>
                 <Text style={styles.linkText} onPress={() => setShowLoginModal(true)}>
@@ -32,7 +34,7 @@ export default function () {
             </Text>
             <OrganizerLoginModal showModal={showLoginModal} setShowModal={setShowLoginModal}/>
             <OrganizerSignUpModal showModal={showSignUpModal} setShowModal={setShowSignUpModal}/>
-        </Center>
+        </View>
     )
 }
 
@@ -43,14 +45,18 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 250
+        marginTop: 150
     },
     subText: {
-        marginTop: 200,
+        marginTop: 150,
         textAlign: "center"
     },
     linkText: {
         fontWeight: 'bold',
+    },
+    logo: {
+        width: scale(100),
+        height: scale(100),
     }
 });
 

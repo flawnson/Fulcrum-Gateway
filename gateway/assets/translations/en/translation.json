@@ -176,7 +176,7 @@
     "welcome": "Welcome",
     "message": "Sign up to continue!",
     "emailLabel": "Email",
-    "emailPlaceholder": "Ex. your_email@example.com",
+    "emailPlaceholder": "your_email@example.com",
     "passwordLabel": "Password",
     "passwordPlaceholder": "Definitely not 12345",
     "confirmPasswordLabel": "Confirm Password",
@@ -189,6 +189,28 @@
     "question": "Are you an Organizer or an Assistant?",
     "assistant": "Assistant",
     "organizer": "Organizer"
+  },
+  "organizerLoginForm": {
+    "email_not_defined_error": "Oops! Looks like you forgot to provide an email...",
+    "invalid_email_error": "Oops! Looks like you didn't enter a valid email...",
+    "password_not_defined_error": "Oops! Looks like you forgot to provide a password...",
+    "email": "Email",
+    "password": "Password",
+    "email_placeholder": "your_email@example.com",
+    "password_placeholder": "Definitely not 123456",
+    "forgot_password": "Forgot Password?",
+    "new_organizer": "I'm a new organizer. "
+  },
+  "assistantLoginForm": {
+    "joinCode_not_defined_error": "Oops! Looks like you forgot to provide a joinCode...",
+    "invalid_email_error": "Oops! Looks like you didn't enter a valid email...",
+    "password_not_defined_error": "Oops! Looks like you forgot to provide a password...",
+    "email": "Email",
+    "password": "Password",
+    "email_placeholder": "your_email@example.com",
+    "password_placeholder": "Definitely not 123456",
+    "forgot_password": "Forgot Password?",
+    "new_organizer": "I'm a new organizer. "
   },
   "verifySMSModal": {
     "title": "Verify your phone number",

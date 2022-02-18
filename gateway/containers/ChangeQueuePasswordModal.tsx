@@ -17,7 +17,7 @@ type ChangeQueuePasswordData = {
 
 export default function (props: ChangeQueuePasswordProps) {
     // const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { t } = useTranslation(["createUserModal"]);
+    const { t } = useTranslation(["changeQueuePasswordModal"]);
     const [formData, setData] = useState<ChangeQueuePasswordData>({});
     const [errors, setErrors] = useState<ChangeQueuePasswordData>({})
     const [submitted, setSubmitted] = useState(false)

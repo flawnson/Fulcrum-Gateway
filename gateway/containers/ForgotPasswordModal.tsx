@@ -12,7 +12,7 @@ type CreateUserModalProps = {
 
 export default function (props: CreateUserModalProps) {
     // const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { t } = useTranslation(["createUserModal", "common"]);
+    const { t } = useTranslation(["forgotPasswordModal", "common"]);
     const [formData, setData] = useState<{email?: string}>({});
     const [errors, setErrors] = useState<{email?: string}>({});
     const [submitted, setSubmitted] = useState(false)
