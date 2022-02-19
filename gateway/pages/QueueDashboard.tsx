@@ -1,14 +1,14 @@
 import React, {SetStateAction, useEffect, useState} from 'react'
-import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
-import {DashboardStat, HomeScreenProps} from "../types";
+import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native"
+import {DashboardStat, HomeScreenProps} from "../types"
 import {StyleSheet} from 'react-native'
-import {Center, Heading} from "native-base";
-import QueueDashboardGroup from "../components/organisms/QueueDashboardStats";
+import {Center, Heading} from "native-base"
+import QueueDashboardGroup from "../components/organisms/QueueDashboardStats"
 import QueueDashboardMenu from "../containers/QueueDashboardMenu"
-import useInterval from "../utilities/useInterval";
+import useInterval from "../utilities/useInterval"
 import {zipObject} from "lodash"
-import {useTranslation} from "react-i18next";
-import {AuthContext} from "../utilities/AuthContext";
+import {useTranslation} from "react-i18next"
+import baseURL from "../utilities/baseURL"
 
 type UserData = {
     user_id: string,
@@ -75,7 +75,7 @@ export default function () {
 
     async function fetchQueueData () {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                                          method: 'POST',
                                          headers: {
                                              'Content-Type': 'application/json',

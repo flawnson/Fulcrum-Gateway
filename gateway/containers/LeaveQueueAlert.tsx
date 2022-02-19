@@ -4,6 +4,7 @@ import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../types";
 import {useTranslation} from "react-i18next";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import baseURL from "../utilities/baseURL";
 
 type LeaveQueueAlertProps = {
     isAlertOpen: boolean,
@@ -37,7 +38,7 @@ export default (props: LeaveQueueAlertProps) => {
 
     async function leaveQueue () {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

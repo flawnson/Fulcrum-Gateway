@@ -12,6 +12,7 @@ import EndQueueAlert from "./EndQueueAlert";
 import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 import ChangeQueuePasswordModal from "./ChangeQueuePasswordModal";
 import {useTheme} from "native-base";
+import baseURL from "../utilities/baseURL";
 
 export default function () {
     const { colors } = useTheme()
@@ -68,12 +69,11 @@ export default function () {
     const query = signedInAs === "ORGANIZER" ? organizerQuery :
                   signedInAs === "ASSISTANT" ? assistantQuery :
                   {null: null}
-    // @ts-ignore
     const variables = signedInAs === "ORGANIZER" ? {queueId: route.params!["queueId"]} : null
 
     const fetchShareData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -104,9 +104,59 @@ export default function () {
         }
     }
 
+    const organizerPauseQuery = `
+        mutation change_queue_state($queueId: String, $state: String!) {
+            changeQueueState(queueId: $queueId, state: $state) {
+                ... on Queue {
+                    id
+                    state
+                }
+                ... on Error {
+                    error
+                }
+            }
+        }
+    `
+
+    const assistantPauseQuery = `
+        mutation change_queue_state($state: String!) {
+            changeQueueState(state: $state) {
+                ... on Queue {
+                    id
+                    state
+                }
+                ... on Error {
+                    error
+                }
+            }
+        }
+    `
+
+    const organizerPauseVariables = `{
+            "queueId": ${route.params!["queueId"]}
+            "state": "PAUSED"
+        }`
+
+    const assistantPauseVariables = `{
+            "state": "PAUSED"
+        }`
+
+    const pauseQuery = signedInAs === "ORGANIZER" ? organizerPauseQuery :
+        signedInAs === "ASSISTANT" ? assistantPauseQuery :
+            {null: null}
+    const pauseVariables = signedInAs === "ORGANIZER" ? organizerPauseVariables : assistantPauseVariables
+
     async function setQueuePaused () {
         try {
-            const response = await fetch('http://localhost:8080/api')
+            const response = await fetch(baseURL(), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                },
+                credentials: 'include',
+                body: JSON.stringify({query: pauseQuery, variables: pauseVariables})
+            })
             return await response.json()
         } catch(error) {
             return error
@@ -126,7 +176,7 @@ export default function () {
 
     const logout = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

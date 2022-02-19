@@ -5,7 +5,7 @@ import EnqueueForm from '../organisms/EnqueueForm'
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
-import OrganizerLoginModal from "../../containers/LoginModal";
+import LoginModal from "../../containers/LoginModal";
 import OrganizerSignUpModal from "../../containers/OrganizerSignUpModal";
 import LogoAndName from "../atoms/LogoAndName";
 import {scale} from "../../utilities/scales";
@@ -13,7 +13,7 @@ import {scale} from "../../utilities/scales";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const { t, i18n } = useTranslation(["homePage", "common"]);
+    const { t } = useTranslation(["homePage", "common"]);
     const [showLoginModal, setShowLoginModal] = useState(false)
     const [showSignUpModal, setShowSignUpModal] = useState(false)
 
@@ -32,7 +32,7 @@ export default function () {
                 {t('footer')}
                 <Text style={styles.linkText} onPress={() => navigation.navigate('HomePage')}> fiefoe.com</Text>
             </Text>
-            <OrganizerLoginModal showModal={showLoginModal} setShowModal={setShowLoginModal}/>
+            <LoginModal showModal={showLoginModal} setShowModal={setShowLoginModal}/>
             <OrganizerSignUpModal showModal={showSignUpModal} setShowModal={setShowSignUpModal}/>
         </View>
     )

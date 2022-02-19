@@ -9,6 +9,7 @@ export default function (props: {light?: boolean, styles?: Object}) {
 
     return (
         <Image
+            alt="fiefoe"
             style={props.styles ? props.styles : styles.image}
             source={require(isThemeDark || props.light ? "../../assets/images/fiefoe-logo-name-v1.1.0-inverse.png"
                                         : "../../assets/images/fiefoe-logo-name-v1.1.0.png")}

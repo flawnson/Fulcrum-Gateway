@@ -9,6 +9,7 @@ import GeneralErrorAlert from "../atoms/GeneralErrorAlert";
 import {AuthContext} from "../../utilities/AuthContext";
 import LoadingSpinner from "../atoms/LoadingSpinner";
 import {useRoute} from "@react-navigation/native";
+import baseURL from "../../utilities/baseURL";
 
 
 type EnqueueFormProps = {
@@ -72,7 +73,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     async function joinQueue () {
         setLoading(true)
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

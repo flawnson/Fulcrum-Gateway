@@ -10,6 +10,7 @@ import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import ConfirmDeleteAlert from "../containers/ConfirmDeleteAlert";
 import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 import {useTranslation} from "react-i18next";
+import baseURL from "../utilities/baseURL";
 
 
 type QueuesPageProps = {
@@ -58,7 +59,7 @@ export default function () {
 
     async function fetchQueuesData () {
         try {
-            const response = await fetch(`http://localhost:8080/api`,
+            const response = await fetch(baseURL(),
                                      {
                                          method: 'POST',
                                          headers: {

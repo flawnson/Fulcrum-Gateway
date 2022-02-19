@@ -7,6 +7,7 @@ import { RootStackParamList } from "../../types";
 import {AuthContext} from "../../utilities/AuthContext";
 import GeneralErrorAlert from "../atoms/GeneralErrorAlert";
 import {useTranslation} from "react-i18next";
+import baseURL from "../../utilities/baseURL";
 
 
 type SignInFormType = {
@@ -52,7 +53,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
 
     async function logIn () {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

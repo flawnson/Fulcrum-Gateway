@@ -6,6 +6,7 @@ import UserCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
 import {ScrollView} from "native-base";
 import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 import {useTranslation} from "react-i18next";
+import baseURL from "../utilities/baseURL";
 
 
 export default function () {
@@ -42,7 +43,7 @@ export default function () {
 
     async function fetchAbandonedData () {
         try {
-            const response = await fetch(`http://localhost:8080/api`,
+            const response = await fetch(baseURL(),
                                          {
                                           method: 'POST',
                                           headers: {

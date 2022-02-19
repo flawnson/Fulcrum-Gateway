@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import {VStack, Center, Button, FormControl, Input} from "native-base";
 import {Linking} from "react-native";
 import {useTranslation} from "react-i18next";
+import baseURL from "../utilities/baseURL";
 
 
 type ChangePasswordData = {
@@ -44,7 +45,7 @@ export default function () {
 
     async function changePassword () {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

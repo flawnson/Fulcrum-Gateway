@@ -6,7 +6,8 @@
     "submitting": "Submitting...",
     "confirm": "Confirm",
     "login": "Log in",
-    "signup": "Sign up"
+    "signup": "Sign up",
+    "loading": "Loading..."
   },
   "landingPage": {
     "title": "Virtual lines that save time.",
@@ -253,5 +254,12 @@
     "new_password_not_provided": "You forgot to provide a new password!",
     "confirm_password_not_provided": "You need to confirm your new password!",
     "confirm_password_does_not_match": "The passwords you provided don't match!"
+  },
+  "nothingToSeeScreen": {
+    "image_alt": "Cute cat gif!",
+    "message": "Nothing to see here..."
+  },
+  "loadingSpinner": {
+    "accessibility_label": "Loading..."
   }
 }

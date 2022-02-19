@@ -4,6 +4,7 @@ import { Text, View, Center, VStack } from "native-base";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import { HomeScreenProps } from "../types";
 import { useTranslation } from "react-i18next";
+import baseURL from "../utilities/baseURL";
 
 
 type SummonData = {
@@ -39,7 +40,10 @@ export default function() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api?query=${query}&variables=${variables}`)
+            const response = await fetch(baseURL(), {
+                method: "POST",
+                body: JSON.stringify({query: query, variables: variables})
+                })
             await response.json().then(
                 data => {
                     // If summoned is toggled false, navigate back to User Dashboard

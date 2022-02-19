@@ -10,6 +10,7 @@ import { PreferencesContext } from "../../utilities/PreferencesContext";
 import { useTranslation } from "react-i18next";
 import { RootStackParamList } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import baseURL from "../../utilities/baseURL";
 
 type DefaultCreateQueueFormData = {
     name: string,
@@ -105,7 +106,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
 
     async function createQueue () {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

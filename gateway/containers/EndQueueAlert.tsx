@@ -5,6 +5,7 @@ import {HomeScreenProps} from "../types";
 import {useTranslation} from "react-i18next";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
+import baseURL from "../utilities/baseURL";
 
 type LeaveQueueAlertProps = {
     isAlertOpen: boolean,
@@ -39,7 +40,7 @@ export default (props: LeaveQueueAlertProps) => {
 
     const deleteQueue = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

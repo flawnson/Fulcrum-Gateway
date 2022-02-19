@@ -13,6 +13,7 @@ import VerifySMSModal from "../containers/VerifySMSModal";
 import {scale} from "../utilities/scales";
 import calculateTimeToNow from "../utilities/calculateTimeToNow";
 import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
+import baseURL from "../utilities/baseURL";
 
 
 export default function () {
@@ -65,7 +66,7 @@ export default function () {
 
     const fetchUserStats = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api`,
+            const response = await fetch(baseURL(),
                                      {
                                           method: 'POST',
                                           headers: {

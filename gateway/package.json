@@ -36,6 +36,7 @@
     "react-native-web": "0.17.5"
   },
   "devDependencies": {
+    "@types/node": "^17.0.18",
     "@types/react": "~17.0.21",
     "@types/react-native": "^0.64.23",
     "metro": "^0.66.2",
