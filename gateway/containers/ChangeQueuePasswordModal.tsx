@@ -105,13 +105,13 @@ export default function (props: ChangeQueuePasswordProps) {
                             <FormControl.Label _text={{
                                 bold: true
                             }}>{t("new_password_label")}</FormControl.Label>
-                            <Input placeholder="Super secret password" onChangeText={value => setData({ ...formData,
+                            <Input placeholder={t("new_password_placeholder")} onChangeText={value => setData({ ...formData,
                                 password: value
                             })} />
                             <FormControl.HelperText _text={{
                                 fontSize: 'xs'
                             }}>
-                                {t("password_helper")}
+                                {t("new_password_helper")}
                             </FormControl.HelperText>
                             <FormControl.ErrorMessage _text={{
                                 fontSize: 'xs'
@@ -122,8 +122,8 @@ export default function (props: ChangeQueuePasswordProps) {
                         <FormControl isRequired>
                             <FormControl.Label _text={{
                                 bold: true
-                            }}>{t("new_password_label")}</FormControl.Label>
-                            <Input placeholder="Super secret password again" onChangeText={value => setData({ ...formData,
+                            }}>{t("confirm_password_label")}</FormControl.Label>
+                            <Input placeholder={t("confirm_password_placeholder")} onChangeText={value => setData({ ...formData,
                                 confirmPassword: value
                             })} />
                             <FormControl.HelperText _text={{

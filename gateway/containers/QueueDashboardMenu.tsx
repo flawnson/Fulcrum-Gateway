@@ -20,8 +20,8 @@ export default function () {
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const { signOut } = React.useContext(AuthContext)
-    const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
-    const { t, i18n } = useTranslation(["queueDashboardMenu"]);
+    const { isThemeDark } = React.useContext(PreferencesContext)
+    const { t } = useTranslation(["queueDashboardMenu"]);
     const [queuePaused, toggleQueuePaused] = useState(false)
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
     const [showChangeQueuePasswordModal, setShowChangeQueuePasswordModal] = useState(false);
@@ -304,12 +304,14 @@ export default function () {
                     </Menu.Item>
                 </Menu.Group>
             </Menu>
-            <CreateUserModal showModal={showCreateUserModal}
-                            setShowModal={setShowCreateUserModal}
-                            navigation={navigation}
+            <CreateUserModal
+                joinCode={shareData.currentQueueJoinCode}
+                navigation={navigation}
+                showModal={showCreateUserModal}
+                setShowModal={setShowCreateUserModal}
             />
-            <ChangeQueuePasswordModal showModal={showCreateUserModal}
-                                      setShowModal={setShowCreateUserModal}
+            <ChangeQueuePasswordModal showModal={showChangeQueuePasswordModal}
+                                      setShowModal={setShowChangeQueuePasswordModal}
             />
             <EndQueueAlert
                 isAlertOpen={isAlertOpen}

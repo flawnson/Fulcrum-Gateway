@@ -13,6 +13,7 @@ import baseURL from "../../utilities/baseURL";
 
 
 type EnqueueFormProps = {
+    joinCode?: string
     navigation: HomeScreenProps["navigation"]
     setShowModal?: React.Dispatch<React.SetStateAction<boolean>>  // Modal for Organizer/Assistant side user creation
 }
@@ -24,9 +25,9 @@ type EnqueueFormData = {
 }
 
 
-export default function ({navigation, setShowModal}: EnqueueFormProps) {
+export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps) {
     const { t } = useTranslation(["homePage", "common"])
-    const route = useRoute<HomeScreenProps["route"]>()
+    // const route = useRoute<HomeScreenProps["route"]>()
     const [formData, setData] = useState<EnqueueFormData>({})
     const { signIn } = React.useContext(AuthContext)
     const [submitted, setSubmitted] = useState<boolean>(false)
@@ -37,13 +38,14 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     const [isPhoneNumberFormOpen, setPhoneNumberFormOpen] = useState<boolean>(false)
     const [errors, setErrors] = useState<EnqueueFormData>({})
 
-    if (route.params) {
-        // If route contains params (from ShareScreen) then automatically input the joincode
-        setJoinCodeFormOpen(false)
-        setNameFormOpen(true)
-        setData({...formData, joinCode: route.params!["joinCode"]})
-        console.log("AUTOFILLED")
-    }
+    useEffect(() => {
+        if (joinCode) {
+            // If route contains params (from ShareScreen) then automatically input the joincode
+            setJoinCodeFormOpen(false)
+            setNameFormOpen(true)
+            setData({...formData, joinCode: joinCode})
+        }
+    }, [])
 
     useCallback(() => {
         // Alert will show if nothing has happened within 10 seconds of submitting the enqueue form.

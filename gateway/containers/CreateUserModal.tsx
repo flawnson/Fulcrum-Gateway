@@ -9,12 +9,12 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 type CreateUserModalProps = {
     showModal: boolean,
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    joinCode: string
     navigation: NativeStackNavigationProp<RootStackParamList, "HomePage">
 }
 
 
 export default function (props: CreateUserModalProps) {
-    // const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const { t } = useTranslation(["createUserModal"]);
 
     return (
@@ -23,7 +23,11 @@ export default function (props: CreateUserModalProps) {
                 <Modal.CloseButton />
                 <Modal.Header>{t("title")}</Modal.Header>
                 <Modal.Body>
-                    <EnqueueForm navigation={props.navigation} setShowModal={props.setShowModal}/>
+                    <EnqueueForm
+                        joinCode={props.joinCode}
+                        navigation={props.navigation}
+                        setShowModal={props.setShowModal}
+                    />
                 </Modal.Body>
                 <Modal.Footer>
                 </Modal.Footer>

@@ -6,13 +6,14 @@ import {PreferencesContext} from "../../utilities/PreferencesContext";
 
 export default function (props: {light?: boolean, styles?: Object}) {
     const { isThemeDark } = React.useContext(PreferencesContext);
+    const isDark = isThemeDark || props.light
 
     return (
         <Image
             alt="fiefoe"
             style={props.styles ? props.styles : styles.image}
-            source={require(isThemeDark || props.light ? "../../assets/images/fiefoe-logo-name-v1.1.0-inverse.png"
-                                        : "../../assets/images/fiefoe-logo-name-v1.1.0.png")}
+            source={require(isDark ? "../../assets/images/fiefoe-logo-name-v1.1.0-inverse.png"
+                                   : "../../assets/images/fiefoe-logo-name-v1.1.0.png")}
             resizeMode="contain"
         />
     )
