@@ -94,15 +94,6 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
             }
         }
     `
-    const variables = `{
-        "name": "V1 Residence Queue",
-        "capacity": 250,
-        "gracePeriod": 0,
-        "maxPartySize": 1,
-        "offlineTime": 3,
-        "address": "University of Waterloo",
-        "password": "uwaterloo"
-    }`
 
     async function createQueue () {
         try {
@@ -125,8 +116,6 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
         setData({...formData})
         setSubmitted(true)
         const submissionData = createQueue()
-        console.log(formData)
-        console.log(submissionData);
         setShowModal(false)
         setData({...formData})
         setSubmitted(false)
@@ -277,7 +266,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                     </HStack>
                     <Input
                         placeholder={t("password_placeholder")}
-                        onChangeText={(value) => setData({ ...formData, address: value })}
+                        onChangeText={(value) => setData({ ...formData, password: value })}
                     />
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Password error"}</FormControl.ErrorMessage>
                 </Stack>

@@ -21,7 +21,7 @@ export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [errors, setError] = useState<any>([]);
     const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
-    const [showModal, setShowModal] = useState<boolean>(true)  // If params are defined, no need to verify SMS
+    const [showModal, setShowModal] = useState<boolean>(false)
     // Render the header (dark mode toggle and language picker)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
     useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
@@ -30,6 +30,7 @@ export default function () {
         name: "Someone",
         phone_number: "123456789",
         join_time: "",
+        status: "UNVERIFIED",
         stats: [
                 {prefix: t("index_prefix"), stat: 0, suffix: "th", tooltip: t("index_tooltip")},
                 {prefix: t("waited_prefix"), stat: 0, suffix: "m", tooltip: t("waited_tooltip")},
@@ -49,10 +50,12 @@ export default function () {
                     phone_number
                     name
                     index
+                    status
                     estimated_wait
                     join_time
                     summoned
                     queue {
+                        name
                         state
                         average_wait
                     }
@@ -79,12 +82,19 @@ export default function () {
             await response.json().then(
                 data => {
                     console.log(data)
-                    if (!!data.errors.length) {
+                    if (!!data.errors?.length) {
                         // Check for errors on response
                         setError(data.errors[0])
+                    } else if (data.data.getUser.error === "USER_DOES_NOT_EXIST"){
+                        // Check if user exists on backend
+                        setError(data.data.getUser.error)
                     } else {
                         const userData = data.data.getUser
                         const queueData = data.data.getUser.queue
+                        // If user status is unverified, show SMS verification modal
+                        if (userData.status === "UNVERIFIED") {
+                            setShowModal(true)
+                        }
                         // If summoned is toggled true, immediately navigate to Summon Screen
                         if (userData.summoned) {
                             navigation.navigate("SummonScreen", {queueId: queueData.id, userId: userData.id})
@@ -103,9 +113,10 @@ export default function () {
                                             : "th"
                         // Set user data to be displayed and passed to subcomponents
                         setProps({
-                            "name": userData.name,
+                            "name": queueData.name,
                             "phone_number": userData.phone_number,
                             "join_time": userData.join_time,
+                            "status": userData.status,
                             "stats": [{
                                 "prefix": t("index_prefix"),
                                 "stat": userData.index,

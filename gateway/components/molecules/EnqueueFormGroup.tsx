@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 150
+        marginTop: scale(120)
     },
     subText: {
-        marginTop: 150,
+        marginTop: scale(60),
         textAlign: "center"
     },
     linkText: {

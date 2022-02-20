@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "fulcrum_gateway",
-    "slug": "fulcrum_gateway",
+    "name": "fiefoe",
+    "slug": "fiefoe",
     "scheme": "fiefoe",
     "privacy": "public",
     "icon": "./assets/images/test-tube.png",
     "web": {
-      "favicon": "./assets/images/test-tube.png",
+      "favicon": "./assets/images/fiefoe-logo-v2.1.1.png",
       "build": {
         "babel": {
           "include": [

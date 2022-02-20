@@ -33,7 +33,6 @@ export default function (props: CannotEnqueueAlertProps) {
                     duration: 250,
                 },
             }}
-            style={styles.container}
         >
             <Alert w="100%" status="error" colorScheme="error">
                 <VStack space={2} flexShrink={1} w="100%">
