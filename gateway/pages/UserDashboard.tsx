@@ -95,6 +95,7 @@ export default function () {
                     if (!!data.errors?.length) {
                         // Check for errors on response
                         setError(data.errors[0])
+                        setShowModal(true)
                     } else if (data.data.getUser.error === "USER_DOES_NOT_EXIST"){
                         // Check if user exists on backend
                         setError(data.data.getUser.error)
@@ -184,6 +185,7 @@ export default function () {
                     <Avatar.Badge bg={state === "ACTIVE" ? "green.500" : "red.500"}/>
                 </Avatar>
             </HStack>
+            <Text style={styles.textFormat}>{`Hello ${props.user_name}!`}</Text>
             <Text style={styles.textFormat}>{t("status_text")}</Text>
             <Center>
                 <UserDashboardGroup {...props.stats}/>

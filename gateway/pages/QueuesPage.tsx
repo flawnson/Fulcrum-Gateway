@@ -92,7 +92,7 @@ export default function () {
     // Run on first render
     useEffect(() => {fetchQueuesData().then()}, [])
     // Poll only if user is currently on this screen and alert is not shown (to prevent flickering)
-    useInterval(fetchQueuesData, useIsFocused() && !showConfirmDeleteAlert ? 5000 : null)
+    useInterval(fetchQueuesData, useIsFocused() ? 10000 : null)
 
     return (
         <>
