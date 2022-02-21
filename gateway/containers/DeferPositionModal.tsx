@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Text, Modal, Button } from 'native-base'
 import { useTranslation } from "react-i18next";
 import baseURL from "../utilities/baseURL";
+import corsURL from "../utilities/corsURL";
 
 type DeferPositionModal = {
     showModal: boolean
@@ -32,8 +33,10 @@ export default function (props: DeferPositionModal) {
             const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
+                credentials: 'include',
                 body: JSON.stringify({query: query, variables: variables})
             });
             return await response.json()

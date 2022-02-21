@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: scale(120)
+        marginTop: scale(60)
     },
     subText: {
         marginTop: scale(60),

@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { PreferencesContext } from "../utilities/PreferencesContext";
 import {AuthContext} from "../utilities/AuthContext";
 import baseURL from "../utilities/baseURL";
+import corsURL from "../utilities/corsURL";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
@@ -47,7 +48,7 @@ export default function () {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query})

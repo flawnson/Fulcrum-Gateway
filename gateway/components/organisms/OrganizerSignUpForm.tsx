@@ -9,6 +9,7 @@ import {RootStackParamList} from "../../types";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
 import baseURL from "../../utilities/baseURL";
+import corsURL from "../../utilities/corsURL";
 
 
 type SignUpFormType = {
@@ -53,7 +54,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData}),

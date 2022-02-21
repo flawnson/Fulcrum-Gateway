@@ -7,6 +7,7 @@ import { RootStackParamList } from "../../types";
 import {AuthContext} from "../../utilities/AuthContext";
 import {useTranslation} from "react-i18next";
 import baseURL from "../../utilities/baseURL";
+import corsURL from "../../utilities/corsURL";
 
 
 type SignInFormType = {
@@ -60,7 +61,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData})

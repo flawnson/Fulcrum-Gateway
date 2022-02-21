@@ -10,6 +10,7 @@ import { CodeField, Cursor,
 import { useTranslation } from "react-i18next";
 import { UserInfo } from "../types"
 import {scale} from "../utilities/scales";
+import corsURL from "../utilities/corsURL";
 
 
 const CELL_COUNT = 6
@@ -73,7 +74,7 @@ export default function (props: VerifySMSModalProps) {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                        'Access-Control-Allow-Origin': corsURL(),
                     },
                     credentials: 'include',
                     body: JSON.stringify({query: query, variables: {confirmCode: value}})
@@ -120,7 +121,7 @@ export default function (props: VerifySMSModalProps) {
                     <Modal.Body>
                         <SafeAreaView style={styles.root}>
                             <Text style={styles.title}>
-                                Hello {props.userInfo.name}!
+                                Hello {props.userInfo.user_name}!
                             </Text>
                             <Text style={styles.subtitle}>
                                 Please enter the 6-digit code we sent to {props.userInfo.phone_number}

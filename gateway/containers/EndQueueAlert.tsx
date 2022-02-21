@@ -5,6 +5,7 @@ import {HomeScreenProps} from "../types";
 import {useTranslation} from "react-i18next";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from "../utilities/baseURL";
+import corsURL from "../utilities/corsURL";
 
 type LeaveQueueAlertProps = {
     isAlertOpen: boolean,
@@ -52,12 +53,11 @@ export default (props: LeaveQueueAlertProps) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: deleteQueueQuery, variables: deleteQueueVariables})
             });
-            // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
             setError([...errors, error])

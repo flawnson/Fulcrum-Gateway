@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {VStack, FormControl, Input, Modal, Button} from 'native-base'
 import { useTranslation } from "react-i18next";
 import baseURL from "../utilities/baseURL";
+import corsURL from "../utilities/corsURL";
 
 
 type ChangeQueuePasswordProps = {
@@ -42,7 +43,7 @@ export default function (props: ChangeQueuePasswordProps) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData}),
