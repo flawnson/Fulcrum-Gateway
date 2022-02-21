@@ -83,6 +83,7 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
     async function joinQueue () {
         setLoading(true)
         try {
+            console.log("Joining Queue")
             const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {

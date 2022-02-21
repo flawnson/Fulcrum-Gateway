@@ -69,9 +69,10 @@ const cookieConfig = {
   }),
   cookie: {
     maxAge: 3000000000, //long time (~1 month)
-    httpOnly: false,
+    httpOnly: true,
     secure: process.env.NODE_ENV === "production",  //cookie only works in https (we are developing) - set to true for production
-    sameSite: 'lax'
+    sameSite: 'none'
+    //secure: false
   },
   saveUninitialized: false,
   secret: process.env.SESSION_SECRET, //you would want to hide this in production

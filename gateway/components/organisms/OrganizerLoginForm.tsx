@@ -69,7 +69,9 @@ export default ({navigation, setShowModal}: LogInFormType) => {
 
     async function logIn () {
         try {
-            const response = await fetch(baseURL(), {
+            console.log("Logging in Organizer");
+            console.log("Request")
+            const content = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,7 +79,9 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData}),
-            });
+            }
+            console.log(content);
+            const response = await fetch(baseURL(), content);
             return await response.json().then(data => {
                 setShowModal(false)
                 setSubmitted(false)

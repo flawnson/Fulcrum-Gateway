@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { UserInfo } from "../types"
 import {scale} from "../utilities/scales";
 import corsURL from "../utilities/corsURL";
+import baseURL from "../utilities/baseURL";
 
 
 const CELL_COUNT = 6
@@ -69,7 +70,7 @@ export default function (props: VerifySMSModalProps) {
 
     const submitSMSVerification = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api`,
+            const response = await fetch(baseURL(),
                 {
                     method: 'POST',
                     headers: {
