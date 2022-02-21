@@ -61,23 +61,32 @@ app.use(
 
 const RedisStore = connectRedis(session)
 
+const cookieConfig = {
+  name: cookieName,
+  store: new RedisStore({
+    client: redis,
+    disableTouch: true,
+  }),
+  cookie: {
+    maxAge: 3000000000, //long time (~1 month)
+    httpOnly: false,
+    secure: process.env.NODE_ENV === "production",  //cookie only works in https (we are developing) - set to true for production
+    sameSite: 'lax'
+  },
+  saveUninitialized: false,
+  secret: process.env.SESSION_SECRET, //you would want to hide this in production
+  resave: false
+}
+
+console.log("Cookie Config");
+console.log(cookieConfig);
+
+if (process.env.NODE_ENV === "production"){
+  console.log("Trusting Proxy");
+  app.set('trust proxy', 1) // trust first proxy
+}
 app.use(
-    session({
-      name: cookieName,
-      store: new RedisStore({
-        client: redis,
-        disableTouch: true,
-      }),
-      cookie: {
-        maxAge: 3000000000, //long time (~1 month)
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",  //cookie only works in https (we are developing) - set to true for production
-        sameSite: 'lax'
-      },
-      saveUninitialized: false,
-      secret: process.env.SESSION_SECRET, //you would want to hide this in production
-      resave: false
-    })
+    session(cookieConfig)
 )
 
 // // use rate limiter if in test or production only

@@ -12,7 +12,7 @@ import * as helpers from "../../../helpers";
 
 import { Context } from "../../../context.interface";
 import { userAccessPermission } from "../../../middleware/userAccessPermission";
-import { errors } from "../../../constants";
+import { errors, cookieName } from "../../../constants";
 import { UserResult } from "../../../types";
 
 @ArgsType()
@@ -51,6 +51,32 @@ export class ChangeUserStatusResolver {
 
     // if all is fine, update the status of the user
     const updatedUser = await helpers.updateUserStatus(queryUserId, args.status);
+    const leaveStatus = ["SERVICED", "ABANDONED", "NOSHOW", "KICKED"];
+
+    // if it's a leave status (NEED TO REDO THIS PART)
+    if (leaveStatus.includes(args.status)){
+      console.log("Clearing user cookie")
+      // clear queue id from session
+      delete ctx.req.session!.userId;
+
+      // if this was the last id in the session, just destroy the session + cookie
+      if (!ctx.req.session.organizerId && !ctx.req.session.queueId && !ctx.req.session.userId){
+        // if session variables are empty then destroy the session
+        return new Promise((res, rej) =>
+          ctx.req.session!.destroy(err => {
+            if (err) {
+              console.log(err);
+              return rej(updatedUser);
+            }
+
+            ctx.res.clearCookie(cookieName);
+            return res(updatedUser);
+          })
+        );
+      }
+
+    }
+
     return updatedUser;
   }
 }
