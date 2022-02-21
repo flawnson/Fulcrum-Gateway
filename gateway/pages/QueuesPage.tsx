@@ -10,6 +10,7 @@ import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import ConfirmDeleteAlert from "../containers/ConfirmDeleteAlert";
 import {useTranslation} from "react-i18next";
 import baseURL from "../utilities/baseURL";
+import corsURL from "../utilities/corsURL";
 
 
 type QueuesPageProps = {
@@ -72,7 +73,7 @@ export default function () {
                                          method: 'POST',
                                          headers: {
                                          'Content-Type': 'application/json',
-                                         'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                                         'Access-Control-Allow-Origin': corsURL(),
                                          },
                                          credentials: 'include',
                                          body: JSON.stringify({query: query, variables: variables})

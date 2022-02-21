@@ -13,6 +13,7 @@ import VerifySMSModal from "../containers/VerifySMSModal";
 import {scale} from "../utilities/scales";
 import calculateTimeToNow from "../utilities/calculateTimeToNow";
 import baseURL from "../utilities/baseURL";
+import corsURL from "../utilities/corsURL";
 
 
 export default function () {
@@ -35,7 +36,8 @@ export default function () {
     }, [errors])  // Render alert if errors
 
     const defaultProps: UserInfo = {
-        name: "Someone",
+        user_name: "New user",
+        queue_name: "Someone",
         phone_number: "123456789",
         join_time: "",
         status: "UNVERIFIED",
@@ -82,7 +84,7 @@ export default function () {
                                           method: 'POST',
                                           headers: {
                                               'Content-Type': 'application/json',
-                                              'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                                              'Access-Control-Allow-Origin': corsURL(),
                                           },
                                           credentials: 'include',
                                           body: JSON.stringify({query: query})
@@ -96,6 +98,8 @@ export default function () {
                     } else if (data.data.getUser.error === "USER_DOES_NOT_EXIST"){
                         // Check if user exists on backend
                         setError(data.data.getUser.error)
+                        // Try letting te user confirm via SMS
+                        setShowModal(true)
                     } else {
                         const userData = data.data.getUser
                         const queueData = data.data.getUser.queue
@@ -121,7 +125,8 @@ export default function () {
                                             : "th"
                         // Set user data to be displayed and passed to subcomponents
                         setProps({
-                            "name": queueData.name,
+                            "user_name": userData.name,
+                            "queue_name": queueData.name,
                             "phone_number": userData.phone_number,
                             "join_time": userData.join_time,
                             "status": userData.status,
@@ -165,7 +170,7 @@ export default function () {
 
     return (
         <Center style={styles.animationFormat}>
-            <Heading style={styles.headingFormat}>{props.name}'s Queue</Heading>
+            <Heading style={styles.headingFormat}>{props.queue_name}'s Queue</Heading>
             <HStack style={styles.container}>
                 <Image
                     source={require('../assets/images/queueup.gif')}

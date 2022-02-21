@@ -12,6 +12,7 @@ import EndQueueAlert from "./EndQueueAlert";
 import ChangeQueuePasswordModal from "./ChangeQueuePasswordModal";
 import {useTheme} from "native-base";
 import baseURL from "../utilities/baseURL";
+import corsURL from "../utilities/corsURL";
 
 export default function () {
     const { colors } = useTheme()
@@ -85,7 +86,7 @@ export default function () {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: variables})
@@ -160,7 +161,7 @@ export default function () {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: pauseQuery, variables: pauseVariables})
@@ -188,7 +189,7 @@ export default function () {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: logoutQuery})

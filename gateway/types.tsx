@@ -65,7 +65,8 @@ export type DashboardStat = {
 }
 
 export type UserInfo = {
-    "name": string,
+    "user_name": string,
+    "queue_name": string,
     "phone_number": string,
     "join_time": string,
     "status": UserStatus,
