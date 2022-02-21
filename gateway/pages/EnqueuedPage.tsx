@@ -3,8 +3,7 @@ import EnqueuedCatalogCardGroup from "../components/molecules/UserCatalogCardGro
 import useInterval from "../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../types";
 import { useIsFocused, useRoute } from "@react-navigation/native";
-import {ScrollView} from "native-base";
-import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
+import {ScrollView, useToast} from "native-base";
 import {useTranslation} from "react-i18next";
 import baseURL from "../utilities/baseURL";
 
@@ -14,10 +13,19 @@ export default function () {
     const route = useRoute<HomeScreenProps["route"]>()
     const [props, setProps] = useState<UserStats[]>([])
     const [errors, setError] = useState<any>([]);
-    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     // The callback is so that we can call the method that deletes the cards from the flatlist when delete confirmed
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
-    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    const toast = useToast()
+
+    useEffect(() => {
+        if (!!errors.length) {
+            toast.show({
+                title: t('something_went_wrong', {ns: "common"}),
+                status: "error",
+                description: t(!errors.length ? "cannot_fetch_enqueued_message" : errors[0])
+            })
+        }
+    }, [errors])  // Render alert if errors
 
     const query = `
         query get_users($queueId: String, $orderBy: [UserOrderByWithRelationInput!]) {
@@ -89,11 +97,6 @@ export default function () {
 
     return (
         <>
-            <GeneralErrorAlert
-                showAlert={showErrorAlert}
-                setShowAlert={setShowErrorAlert}
-                message={t(!errors.length ? "cannot_fetch_enqueued_message" : errors[0])} // Render default message
-            />
             <ScrollView>
                 <EnqueuedCatalogCardGroup
                     entities={props}

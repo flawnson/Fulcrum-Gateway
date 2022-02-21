@@ -7,7 +7,8 @@
     "confirm": "Confirm",
     "login": "Log in",
     "signup": "Sign up",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "something_went_wrong": "Something went wrong..."
   },
   "landingPage": {
     "title": "Virtual lines that save time.",
@@ -202,7 +203,8 @@
     "email_placeholder": "your_email@example.com",
     "password_placeholder": "Definitely not 123456",
     "forgot_password": "Forgot Password?",
-    "new_organizer": "I'm a new organizer. "
+    "new_organizer": "I'm a new organizer. ",
+    "cannot_login_error": "We can't seem to log you in right now... Please try again soon"
   },
   "assistantLoginForm": {
     "joinCode_not_defined_error": "Oops! Looks like you forgot to provide a joinCode...",
@@ -213,7 +215,8 @@
     "email_placeholder": "your_email@example.com",
     "password_placeholder": "Definitely not 123456",
     "forgot_password": "Forgot Password?",
-    "new_organizer": "I'm a new organizer. "
+    "new_organizer": "I'm a new organizer. ",
+    "cannot_login_error": "We can't seem to log you in right now... Please try again soon"
   },
   "verifySMSModal": {
     "title": "Verify your phone number",

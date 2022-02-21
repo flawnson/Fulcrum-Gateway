@@ -2,10 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { VStack, FormControl,
         Input, Button,
         Center, Text,
-        ScaleFade } from "native-base";
+        ScaleFade, useToast } from "native-base";
 import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
-import GeneralErrorAlert from "../atoms/GeneralErrorAlert";
 import {AuthContext} from "../../utilities/AuthContext";
 import LoadingSpinner from "../atoms/LoadingSpinner";
 import baseURL from "../../utilities/baseURL";
@@ -27,17 +26,16 @@ type EnqueueFormData = {
 
 export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps) {
     const { t } = useTranslation(["homePage", "common"])
-    // const route = useRoute<HomeScreenProps["route"]>()
     const [formData, setData] = useState<EnqueueFormData>({})
     const [areaCode, setAreaCode] = useState<string>("1")
     const { signIn } = React.useContext(AuthContext)
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false)
-    const [showAlert, setShowAlert] = useState<boolean>(false)
     const [isJoinCodeFormOpen, setJoinCodeFormOpen] = useState<boolean>(true)
     const [isNameFormOpen, setNameFormOpen] = useState<boolean>(false)
     const [isPhoneNumberFormOpen, setPhoneNumberFormOpen] = useState<boolean>(false)
     const [errors, setErrors] = useState<EnqueueFormData>({})
+    const toast = useToast()
 
     useEffect(() => {
         // Use effect to concat area code with phone number when changed
@@ -59,7 +57,11 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
             if (loading) {
                 setLoading(false)
                 setSubmitted(false)
-                setShowAlert(true)
+                toast.show({
+                    title: t('something_went_wrong', {ns: "common"}),
+                    status: "error",
+                    description: t("cannot_enqueue_message")
+                })
                 setJoinCodeFormOpen(true)
             }
         }, 10000)
@@ -98,7 +100,11 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
                         setSubmitted(false) // turn back to false for when user revisits page
                     } else {
                         setSubmitted(false)
-                        setShowAlert(true)
+                        toast.show({
+                            title: t('something_went_wrong', {ns: "common"}),
+                            status: "error",
+                            description: t("cannot_enqueue_message")
+                        })
                     }
                     setJoinCodeFormOpen(true)
                 }
@@ -294,11 +300,6 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
                     </ScaleFade>
                 </>
             )}
-            <GeneralErrorAlert
-                showAlert={showAlert}
-                setShowAlert={setShowAlert}
-                message={t("cannot_enqueue_message")}
-            />
         </>
     );
 }

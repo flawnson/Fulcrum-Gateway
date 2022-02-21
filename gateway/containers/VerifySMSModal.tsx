@@ -1,6 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import { Button, Link,
-        Modal, Center } from 'native-base'
+import {
+    Button, Link,
+    Modal, Center, useToast
+} from 'native-base'
 import { StyleSheet, SafeAreaView,
         Text, View } from 'react-native';
 import { CodeField, Cursor,
@@ -8,7 +10,6 @@ import { CodeField, Cursor,
 import { useTranslation } from "react-i18next";
 import { UserInfo } from "../types"
 import {scale} from "../utilities/scales";
-import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 
 
 const CELL_COUNT = 6
@@ -24,18 +25,30 @@ export default function (props: VerifySMSModalProps) {
     const [value, setValue] = useState('');
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [errors, setError] = useState<any>([]);
-    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
     const [cellOnLayoutHandler, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
+    const toast = useToast()
 
-    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {
+        if (!!errors.length) {
+            toast.show({
+                title: t('something_went_wrong', {ns: "common"}),
+                status: "error",
+                description: t(!errors.length ? "cannot_fetch_verify_sms_message" : errors[0])
+            })
+        }
+    }, [errors])  // Render alert if errors
 
     useCallback(() => {
         // Alert will show if nothing has happened within 10 seconds of submitting the enqueue form.
         setTimeout(() => {
             if (submitted) {
                 setSubmitted(false)
-                setShowErrorAlert(true)
+                toast.show({
+                    title: t('something_went_wrong', {ns: "common"}),
+                    status: "error",
+                    description: t(!errors.length ? "cannot_fetch_verify_sms_message" : errors[0])
+                })
             }
         }, 10000)
     }, [submitted])
@@ -73,7 +86,11 @@ export default function (props: VerifySMSModalProps) {
                 props.setShowModal(false)
                 if (data.data.confirmUser.error === "USER_CONFIRM_FAILED") {
                     setError(data.errors[0])
-                    setShowErrorAlert(true)
+                    toast.show({
+                        title: t('something_went_wrong', {ns: "common"}),
+                        status: "error",
+                        description: t(!errors.length ? "cannot_fetch_verify_sms_message" : errors[0])
+                    })
                     setSubmitted(false)
                 } else {
                     // If successfully verified SMS
@@ -92,11 +109,6 @@ export default function (props: VerifySMSModalProps) {
 
     return (
         <>
-            <GeneralErrorAlert
-                showAlert={showErrorAlert}
-                setShowAlert={setShowErrorAlert}
-                message={t(!errors.length ? "cannot_fetch_verify_sms_message" : errors[0])} // Render default message
-            />
             <Modal
                 isOpen={props.showModal}
                 onClose={() => props.setShowModal(false)}

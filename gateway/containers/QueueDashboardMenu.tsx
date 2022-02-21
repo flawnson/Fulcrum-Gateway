@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { HStack, Menu, Divider, Fab, HamburgerIcon, Text } from 'native-base';
+import {HStack, Menu, Divider, Fab, HamburgerIcon, Text, useToast} from 'native-base';
 import {useNavigation, useRoute, StackActions, useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {HomeScreenProps, ShareData} from "../types";
@@ -9,7 +9,6 @@ import {AuthContext} from "../utilities/AuthContext";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/PreferencesContext";
 import EndQueueAlert from "./EndQueueAlert";
-import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 import ChangeQueuePasswordModal from "./ChangeQueuePasswordModal";
 import {useTheme} from "native-base";
 import baseURL from "../utilities/baseURL";
@@ -27,12 +26,21 @@ export default function () {
     const [showChangeQueuePasswordModal, setShowChangeQueuePasswordModal] = useState(false);
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
     const [errors, setError] = useState<any>([]);
-    const [showErrorAlert, setShowErrorAlert] = useState(false)
+    const toast = useToast()
     // Share data defined and fetched at this level to avoid rerender hell in ShareScreen image component
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
-    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    // useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {
+        if (!!errors.length) {
+            toast.show({
+                title: t('something_went_wrong', {ns: "common"}),
+                status: "error",
+                description: t(!errors.length ? "cannot_fetch_share_data_message" : errors[0])
+            })
+        }
+    }, [errors])  // Render alert if errors
 
     useEffect(() => {
         fetchShareData().then()
@@ -316,11 +324,6 @@ export default function () {
             <EndQueueAlert
                 isAlertOpen={isAlertOpen}
                 setIsAlertOpen={setIsAlertOpen}
-            />
-            <GeneralErrorAlert
-                showAlert={showErrorAlert}
-                setShowAlert={setShowErrorAlert}
-                message={t(!errors.length ? "cannot_fetch_share_data_message" : errors[0])} // Render default message
             />
         </>
     )

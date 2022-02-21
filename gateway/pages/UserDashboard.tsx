@@ -2,7 +2,7 @@ import React, {SetStateAction, useContext, useEffect, useState} from 'react'
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import {HomeScreenProps, UserInfo} from "../types";
 import {StyleSheet} from 'react-native'
-import {Avatar, Center, Heading, HStack, Image, Text} from "native-base";
+import {Avatar, Center, Heading, HStack, Image, Text, useToast} from "native-base";
 
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
 import UserDashboardMenu from "../containers/UserDashboardMenu"
@@ -12,7 +12,6 @@ import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
 import {scale} from "../utilities/scales";
 import calculateTimeToNow from "../utilities/calculateTimeToNow";
-import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 import baseURL from "../utilities/baseURL";
 
 
@@ -20,11 +19,20 @@ export default function () {
     const { t } = useTranslation(["userDashboard"]);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [errors, setError] = useState<any>([]);
-    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     const [showModal, setShowModal] = useState<boolean>(false)
     // Render the header (dark mode toggle and language picker)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
-    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    const toast = useToast()
+
+    useEffect(() => {
+        if (!!errors.length) {
+            toast.show({
+                title: t('something_went_wrong', {ns: "common"}),
+                status: "error",
+                description: t(!errors.length ? "cannot_fetch_user_data" : errors[0])
+            })
+        }
+    }, [errors])  // Render alert if errors
 
     const defaultProps: UserInfo = {
         name: "Someone",
@@ -157,11 +165,6 @@ export default function () {
 
     return (
         <Center style={styles.animationFormat}>
-            <GeneralErrorAlert
-                showAlert={showErrorAlert}
-                setShowAlert={setShowErrorAlert}
-                message={t(!errors.length ? "cannot_fetch_user_data" : errors[0])} // Render default message
-            />
             <Heading style={styles.headingFormat}>{props.name}'s Queue</Heading>
             <HStack style={styles.container}>
                 <Image
