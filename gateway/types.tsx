@@ -5,7 +5,7 @@ import React from "react";
 
 /* React Navigation types used throughout app*/
 export type RootStackParamList = {
-    HomePage: undefined | {joinCode: string};
+    HomePage: undefined | {joinCode?: string, queueId?: QueueInfo["queueId"]};
     UserDashboard: undefined;
     QueueDashboard: undefined;
     QueueDashboardTabs: undefined | {queueId: QueueInfo["queueId"]};
@@ -68,6 +68,7 @@ export type UserInfo = {
     "name": string,
     "phone_number": string,
     "join_time": string,
+    "status": UserStatus,
     "stats": DashboardStat[]
 }
 
@@ -79,7 +80,7 @@ export type ShareData = {
     currentQueueJoinCode: string,
 }
 
-export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW"
+export type UserStatus = "ENQUEUED" | "KICKED" | "SERVICED" | "ABANDONED" | "DEFERRED" | "NOSHOW" | "UNVERIFIED"
 
 export type QueueState = "ACTIVE" | "PAUSED" | "DELETED"
 

@@ -10,6 +10,7 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { PreferencesContext } from "../utilities/PreferencesContext";
 import {AuthContext} from "../utilities/AuthContext";
+import baseURL from "../utilities/baseURL";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
@@ -42,7 +43,7 @@ export default function () {
 
     const fetchShareData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

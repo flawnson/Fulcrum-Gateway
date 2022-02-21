@@ -1,6 +1,6 @@
 import React, {SetStateAction, useEffect, useState} from "react"
 import QueuesCatalogCardGroup from "../components/molecules/QueuesCatalogCardGroup"
-import {Fab, Icon} from "native-base"
+import {Fab, Icon, useToast} from "native-base"
 import {AntDesign} from "@expo/vector-icons"
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import {HomeScreenProps, QueueInfo} from "../types";
@@ -8,8 +8,8 @@ import CreateQueueModal from "../containers/CreateQueueModal";
 import useInterval from "../utilities/useInterval";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import ConfirmDeleteAlert from "../containers/ConfirmDeleteAlert";
-import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 import {useTranslation} from "react-i18next";
+import baseURL from "../utilities/baseURL";
 
 
 type QueuesPageProps = {
@@ -24,11 +24,20 @@ export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [props, setProps] = useState<QueuesPageProps["queueInfo"]>([])
     const [errors, setError] = useState<any>([]);
-    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
     const [showCreateQueueModal, setShowCreateQueueModal] = useState<boolean>(false);
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
-    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    const toast = useToast()
+
+    useEffect(() => {
+        if (!!errors.length) {
+            toast.show({
+                title: t('something_went_wrong', {ns: "common"}),
+                status: "error",
+                description: t(!errors.length ? "cannot_fetch_queue_message" : errors[0])
+            })
+        }
+    }, [errors])  // Render alert if errors
 
     const query = `
         query get_queue_data($orderBy: [QueueOrderByWithRelationInput!]) {
@@ -58,7 +67,7 @@ export default function () {
 
     async function fetchQueuesData () {
         try {
-            const response = await fetch(`http://localhost:8080/api`,
+            const response = await fetch(baseURL(),
                                      {
                                          method: 'POST',
                                          headers: {
@@ -86,11 +95,6 @@ export default function () {
 
     return (
         <>
-            <GeneralErrorAlert
-                showAlert={showErrorAlert}
-                setShowAlert={setShowErrorAlert}
-                message={t(!errors.length ? "cannot_fetch_queue_message" : errors[0])} // Render default message
-            />
             <QueuesCatalogCardGroup
                 entities={props}
                 setEntities={setProps}

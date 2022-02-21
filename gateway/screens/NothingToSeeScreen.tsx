@@ -2,18 +2,21 @@ import React from 'react'
 import {Center, Image, Text, VStack} from 'native-base'
 import { StyleSheet } from "react-native";
 import {scale} from "../utilities/scales";
+import {useTranslation} from "react-i18next";
 
 export default function () {
+    const { t } = useTranslation(["nothingToSeeScreen"])
+
     return (
         <Center>
             <VStack style={styles.pair}>
                 <Image
                     src={require("../assets/images/cat-gif.gif")}
                     style={styles.image}
-                    alt="Cute cat gif!"
+                    alt={t("image_alt")}
                 />
                 <Text style={styles.text}>
-                    Nothing to see here...
+                    {t("message")}
                 </Text>
             </VStack>
         </Center>

@@ -1,12 +1,12 @@
 import React, {useCallback, useState} from "react"
 import { Box, VStack,
         FormControl, Input,
-        Button } from "native-base"
+        Button, useToast } from "native-base"
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types";
 import {AuthContext} from "../../utilities/AuthContext";
-import GeneralErrorAlert from "../atoms/GeneralErrorAlert";
 import {useTranslation} from "react-i18next";
+import baseURL from "../../utilities/baseURL";
 
 
 type SignInFormType = {
@@ -20,19 +20,23 @@ type AssistantFormData = {
 }
 
 export default ({navigation, setShowModal}: SignInFormType) => {
-    const { t } = useTranslation(["logInModal"]);
+    const { t } = useTranslation(["logInModal", "common"]);
     const { signIn } = React.useContext(AuthContext)
     const [formData, setData] = useState<AssistantFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
-    const [showAlert, setShowAlert] = useState<boolean>(false)
     const [errors, setErrors] = useState<object>({});
+    const toast = useToast()
 
     useCallback(() => {
         // Alert will show if nothing has happened within 10 seconds of submitting the enqueue form.
         setTimeout(() => {
             if (submitted) {
                 setSubmitted(false)
-                setShowAlert(true)
+                toast.show({
+                    title: t('something_went_wrong', {ns: "common"}),
+                    status: "error",
+                    description: t("cannot_login_message")
+                })
             }
         }, 10000)
     }, [submitted])
@@ -52,7 +56,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
 
     async function logIn () {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -107,11 +111,6 @@ export default ({navigation, setShowModal}: SignInFormType) => {
 
     return (
         <>
-            <GeneralErrorAlert
-                showAlert={showAlert}
-                setShowAlert={setShowAlert}
-                message={t("cannot_enqueue_message")}
-            />
             <Box safeArea p="2" py="8" w="90%" maxW="290">
                 <VStack space={3} mt="5">
                     <FormControl>

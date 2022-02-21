@@ -3,14 +3,16 @@ import { StyleSheet } from 'react-native'
 import { Text, Button } from 'native-base'
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useTranslation } from "react-i18next";
+import CreateUserModal from "../../containers/CreateUserModal";
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../../types";
 
 export default function () {
-    const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+    const [joinCode, setJoinCode] = useState<string>("NONE");
     const [scanned, setScanned] = useState<boolean>(false);
-    const { t, i18n } = useTranslation(["QRCodeScanner"]);
+    const { t } = useTranslation(["QRCodeScanner"]);
 
     useEffect(() => {
         (async () => {
@@ -22,8 +24,8 @@ export default function () {
     const handleBarCodeScanned = ({ type, data }: {type: string, data: string}) => {
         setScanned(true);
         console.log(data)
-        const joinCode = /[^/]*$/.exec(data)![0]  // Regex to extract the string after the last forward slash
-        navigation.navigate("HomePage", {joinCode: joinCode})
+        const extractedJoinCode = /[^/]*$/.exec(data)![0]  // Regex to extract the string after the last forward slash
+        setJoinCode(extractedJoinCode)
     };
 
     if (hasPermission === null) {
@@ -48,6 +50,12 @@ export default function () {
             {/*        </Text>*/}
             {/*    </Button>*/}
             {/*}*/}
+            <CreateUserModal
+                joinCode={joinCode}
+                navigation={navigation}
+                showModal={scanned}
+                setShowModal={setScanned}
+            />
         </>
     )
 }

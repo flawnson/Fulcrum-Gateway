@@ -2,16 +2,17 @@ import React, { useState, useEffect, useCallback } from "react";
 import { VStack, FormControl,
         Input, Button,
         Center, Text,
-        ScaleFade } from "native-base";
+        ScaleFade, useToast } from "native-base";
 import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
-import GeneralErrorAlert from "../atoms/GeneralErrorAlert";
 import {AuthContext} from "../../utilities/AuthContext";
 import LoadingSpinner from "../atoms/LoadingSpinner";
-import {useRoute} from "@react-navigation/native";
+import baseURL from "../../utilities/baseURL";
+import AreaCodeSelector from "../atoms/AreaCodeSelector";
 
 
 type EnqueueFormProps = {
+    joinCode?: string
     navigation: HomeScreenProps["navigation"]
     setShowModal?: React.Dispatch<React.SetStateAction<boolean>>  // Modal for Organizer/Assistant side user creation
 }
@@ -23,26 +24,32 @@ type EnqueueFormData = {
 }
 
 
-export default function ({navigation, setShowModal}: EnqueueFormProps) {
+export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps) {
     const { t } = useTranslation(["homePage", "common"])
-    const route = useRoute<HomeScreenProps["route"]>()
     const [formData, setData] = useState<EnqueueFormData>({})
+    const [areaCode, setAreaCode] = useState<string>("1")
     const { signIn } = React.useContext(AuthContext)
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false)
-    const [showAlert, setShowAlert] = useState<boolean>(false)
     const [isJoinCodeFormOpen, setJoinCodeFormOpen] = useState<boolean>(true)
     const [isNameFormOpen, setNameFormOpen] = useState<boolean>(false)
     const [isPhoneNumberFormOpen, setPhoneNumberFormOpen] = useState<boolean>(false)
     const [errors, setErrors] = useState<EnqueueFormData>({})
+    const toast = useToast()
 
-    if (route.params) {
+    useEffect(() => {
+        // Use effect to concat area code with phone number when changed
+        setData({...formData, phoneNumber: areaCode + formData.phoneNumber})
+    }, [areaCode])
+
+    useEffect(() => {
         // If route contains params (from ShareScreen) then automatically input the joincode
-        setJoinCodeFormOpen(false)
-        setNameFormOpen(true)
-        setData({...formData, joinCode: route.params!["joinCode"]})
-        console.log("AUTOFILLED")
-    }
+        if (joinCode) {
+            setJoinCodeFormOpen(false)
+            setNameFormOpen(true)
+            setData({...formData, joinCode: joinCode})
+        }
+    }, [])
 
     useCallback(() => {
         // Alert will show if nothing has happened within 10 seconds of submitting the enqueue form.
@@ -50,7 +57,11 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
             if (loading) {
                 setLoading(false)
                 setSubmitted(false)
-                setShowAlert(true)
+                toast.show({
+                    title: t('something_went_wrong', {ns: "common"}),
+                    status: "error",
+                    description: t("cannot_enqueue_message")
+                })
                 setJoinCodeFormOpen(true)
             }
         }, 10000)
@@ -72,7 +83,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
     async function joinQueue () {
         setLoading(true)
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -86,11 +97,16 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                         signIn('USER')
                         setSubmitted(true)
                         navigation.navigate("UserDashboard")
+                        setSubmitted(false) // turn back to false for when user revisits page
                     } else {
                         setSubmitted(false)
-                        setShowAlert(true)
-                        setJoinCodeFormOpen(true)
+                        toast.show({
+                            title: t('something_went_wrong', {ns: "common"}),
+                            status: "error",
+                            description: t("cannot_enqueue_message")
+                        })
                     }
+                    setJoinCodeFormOpen(true)
                 }
             )
             setLoading(false)
@@ -140,7 +156,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                 phoneNumber: t('phone_number_missing'),
             });
             return false;
-        } else if (formData.phoneNumber.length >= 10) {
+        } else if (formData.phoneNumber.length > 10) {
             setErrors({
                 ...errors,
                 phoneNumber: t('phone_number_too_long'),
@@ -163,11 +179,6 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
 
     return (
         <>
-            <GeneralErrorAlert
-                showAlert={showAlert}
-                setShowAlert={setShowAlert}
-                message={t("cannot_enqueue_message")}
-            />
             <LoadingSpinner show={loading} light={false}/>
             {isJoinCodeFormOpen && (
                 <>
@@ -175,7 +186,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                         <FormControl isInvalid={"joinCode" in errors}>
                             <Center>
                                 <FormControl.Label _text={{bold: true}}>
-                                    {t("queue_id")}
+                                    {t("join_code")}
                                 </FormControl.Label>
                             </Center>
                             <Input
@@ -184,7 +195,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                             />
                             <Center>
                                 <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                                    {t('helper')}
+                                    {t('join_code_helper')}
                                 </FormControl.HelperText>
                             </Center>
                             <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>
@@ -223,7 +234,7 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                             />
                             <Center>
                                 <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                                    {t('helper')}
+                                    {t('name_helper')}
                                 </FormControl.HelperText>
                             </Center>
                             <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>
@@ -238,7 +249,8 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                             }
                                 mt="5"
                                 isLoading={submitted}
-                                isLoadingText="Submitting...">
+                                isLoadingText="Submitting..."
+                        >
                             <Text bold color={'white'}>
                                 {t('submit', { ns: 'common' })}
                             </Text>
@@ -256,12 +268,13 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                                 </FormControl.Label>
                             </Center>
                             <Input
+                                InputLeftElement={<AreaCodeSelector areaCode={areaCode} setAreaCode={setAreaCode}/>}
                                 placeholder="Ex. 6477135354"
                                 onChangeText={(value) => setData({ ...formData, phoneNumber: value })}
                             />
                             <Center>
                                 <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                                    {t('helper')}
+                                    {t('phone_number_helper')}
                                 </FormControl.HelperText>
                             </Center>
                             <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>
@@ -278,7 +291,8 @@ export default function ({navigation, setShowModal}: EnqueueFormProps) {
                             }
                                 mt="5"
                                 isLoading={submitted}
-                                isLoadingText="Submitting...">
+                                isLoadingText="Submitting..."
+                        >
                             <Text bold color={'white'}>
                                 {t('submit', { ns: 'common' })}
                             </Text>

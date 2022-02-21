@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Text, Modal, Button } from 'native-base'
 import { useTranslation } from "react-i18next";
+import baseURL from "../utilities/baseURL";
 
 type DeferPositionModal = {
     showModal: boolean
@@ -28,7 +29,7 @@ export default function (props: DeferPositionModal) {
 
     async function deferPosition () {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -6,7 +6,9 @@
     "submitting": "Submitting...",
     "confirm": "Confirm",
     "login": "Log in",
-    "signup": "Sign up"
+    "signup": "Sign up",
+    "loading": "Loading...",
+    "something_went_wrong": "Something went wrong..."
   },
   "landingPage": {
     "title": "Virtual lines that save time.",
@@ -40,10 +42,12 @@
     "phone_number_missing": "We need your number to notify you",
     "phone_number_too_long": "You have a very long phone number!",
     "phone_number_not_number": "That doesn't look like a phone number...",
-    "queue_id": "Queue ID",
+    "join_code": "Join code",
+    "join_code_helper": "The join code must be 6 characters.",
     "name": "Your name",
+    "name_helper": "Your name for reference please.",
     "phone_number": "Your phone number",
-    "helper": "Queue ID must be 6 characters.",
+    "phone_number_helper": "So we can notify you when it's your turn.",
     "or": " or ",
     "footer": " to create your own virtual queue at",
     "cannot_enqueue_message": "Something wrong happened (we should be more specific about this)",
@@ -68,8 +72,8 @@
     "address_label": "Address",
     "address_helper": "Set your address so that queuers can find your venue.",
     "address_placeholder": "King's Cross Station platform 9 3/4",
-    "password_label": "Address",
-    "password_helper": "Set your address so that queuers can find your venue.",
+    "password_label": "Password",
+    "password_helper": "Set your queue password so that assistants can manage queues (queuers don't need passwords)",
     "password_placeholder": "Something super secret"
   },
   "userDashboard": {
@@ -199,7 +203,8 @@
     "email_placeholder": "your_email@example.com",
     "password_placeholder": "Definitely not 123456",
     "forgot_password": "Forgot Password?",
-    "new_organizer": "I'm a new organizer. "
+    "new_organizer": "I'm a new organizer. ",
+    "cannot_login_error": "We can't seem to log you in right now... Please try again soon"
   },
   "assistantLoginForm": {
     "joinCode_not_defined_error": "Oops! Looks like you forgot to provide a joinCode...",
@@ -210,7 +215,8 @@
     "email_placeholder": "your_email@example.com",
     "password_placeholder": "Definitely not 123456",
     "forgot_password": "Forgot Password?",
-    "new_organizer": "I'm a new organizer. "
+    "new_organizer": "I'm a new organizer. ",
+    "cannot_login_error": "We can't seem to log you in right now... Please try again soon"
   },
   "verifySMSModal": {
     "title": "Verify your phone number",
@@ -225,9 +231,9 @@
   },
   "changeQueuePasswordModal": {
     "title": "Change queue password",
-    "password_label": "New queue password",
-    "password_helper": "Enter your new password",
-    "password_placeholder": "Super secret password",
+    "new_password_label": "New queue password",
+    "new_password_helper": "Enter your new password",
+    "new_password_placeholder": "Super secret password",
     "confirm_password_label": "Confirm new queue password",
     "confirm_password_helper": "Re-enter your new password",
     "confirm_password_placeholder": "Super secret password again",
@@ -253,5 +259,12 @@
     "new_password_not_provided": "You forgot to provide a new password!",
     "confirm_password_not_provided": "You need to confirm your new password!",
     "confirm_password_does_not_match": "The passwords you provided don't match!"
+  },
+  "nothingToSeeScreen": {
+    "image_alt": "Cute cat gif!",
+    "message": "Nothing to see here..."
+  },
+  "loadingSpinner": {
+    "accessibility_label": "Loading..."
   }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { HStack, Menu, Divider, Fab, HamburgerIcon, Text } from 'native-base';
+import {HStack, Menu, Divider, Fab, HamburgerIcon, Text, useToast} from 'native-base';
 import {useNavigation, useRoute, StackActions, useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {HomeScreenProps, ShareData} from "../types";
@@ -9,9 +9,9 @@ import {AuthContext} from "../utilities/AuthContext";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/PreferencesContext";
 import EndQueueAlert from "./EndQueueAlert";
-import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
 import ChangeQueuePasswordModal from "./ChangeQueuePasswordModal";
 import {useTheme} from "native-base";
+import baseURL from "../utilities/baseURL";
 
 export default function () {
     const { colors } = useTheme()
@@ -19,19 +19,28 @@ export default function () {
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const { signOut } = React.useContext(AuthContext)
-    const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
-    const { t, i18n } = useTranslation(["queueDashboardMenu"]);
+    const { isThemeDark } = React.useContext(PreferencesContext)
+    const { t } = useTranslation(["queueDashboardMenu"]);
     const [queuePaused, toggleQueuePaused] = useState(false)
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
     const [showChangeQueuePasswordModal, setShowChangeQueuePasswordModal] = useState(false);
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
     const [errors, setError] = useState<any>([]);
-    const [showErrorAlert, setShowErrorAlert] = useState(false)
+    const toast = useToast()
     // Share data defined and fetched at this level to avoid rerender hell in ShareScreen image component
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
-    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    // useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    useEffect(() => {
+        if (!!errors.length) {
+            toast.show({
+                title: t('something_went_wrong', {ns: "common"}),
+                status: "error",
+                description: t(!errors.length ? "cannot_fetch_share_data_message" : errors[0])
+            })
+        }
+    }, [errors])  // Render alert if errors
 
     useEffect(() => {
         fetchShareData().then()
@@ -68,12 +77,11 @@ export default function () {
     const query = signedInAs === "ORGANIZER" ? organizerQuery :
                   signedInAs === "ASSISTANT" ? assistantQuery :
                   {null: null}
-    // @ts-ignore
     const variables = signedInAs === "ORGANIZER" ? {queueId: route.params!["queueId"]} : null
 
     const fetchShareData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -104,9 +112,59 @@ export default function () {
         }
     }
 
+    const organizerPauseQuery = `
+        mutation change_queue_state($queueId: String, $state: String!) {
+            changeQueueState(queueId: $queueId, state: $state) {
+                ... on Queue {
+                    id
+                    state
+                }
+                ... on Error {
+                    error
+                }
+            }
+        }
+    `
+
+    const assistantPauseQuery = `
+        mutation change_queue_state($state: String!) {
+            changeQueueState(state: $state) {
+                ... on Queue {
+                    id
+                    state
+                }
+                ... on Error {
+                    error
+                }
+            }
+        }
+    `
+
+    const organizerPauseVariables = `{
+            "queueId": ${route.params!["queueId"]}
+            "state": "PAUSED"
+        }`
+
+    const assistantPauseVariables = `{
+            "state": "PAUSED"
+        }`
+
+    const pauseQuery = signedInAs === "ORGANIZER" ? organizerPauseQuery :
+        signedInAs === "ASSISTANT" ? assistantPauseQuery :
+            {null: null}
+    const pauseVariables = signedInAs === "ORGANIZER" ? organizerPauseVariables : assistantPauseVariables
+
     async function setQueuePaused () {
         try {
-            const response = await fetch('http://localhost:8080/api')
+            const response = await fetch(baseURL(), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                },
+                credentials: 'include',
+                body: JSON.stringify({query: pauseQuery, variables: pauseVariables})
+            })
             return await response.json()
         } catch(error) {
             return error
@@ -126,7 +184,7 @@ export default function () {
 
     const logout = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -254,21 +312,18 @@ export default function () {
                     </Menu.Item>
                 </Menu.Group>
             </Menu>
-            <CreateUserModal showModal={showCreateUserModal}
-                            setShowModal={setShowCreateUserModal}
-                            navigation={navigation}
+            <CreateUserModal
+                joinCode={shareData.currentQueueJoinCode}
+                navigation={navigation}
+                showModal={showCreateUserModal}
+                setShowModal={setShowCreateUserModal}
             />
-            <ChangeQueuePasswordModal showModal={showCreateUserModal}
-                                      setShowModal={setShowCreateUserModal}
+            <ChangeQueuePasswordModal showModal={showChangeQueuePasswordModal}
+                                      setShowModal={setShowChangeQueuePasswordModal}
             />
             <EndQueueAlert
                 isAlertOpen={isAlertOpen}
                 setIsAlertOpen={setIsAlertOpen}
-            />
-            <GeneralErrorAlert
-                showAlert={showErrorAlert}
-                setShowAlert={setShowErrorAlert}
-                message={t(!errors.length ? "cannot_fetch_share_data_message" : errors[0])} // Render default message
             />
         </>
     )

@@ -2,7 +2,7 @@ import React, {SetStateAction, useContext, useEffect, useState} from 'react'
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import {HomeScreenProps, UserInfo} from "../types";
 import {StyleSheet} from 'react-native'
-import {Avatar, Center, Heading, HStack, Image, Text} from "native-base";
+import {Avatar, Center, Heading, HStack, Image, Text, useToast} from "native-base";
 
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
 import UserDashboardMenu from "../containers/UserDashboardMenu"
@@ -12,23 +12,33 @@ import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
 import {scale} from "../utilities/scales";
 import calculateTimeToNow from "../utilities/calculateTimeToNow";
-import GeneralErrorAlert from "../components/atoms/GeneralErrorAlert";
+import baseURL from "../utilities/baseURL";
 
 
 export default function () {
     const { t } = useTranslation(["userDashboard"]);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [errors, setError] = useState<any>([]);
-    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false)
-    const [showModal, setShowModal] = useState<boolean>(true)  // If params are defined, no need to verify SMS
+    const [showModal, setShowModal] = useState<boolean>(false)
     // Render the header (dark mode toggle and language picker)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
-    useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+    const toast = useToast()
+
+    useEffect(() => {
+        if (!!errors.length) {
+            toast.show({
+                title: t('something_went_wrong', {ns: "common"}),
+                status: "error",
+                description: t(!errors.length ? "cannot_fetch_user_data" : errors[0])
+            })
+        }
+    }, [errors])  // Render alert if errors
 
     const defaultProps: UserInfo = {
         name: "Someone",
         phone_number: "123456789",
         join_time: "",
+        status: "UNVERIFIED",
         stats: [
                 {prefix: t("index_prefix"), stat: 0, suffix: "th", tooltip: t("index_tooltip")},
                 {prefix: t("waited_prefix"), stat: 0, suffix: "m", tooltip: t("waited_tooltip")},
@@ -48,10 +58,12 @@ export default function () {
                     phone_number
                     name
                     index
+                    status
                     estimated_wait
                     join_time
                     summoned
                     queue {
+                        name
                         state
                         average_wait
                     }
@@ -65,7 +77,7 @@ export default function () {
 
     const fetchUserStats = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api`,
+            const response = await fetch(baseURL(),
                                      {
                                           method: 'POST',
                                           headers: {
@@ -78,12 +90,19 @@ export default function () {
             await response.json().then(
                 data => {
                     console.log(data)
-                    if (!!data.errors.length) {
+                    if (!!data.errors?.length) {
                         // Check for errors on response
                         setError(data.errors[0])
+                    } else if (data.data.getUser.error === "USER_DOES_NOT_EXIST"){
+                        // Check if user exists on backend
+                        setError(data.data.getUser.error)
                     } else {
                         const userData = data.data.getUser
                         const queueData = data.data.getUser.queue
+                        // If user status is unverified, show SMS verification modal
+                        if (userData.status === "UNVERIFIED") {
+                            setShowModal(true)
+                        }
                         // If summoned is toggled true, immediately navigate to Summon Screen
                         if (userData.summoned) {
                             navigation.navigate("SummonScreen", {queueId: queueData.id, userId: userData.id})
@@ -102,9 +121,10 @@ export default function () {
                                             : "th"
                         // Set user data to be displayed and passed to subcomponents
                         setProps({
-                            "name": userData.name,
+                            "name": queueData.name,
                             "phone_number": userData.phone_number,
                             "join_time": userData.join_time,
+                            "status": userData.status,
                             "stats": [{
                                 "prefix": t("index_prefix"),
                                 "stat": userData.index,
@@ -145,11 +165,6 @@ export default function () {
 
     return (
         <Center style={styles.animationFormat}>
-            <GeneralErrorAlert
-                showAlert={showErrorAlert}
-                setShowAlert={setShowErrorAlert}
-                message={t(!errors.length ? "cannot_fetch_user_data" : errors[0])} // Render default message
-            />
             <Heading style={styles.headingFormat}>{props.name}'s Queue</Heading>
             <HStack style={styles.container}>
                 <Image

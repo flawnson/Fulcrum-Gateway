@@ -8,6 +8,7 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {RootStackParamList} from "../../types";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
+import baseURL from "../../utilities/baseURL";
 
 
 type SignUpFormType = {
@@ -28,8 +29,8 @@ type OrganizerSignUpErrorData = {
 
 
 export default ({navigation, setShowModal}: SignUpFormType) => {
+    const { t } = useTranslation(["signUpForm", "common"]);
     const [formData, setData] = useState<OrganizerFormData>({});
-    const { t, i18n } = useTranslation(["signUpForm"]);
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [errors, setErrors] = useState<OrganizerSignUpErrorData>({});
 
@@ -48,7 +49,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
 
     async function signUp () {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -165,7 +166,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                     isLoading={submitted}
                     isLoadingText={t("isLoadingText")}
                 >
-                    Sign up
+                    {t("signup", {ns: "common"})}
                 </Button>
             </VStack>
         </Box>

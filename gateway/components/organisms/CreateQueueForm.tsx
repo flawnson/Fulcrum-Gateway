@@ -10,6 +10,7 @@ import { PreferencesContext } from "../../utilities/PreferencesContext";
 import { useTranslation } from "react-i18next";
 import { RootStackParamList } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import baseURL from "../../utilities/baseURL";
 
 type DefaultCreateQueueFormData = {
     name: string,
@@ -93,19 +94,10 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
             }
         }
     `
-    const variables = `{
-        "name": "V1 Residence Queue",
-        "capacity": 250,
-        "gracePeriod": 0,
-        "maxPartySize": 1,
-        "offlineTime": 3,
-        "address": "University of Waterloo",
-        "password": "uwaterloo"
-    }`
 
     async function createQueue () {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -124,8 +116,6 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
         setData({...formData})
         setSubmitted(true)
         const submissionData = createQueue()
-        console.log(formData)
-        console.log(submissionData);
         setShowModal(false)
         setData({...formData})
         setSubmitted(false)
@@ -276,7 +266,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                     </HStack>
                     <Input
                         placeholder={t("password_placeholder")}
-                        onChangeText={(value) => setData({ ...formData, address: value })}
+                        onChangeText={(value) => setData({ ...formData, password: value })}
                     />
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Password error"}</FormControl.ErrorMessage>
                 </Stack>

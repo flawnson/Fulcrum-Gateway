@@ -1,18 +1,16 @@
 import React from 'react'
-import { View, Text } from 'native-base'
+import { View, Spinner } from 'native-base'
 import {StyleSheet} from "react-native";
 import {scale} from "../utilities/scales";
 import LogoAndName from "../components/atoms/LogoAndName";
-import {useTheme} from "native-base";
-import LoadingSpinner from "../components/atoms/LoadingSpinner";
 
 
 export default function () {
-    const theme = useTheme()
+
     return (
-        <View style={{...styles.container, backgroundColor: theme.colors.primary[600]}}>
+        <View style={{...styles.container, backgroundColor: "primary.600"}}>
+            <Spinner color="white" style={styles.spinner}/>
             <LogoAndName light={true} styles={styles.logo} />
-            <LoadingSpinner show={true} light={true}/>
         </View>
     );
 }
@@ -21,12 +19,18 @@ export default function () {
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
+    spinner: {
+        flex: 1,
+        width: scale(100),
+        height: scale(100),
+    },
     logo: {
         flex: 1,
-        fontSize: scale(300)
+        width: scale(300),
+        height: scale(300),
     }
 })
