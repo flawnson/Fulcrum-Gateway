@@ -152,12 +152,6 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
                 phoneNumber: t('phone_number_missing'),
             });
             return false;
-        } else if (formData.phoneNumber.length > 11) {
-            setErrors({
-                ...errors,
-                phoneNumber: t('phone_number_too_long'),
-            });
-            return false;
         } else if (isNaN(formData.phoneNumber as any)) {
             setErrors({
                 ...errors,
