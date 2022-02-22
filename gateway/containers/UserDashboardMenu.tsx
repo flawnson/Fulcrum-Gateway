@@ -9,7 +9,6 @@ import LeaveQueueAlert from "./LeaveQueueAlert";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { PreferencesContext } from "../utilities/PreferencesContext";
-import {AuthContext} from "../utilities/AuthContext";
 import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
 

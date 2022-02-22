@@ -36,7 +36,7 @@ export default function (props: VerifySMSModalProps) {
             toast.show({
                 title: t('something_went_wrong', {ns: "common"}),
                 status: "error",
-                description: t(!errors.length ? "cannot_fetch_verify_sms_message" : errors[0])
+                description: t("cannot_fetch_verify_sms_message")
             })
         }
     }, [errors])  // Render alert if errors
@@ -49,7 +49,7 @@ export default function (props: VerifySMSModalProps) {
                 toast.show({
                     title: t('something_went_wrong', {ns: "common"}),
                     status: "error",
-                    description: t(!errors.length ? "cannot_fetch_verify_sms_message" : errors[0])
+                    description: t("cannot_fetch_verify_sms_message")
                 })
             }
         }, 10000)
@@ -81,22 +81,15 @@ export default function (props: VerifySMSModalProps) {
                     body: JSON.stringify({query: query, variables: {confirmCode: value}})
                 })
             return await response.json().then(data => {
-                console.log(data)
-                if (!!data.errors?.length) {setError(data.errors[0])}  // Check for errors on response
-                // Check for known error (when confirm code is wrong)
-                // NOT WORKING RIGHT NOW SO CLOSING MDOAL EVEN IF VERIFICATION FAILS
-                props.setShowModal(false)
-                if (data.data.confirmUser.error === "USER_CONFIRM_FAILED") {
-                    setError(data.errors[0])
-                    toast.show({
-                        title: t('something_went_wrong', {ns: "common"}),
-                        status: "error",
-                        description: t(!errors.length ? "cannot_fetch_verify_sms_message" : errors[0])
-                    })
+                if (!!data.errors?.length) {
+                    setError(data.errors)
+                } else if (data.data.confirmUser.error === "USER_CONFIRM_FAILED") {
+                    // Check for known error (when confirm code is wrong)
+                    setError(data.errors)
                     setSubmitted(false)
                 } else {
                     // If successfully verified SMS
-                    setSubmitted(false)
+                    setSubmitted(false)  // To reset form in case unverified again
                     props.setShowModal(false)
                 }
             })
@@ -191,7 +184,7 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         textAlign: 'center',
-        fontSize: scale(20)
+        fontSize: scale(16)
     },
     codeFieldRoot: {
         marginTop: 20,

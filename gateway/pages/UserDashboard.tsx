@@ -24,14 +24,19 @@ export default function () {
     // Render the header (dark mode toggle and language picker)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
     const toast = useToast()
+    const toastId = "errorToast"
 
     useEffect(() => {
         if (!!errors.length) {
-            toast.show({
-                title: t('something_went_wrong', {ns: "common"}),
-                status: "error",
-                description: t(!errors.length ? "cannot_fetch_user_data" : errors[0])
-            })
+            if (!toast.isActive(toastId)) {
+                toast.show({
+                    id: toastId,
+                    title: t('something_went_wrong', {ns: "common"}),
+                    status: "error",
+                    description: t("cannot_fetch_user_data"),
+                    duration: 10
+                })
+            }
         }
     }, [errors])  // Render alert if errors
 
@@ -91,10 +96,9 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
-                    console.log(data)
                     if (!!data.errors?.length) {
                         // Check for errors on response
-                        setError(data.errors[0])
+                        setError(data.errors)
                         setShowModal(true)
                     } else if (data.data.getUser.error === "USER_DOES_NOT_EXIST"){
                         // Check if user exists on backend

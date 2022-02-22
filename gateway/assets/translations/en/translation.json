@@ -87,7 +87,7 @@
     "waited_tooltip": "This is how long you've waited in line, from the moment you joined to now.",
     "average_tooltip": "The average wait in minutes of all your fellow queuers in this line.",
     "eta_tooltip": "The estimated time of your arrival, calculated by combining the average along with a few other stats.",
-    "cannot_fetch_user_data": "Something went wrong and we can't seem to be able to get your data right now... Please try again soon."
+    "cannot_fetch_user_data": "We can't seem to be able to get your data right now... Please try again soon."
   },
   "createQueueModal": {
     "title": "Create a Queue"
