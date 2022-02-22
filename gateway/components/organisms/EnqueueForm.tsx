@@ -169,8 +169,6 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
     };
 
     const onSubmit = () => {
-        // Append the area code to the phone number before sending request
-        setData({...formData, phoneNumber: areaCode + formData.phoneNumber})
         // Attempt to join queue first, and if successful, update UI
         joinQueue().then()
     };
@@ -268,7 +266,7 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
                             <Input
                                 InputLeftElement={<AreaCodeSelector areaCode={areaCode} setAreaCode={setAreaCode}/>}
                                 placeholder="Ex. 6477135354"
-                                onChangeText={(value) => setData({ ...formData, phoneNumber: value })}
+                                onChangeText={(value) => setData({ ...formData, phoneNumber: areaCode + value })}
                             />
                             <Center>
                                 <FormControl.HelperText _text={{fontSize: 'xs'}}>

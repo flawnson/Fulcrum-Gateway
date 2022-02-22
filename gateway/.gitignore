@@ -1,2 +1,3 @@
 web-build/
 .firebase/
+app.config.ts
