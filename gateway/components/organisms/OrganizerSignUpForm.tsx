@@ -18,12 +18,14 @@ type SignUpFormType = {
 }
 
 type OrganizerFormData = {
+    name?: string,
     email?: string
     password?: string
     confirmPassword?: string
 }
 
 type OrganizerSignUpErrorData = {
+    name?: string
     email?: string
     password?: string
 }
@@ -67,13 +69,19 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
 
     const re = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
     const validate = () => {
-        if (formData.email === undefined) {
+        if (formData.name === undefined) {
             setErrors({
                 ...errors,
-                email: t("emailUndefinedError"),
+                name: t("nameUndefinedError"),
             });
             return false;
-        } else if (!re.test(formData.email)) {
+        } else if (!re.test(formData.email!)) {
+            setErrors({
+                ...errors,
+                email: t("emailInvalidError"),
+            });
+            return false;
+        } else if (formData.email === undefined) {
             setErrors({
                 ...errors,
                 email: t("emailInvalidError"),
@@ -134,6 +142,14 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                 {t("message")}
             </Heading>
             <VStack space={3} mt="5">
+                <FormControl isInvalid={"name" in errors}>
+                    <FormControl.Label>{t("nameLabel")}</FormControl.Label>
+                    <Input
+                        placeholder={t("namePlaceholder")}
+                        onChangeText={(value) => setData({ ...formData, name: value })}
+                    />
+                    <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.name}</FormControl.ErrorMessage>
+                </FormControl>
                 <FormControl isInvalid={"email" in errors}>
                     <FormControl.Label>{t("emailLabel")}</FormControl.Label>
                     <Input

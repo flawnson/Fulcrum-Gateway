@@ -21,11 +21,11 @@ type AssistantFormData = {
 }
 
 export default ({navigation, setShowModal}: SignInFormType) => {
-    const { t } = useTranslation(["logInModal", "common"]);
+    const { t } = useTranslation(["assistantLoginForm", "common"]);
     const { signIn } = React.useContext(AuthContext)
     const [formData, setData] = useState<AssistantFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
-    const [errors, setErrors] = useState<object>({});
+    const [errors, setErrors] = useState<AssistantFormData>({});
     const toast = useToast()
 
     useCallback(() => {
@@ -76,13 +76,13 @@ export default ({navigation, setShowModal}: SignInFormType) => {
         if (formData.joinCode === undefined) {
             setErrors({
                 ...errors,
-                email: t("joinCode_not_defined_error"),
+                joinCode: t("joinCode_not_defined_error"),
             });
             return false;
         } else if (formData.joinCode?.length !== 6){
             setErrors({
                 ...errors,
-                email: t("invalid_email_error"),
+                joinCode: t("invalid_joinCode_error"),
             });
             return false;
         } else if (formData.password === undefined) {
@@ -107,6 +107,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
     }
 
     const onSignInPress = () => {
+        setSubmitted(true)
         validate() && logIn() ? onSuccess() : onFailure();
     }
 
@@ -115,28 +116,30 @@ export default ({navigation, setShowModal}: SignInFormType) => {
             <Box safeArea p="2" py="8" w="90%" maxW="290">
                 <VStack space={3} mt="5">
                     <FormControl>
-                        <FormControl.Label>Join code</FormControl.Label>
+                        <FormControl.Label>{t("joinCode_title")}</FormControl.Label>
                         <Input
                             placeholder="Ex. 777777"
                             onChangeText={(value) => setData({ ...formData, joinCode: value })}
                          />
+                        <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.joinCode}</FormControl.ErrorMessage>
                     </FormControl>
                     <FormControl>
-                        <FormControl.Label>Password</FormControl.Label>
+                        <FormControl.Label>{t("password_title")}</FormControl.Label>
                         <Input
                             type="password"
-                            placeholder="Shhh it's a secret"
+                            placeholder={t("password_placeholder")}
                             onChangeText={(value) => setData({ ...formData, password: value })}
                         />
+                        <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.password}</FormControl.ErrorMessage>
                     </FormControl>
                     <Button
                         mt="2"
                         colorScheme="indigo"
-                        onPress={() => (onSignInPress)}
+                        onPress={() => (onSignInPress())}
                         isLoading={submitted}
-                        isLoadingText="Logging in..."
+                        isLoadingText={t("logging_in", {ns: "common"})}
                     >
-                        Sign in
+                        {t("sign_up", {ns: "common"})}
                     </Button>
                 </VStack>
             </Box>

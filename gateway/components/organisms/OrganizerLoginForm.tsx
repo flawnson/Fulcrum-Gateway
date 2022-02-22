@@ -169,7 +169,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                         colorScheme="indigo"
                         onPress={onLogInPress}
                         isLoading={submitted}
-                        isLoadingText="Logging in..."
+                        isLoadingText={t("logging_in", {ns: "common"})}
                     >
                         {t("login", {ns: "common"})}
                     </Button>

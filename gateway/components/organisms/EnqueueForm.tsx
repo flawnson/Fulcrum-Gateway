@@ -38,11 +38,6 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
     const toast = useToast()
 
     useEffect(() => {
-        // Use effect to concat area code with phone number when changed
-        setData({...formData, phoneNumber: areaCode + formData.phoneNumber})
-    }, [areaCode])
-
-    useEffect(() => {
         // If route contains params (from ShareScreen) then automatically input the joincode
         if (joinCode) {
             setJoinCodeFormOpen(false)
@@ -174,6 +169,8 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
     };
 
     const onSubmit = () => {
+        // Append the area code to the phone number before sending request
+        setData({...formData, phoneNumber: areaCode + formData.phoneNumber})
         // Attempt to join queue first, and if successful, update UI
         joinQueue().then()
     };

@@ -8,6 +8,7 @@
     "login": "Log in",
     "signup": "Sign up",
     "loading": "Loading...",
+    "logging_in": "Logging in...",
     "something_went_wrong": "Something went wrong..."
   },
   "landingPage": {
@@ -164,7 +165,8 @@
     "confirmation": "Bar code with type {{type}} and data {{data}} has been scanned!",
     "requesting": "Requesting for camera permission",
     "no_access": "No access to camera",
-    "scan_again": "Tap to Scan Again"
+    "scan_again": "Tap to Scan Again",
+    "not_a_queue": "Hmm... That doesn't look like a queue QR code. Try again?"
   },
   "errorScreen": {
     "message": "Uh... This is awkward! It seems like whatever you're trying to access can't be found. Maybe find your way back at"
@@ -173,12 +175,15 @@
     "title": "Sign Up"
   },
   "signUpForm": {
+    "nameUndefinedError": "Oops! Looks like you forgot to provide an email...",
     "emailUndefinedError": "Oops! Looks like you forgot to provide an email...",
     "emailInvalidError": "Oops! Looks like you didn't enter a valid email...",
     "passwordUndefinedError": "Oops! Looks like you forgot to provide a password...",
     "passwordUnmatchError": "Oops! Looks like your passwords didn't match...",
     "welcome": "Welcome",
     "message": "Sign up to continue!",
+    "nameLabel": "Name",
+    "namePlaceholder": "Bob's Burgers",
     "emailLabel": "Email",
     "emailPlaceholder": "your_email@example.com",
     "passwordLabel": "Password",
@@ -208,15 +213,12 @@
   },
   "assistantLoginForm": {
     "joinCode_not_defined_error": "Oops! Looks like you forgot to provide a joinCode...",
-    "invalid_email_error": "Oops! Looks like you didn't enter a valid email...",
+    "invalid_joinCode_error": "Oops! Looks like you didn't enter a valid email...",
     "password_not_defined_error": "Oops! Looks like you forgot to provide a password...",
-    "email": "Email",
-    "password": "Password",
-    "email_placeholder": "your_email@example.com",
+    "password_title": "Password",
+    "joinCode_title": "Join Code",
     "password_placeholder": "Definitely not 123456",
-    "forgot_password": "Forgot Password?",
-    "new_organizer": "I'm a new organizer. ",
-    "cannot_login_error": "We can't seem to log you in right now... Please try again soon"
+    "cannot_login_message": "We can't seem to log you in right now... Please try again soon"
   },
   "verifySMSModal": {
     "title": "Verify your phone number",
