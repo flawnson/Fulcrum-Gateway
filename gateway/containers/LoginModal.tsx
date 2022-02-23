@@ -54,7 +54,7 @@ export default (props: CreateQueueModalProps) => {
                                 onPress={() => setIsOrganizer(true)}
                                 variant={isOrganizer ? "solid" : "outline"}
                             >
-                                <Text style={{color: isOrganizer ? "white" : "black"}}>
+                                <Text style={{color: isOrganizer || isThemeDark ? "white" : "black"}}>
                                     {t("organizer")}
                                 </Text>
                             </Button>
@@ -62,7 +62,7 @@ export default (props: CreateQueueModalProps) => {
                                 onPress={() => setIsOrganizer(false)}
                                 variant={isOrganizer ? "outline" : "solid"}
                             >
-                                <Text style={{color: isOrganizer && isThemeDark ? "white" : "black"}}>
+                                <Text style={{color: !isOrganizer || isThemeDark ? "white" : "black"}}>
                                     {t("assistant")}
                                 </Text>
                             </Button>

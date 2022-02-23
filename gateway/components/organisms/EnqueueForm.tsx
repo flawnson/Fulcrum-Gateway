@@ -90,9 +90,13 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
                 data => {
                     // If response is valid and returns an id, then set auth context, submit, and navigate to dashboard
                     if (data?.data?.createUser || data?.data?.joinQueue.id) {
-                        signIn('USER')
                         setSubmitted(true)
-                        navigation.navigate("UserDashboard")
+                        if (!setShowModal) {
+                            signIn('USER')
+                            navigation.navigate("UserDashboard", {name: formData.name!, phoneNumber: formData.phoneNumber!})
+                        } else {
+                            !!setShowModal ? setShowModal(false) : null
+                        }
                         setSubmitted(false) // turn back to false for when user revisits page
                     } else {
                         setSubmitted(false)

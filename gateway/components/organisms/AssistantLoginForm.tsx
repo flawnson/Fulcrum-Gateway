@@ -27,6 +27,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [errors, setErrors] = useState<AssistantFormData>({});
     const toast = useToast()
+    const toastId = "errorToast"
 
     useCallback(() => {
         // Alert will show if nothing has happened within 10 seconds of submitting the enqueue form.
@@ -34,9 +35,11 @@ export default ({navigation, setShowModal}: SignInFormType) => {
             if (submitted) {
                 setSubmitted(false)
                 toast.show({
+                    id: toastId,
                     title: t('something_went_wrong', {ns: "common"}),
                     status: "error",
-                    description: t("cannot_login_message")
+                    description: t("cannot_login_message"),
+                    duration: 10
                 })
             }
         }, 10000)
@@ -66,7 +69,12 @@ export default ({navigation, setShowModal}: SignInFormType) => {
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData})
             });
-            return await response.json()
+            return await response.json().then(data => {
+                    setShowModal(false)
+                    setSubmitted(false)
+                    navigation.navigate("QueueDashboard")
+                }
+            )
         } catch (error) {
             return error
         }
@@ -97,9 +105,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
 
     const onSuccess = () => {
         signIn('ASSISTANT')
-        setShowModal(false)
-        setSubmitted(false)
-        navigation.navigate("QueueDashboard")
+        logIn().then()
     }
 
     const onFailure = () => {
@@ -108,7 +114,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
 
     const onSignInPress = () => {
         setSubmitted(true)
-        validate() && logIn() ? onSuccess() : onFailure();
+        validate() ? onSuccess() : onFailure();
     }
 
     return (
@@ -139,7 +145,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
                         isLoading={submitted}
                         isLoadingText={t("logging_in", {ns: "common"})}
                     >
-                        {t("sign_up", {ns: "common"})}
+                        {t("login", {ns: "common"})}
                     </Button>
                 </VStack>
             </Box>

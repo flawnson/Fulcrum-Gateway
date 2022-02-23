@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Pressable,
-        GestureResponderEvent, Animated,
-        PanResponder, Dimensions } from "react-native";
+import { StyleSheet, Animated } from "react-native";
 import { HStack, Text,
-        Box, Center,
+        Box, VStack,
         Avatar, View } from 'native-base';
 import { QueueInfo, QueueState, UserStatus } from "../../types";
 import { Swipeable, RectButton,
@@ -209,10 +207,15 @@ export default function (props: QueuesCatalogCardProps) {
                                 <Text suppressHighlighting={true} style={styles.name}>
                                     {props.entity.name}
                                 </Text>
-                                <Text style={styles.lifespan}>
-                                    {/*{props.entity.lifespan}*/}
-                                    {timerComponents.length ? timerComponents : <Text>Can't get lifespan...</Text>}
-                                </Text>
+                                <VStack>
+                                    <Text suppressHighlighting={true} style={styles.lifespan}>
+                                        Live for:
+                                    </Text>
+                                    <Text style={styles.lifespan}>
+                                        {/*{props.entity.lifespan}*/}
+                                        {timerComponents.length ? timerComponents : <Text>Can't get lifespan...</Text>}
+                                    </Text>
+                                </VStack>
                             </HStack>
                             {props.selected && <View style={styles.overlay} />}
                         </Box>

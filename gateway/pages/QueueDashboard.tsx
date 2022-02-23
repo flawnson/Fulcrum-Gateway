@@ -2,7 +2,8 @@ import React, {SetStateAction, useEffect, useState} from 'react'
 import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native"
 import {DashboardStat, HomeScreenProps} from "../types"
 import {StyleSheet} from 'react-native'
-import {Center, Heading} from "native-base"
+import {Text, Center,
+        Heading, HStack} from "native-base"
 import QueueDashboardGroup from "../components/organisms/QueueDashboardStats"
 import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval"
@@ -24,6 +25,7 @@ export default function () {
 
     const defaultProps = {
         name: "Some Queue",
+        state: "ACTIVE",
         stats: [
             {prefix: t("enqueued_prefix"), stat: 0, suffix: "", tooltip: t("enqueued_tooltip")},
             {prefix: t("serviced_prefix"), stat: 0, suffix: "", tooltip: t("serviced_tooltip")},
@@ -41,6 +43,7 @@ export default function () {
             getQueue {
                 ... on Queue {
                     name
+                    state
                     users {
                         user_id: id
                         join_time
@@ -59,6 +62,7 @@ export default function () {
             getQueue(queueId: $queueId) {
                 ... on Queue {
                     name
+                    state
                     users {
                         user_id: id
                         join_time
@@ -88,19 +92,19 @@ export default function () {
             await response.json().then(
                 data => {
                     console.log(data)
-                    const name = data.data.getQueue.name
-                    data = data.data.getQueue.users
+                    const queueData = data.data.getQueue
+                    userData = data.data.getQueue.users
                     // Count the number users with of each type of status
                     const statuses = ["ENQUEUED", "SERVICED", "DEFERRED", "ABANDONED", "NOSHOW"]
                     const counts = []
                     for (const status of statuses) {
-                        counts.push(data.filter((user: UserData) => {return user.status === status}).length)
+                        counts.push(userData.filter((user: UserData) => {return user.status === status}).length)
                     }
                     let stats: SetStateAction<DashboardStat[] | any> = zipObject(statuses.map(status => status.toLowerCase()), counts)
                     // Calculate the average of all user waits thus far
                     const now: any = new Date()
                     let userWaits: Array<number> = []
-                    for (const user of data) {
+                    for (const user of userData) {
                         const join: any = new Date(user.join_time)
                         const waited = new Date(Math.abs(now - join)).getMinutes()
                         const minutes = Math.floor(waited)
@@ -108,7 +112,8 @@ export default function () {
                     }
                     stats.avg = Math.floor(userWaits.reduce((a,b) => a + b, 0) / userWaits.length)
                     // Set queue data to be displayed and passed to subcomponents
-                    setProps({"name": name,
+                    setProps({"name": queueData.name,
+                                    "state": queueData.state,
                                     "stats": [{prefix: t("enqueued_prefix"),
                                                stat: stats.enqueued,
                                                suffix: "",
@@ -147,7 +152,10 @@ export default function () {
 
     return (
         <Center style={styles.animationFormat}>
-            <Heading style={styles.headingFormat}>{props.name}</Heading>
+            <HStack space={3} alignItems="center">
+                <Text>{props.state === "ACTIVE" ? "🟢" : "🔴"}</Text>
+                <Heading style={styles.headingFormat}>{props.name}</Heading>
+            </HStack>
             <QueueDashboardGroup {...props.stats}/>
             <QueueDashboardMenu />
         </Center>

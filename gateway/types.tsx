@@ -5,8 +5,8 @@ import React from "react";
 
 /* React Navigation types used throughout app*/
 export type RootStackParamList = {
-    HomePage: undefined | {joinCode?: string, queueId?: QueueInfo["queueId"]};
-    UserDashboard: undefined;
+    HomePage: undefined;
+    UserDashboard: undefined | {name: string, phoneNumber: string};
     QueueDashboard: undefined;
     QueueDashboardTabs: undefined | {queueId: QueueInfo["queueId"]};
     CreateQueuePage: undefined;

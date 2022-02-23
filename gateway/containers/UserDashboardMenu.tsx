@@ -14,8 +14,8 @@ import corsURL from "../utilities/corsURL";
 
 export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext)
-    const { t, i18n } = useTranslation(["userDashboardMenu"]);
+    const { isThemeDark } = React.useContext(PreferencesContext)
+    const { t } = useTranslation(["userDashboardMenu"]);
     const [showDeferPositionModal, setShowDeferPositionModal] = React.useState(false)
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
     const [errors, setError] = useState<any>([]);
@@ -28,17 +28,19 @@ export default function () {
     }, [])
 
     const query = `
-      query get_queue_stats {
-          getQueue {
-              ... on Queue {
-                  name
-                  joinCode: join_code
-              }
-              ... on Error {
-                  error
-              }
-          }
-      }
+        query get_queue_stats {
+            getUser {
+                ... on User {
+                    queue {
+                        name
+                        joinCode: join_code
+                    }
+                }
+                ... on Error {
+                    error
+                }
+            }
+        }
     `
 
     const fetchShareData = async () => {
@@ -54,7 +56,7 @@ export default function () {
             })
             await response.json().then(
                 data => {
-                    data = data.getQueue.queue
+                    data = data.data.getUser.queue
                     setShareData( {
                             ...shareData,
                             "currentQueueName": data.name,

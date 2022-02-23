@@ -24,8 +24,7 @@ type DefaultCreateQueueFormData = {
 }
 
 type DefaultErrors = {
-    nameError?: string
-    nameInvalid: boolean,
+    name?: string
 }
 
 type CreateQueueFormType = {
@@ -43,9 +42,8 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                          offlineTime: 3,
                          address: "Sample address",
                          password: "123456789"}
-    const defaultErrors = {nameInvalid: false}
     const [formData, setData] = useState<DefaultCreateQueueFormData>(defaultData);
-    const [errors, setError] = useState<DefaultErrors>(defaultErrors);
+    const [errors, setError] = useState<DefaultErrors>({});
     const [onChangeValue, setOnChangeValue] = useState(500)
     const [onChangeEndValue, setOnChangeEndValue] = useState(500)
     const { t } = useTranslation(["createQueuePage", "common"]);
@@ -57,24 +55,18 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
         if (formData.name.length > 50) {
             setError({
                     ...errors,
-                    nameError: 'Name is too long',
+                    name: 'Name is too long',
                 });
-                setError({...errors, nameInvalid: true})
-        } else {
-            setError({...errors, nameInvalid: false})
-        }
-    }
-
-    const check = () => {
-        if (formData.name === undefined) {
+            return false;
+        } else if (formData.name === undefined) {
             setError({
                 ...errors,
-                nameError: 'Name is required',
+                name: 'Name is required',
             });
-            setError({...errors, nameInvalid: true})
+            return false;
         }
         return true;
-    };
+    }
 
     const query = `
         mutation create_queue($address: String!,
@@ -107,35 +99,32 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData})
             });
-            return await response.json()
+            return await response.json().then(data => {
+                    setShowModal(false)
+                    setSubmitted(false)
+                }
+            )
         } catch(error) {
             return error
         }
     }
 
     const onSuccess = () => {
-        setData({...formData})
-        setSubmitted(true)
-        const submissionData = createQueue()
-        setShowModal(false)
-        setData({...formData})
-        setSubmitted(false)
-        navigation.navigate("QueuesPage")
+        createQueue().then()
     }
 
     const onFailure = () => {
-        console.log("you suck")
+        setSubmitted(false)
     }
 
     const onSubmit = () => {
-        setData({...formData})
         setSubmitted(true)
-        check() ? onSuccess() : onFailure();
+        validate() ? onSuccess() : onFailure();
     };
 
     return (
         <VStack space={3} width="90%" mx="3">
-            <FormControl isRequired isInvalid={errors.nameInvalid}>
+            <FormControl isRequired isInvalid={"name" in errors}>
                 <Stack>
                     <HStack>
                         <FormControl.Label _text={{bold: true}}>{t("business_name_label")}</FormControl.Label>
@@ -165,7 +154,6 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                     <Text>{onChangeValue}</Text>
                     <Slider
                         defaultValue={500}
-                        colorScheme="cyan"
                         onChange={(v) => {
                             setOnChangeValue(Math.floor(v))
                         }}
@@ -276,7 +264,6 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                 <Button
                     mt="5"
                     variant="ghost"
-                    colorScheme="blueGray"
                     onPress={() => {
                         setShowModal(false)
                     }}
@@ -286,7 +273,6 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                 <Button
                     onPress={() => onSubmit()}
                     mt="5"
-                    colorScheme="cyan"
                     isLoading={submitted}
                     isLoadingText={t("submitting", {ns: "common"})}
                 >

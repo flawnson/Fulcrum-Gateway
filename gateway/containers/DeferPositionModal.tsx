@@ -39,7 +39,10 @@ export default function (props: DeferPositionModal) {
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: variables})
             });
-            return await response.json()
+            return await response.json().then(data => {
+                    console.log(data)
+                }
+            )
         } catch(error) {
             return error
         }

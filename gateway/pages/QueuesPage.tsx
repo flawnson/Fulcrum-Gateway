@@ -1,6 +1,8 @@
 import React, {SetStateAction, useEffect, useState} from "react"
 import QueuesCatalogCardGroup from "../components/molecules/QueuesCatalogCardGroup"
-import {Fab, Icon, useToast} from "native-base"
+import {Fab, Icon,
+        Text, useToast,
+        Center } from "native-base"
 import {AntDesign} from "@expo/vector-icons"
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import {HomeScreenProps, QueueInfo} from "../types";
@@ -23,19 +25,23 @@ type QueuesPageProps = {
 export default function () {
     const { t } = useTranslation("queuesPage")
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
+    const [organizerInfo, setOrganizerInfo] = useState<{name: string}>({name: "Someone's queues"})
     const [props, setProps] = useState<QueuesPageProps["queueInfo"]>([])
     const [errors, setError] = useState<any>([]);
     const [showCreateQueueModal, setShowCreateQueueModal] = useState<boolean>(false);
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
-    useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
     const toast = useToast()
+    const toastId = "errorToast"
+    useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     useEffect(() => {
         if (!!errors.length) {
             toast.show({
+                id: toastId,
                 title: t('something_went_wrong', {ns: "common"}),
                 status: "error",
-                description: t(!errors.length ? "cannot_fetch_queue_message" : errors[0])
+                description: t("cannot_fetch_queue_message"),
+                duration: 10
             })
         }
     }, [errors])  // Render alert if errors
@@ -80,7 +86,8 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
-                    if (!!data.errors?.length) {setError(data.errors[0])}  // Check for errors on response
+                    if (!!data.errors?.length) {setError(data.errors)}  // Check for errors on response
+                    setOrganizerInfo({name: data.data.getOrganizer.name})
                     setProps(data.data.getOrganizer.queues)
                 }
             )
@@ -96,6 +103,11 @@ export default function () {
 
     return (
         <>
+            <Center>
+                <Text style={{fontSize: 24, marginVertical: 30}}>
+                    {organizerInfo.name}
+                </Text>
+            </Center>
             <QueuesCatalogCardGroup
                 entities={props}
                 setEntities={setProps}

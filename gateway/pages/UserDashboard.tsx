@@ -1,5 +1,5 @@
 import React, {SetStateAction, useContext, useEffect, useState} from 'react'
-import {useIsFocused, useNavigation} from "@react-navigation/native";
+import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps, UserInfo} from "../types";
 import {StyleSheet} from 'react-native'
 import {Avatar, Center, Heading, HStack, Image, Text, useToast} from "native-base";
@@ -18,6 +18,7 @@ import corsURL from "../utilities/corsURL";
 
 export default function () {
     const { t } = useTranslation(["userDashboard"]);
+    const route = useRoute<HomeScreenProps["route"]>()
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [errors, setError] = useState<any>([]);
     const [showModal, setShowModal] = useState<boolean>(false)
@@ -41,9 +42,9 @@ export default function () {
     }, [errors])  // Render alert if errors
 
     const defaultProps: UserInfo = {
-        user_name: "New user",
+        user_name: route.params!["name"],
         queue_name: "Someone",
-        phone_number: "123456789",
+        phone_number: route.params!["phoneNumber"],
         join_time: "",
         status: "UNVERIFIED",
         stats: [
@@ -168,13 +169,13 @@ export default function () {
         }
     }
 
-    // Run on first render
-    useEffect(() => {fetchUserStats().then(null)}, [])
+    // Run on first render or when modal is opened or closed
+    useEffect(() => {fetchUserStats().then(null)}, [showModal])
     // Poll only if user is currently on this screen
     useInterval(fetchUserStats, useIsFocused() ? 5000 : null)
 
     return (
-        <Center style={styles.animationFormat}>
+        <Center>
             <Heading style={styles.headingFormat}>{props.queue_name}'s Queue</Heading>
             <HStack style={styles.container}>
                 <Image
@@ -189,7 +190,7 @@ export default function () {
                     <Avatar.Badge bg={state === "ACTIVE" ? "green.500" : "red.500"}/>
                 </Avatar>
             </HStack>
-            <Text style={styles.textFormat}>{`Hello ${props.user_name}!`}</Text>
+            <Text style={styles.welcomeFormat}>{`Hello ${props.user_name}!`}</Text>
             <Text style={styles.textFormat}>{t("status_text")}</Text>
             <Center>
                 <UserDashboardGroup {...props.stats}/>
@@ -219,15 +220,17 @@ const styles = StyleSheet.create({
         height: scale(60),
         borderRadius: 10,
     },
-    animationFormat: {
-        // position: 'relative',
-    },
     headingFormat: {
-        marginTop: 25,
-        marginBottom: 25,
+        marginTop: scale(25),
+        marginBottom: scale(25),
     },
     textFormat: {
-        marginTop: 25,
-        marginBottom: 25,
+        marginTop: scale(25),
+        marginBottom: scale(25),
+    },
+    welcomeFormat: {
+        fontSize: scale(16),
+        marginTop: scale(25),
+        marginBottom: scale(25),
     },
 })
