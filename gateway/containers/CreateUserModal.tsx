@@ -7,10 +7,11 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 
 type CreateUserModalProps = {
-    showModal: boolean,
-    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    queueId: string
     joinCode: string
     navigation: NativeStackNavigationProp<RootStackParamList, "HomePage">
+    showModal: boolean,
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
@@ -24,6 +25,7 @@ export default function (props: CreateUserModalProps) {
                 <Modal.Header>{t("title")}</Modal.Header>
                 <Modal.Body>
                     <EnqueueForm
+                        queueId={props.queueId}
                         joinCode={props.joinCode}
                         navigation={props.navigation}
                         setShowModal={props.setShowModal}

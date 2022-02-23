@@ -77,7 +77,8 @@ export type UserInfo = {
 /*** SHARE PAGE TYPES ***/
 export type ShareData = {
     currentQueueName: string,
-    currentQueueQR: string | typeof Image,
+    currentQueueId: string,
+    currentQueueQR: string,
     currentQueueJoinCode: string,
 }
 

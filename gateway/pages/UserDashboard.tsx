@@ -104,7 +104,7 @@ export default function () {
                     } else if (data.data.getUser.error === "USER_DOES_NOT_EXIST"){
                         // Check if user exists on backend
                         setError(data.data.getUser.error)
-                        // Try letting te user confirm via SMS
+                        // Try letting the user confirm via SMS
                         setShowModal(true)
                     } else {
                         const userData = data.data.getUser

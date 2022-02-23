@@ -9,10 +9,12 @@ import {AuthContext} from "../../utilities/AuthContext";
 import LoadingSpinner from "../atoms/LoadingSpinner";
 import baseURL from "../../utilities/baseURL";
 import AreaCodeSelector from "../atoms/AreaCodeSelector";
+import corsURL from "../../utilities/corsURL";
 
 
 type EnqueueFormProps = {
-    joinCode?: string
+    queueId?: string  // Only provided if enqueue form is in a modal and the user type is an ORGANIZER or ASSISTANT
+    joinCode?: string  // Only provided if enqueue form is in a modal
     navigation: HomeScreenProps["navigation"]
     setShowModal?: React.Dispatch<React.SetStateAction<boolean>>  // Modal for Organizer/Assistant side user creation
 }
@@ -24,18 +26,34 @@ type EnqueueFormData = {
 }
 
 
-export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps) {
+export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueFormProps) {
     const { t } = useTranslation(["homePage", "common"])
     const [formData, setData] = useState<EnqueueFormData>({})
     const [areaCode, setAreaCode] = useState<string>("1")
-    const { signIn } = React.useContext(AuthContext)
+    const { signIn, signedInAs } = React.useContext(AuthContext)
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false)
     const [isJoinCodeFormOpen, setJoinCodeFormOpen] = useState<boolean>(true)
     const [isNameFormOpen, setNameFormOpen] = useState<boolean>(false)
     const [isPhoneNumberFormOpen, setPhoneNumberFormOpen] = useState<boolean>(false)
-    const [errors, setErrors] = useState<EnqueueFormData>({})
+    const [errors, setError] = useState<any>([]);
+    const [formErrors, setFormErrors] = useState<EnqueueFormData>({})
     const toast = useToast()
+    const toastId = "errorToast"
+
+    useEffect(() => {
+        if (!!errors.length) {
+            if (!toast.isActive(toastId)) {
+                toast.show({
+                    id: toastId,
+                    title: t('something_went_wrong', {ns: "common"}),
+                    status: "error",
+                    description: t("cannot_enqueue_message"),
+                    duration: 10
+                })
+            }
+        }
+    }, [errors])  // Render alert if errors
 
     useEffect(() => {
         // If route contains params (from ShareScreen) then automatically input the joincode
@@ -62,7 +80,7 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
         }, 10000)
     }, [loading])
 
-    const query = `
+    const joinQueueQuery = `
         mutation join_queue($joinCode: String!, $phoneNumber: String!, $name: String!) {
             joinQueue(joinCode: $joinCode, phoneNumber: $phoneNumber, name: $name){
                 ... on User {
@@ -75,21 +93,64 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
         }
     `
 
+    const organizerCreateUserQuery = `
+        mutation create_user($queueId: String!, $phoneNumber: String, $name: String!) {
+            createUser(queueId: $queueId, phoneNumber: $phoneNumber, name: $name){
+                ... on User {
+                    id
+                }
+                ... on Error {
+                    error
+                }
+            }
+        }
+    `
+
+    const assistantCreateUserQuery = `
+        mutation create_user($phoneNumber: String, $name: String!) {
+            createUser(phoneNumber: $phoneNumber, name: $name){
+                ... on User {
+                    id
+                }
+                ... on Error {
+                    error
+                }
+            }
+        }
+    `
+
+    const body = signedInAs === "ORGANIZER" ? {query: organizerCreateUserQuery, variables: {queueId: queueId,
+                                                                                            phoneNumber: formData.phoneNumber,
+                                                                                            name: formData.name}}
+               : signedInAs === "ASSISTANT" ? {query: assistantCreateUserQuery, variables: {phoneNumber: formData.phoneNumber,
+                                                                                            name: formData.name}}
+               : {query: joinQueueQuery, variables: formData}
+
     async function joinQueue () {
         setLoading(true)
+        console.log(signedInAs)
+        console.log(queueId)
+        console.log(body)
         try {
-            console.log("Joining Queue")
             const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
-                body: JSON.stringify({query: query, variables: formData})  // Directly pass formData as variables
+                credentials: 'include',
+                body: JSON.stringify(body)  // Directly pass formData as variables
             });
             await response.json().then(
                 data => {
                     // If response is valid and returns an id, then set auth context, submit, and navigate to dashboard
-                    if (data?.data?.createUser || data?.data?.joinQueue.id) {
+                    if (!!data.errors?.length) {
+                        // Check for errors on response
+                        setError(data.errors)
+                    } else if (data.data.joinQueue.error === "USER_ALREADY_EXISTS") {
+                        // Check if user exists on backend
+                        setError(data.data.getUser.error)
+                    } else if (data?.data?.createUser || data?.data?.joinQueue.id) {
                         setSubmitted(true)
                         if (!setShowModal) {
                             signIn('USER')
@@ -111,20 +172,20 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
             )
             setLoading(false)
         } catch(error) {
-            return error
+            setError([...errors, error])
         }
     }
 
     const validateJoinCode = () => {
         if (formData.joinCode === undefined) {
-            setErrors({
-                ...errors,
+            setFormErrors({
+                ...formErrors,
                 joinCode: t('join_code_missing'),
             });
             return false;
         } else if (formData.joinCode.length !== 6) {
-            setErrors({
-                ...errors,
+            setFormErrors({
+                ...formErrors,
                 joinCode: t('join_code_wrong'),
             });
             return false;
@@ -134,14 +195,14 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
 
     const validateName = () => {
         if (formData.name === undefined) {
-            setErrors({
-                ...errors,
+            setFormErrors({
+                ...formErrors,
                 name: t('name_missing'),
             });
             return false;
         } else if (formData.name.length >= 20) {
-            setErrors({
-                ...errors,
+            setFormErrors({
+                ...formErrors,
                 name: t('name_too_long'),
             });
             return false;
@@ -151,14 +212,14 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
 
     const validatePhoneNumber = () => {
         if (formData.phoneNumber === undefined) {
-            setErrors({
-                ...errors,
+            setFormErrors({
+                ...formErrors,
                 phoneNumber: t('phone_number_missing'),
             });
             return false;
         } else if (isNaN(formData.phoneNumber as any)) {
-            setErrors({
-                ...errors,
+            setFormErrors({
+                ...formErrors,
                 phoneNumber: t('phone_number_not_number'),
             });
             return false;
@@ -177,7 +238,7 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
             {isJoinCodeFormOpen && (
                 <>
                     <ScaleFade in={isJoinCodeFormOpen} duration={500}>
-                        <FormControl isInvalid={"joinCode" in errors}>
+                        <FormControl isInvalid={"joinCode" in formErrors}>
                             <Center>
                                 <FormControl.Label _text={{bold: true}}>
                                     {t("join_code")}
@@ -193,7 +254,7 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
                                 </FormControl.HelperText>
                             </Center>
                             <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>
-                                {errors.joinCode}
+                                {formErrors.joinCode}
                             </FormControl.ErrorMessage>
                         </FormControl>
                         <Button
@@ -216,7 +277,7 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
             {isNameFormOpen && (
                 <>
                     <ScaleFade in={isNameFormOpen} duration={500}>
-                        <FormControl isInvalid={"name" in errors}>
+                        <FormControl isInvalid={"name" in formErrors}>
                             <Center>
                                 <FormControl.Label _text={{bold: true}}>
                                     {t("name")}
@@ -232,7 +293,7 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
                                 </FormControl.HelperText>
                             </Center>
                             <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>
-                                {errors.name}
+                                {formErrors.name}
                             </FormControl.ErrorMessage>
                         </FormControl>
                         <Button
@@ -255,7 +316,7 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
             {isPhoneNumberFormOpen && (
                 <>
                     <ScaleFade in={isPhoneNumberFormOpen} duration={500}>
-                        <FormControl isInvalid={"phoneNumber" in errors}>
+                        <FormControl isInvalid={"phoneNumber" in formErrors}>
                             <Center>
                                 <FormControl.Label _text={{bold: true}}>
                                     {t("phone_number")}
@@ -272,7 +333,7 @@ export default function ({joinCode, navigation, setShowModal}: EnqueueFormProps)
                                 </FormControl.HelperText>
                             </Center>
                             <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>
-                                {errors.phoneNumber}
+                                {formErrors.phoneNumber}
                             </FormControl.ErrorMessage>
                         </FormControl>
                         <Button

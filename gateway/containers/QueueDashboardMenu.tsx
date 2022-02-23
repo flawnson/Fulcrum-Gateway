@@ -30,6 +30,7 @@ export default function () {
     const toast = useToast()
     // Share data defined and fetched at this level to avoid rerender hell in ShareScreen image component
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
+                                                                    currentQueueId: "",
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
     // useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
@@ -51,6 +52,7 @@ export default function () {
         query get_queue_stats ($queueId: String){
             getQueue(queueId: $queueId) {
                 ... on Queue {
+                    queueId: id
                     name
                     joinCode: join_code
                 }
@@ -65,6 +67,7 @@ export default function () {
         query get_queue_stats {
             getQueue {
                 ... on Queue {
+                    queueId: id
                     name
                     joinCode: join_code
                 }
@@ -101,6 +104,7 @@ export default function () {
                         setShareData({
                                 ...shareData,
                                 "currentQueueName": data.name,
+                                "currentQueueId": data.queueId,
                                 "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
                                 "currentQueueJoinCode": data.joinCode
                             }
@@ -314,6 +318,7 @@ export default function () {
                 </Menu.Group>
             </Menu>
             <CreateUserModal
+                queueId={shareData.currentQueueId}
                 joinCode={shareData.currentQueueJoinCode}
                 navigation={navigation}
                 showModal={showCreateUserModal}
