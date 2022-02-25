@@ -33,6 +33,7 @@ type CreateQueueFormType = {
 }
 
 export default function ({ navigation, setShowModal }: CreateQueueFormType) {
+    const { t } = useTranslation(["createQueuePage", "common"]);
     const { isThemeDark } = React.useContext(PreferencesContext)
     const [submitted, setSubmitted] = useState(false)
     const defaultData = {name: "Sample Queue name",
@@ -46,7 +47,9 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
     const [errors, setError] = useState<DefaultErrors>({});
     const [onChangeValue, setOnChangeValue] = useState(500)
     const [onChangeEndValue, setOnChangeEndValue] = useState(500)
-    const { t } = useTranslation(["createQueuePage", "common"]);
+    const [show, setShow] = React.useState(false);
+
+    const handleClick = () => setShow(!show);
 
     // Be careful with this it might trigger infinite render loop
     useEffect(() => {validate()}, [formData])
@@ -254,8 +257,14 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                         </Tooltip>
                     </HStack>
                     <Input
+                        type="password"
                         placeholder={t("password_placeholder")}
                         onChangeText={(value) => setData({ ...formData, password: value })}
+                        InputRightElement={
+                            <Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClick}>
+                                {show ? "Hide" : "Show"}
+                            </Button>
+                        }
                     />
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{"Password error"}</FormControl.ErrorMessage>
                 </Stack>

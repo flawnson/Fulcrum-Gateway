@@ -12,6 +12,8 @@ import { Swipeable, RectButton,
         LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 import { scale } from "../../utilities/scales"
+import corsURL from "../../utilities/corsURL";
+import baseURL from "../../utilities/baseURL";
 
 type UserCatalogCardProps = {
     entities: Array<UserStats>
@@ -54,11 +56,11 @@ export default function (props: UserCatalogCardProps) {
 
     async function toggleSummonUser (userId: string) {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                                          method: 'POST',
                                          headers: {
                                              'Content-Type': 'application/json',
-                                             'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                                             'Access-Control-Allow-Origin': corsURL(),
                                          },
                                          credentials: 'include',
                                          body: JSON.stringify({query: summonQuery, variables: {"userId": userId, "summoned": summoned}})

@@ -8,6 +8,8 @@ import { FlatList } from "react-native-gesture-handler";
 import MultiSelectButtons from "../organisms/QueueMultiSelectButtons";
 import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
+import baseURL from "../../utilities/baseURL";
+import corsURL from "../../utilities/corsURL";
 
 
 type QueuesStatsProps = {
@@ -69,11 +71,11 @@ export default function (props: QueuesStatsProps) {
                 : state === "DELETED"
                 ? {query: deleteQuery, variables: {queueId: queueId}}
                 : {error: "error"}  // Trigger error if state is not PAUSED or DELETED
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify(body)

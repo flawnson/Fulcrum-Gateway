@@ -7,6 +7,8 @@ import {UserStats, UserStatus, HomeScreenProps} from "../../types";
 import UserCatalogCard from "../atoms/UserCatalogCard";
 import CatalogCardMultiSelectButtons from "../organisms/CatalogCardMultiSelectButtons"
 import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
+import baseURL from "../../utilities/baseURL";
+import corsURL from "../../utilities/corsURL";
 
 
 type UserCatalogCardProps = {
@@ -68,11 +70,11 @@ export default function (props: UserCatalogCardProps) {
                 : status === "SUMMONED"
                 ? {query: summonUserQuery, variables: {userId: userId, summoned: true}}
                 : {error: "error"}
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify(body)

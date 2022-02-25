@@ -13,6 +13,8 @@ import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 import calculateTimeToNow from "../../utilities/calculateTimeToNow";
 import { scale } from "../../utilities/scales";
 import useDimensions from "../../utilities/useDimensions";
+import baseURL from "../../utilities/baseURL";
+import corsURL from "../../utilities/corsURL";
 
 type QueuesCatalogCardProps = {
     entities: Array<QueueInfo>
@@ -67,11 +69,11 @@ export default function (props: QueuesCatalogCardProps) {
                 : state === "DELETED"
                 ? {query: deleteQuery, variables: {queueId: props.entity.queueId}}
                 : {error: "error"}  // Trigger error if state is not PAUSED or DELETED
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify(body)

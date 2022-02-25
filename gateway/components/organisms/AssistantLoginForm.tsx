@@ -26,8 +26,11 @@ export default ({navigation, setShowModal}: SignInFormType) => {
     const [formData, setData] = useState<AssistantFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [errors, setErrors] = useState<AssistantFormData>({});
+    const [showPassword, setShowPassword] = React.useState(false);
     const toast = useToast()
     const toastId = "errorToast"
+
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
 
     useCallback(() => {
         // Alert will show if nothing has happened within 10 seconds of submitting the enqueue form.
@@ -135,6 +138,11 @@ export default ({navigation, setShowModal}: SignInFormType) => {
                             type="password"
                             placeholder={t("password_placeholder")}
                             onChangeText={(value) => setData({ ...formData, password: value })}
+                            InputRightElement={
+                                <Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClickShowPassword}>
+                                    {showPassword ? "Hide" : "Show"}
+                                </Button>
+                            }
                         />
                         <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.password}</FormControl.ErrorMessage>
                     </FormControl>

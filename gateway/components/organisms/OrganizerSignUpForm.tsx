@@ -2,7 +2,7 @@ import * as React from "react"
 import {
     Box, Heading,
     VStack, FormControl,
-    Input, Button, Link
+    Input, Button, Link, useToast
 } from "native-base"
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {RootStackParamList} from "../../types";
@@ -36,6 +36,11 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
     const [formData, setData] = useState<OrganizerFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [errors, setErrors] = useState<OrganizerSignUpErrorData>({});
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
     const query = `
       mutation create_organizer($email: String!, $name: String!, $password: String!){
@@ -164,6 +169,11 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                         type="password"
                         placeholder={t("passwordPlaceholder")}
                         onChangeText={(value) => setData({ ...formData, password: value })}
+                        InputRightElement={
+                            <Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClickShowPassword}>
+                                {showPassword ? "Hide" : "Show"}
+                            </Button>
+                        }
                     />
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.password}</FormControl.ErrorMessage>
                 </FormControl>
@@ -173,6 +183,11 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                         type="password"
                         placeholder={t("confirmPasswordPlaceholder")}
                         onChangeText={(value) => setData({ ...formData, confirmPassword: value })}
+                        InputRightElement={
+                            <Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClickShowConfirmPassword}>
+                                {showConfirmPassword ? "Hide" : "Show"}
+                            </Button>
+                        }
                     />
                     <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.password}</FormControl.ErrorMessage>
                 </FormControl>

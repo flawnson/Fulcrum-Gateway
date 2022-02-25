@@ -20,6 +20,7 @@ export default function () {
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
     const [errors, setError] = useState<any>([]);
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
+                                                                    currentQueueId: 'some_id',
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
 
@@ -32,6 +33,7 @@ export default function () {
             getUser {
                 ... on User {
                     queue {
+                        queueId: id
                         name
                         joinCode: join_code
                     }
@@ -60,6 +62,7 @@ export default function () {
                     setShareData( {
                             ...shareData,
                             "currentQueueName": data.name,
+                            "currentQueueId": data.queueId,
                             "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
                             "currentQueueJoinCode": data.joinCode
                         }

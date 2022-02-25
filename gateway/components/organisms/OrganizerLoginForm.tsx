@@ -38,7 +38,11 @@ export default ({navigation, setShowModal}: LogInFormType) => {
     const [submitted, setSubmitted] = useState<boolean>(false)
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState<boolean>(false)
     const [errors, setErrors] = useState<OrganizerLogInErrorData>({});
+    const [showPassword, setShowPassword] = React.useState(false);
     const toast = useToast()
+
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+
 
     useCallback(() => {
         // Alert will show if nothing has happened within 10 seconds of submitting the enqueue form.
@@ -145,6 +149,11 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                             type="password"
                             placeholder={t("password_placeholder")}
                             onChangeText={(value) => setData({ ...formData, password: value })}
+                            InputRightElement={
+                                <Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClickShowPassword}>
+                                    {showPassword ? "Hide" : "Show"}
+                                </Button>
+                            }
                         />
                         <Link
                             _text={{

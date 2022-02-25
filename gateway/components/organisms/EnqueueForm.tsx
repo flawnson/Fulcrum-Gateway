@@ -128,9 +128,6 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
 
     async function joinQueue () {
         setLoading(true)
-        console.log(signedInAs)
-        console.log(queueId)
-        console.log(body)
         try {
             const response = await fetch(baseURL(), {
                 method: 'POST',
