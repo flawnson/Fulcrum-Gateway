@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import QueueDashboard from "./QueueDashboard";
-import EnqueuedPage from "./EnqueuedPage";
-import ServicedPage from "./ServicedPage";
-import AbandonedPage from "./AbandonedPage";
+import EnqueuedPage from "../components/molecules/EnqueuedCatalog";
+import ServicedPage from "../components/molecules/ServicedCatalog";
+import AbandonedPage from "../components/molecules/AbandonedCatalog";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {useNavigation, useRoute} from "@react-navigation/native";
 import { HomeScreenProps } from "../types";

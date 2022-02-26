@@ -137,6 +137,14 @@
   "queuesPage": {
     "cannot_fetch_queue_message": "Something went wrong and we can't seem to be able to update the queue data right now... We're working on a fix."
   },
+  "queuesCatalogCardGroup": {
+    "your_queues": "Your queues"
+  },
+  "userCatalogGroup": {
+    "enqueued": "Enqueued",
+    "serviced": "Serviced",
+    "abandoned": "Abandoned"
+  },
   "servicedPage": {
     "cannot_fetch_serviced_message": "Something went wrong and we can't seem to be able to update the serviced data right now... We're working on a fix."
   },
@@ -149,16 +157,12 @@
   "queueDashboard": {
     "enqueued_prefix": "Enqueued",
     "serviced_prefix": "Serviced",
-    "deferred_prefix": "Deferred",
     "average_prefix": "Average Wait",
     "abandoned_prefix": "Abandoned",
-    "noshow_prefix": "No Shows",
     "enqueued_tooltip": "The number of queuers currently waiting in this line.",
     "serviced_tooltip": "The number of queuers you have serviced since this line started.",
-    "deferred_tooltip": "The number of queuers that have deferred at least once since joining the queue.",
     "average_tooltip": "The average wait of queuers since this line started.",
-    "abandoned_tooltip": "The number of queuers that have since abandoned their position in line.",
-    "noshow_tooltip": "The number of queuers that were summoned but did not arrive before the grace period."
+    "abandoned_tooltip": "The number of queuers that have since abandoned their position in line."
   },
   "QRCodeScanner": {
     "message": "We are going live in July!",
@@ -264,7 +268,7 @@
   },
   "nothingToSeeScreen": {
     "image_alt": "Cute cat gif!",
-    "message": "Nothing to see here..."
+    "message": "You have no items in this collection yet..."
   },
   "loadingSpinner": {
     "accessibility_label": "Loading..."

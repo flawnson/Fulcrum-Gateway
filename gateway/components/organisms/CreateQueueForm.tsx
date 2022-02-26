@@ -257,7 +257,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                         </Tooltip>
                     </HStack>
                     <Input
-                        type="password"
+                        type={show ? "text" : "password"}
                         placeholder={t("password_placeholder")}
                         onChangeText={(value) => setData({ ...formData, password: value })}
                         InputRightElement={

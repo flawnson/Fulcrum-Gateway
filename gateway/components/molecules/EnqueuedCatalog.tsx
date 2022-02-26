@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import EnqueuedCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
-import useInterval from "../utilities/useInterval";
-import {HomeScreenProps, UserStats} from "../types";
+import EnqueuedCatalogCardGroup from "./UserCatalogCardGroup";
+import useInterval from "../../utilities/useInterval";
+import {HomeScreenProps, UserStats} from "../../types";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import {ScrollView, useToast} from "native-base";
 import {useTranslation} from "react-i18next";
-import baseURL from "../utilities/baseURL";
-import corsURL from "../utilities/corsURL";
+import baseURL from "../../utilities/baseURL";
+import corsURL from "../../utilities/corsURL";
+import {scale} from "../../utilities/scales";
+import useDimensions from "../../utilities/useDimensions";
 
 
 export default function () {
@@ -14,6 +16,7 @@ export default function () {
     const route = useRoute<HomeScreenProps["route"]>()
     const [props, setProps] = useState<UserStats[]>([])
     const [errors, setError] = useState<any>([]);
+    const {width, height} = useDimensions()
     // The callback is so that we can call the method that deletes the cards from the flatlist when delete confirmed
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
     const toast = useToast()
@@ -97,15 +100,22 @@ export default function () {
     useInterval(fetchUserData, useIsFocused() && !showConfirmDeleteAlert ? 5000 : null)
 
     return (
-        <>
-            <ScrollView>
-                <EnqueuedCatalogCardGroup
-                    entities={props}
-                    setEntities={setProps}
-                    showConfirmDeleteAlert={showConfirmDeleteAlert}
-                    setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
-                />
-            </ScrollView>
-        </>
+        <ScrollView
+            style={{
+                maxWidth: scale(width / 2),
+                height: scale(height / 3.5)
+            }}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+        >
+            <EnqueuedCatalogCardGroup
+                entities={props}
+                setEntities={setProps}
+                showConfirmDeleteAlert={showConfirmDeleteAlert}
+                setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
+            />
+        </ScrollView>
     )
 }
+
+

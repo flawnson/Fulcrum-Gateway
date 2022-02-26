@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import {ScrollView, useToast} from "native-base";
-import useInterval from "../utilities/useInterval";
-import {HomeScreenProps, UserStats} from "../types";
+import useInterval from "../../utilities/useInterval";
+import {HomeScreenProps, UserStats} from "../../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
-import UserCatalogCardGroup from "../components/molecules/UserCatalogCardGroup";
+import UserCatalogCardGroup from "./UserCatalogCardGroup";
 import {useTranslation} from "react-i18next";
-import baseURL from "../utilities/baseURL";
-import corsURL from "../utilities/corsURL";
+import baseURL from "../../utilities/baseURL";
+import corsURL from "../../utilities/corsURL";
+import {scale} from "../../utilities/scales";
+import useDimensions from "../../utilities/useDimensions";
 
 
 export default function () {
     const { t } = useTranslation("servicedPage")
+    const route = useRoute<HomeScreenProps["route"]>()
     const [props, setProps] = useState<UserStats[]>([])
     const [errors, setError] = useState<any>([]);
-    const route = useRoute<HomeScreenProps["route"]>()
+    const {width, height} = useDimensions()
     const toast = useToast()
 
     useEffect(() => {
@@ -91,10 +94,15 @@ export default function () {
     useInterval(fetchServicedData, useIsFocused() ? 5000 : null)
 
     return (
-        <>
-            <ScrollView>
-                <UserCatalogCardGroup entities={props} setEntities={setProps}/>
-            </ScrollView>
-        </>
+        <ScrollView
+            style={{
+                maxWidth: scale(width / 2),
+                height: scale(height / 3.5)
+            }}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+        >
+            <UserCatalogCardGroup entities={props} setEntities={setProps}/>
+        </ScrollView>
     )
 }

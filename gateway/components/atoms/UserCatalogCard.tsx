@@ -254,8 +254,8 @@ const styles = StyleSheet.create({
     group: {
         margin: 10,
         display: 'flex',
-        height: scale(70),
-        width: scale(300),
+        height: scale(50),
+        width: scale(240),
         justifyContent: 'flex-start',
         alignItems: 'center',
         flexDirection: 'row'
@@ -265,11 +265,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     index: {
-        fontSize: scale(30),
+        fontSize: scale(24),
         flex: 1,
     },
     name: {
-        fontSize: scale(16),
+        fontSize: scale(10),
         margin: scale(10),
         flex: 5,  // Trying to move the name to the left, closer to the index
     },
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     waited: {
-        fontSize: scale(16),
+        fontSize: scale(10),
         flex: 1
     },
     icon: {

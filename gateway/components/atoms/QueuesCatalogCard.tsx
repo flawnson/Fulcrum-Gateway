@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Animated } from "react-native";
 import { HStack, Text,
         Box, VStack,
-        Avatar, View } from 'native-base';
+        Badge, View } from 'native-base';
 import { QueueInfo, QueueState, UserStatus } from "../../types";
 import { Swipeable, RectButton,
         State, HandlerStateChangeEvent,
@@ -199,13 +199,7 @@ export default function (props: QueuesCatalogCardProps) {
                         >
                             <HStack style={styles.group}>
                                 <Text>   </Text>  {/* Needed for spacing*/}
-                                <Avatar
-                                    size={scale(60)}
-                                    style={styles.avatar}
-                                    source={require("../../assets/images/generic-user-icon.jpg")}
-                                >
-                                    <Avatar.Badge size="lg" bg={queueState === "ACTIVE" ? "green.500" : "red.500"}/>
-                                </Avatar>
+                                <Text>{queueState === "ACTIVE" ? "🟢" : "🔴"}</Text>
                                 <Text suppressHighlighting={true} style={styles.name}>
                                     {props.entity.name}
                                 </Text>
@@ -230,6 +224,7 @@ export default function (props: QueuesCatalogCardProps) {
 
 const styles = StyleSheet.create({
     card: {
+        cursor: 'pointer',
         marginTop: scale(10),
         marginBottom: scale(10),
     },

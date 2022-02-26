@@ -166,7 +166,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                 <FormControl isInvalid={"password" in errors}>
                     <FormControl.Label>{t("passwordLabel")}</FormControl.Label>
                     <Input
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder={t("passwordPlaceholder")}
                         onChangeText={(value) => setData({ ...formData, password: value })}
                         InputRightElement={
@@ -180,7 +180,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                 <FormControl isInvalid={"confirmPassword" in errors}>
                     <FormControl.Label>{t("confirmPasswordLabel")}</FormControl.Label>
                     <Input
-                        type="password"
+                        type={showConfirmPassword ? "text" : "password"}
                         placeholder={t("confirmPasswordPlaceholder")}
                         onChangeText={(value) => setData({ ...formData, confirmPassword: value })}
                         InputRightElement={

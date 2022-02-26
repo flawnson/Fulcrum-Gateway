@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import QueuesCatalogCard from "../atoms/QueuesCatalogCard";
-import { Center, Text, View, VStack } from "native-base";
+import {Center, ScrollView, Text, View, VStack} from "native-base";
 import { StyleSheet, Pressable, PressableStateCallbackType } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {HomeScreenProps, QueueInfo, QueueState} from "../../types";
@@ -10,6 +10,9 @@ import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 import baseURL from "../../utilities/baseURL";
 import corsURL from "../../utilities/corsURL";
+import {scale} from "../../utilities/scales";
+import useDimensions from "../../utilities/useDimensions";
+import {useTranslation} from "react-i18next";
 
 
 type QueuesStatsProps = {
@@ -29,9 +32,11 @@ type ConditionalWrapperArgs = {
 
 
 export default function (props: QueuesStatsProps) {
+    const { t } = useTranslation("queuesCatalogCardGroup")
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [queueState, setQueueState] = useState<QueueState>("ACTIVE")
     const [paused, setPaused] = useState<boolean>(true)
+    const { width, height } = useDimensions()
     const [selectedItems, setSelectedItems] = useState<Array<QueueInfo["queueId"]>>([])
 
     useEffect(() => {
@@ -123,7 +128,7 @@ export default function (props: QueuesStatsProps) {
         }
 
         // Single tap code
-        navigation.navigate("QueueDashboardTabs", {queueId: item.queueId})
+        navigation.navigate("QueueDashboard", {queueId: item.queueId})
     }
 
     const getSelected = (item: QueueInfo) => selectedItems.includes(item.queueId)
@@ -154,32 +159,60 @@ export default function (props: QueuesStatsProps) {
     return (
         props.entities.length === 0 ? <NothingToSeeScreen /> :
             <Center>
-                <ConditionalWrapper
-                    condition={selectedItems.length}
-                    wrapper={(children: Children) => <Pressable onPress={() => deSelectItems()} style={{flex: 1, padding: 15}}>{children}</Pressable>}
-                >
-                    <FlatList
-                        data={props.entities}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({item}: {item: QueueInfo}) => {
-                            return <QueuesCatalogCard
-                                entities={props.entities}
-                                setEntities={props.setEntities}
-                                onPress={() => handleOnPress(item)}
-                                onLongPress={() => selectItems(item)}
-                                deSelectItems={deSelectItems}
-                                selected={getSelected(item)}
-                                showConfirmDeleteAlert={props.showConfirmDeleteAlert}
-                                setShowConfirmDeleteAlert={props.setShowConfirmDeleteAlert}
-                                entity={item}/>
-                            }
-                        }
-                    />
-                </ConditionalWrapper>
+                <View style={styles.container}>
+                    <Text style={styles.queuesHeading}>
+                        {t("your_queues")}
+                    </Text>
+                    <ConditionalWrapper
+                        condition={selectedItems.length}
+                        wrapper={(children: Children) => <Pressable
+                                                             onPress={() => deSelectItems()}
+                                                             style={{flex: 1, padding: 15}}
+                                                         >
+                                                             {children}
+                                                         </Pressable>}
+                    >
+                        <ScrollView
+                            // Not defining the dimensions of the ScrollView makes it default to the whole page
+                            // maxW={scale(width / 2)}
+                            // h={scale(height / 3.5)}
+                            showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}
+                        >
+                            <FlatList
+                                data={props.entities}
+                                keyExtractor={(item, index) => index.toString()}
+                                renderItem={({item}: {item: QueueInfo}) => {
+                                    return <QueuesCatalogCard
+                                        entities={props.entities}
+                                        setEntities={props.setEntities}
+                                        onPress={() => handleOnPress(item)}
+                                        onLongPress={() => selectItems(item)}
+                                        deSelectItems={deSelectItems}
+                                        selected={getSelected(item)}
+                                        showConfirmDeleteAlert={props.showConfirmDeleteAlert}
+                                        setShowConfirmDeleteAlert={props.setShowConfirmDeleteAlert}
+                                        entity={item}/>
+                                    }
+                                }
+                            />
+                        </ScrollView>
+                    </ConditionalWrapper>
+                </View>
             </Center>
         )
     }
 
 
 const styles = StyleSheet.create({
+    container: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "flex-start"
+    },
+    queuesHeading: {
+        flex: 1,
+        fontSize: 24
+    }
 })
