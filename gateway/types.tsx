@@ -7,8 +7,8 @@ import React from "react";
 export type RootStackParamList = {
     HomePage: undefined;
     UserDashboard: undefined | {name: string, phoneNumber: string};
-    QueueDashboard: undefined;
-    QueueDashboardTabs: undefined | {queueId: QueueInfo["queueId"]};
+    QueueDashboard: undefined | {queueId: QueueInfo["queueId"]};
+    QueueDashboardTabs: undefined | {queueId: QueueInfo["queueId"]};  // MAY NOT NEED ANYMORE IF WE GET RID OF TABS
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
     ShareScreen: {shareData: ShareData};

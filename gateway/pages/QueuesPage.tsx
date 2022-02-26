@@ -99,7 +99,7 @@ export default function () {
     // Run on first render
     useEffect(() => {fetchQueuesData().then()}, [])
     // Poll only if user is currently on this screen and alert is not shown (to prevent flickering)
-    useInterval(fetchQueuesData, useIsFocused() ? 10000 : null)
+    useInterval(fetchQueuesData, useIsFocused() ? 5000 : null)
 
     return (
         <>
@@ -117,6 +117,7 @@ export default function () {
             <Fab
                 onPress={() => setShowCreateQueueModal(!showCreateQueueModal)}
                 position="absolute"
+                placement="bottom-right"
                 size="sm"
                 icon={<Icon color="white" as={<AntDesign name="plus" />} size="sm" />}
                 renderInPortal={useIsFocused()}  // So that the FAB only renders in the current screen

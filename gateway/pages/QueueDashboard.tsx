@@ -2,8 +2,10 @@ import React, {SetStateAction, useEffect, useState} from 'react'
 import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native"
 import {DashboardStat, HomeScreenProps} from "../types"
 import {StyleSheet} from 'react-native'
-import {Text, Center,
-        Heading, HStack} from "native-base"
+import {
+    Text, Center,
+    Heading, HStack, useToast
+} from "native-base"
 import QueueDashboardGroup from "../components/organisms/QueueDashboardStats"
 import QueueDashboardMenu from "../containers/QueueDashboardMenu"
 import useInterval from "../utilities/useInterval"
@@ -11,6 +13,9 @@ import {zipObject} from "lodash"
 import {useTranslation} from "react-i18next"
 import baseURL from "../utilities/baseURL"
 import corsURL from "../utilities/corsURL";
+import EnqueuedCatalog from "../components/molecules/EnqueuedCatalog";
+import {DashboardContext} from "../utilities/DashboardContext";
+import CatalogGroup from "../components/organisms/UserCatalogGroup";
 
 type UserData = {
     user_id: string,
@@ -20,8 +25,26 @@ type UserData = {
 
 
 export default function () {
-    const route = useRoute<HomeScreenProps["route"]>()
     const { t } = useTranslation(["queueDashboard"]);
+    const route = useRoute<HomeScreenProps["route"]>()
+    const [errors, setError] = useState<any>([]);
+    const [dashboardContext, setDashboardContext] = useState<string>("ENQUEUED");
+    const toast = useToast()
+    const toastId = "errorToast"
+
+    useEffect(() => {
+        if (!!errors.length) {
+            if (!toast.isActive(toastId)) {
+                toast.show({
+                    id: toastId,
+                    title: t('something_went_wrong', {ns: "common"}),
+                    status: "error",
+                    description: t("cannot_enqueue_message"),
+                    duration: 10
+                })
+            }
+        }
+    }, [errors])  // Render alert if errors
 
     const defaultProps = {
         name: "Some Queue",
@@ -29,10 +52,8 @@ export default function () {
         stats: [
             {prefix: t("enqueued_prefix"), stat: 0, suffix: "", tooltip: t("enqueued_tooltip")},
             {prefix: t("serviced_prefix"), stat: 0, suffix: "", tooltip: t("serviced_tooltip")},
-            {prefix: t("deferred_prefix"), stat: 0, suffix: "", tooltip: t("deferred_tooltip")},
             {prefix: t("average_prefix"), stat: 0, suffix: "m", tooltip: t("average_tooltip")},
             {prefix: t("abandoned_prefix"), stat: 0, suffix: "", tooltip: t("abandoned_tooltip")},
-            {prefix: t("noshow_prefix"), stat: 0, suffix: "", tooltip: t("noshow_tooltip")}
         ],
     }
     const [props, setProps] = useState(defaultProps)
@@ -91,20 +112,19 @@ export default function () {
                                          })
             await response.json().then(
                 data => {
-                    console.log(data)
                     const queueData = data.data.getQueue
-                    userData = data.data.getQueue.users
+                    data = data.data.getQueue.users
                     // Count the number users with of each type of status
                     const statuses = ["ENQUEUED", "SERVICED", "DEFERRED", "ABANDONED", "NOSHOW"]
                     const counts = []
                     for (const status of statuses) {
-                        counts.push(userData.filter((user: UserData) => {return user.status === status}).length)
+                        counts.push(data.filter((user: UserData) => {return user.status === status}).length)
                     }
                     let stats: SetStateAction<DashboardStat[] | any> = zipObject(statuses.map(status => status.toLowerCase()), counts)
                     // Calculate the average of all user waits thus far
                     const now: any = new Date()
                     let userWaits: Array<number> = []
-                    for (const user of userData) {
+                    for (const user of data) {
                         const join: any = new Date(user.join_time)
                         const waited = new Date(Math.abs(now - join)).getMinutes()
                         const minutes = Math.floor(waited)
@@ -115,33 +135,25 @@ export default function () {
                     setProps({"name": queueData.name,
                                     "state": queueData.state,
                                     "stats": [{prefix: t("enqueued_prefix"),
-                                               stat: stats.enqueued,
+                                               stat: stats.enqueued + stats.deferred,
                                                suffix: "",
                                                tooltip: t("enqueued_tooltip")},
-                                              {prefix: t("serviced_prefix"),
-                                               stat: stats.serviced,
-                                               suffix: "",
-                                               tooltip: t("serviced_tooltip")},
-                                              {prefix: t("deferred_prefix"),
-                                               stat: stats.deferred,
-                                               suffix: "",
-                                               tooltip: t("deferred_tooltip")},
                                               {prefix: t("average_prefix"),
                                                stat: stats.avg,
                                                suffix: "m",
                                                tooltip: t("average_tooltip")},
+                                              {prefix: t("serviced_prefix"),
+                                               stat: stats.serviced,
+                                               suffix: "",
+                                               tooltip: t("serviced_tooltip")},
                                               {prefix: t("abandoned_prefix"),
-                                               stat: stats.abandoned,
+                                               stat: stats.abandoned + stats.noshow,
                                                suffix: "",
-                                               tooltip: t("abandoned_tooltip")},
-                                              {prefix: t("noshow_prefix"),
-                                               stat: stats.noshow,
-                                               suffix: "",
-                                               tooltip: t("noshow_tooltip")}]})
+                                               tooltip: t("abandoned_tooltip")},]})
                 }
             )
         } catch(error) {
-            console.log(error)
+            setError([...errors, error])
         }
     }
 
@@ -151,20 +163,22 @@ export default function () {
     useInterval(fetchQueueData, useIsFocused() ? 5000 : null)
 
     return (
-        <Center style={styles.animationFormat}>
-            <HStack space={3} alignItems="center">
-                <Text>{props.state === "ACTIVE" ? "🟢" : "🔴"}</Text>
-                <Heading style={styles.headingFormat}>{props.name}</Heading>
-            </HStack>
-            <QueueDashboardGroup {...props.stats}/>
-            <QueueDashboardMenu />
-        </Center>
+        <DashboardContext.Provider value={{dashboardContext, setDashboardContext}}>
+            <Center style={styles.container}>
+                <HStack space={3} alignItems="center">
+                    <Text>{props.state === "ACTIVE" ? "🟢" : "🔴"}</Text>
+                    <Heading style={styles.headingFormat}>{props.name}</Heading>
+                </HStack>
+                <QueueDashboardGroup {...props.stats}/>
+                <CatalogGroup />
+                <QueueDashboardMenu />
+            </Center>
+        </DashboardContext.Provider>
     )
 }
 
 const styles = StyleSheet.create({
-    animationFormat: {
-        position: 'relative',
+    container: {
     },
     animation: {
         marginTop: 25,

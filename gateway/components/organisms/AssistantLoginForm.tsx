@@ -135,7 +135,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
                     <FormControl>
                         <FormControl.Label>{t("password_title")}</FormControl.Label>
                         <Input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             placeholder={t("password_placeholder")}
                             onChangeText={(value) => setData({ ...formData, password: value })}
                             InputRightElement={

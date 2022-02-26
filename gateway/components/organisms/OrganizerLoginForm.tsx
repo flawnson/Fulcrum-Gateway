@@ -146,7 +146,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                     <FormControl isInvalid={"password" in errors}>
                         <FormControl.Label>{t("password")}</FormControl.Label>
                         <Input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             placeholder={t("password_placeholder")}
                             onChangeText={(value) => setData({ ...formData, password: value })}
                             InputRightElement={

@@ -1,5 +1,4 @@
 import React from "react";
-import {UserTypes} from "../types";
 
 export const AuthContext = React.createContext(
 // AuthContext used throughout the app, default values do nothing

@@ -20,7 +20,7 @@ import UserDashboard from "./pages/UserDashboard"
 import { RootStackParamList } from "./types"
 import { nativebaseTheme, navigationTheme } from "./theme"
 import QueuesPage from "./pages/QueuesPage"
-import EnqueuedPage from "./pages/EnqueuedPage";
+import EnqueuedPage from "./components/molecules/EnqueuedCatalog";
 import QueueDashboardTabs from "./pages/QueueDashboardTabs"
 import QRCodeScanner from "./components/organisms/QRCodeScanner"
 import ErrorScreen from "./screens/ErrorScreen"
