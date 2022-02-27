@@ -1,6 +1,6 @@
 import prisma from '../prismaClient';
 import bcrypt from "bcryptjs";
-import { user_table, queue_table, organizer_table} from "./data/data"
+import { user_table, queue_table, organizer_table} from "./data/new_data"
 
 export async function dbSetup() {
 
