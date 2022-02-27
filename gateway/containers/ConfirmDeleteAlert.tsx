@@ -10,7 +10,7 @@ type ConfirmDeleteAlert = {
 
 export default function (props: ConfirmDeleteAlert) {
     const cancelRef = React.useRef(null)
-    const { t, i18n } = useTranslation(["confirmDeleteAlert", "common"]);
+    const { t } = useTranslation(["confirmDeleteAlert", "common"]);
 
     function onConfirmPress() {
         props.showAlert.callback()
@@ -32,7 +32,7 @@ export default function (props: ConfirmDeleteAlert) {
                     </Text>
                 </AlertDialog.Body>
                 <AlertDialog.Footer>
-                    <Button onPress={onConfirmPress}>
+                    <Button onPress={() => onConfirmPress()}>
                         {t("confirm", {ns: "common"})}
                     </Button>
                 </AlertDialog.Footer>

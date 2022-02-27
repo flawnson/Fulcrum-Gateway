@@ -1,11 +1,12 @@
-import React from "react"
-import { AlertDialog, Button, Center } from "native-base"
+import React, {useEffect, useState} from "react"
+import {AlertDialog, Button, Center, useToast} from "native-base"
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../types";
 import {useTranslation} from "react-i18next";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
+import {AuthContext} from "../utilities/AuthContext";
 
 type LeaveQueueAlertProps = {
     isAlertOpen: boolean,
@@ -14,8 +15,21 @@ type LeaveQueueAlertProps = {
 
 
 export default (props: LeaveQueueAlertProps) => {
+    const { t } = useTranslation(["leaveQueueAlert", "common"]);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const { t, i18n } = useTranslation(["leaveQueueAlert", "common"]);
+    const [errors, setError] = useState<any>([]);
+    const { signOut } = React.useContext(AuthContext)
+    const toast = useToast()
+
+    useEffect(() => {
+        if (!!errors.length) {
+            toast.show({
+                title: t('something_went_wrong', {ns: "common"}),
+                status: "error",
+                description: t("cannot_leave_queue_message")
+            })
+        }
+    }, [errors])  // Render alert if errors
 
     const onClose = () => {
         props.setIsAlertOpen(false)
@@ -48,19 +62,26 @@ export default (props: LeaveQueueAlertProps) => {
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: variables})
             });
-            return await response.json()
+            return await response.json().then(data => {
+                    if (!!data.errors?.length) {
+                        setError([...errors, data.errors[0]])
+                    } else {
+                        signOut()
+                        navigation.reset({index: 1, routes: [{name: "HomePage"}]})
+                        navigation.navigate("AbandonedScreen")
+                        AsyncStorage.clear().then()
+                    }
+                }
+            )
         } catch(error) {
-            return error
+            setError([...errors, error])
         }
     }
 
 
     const onLeave = () => {
         props.setIsAlertOpen(false)
-        AsyncStorage.clear().then()
         leaveQueue().then()
-        navigation.reset({index: 1, routes: [{name: "HomePage"}]})
-        navigation.navigate("AbandonedScreen")
     }
 
     const cancelRef = React.useRef(null)

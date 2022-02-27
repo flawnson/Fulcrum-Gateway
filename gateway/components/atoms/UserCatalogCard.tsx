@@ -77,20 +77,25 @@ export default function (props: UserCatalogCardProps) {
     }
 
     const statusQuery = `
-        mutation change_status($userId: String! $status: String!) {
+        mutation change_status($userId: String!, $status: String!) {
             changeStatus(userId: $userId status: $status) {
-                id
+                ... on User {
+                    id
+                }
+                ... on Error {
+                    error
+                }
             }
         }
     `
 
     async function changeUserStatus (status: UserStatus) {
         try {
-            const response = await fetch(`http://localhost:8080/api`, {
+            const response = await fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:19006/',
+                    'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: statusQuery, variables: {userId: props.entity.userId, status: status}})
@@ -219,25 +224,25 @@ export default function (props: UserCatalogCardProps) {
                                 {`${props.entity.index}.`}
                             </Text> : <></>
                         }
-                        <Text suppressHighlighting={true} style={styles.name}>
-                            {props.entity.name}
-                        </Text>
                         <VStack style={styles.pair}>
+                            <Text suppressHighlighting={true} style={styles.name}>
+                                {props.entity.name}
+                            </Text>
                             <Text style={styles.waited}>
                                 {`${props.entity.waited} m`}
                             </Text>
-                            {props.entity.finishTime
-                                ? <Text style={styles.waited}>{props.entity.finishTime}</Text>
-                                : <MaterialCommunityIcons
-                                        selectable={false}
-                                        name={summoned ? "bell-circle" : "bell-circle-outline"}
-                                        size={scale(32)}
-                                        color={"#999999"}
-                                        style={styles.icon}
-                                        onPress={onBellPress}
-                                  />
-                            }
                         </VStack>
+                        {props.entity.finishTime
+                            ? <Text style={styles.waited}>{props.entity.finishTime}</Text>
+                            : <MaterialCommunityIcons
+                                selectable={false}
+                                name={summoned ? "bell-circle" : "bell-circle-outline"}
+                                size={scale(32)}
+                                color={"#999999"}
+                                style={styles.icon}
+                                onPress={onBellPress}
+                            />
+                        }
                     </HStack>
                     {props.selected && <View style={styles.overlay} />}
                 </Box>
@@ -253,38 +258,37 @@ const styles = StyleSheet.create({
     },
     group: {
         margin: 10,
-        display: 'flex',
         height: scale(50),
         width: scale(240),
+        display: 'flex',
+        flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        flexDirection: 'row'
     },
     avatar: {
         flex: 1,
         borderRadius: 10,
     },
     index: {
+        flex: 0,
         fontSize: scale(24),
-        flex: 1,
     },
     name: {
+        flex: 1,  // Trying to move the name to the left, closer to the index
         fontSize: scale(10),
-        margin: scale(10),
-        flex: 5,  // Trying to move the name to the left, closer to the index
     },
     pair: {
+        flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start'
     },
     waited: {
+        flex: 1,
         fontSize: scale(10),
-        flex: 1
     },
     icon: {
-        flex: 1
     },
     overlay: {
         position: 'absolute',

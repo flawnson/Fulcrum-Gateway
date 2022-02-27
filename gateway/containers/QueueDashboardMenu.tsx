@@ -15,13 +15,13 @@ import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
 
 export default function () {
-    const { colors } = useTheme()
-    const { signedInAs } = React.useContext(AuthContext)
+    const { t } = useTranslation(["queueDashboardMenu"]);
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
+    const { colors } = useTheme()
+    const { signedInAs } = React.useContext(AuthContext)
     const { signOut } = React.useContext(AuthContext)
     const { isThemeDark } = React.useContext(PreferencesContext)
-    const { t } = useTranslation(["queueDashboardMenu"]);
     const [queuePaused, toggleQueuePaused] = useState(false)
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
     const [showChangeQueuePasswordModal, setShowChangeQueuePasswordModal] = useState(false);
@@ -33,7 +33,7 @@ export default function () {
                                                                     currentQueueId: "",
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
-    // useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+
     useEffect(() => {
         if (!!errors.length) {
             toast.show({
@@ -98,7 +98,7 @@ export default function () {
                 data => {
                     if (!!data.errors?.length) {
                         // Check for errors on response
-                        setError(data.errors[0])
+                        setError([...errors, data.errors[0]])
                     } else {
                         data = data.data.getQueue
                         setShareData({
@@ -146,12 +146,12 @@ export default function () {
     `
 
     const organizerPauseVariables = `{
-            "queueId": ${route.params!["queueId"]}
-            "state": "PAUSED"
+            "queueId": "${route.params!["queueId"]}",
+            "state": "${queuePaused ? "PAUSED" : "ACTIVE"}"
         }`
 
     const assistantPauseVariables = `{
-            "state": "PAUSED"
+            "state": "${queuePaused ? "PAUSED" : "ACTIVE"}"
         }`
 
     const pauseQuery = signedInAs === "ORGANIZER" ? organizerPauseQuery :
@@ -205,9 +205,9 @@ export default function () {
                         setError(data.errors[0])
                     } else {
                         signOut()
-                        AsyncStorage.clear().then()
                         navigation.reset({index: 1, routes: [{name: "HomePage"}]})
                         StackActions.popToTop() && navigation.navigate("HomePage")
+                        AsyncStorage.clear().then()
                     }
                 }
             )
@@ -258,7 +258,7 @@ export default function () {
                                 color={isThemeDark ? 'white': 'black'}
                             />
                             <Text>
-                                {t("pause_queue")}
+                                {queuePaused ? t("pause_queue") : t("unpause_queue")}
                             </Text>
                         </HStack>
                     </Menu.Item>
