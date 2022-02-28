@@ -15,13 +15,13 @@ import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
 
 export default function () {
-    const { colors } = useTheme()
-    const { signedInAs } = React.useContext(AuthContext)
+    const { t } = useTranslation(["queueDashboardMenu"]);
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
+    const { colors } = useTheme()
+    const { signedInAs } = React.useContext(AuthContext)
     const { signOut } = React.useContext(AuthContext)
     const { isThemeDark } = React.useContext(PreferencesContext)
-    const { t } = useTranslation(["queueDashboardMenu"]);
     const [queuePaused, toggleQueuePaused] = useState(false)
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
     const [showChangeQueuePasswordModal, setShowChangeQueuePasswordModal] = useState(false);
@@ -33,7 +33,7 @@ export default function () {
                                                                     currentQueueId: "",
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
-    // useEffect(() => {if (!!errors.length) {setShowErrorAlert(true)}}, [errors])  // Render alert if errors
+
     useEffect(() => {
         if (!!errors.length) {
             toast.show({
@@ -98,7 +98,7 @@ export default function () {
                 data => {
                     if (!!data.errors?.length) {
                         // Check for errors on response
-                        setError(data.errors[0])
+                        setError([...errors, data.errors[0]])
                     } else {
                         data = data.data.getQueue
                         setShareData({
@@ -146,12 +146,12 @@ export default function () {
     `
 
     const organizerPauseVariables = `{
-            "queueId": ${route.params!["queueId"]}
-            "state": "PAUSED"
+            "queueId": "${route.params!["queueId"]}",
+            "state": "${queuePaused ? "PAUSED" : "ACTIVE"}"
         }`
 
     const assistantPauseVariables = `{
-            "state": "PAUSED"
+            "state": "${queuePaused ? "PAUSED" : "ACTIVE"}"
         }`
 
     const pauseQuery = signedInAs === "ORGANIZER" ? organizerPauseQuery :
@@ -181,9 +181,15 @@ export default function () {
         setQueuePaused().then()
     }
 
-    const logoutQuery = `
+    const organizerLogoutQuery = `
         mutation logout_organizer {
             logoutOrganizer
+        }
+    `
+
+    const assistantLogoutQuery = `
+        mutation logout_queue {
+            logoutQueue
         }
     `
 
@@ -196,7 +202,7 @@ export default function () {
                     'Access-Control-Allow-Origin': corsURL(),
                 },
                 credentials: 'include',
-                body: JSON.stringify({query: logoutQuery})
+                body: JSON.stringify({query: signedInAs === "ORGANIZER" ? organizerLogoutQuery : assistantLogoutQuery})
             });
             // enter you logic when the fetch is successful
             return await response.json().then(data => {
@@ -205,9 +211,9 @@ export default function () {
                         setError(data.errors[0])
                     } else {
                         signOut()
-                        AsyncStorage.clear().then()
                         navigation.reset({index: 1, routes: [{name: "HomePage"}]})
                         StackActions.popToTop() && navigation.navigate("HomePage")
+                        AsyncStorage.clear().then()
                     }
                 }
             )
@@ -237,85 +243,82 @@ export default function () {
                     )
                 }}
             >
-                <Menu.Group title="Assistants">
-                    <Menu.Item onPress={() => setShowCreateUserModal(true)}>
-                        <HStack space={3}>
-                            <Ionicons
-                                name={'person-add'}
-                                size={20}
-                                color={isThemeDark ? 'white': 'black'}
-                            />
-                            <Text>
-                                {t("create_user")}
-                            </Text>
-                        </HStack>
-                    </Menu.Item>
-                    <Menu.Item onPress={() => pauseQueue()}>
-                        <HStack space={3}>
-                            <MaterialCommunityIcons
-                                name={'pause-circle'}
-                                size={20}
-                                color={isThemeDark ? 'white': 'black'}
-                            />
-                            <Text>
-                                {t("pause_queue")}
-                            </Text>
-                        </HStack>
-                    </Menu.Item>
-                    <Menu.Item onPress={() => navigation.navigate("ShareScreen", {shareData: shareData})}>
-                        <HStack space={3}>
-                            <MaterialCommunityIcons
-                                name={'share-variant'}
-                                size={20}
-                                color={isThemeDark ? 'white': 'black'}
-                            />
-                            <Text>
-                                {t("share_queue")}
-                            </Text>
-                        </HStack>
-                    </Menu.Item>
-                    <Menu.Item onPress={() => onLogoutPress()}>
-                        <HStack space={3}>
-                            <MaterialCommunityIcons
-                                name={'logout-variant'}
-                                size={20}
-                                color={isThemeDark ? 'white': 'black'}
-                            />
-                            <Text>
-                                {t("logout_queue")}
-                            </Text>
-                        </HStack>
-                    </Menu.Item>
-                </Menu.Group>
-                <Divider mt="3" w="100%" />
-                <Menu.Group title="Organizers">
-                    {/*Can only end (delete queue) if user is an organizer*/}
+                <Menu.Item onPress={() => setShowCreateUserModal(true)}>
+                    <HStack space={3}>
+                        <Ionicons
+                            name={'person-add'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("create_user")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
+                <Menu.Item onPress={() => pauseQueue()}>
+                    <HStack space={3}>
+                        <MaterialCommunityIcons
+                            name={'pause-circle'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {queuePaused ? t("pause_queue") : t("unpause_queue")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
+                <Menu.Item onPress={() => navigation.navigate("ShareScreen", {shareData: shareData})}>
+                    <HStack space={3}>
+                        <MaterialCommunityIcons
+                            name={'share-variant'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("share_queue")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
+                <Menu.Item onPress={() => onLogoutPress()}>
+                    <HStack space={3}>
+                        <MaterialCommunityIcons
+                            name={'logout-variant'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("logout_queue")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
+                {signedInAs === "ORGANIZER" ?
                     <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
                         <HStack space={3}>
                             <Ionicons
                                 name={'close-circle'}
                                 size={20}
-                                color={isThemeDark ? 'white': 'black'}
+                                color={isThemeDark ? 'white' : 'black'}
                             />
-                            <Text style={signedInAs !== "ORGANIZER" ? {color: colors.gray["400"]} : {}}>
-                                {t("end_queue")}
+                            <Text color={isThemeDark ? 'white' : 'black'}>
+                                {t("delete_queue")}
                             </Text>
                         </HStack>
                     </Menu.Item>
-                    {/*Can only change queue password if you're the organizer*/}
+                : <></>}
+                {signedInAs === "ORGANIZER" ?
                     <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setShowChangeQueuePasswordModal(true)}>
                         <HStack space={3}>
                             <Ionicons
                                 name={'close-circle'}
                                 size={20}
-                                color={isThemeDark ? 'white': 'black'}
+                                color={isThemeDark ? 'white' : 'black'}
                             />
-                            <Text style={signedInAs !== "ORGANIZER" ? {color: colors.gray["400"]} : {}}>
+                            <Text color={isThemeDark ? 'white' : 'black'}>
                                 {t("change_password")}
                             </Text>
                         </HStack>
                     </Menu.Item>
-                </Menu.Group>
+                : <></>}
             </Menu>
             <CreateUserModal
                 queueId={shareData.currentQueueId}
