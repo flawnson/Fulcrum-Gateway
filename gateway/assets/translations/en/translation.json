@@ -119,7 +119,7 @@
   },
   "queueDashboardMenu": {
     "create_user": "Create User",
-    "end_queue": "End Queue",
+    "delete_queue": "Delete Queue",
     "pause_queue": "Pause Queue",
     "unpause_queue": "Unpause Queue",
     "share_queue": "Share Queue",

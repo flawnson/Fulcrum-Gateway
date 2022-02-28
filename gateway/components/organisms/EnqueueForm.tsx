@@ -143,10 +143,10 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
                     // If response is valid and returns an id, then set auth context, submit, and navigate to dashboard
                     if (!!data.errors?.length) {
                         // Check for errors on response
-                        setError(data.errors)
+                        setError([...errors, data.errors])
                     } else if (data.data.joinQueue.error === "USER_ALREADY_EXISTS") {
                         // Check if user exists on backend
-                        setError(data.data.getUser.error)
+                        setError([...errors, data.data.getUser.error])
                     } else if (data?.data?.createUser || data?.data?.joinQueue.id) {
                         setSubmitted(true)
                         if (!setShowModal) {
