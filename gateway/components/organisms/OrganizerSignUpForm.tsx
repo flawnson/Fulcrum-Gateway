@@ -81,16 +81,21 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                 body: JSON.stringify({query: query, variables: formData}),
             });
             return await response.json().then(data => {
-                    if (data.data.createOrganizer.id) {
-                        setShowModal(false)
-                        setSubmitted(false)
-                        toast.show({
-                            id: toastId,
-                            title: t("check_your_email"),
-                            status: "success",
-                            description: t("cannot_sign_up_organizer_message"),
-                            duration: 10
-                        })
+                if (!!data.errors?.length) {
+                    setSubmitted(false)
+                    setErrors([...errors, data.errors[0]])
+                } else if (data.data.createOrganizer.error === "ORGANIZER_ALREADY_EXISTS") {
+                    setSubmitted(false)
+                    setErrors([...errors, data.data.confirmOrganizer.error])
+                } else if (data.data.createOrganizer.id) {
+                    setShowModal(false)
+                    setSubmitted(false)
+                    toast.show({
+                        title: t("check_your_email"),
+                        status: "success",
+                        description: t("cannot_sign_up_organizer_message"),
+                        duration: 10
+                    })
                     }
                 }
             )
