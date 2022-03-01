@@ -142,6 +142,9 @@
   "queuesCatalogCardGroup": {
     "your_queues": "Your queues"
   },
+  "userCatalogCardGroup": {
+    "cannot_change_status_message": "Something went wrong and we can't seem to be able to change user status right now... Please try again soon"
+  },
   "userCatalogGroup": {
     "enqueued": "Enqueued",
     "serviced": "Serviced",
@@ -196,7 +199,9 @@
     "passwordPlaceholder": "Definitely not 12345",
     "confirmPasswordLabel": "Confirm Password",
     "confirmPasswordPlaceholder": "Definitely not my birthday",
-    "isLoadingText": "Signing up..."
+    "isLoadingText": "Signing up...",
+    "check_your_email": "We've sent a confirmation link to your email, please complete your sign up from there.",
+    "cannot_sign_up_organizer_message": "Something went wrong and we can't seem to be able to sign you up right now... Please try again soon."
   },
   "logInModal": {
     "title": "Log In",
@@ -274,5 +279,9 @@
   },
   "loadingSpinner": {
     "accessibility_label": "Loading..."
+  },
+  "confirmationScreen": {
+    "cannot_confirm_organizer_message": "Something went wrong and we can't seem to be able to verify your account right now... Please try again soon.",
+    "message": "Confirm your account by clicking the button below and we'll take you back to our home page."
   }
 }
