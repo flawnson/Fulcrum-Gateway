@@ -109,7 +109,8 @@
   },
   "leaveQueueAlert": {
     "header": "Leave Queue",
-    "dialog": "Are you sure you want to abandon your position in line? You will have to enter the code again and start from the end of the line if you choose to rejoin."
+    "dialog": "Are you sure you want to abandon your position in line? You will have to enter the code again and start from the end of the line if you choose to rejoin.",
+    "cannot_leave_queue_message": "Something went wrong and we can't seem to log you out of this queue right now... Plase try again soon."
   },
   "endQueueAlert": {
     "header": "End Queue",
@@ -118,8 +119,9 @@
   },
   "queueDashboardMenu": {
     "create_user": "Create User",
-    "end_queue": "End Queue",
+    "delete_queue": "Delete Queue",
     "pause_queue": "Pause Queue",
+    "unpause_queue": "Unpause Queue",
     "share_queue": "Share Queue",
     "change_password": "Change queue password",
     "logout_queue": "Logout",

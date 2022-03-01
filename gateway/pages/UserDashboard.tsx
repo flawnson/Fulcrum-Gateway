@@ -14,6 +14,7 @@ import {scale} from "../utilities/scales";
 import calculateTimeToNow from "../utilities/calculateTimeToNow";
 import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
+import secondsToTime from "../utilities/secondsToTime";
 
 
 export default function () {
@@ -129,6 +130,9 @@ export default function () {
                                     : terminalDigit === 2 ? "nd"
                                         : terminalDigit === 3 ? "rd"
                                             : "th"
+                        // Convert average wait and estimated wait from seconds to hh/mm/ss
+                        const estimated_wait = secondsToTime(userData.estimated_wait)
+                        const average_wait = secondsToTime(queueData.average_wait)
                         // Set user data to be displayed and passed to subcomponents
                         setProps({
                             "user_name": userData.name,
@@ -150,13 +154,13 @@ export default function () {
                                 },
                                 {
                                     "prefix": t("average_prefix"),
-                                    "stat": queueData.average_wait,
+                                    "stat": average_wait,
                                     "suffix": "m",
                                     "tooltip": t("average_tooltip")
                                 },
                                 {
                                     "prefix": t("eta_prefix"),
-                                    "stat": userData.estimated_wait,
+                                    "stat": estimated_wait,
                                     "suffix": "m",
                                     "tooltip": t("eta_tooltip")
                                 }]
@@ -166,6 +170,7 @@ export default function () {
             )
         } catch(error) {
             setError([...errors, error])
+            console.log(error)
         }
     }
 
@@ -176,7 +181,7 @@ export default function () {
 
     return (
         <Center>
-            <Heading style={styles.headingFormat}>{props.queue_name}'s Queue</Heading>
+            <Heading style={styles.headingFormat}>{props.queue_name}</Heading>
             <HStack style={styles.container}>
                 <Image
                     source={require('../assets/images/queueup.gif')}

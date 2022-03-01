@@ -87,14 +87,16 @@ export default function (props: QueuesCatalogCardProps) {
     }
 
     const onChangeState = (state: QueueState) => {
-        props.entities.find(user => user.queueId === props.entity.queueId)!.state = state
         if (state === "DELETED"){
             props.setShowConfirmDeleteAlert(
                 {
                     show: true,
-                    callback: () => props.setEntities(
-                        [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
-                    )
+                    callback: () => {
+                        props.entities.find(user => user.queueId === props.entity.queueId)!.state = state
+                        props.setEntities(
+                            [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
+                        )
+                    }
                 }
             )
         } else if (state === "PAUSED") {
