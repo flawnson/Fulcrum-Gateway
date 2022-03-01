@@ -55,7 +55,7 @@ export default {
             path: 'changepasswordscreen'
         },
         ConfirmationScreen: {
-            path: 'confirmationscreen'
+            path: 'organizer/confirm/:organizer-confirmation',
         },
         SplashScreen: {
             path: 'splashscreen'

@@ -6,7 +6,7 @@ import {
 } from "native-base"
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {RootStackParamList} from "../../types";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import baseURL from "../../utilities/baseURL";
 import corsURL from "../../utilities/corsURL";
@@ -35,9 +35,23 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
     const { t } = useTranslation(["signUpForm", "common"]);
     const [formData, setData] = useState<OrganizerFormData>({});
     const [submitted, setSubmitted] = useState<boolean>(false)
-    const [errors, setErrors] = useState<OrganizerSignUpErrorData>({});
+    const [errors, setErrors] = useState<OrganizerSignUpErrorData | any>({});
     const [showPassword, setShowPassword] = React.useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+    const toast = useToast()
+    const toastId = "errorToast"
+
+    useEffect(() => {
+        if (!!errors.length) {
+            toast.show({
+                id: toastId,
+                title: t('something_went_wrong', {ns: "common"}),
+                status: "error",
+                description: t("cannot_sign_up_organizer_message"),
+                duration: 10
+            })
+        }
+    }, [errors])  // Render alert if errors
 
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
@@ -66,9 +80,22 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData}),
             });
-            return await response.json()
+            return await response.json().then(data => {
+                    if (data.data.createOrganizer.id) {
+                        setShowModal(false)
+                        setSubmitted(false)
+                        toast.show({
+                            id: toastId,
+                            title: t("check_your_email"),
+                            status: "success",
+                            description: t("cannot_sign_up_organizer_message"),
+                            duration: 10
+                        })
+                    }
+                }
+            )
         } catch (error) {
-            return error
+            setErrors([...errors, error])
         }
     }
 
@@ -109,9 +136,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
     }
 
     const onSuccess = () => {
-        setShowModal(false)
-        setSubmitted(false)
-        navigation.navigate("QueuesPage")
+        signUp().then()
     }
 
     const onFailure = () => {
@@ -120,7 +145,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
 
     const onSignUpPress = () => {
         setSubmitted(true)
-        validate() && signUp() ? onSuccess() : onFailure();
+        validate() ? onSuccess() : onFailure();
     }
 
     return (

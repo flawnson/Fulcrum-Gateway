@@ -86,7 +86,7 @@ export default function () {
                                      })
             await response.json().then(
                 data => {
-                    if (!!data.errors?.length) {setError(data.errors)}  // Check for errors on response
+                    if (!!data.errors?.length) {setError([...errors, data.errors[0]])}  // Check for errors on response
                     setOrganizerInfo({name: data.data.getOrganizer.name})
                     setProps(data.data.getOrganizer.queues)
                 }
