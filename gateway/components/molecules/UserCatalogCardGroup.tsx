@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Center } from "native-base";
+import {Center, useToast} from "native-base";
 import { FlatList } from "react-native-gesture-handler"
 import { StyleSheet, Pressable, PressableStateCallbackType} from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -9,6 +9,7 @@ import CatalogCardMultiSelectButtons from "../organisms/CatalogCardMultiSelectBu
 import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 import baseURL from "../../utilities/baseURL";
 import corsURL from "../../utilities/corsURL";
+import {useTranslation} from "react-i18next";
 
 
 type UserCatalogCardProps = {
@@ -25,10 +26,28 @@ type ConditionalWrapperArgs = {
 }
 
 export default function (props: UserCatalogCardProps) {
+    const { t } = useTranslation(["userCatalogCardGroup"]);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const parentNavigation = navigation.getParent()
     const [userStatus, setUserStatus] = useState<UserStatus | "SUMMONED">("ENQUEUED")
     const [selectedItems, setSelectedItems] = useState<Array<UserStats["userId"]>>([])
+    const [errors, setError] = useState<any>([]);
+    const toast = useToast()
+    const toastId = "errorToast"
+
+    useEffect(() => {
+        if (!!errors.length) {
+            if (!toast.isActive(toastId)) {
+                toast.show({
+                    id: toastId,
+                    title: t('something_went_wrong', {ns: "common"}),
+                    status: "error",
+                    description: t("cannot_change_status_message"),
+                    duration: 10
+                })
+            }
+        }
+    }, [errors])  // Render alert if errors
 
     useEffect(() => {
         onChangeUserStatus(userStatus)
@@ -61,7 +80,7 @@ export default function (props: UserCatalogCardProps) {
         }
     `
 
-    async function changeQueueState (userId: UserStats["userId"], status: UserStatus | "SUMMONED") {
+    async function changeUserStatus (userId: UserStats["userId"], status: UserStatus | "SUMMONED") {
         try {
             const body = status === "KICKED"
                 ? {query: changeStatusQuery, variables: {userId: userId, status: "KICKED"}}
@@ -79,11 +98,9 @@ export default function (props: UserCatalogCardProps) {
                 credentials: 'include',
                 body: JSON.stringify(body)
             });
-            // enter you logic when the fetch is successful
             return await response.json()
         } catch(error) {
-            // enter your logic for when there is an error (ex. error toast)
-            return error
+            setError([...errors, error])
         }
     }
 
@@ -99,7 +116,7 @@ export default function (props: UserCatalogCardProps) {
                         )
                         for (const selectedItem of selectedItems) {
                             props.entities.find(user => user.userId === selectedItem)!.status = queueState
-                            changeQueueState(selectedItem, queueState).then()
+                            changeUserStatus(selectedItem, queueState).then()
                         }
                     }
                 }
@@ -110,7 +127,7 @@ export default function (props: UserCatalogCardProps) {
             )
             for (const selectedItem of selectedItems) {
                 props.entities.find(user => user.userId === selectedItem)!.status = queueState
-                changeQueueState(selectedItem, queueState).then()
+                changeUserStatus(selectedItem, queueState).then()
             }
             deSelectItems()
         }

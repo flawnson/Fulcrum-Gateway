@@ -216,6 +216,7 @@ function App() {
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
                                         <Stack.Screen name="HomePage" component={HomePage} />
+                                        <Stack.Screen name="ConfirmationScreen" component={ConfirmationScreen} />
                                         <Stack.Screen name="SplashScreen" component={SplashScreen} />
                                     </>
                                 ) : userType === "ASSISTANT" ? (
