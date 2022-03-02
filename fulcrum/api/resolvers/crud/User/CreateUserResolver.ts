@@ -222,13 +222,15 @@ export class CreateUserResolver {
         }
       });
 
-      // if already exists and UNVERIFIED
+      // if already exists
       if (existingUser){
+        // and UNVERIFIED
         if (existingUser.status == "UNVERIFIED"){
           console.log('Phone number ' + args.phoneNumber + ' is already taken. User not verified, resending verification code if user exists.');
           await generateSMS(args.phoneNumber, existingUser.id);
           return existingUser;
         }
+
         console.log('Phone number ' + args.phoneNumber + ' is already taken. User is already verified and in queue.');
         let error = {
           error: errors.USER_ALREADY_EXISTS

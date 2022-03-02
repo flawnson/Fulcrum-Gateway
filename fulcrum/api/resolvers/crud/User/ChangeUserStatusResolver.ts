@@ -55,7 +55,7 @@ export class ChangeUserStatusResolver {
 
     // if it's a leave status (NEED TO REDO THIS PART)
     if (leaveStatus.includes(args.status)){
-      console.log("Clearing user cookie")
+      //console.log("Clearing user cookie")
       // clear queue id from session
       delete ctx.req.session!.userId;
 

@@ -24,6 +24,7 @@ export async function updateUserStatus(userId: string, newStatus: UserStatus){
         // const totalWait = parseInt("" + ((leaveTime.valueOf() - joinTime.valueOf()) / 1000));
 
         // set user's index to 0 as a default value
+        // set their phone number to null
         const updateUser = await prisma.user.update({
           where: {
             id: userId
@@ -31,7 +32,8 @@ export async function updateUserStatus(userId: string, newStatus: UserStatus){
           data: {
             status: newStatus,
             finish_time: leaveTime,
-            index: 0
+            index: 0,
+            phone_number: null // erase their phone number to allow requeuing
           }
         });
 
