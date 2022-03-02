@@ -10,7 +10,6 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/PreferencesContext";
 import EndQueueAlert from "./EndQueueAlert";
 import ChangeQueuePasswordModal from "./ChangeQueuePasswordModal";
-import {useTheme} from "native-base";
 import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
 
@@ -18,7 +17,6 @@ export default function () {
     const { t } = useTranslation(["queueDashboardMenu"]);
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const { colors } = useTheme()
     const { signedInAs } = React.useContext(AuthContext)
     const { signOut } = React.useContext(AuthContext)
     const { isThemeDark } = React.useContext(PreferencesContext)

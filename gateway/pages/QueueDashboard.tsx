@@ -13,7 +13,6 @@ import {zipObject} from "lodash"
 import {useTranslation} from "react-i18next"
 import baseURL from "../utilities/baseURL"
 import corsURL from "../utilities/corsURL";
-import EnqueuedCatalog from "../components/molecules/EnqueuedCatalog";
 import {DashboardContext} from "../utilities/DashboardContext";
 import CatalogGroup from "../components/organisms/UserCatalogGroup";
 

@@ -5,7 +5,7 @@ import { StyleSheet, Pressable, PressableStateCallbackType } from "react-native"
 import { useNavigation } from "@react-navigation/native";
 import {HomeScreenProps, QueueInfo, QueueState} from "../../types";
 import { FlatList } from "react-native-gesture-handler";
-import MultiSelectButtons from "../organisms/QueueMultiSelectButtons";
+import QueueMultiSelectButtons from "../organisms/QueueMultiSelectButtons";
 import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 import baseURL from "../../utilities/baseURL";
@@ -141,7 +141,7 @@ export default function (props: QueuesStatsProps) {
 
     const selectItems = (item: QueueInfo) => {
         navigation.setOptions(
-            {headerRight: (props) => <MultiSelectButtons onActionPress={setQueueState} /> }
+            {headerRight: (props) => <QueueMultiSelectButtons onActionPress={setQueueState} /> }
         )
 
         if (selectedItems.includes(item.queueId)) {

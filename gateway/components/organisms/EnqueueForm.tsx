@@ -146,7 +146,8 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
                         setError([...errors, data.errors])
                     } else if (data.data.joinQueue.error === "USER_ALREADY_EXISTS") {
                         // Check if user exists on backend
-                        setError([...errors, data.data.getUser.error])
+                        signIn('USER')
+                        navigation.navigate("UserDashboard", {name: formData.name!, phoneNumber: formData.phoneNumber!})
                     } else if (data?.data?.createUser || data?.data?.joinQueue.id) {
                         setSubmitted(true)
                         if (!setShowModal) {

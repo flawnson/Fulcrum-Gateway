@@ -15,7 +15,7 @@ export default function () {
     const { t } = useTranslation("enqueuedPage")
     const route = useRoute<HomeScreenProps["route"]>()
     const [props, setProps] = useState<UserStats[]>([])
-    const [errors, setError] = useState<any>([]);
+    const [errors, setErrors] = useState<any>([]);
     const {width, height} = useDimensions()
     // The callback is so that we can call the method that deletes the cards from the flatlist when delete confirmed
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
@@ -70,7 +70,7 @@ export default function () {
                 })
             await response.json().then(
                 data => {
-                    if (!!data.errors?.length) {setError(data.errors[0])}  // Check for errors on response
+                    if (!!data.errors?.length) {setErrors(data.errors[0])}  // Check for errors on response
                     data = data.data.getQueue.users
                     data = data.filter((d: UserStats) => d.status === "ENQUEUED" || d.status === "DEFERRED")
                     const user_stats: UserStats[] = []
@@ -90,7 +90,7 @@ export default function () {
                 }
             )
         } catch(error) {
-            setError([...errors, error])
+            setErrors([...errors, error])
         }
     }
 

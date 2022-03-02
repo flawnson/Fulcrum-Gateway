@@ -127,6 +127,10 @@
     "logout_queue": "Logout",
     "cannot_fetch_share_data_message": "Something went wrong and we can't seem to be able to end the queue right now... Please try again soon"
   },
+  "queuesPageMenu": {
+    "create_queue": "Create Queue",
+    "logout_queue": "Logout"
+  },
   "queueMultiSelectButtons": {
     "pause": "Pause Queues",
     "end": "End Queues"

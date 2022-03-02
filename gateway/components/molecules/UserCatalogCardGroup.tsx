@@ -137,7 +137,11 @@ export default function (props: UserCatalogCardProps) {
     useEffect(() => {
         if (selectedItems.length === 0) {
             if (parentNavigation) {
+                // For when used in a standalone page
                 parentNavigation.setOptions({headerRight: undefined})
+            } else {
+                // For when used as a component within a page, like in Queue Dashboard
+                navigation.setOptions({headerRight: undefined})
             }
         }
     }, [selectedItems])
@@ -160,7 +164,13 @@ export default function (props: UserCatalogCardProps) {
 
     const selectItems = (item: UserStats) => {
         if (parentNavigation) {
+            // For when used in a standalone page
             parentNavigation.setOptions({
+                headerRight: () => <CatalogCardMultiSelectButtons onActionPress={setUserStatus}/>
+            })
+        } else {
+            // For when used as a component within a page, like in Queue Dashboard
+            navigation.setOptions({
                 headerRight: () => <CatalogCardMultiSelectButtons onActionPress={setUserStatus}/>
             })
         }

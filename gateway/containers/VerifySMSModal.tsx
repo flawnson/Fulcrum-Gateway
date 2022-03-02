@@ -26,7 +26,7 @@ export default function (props: VerifySMSModalProps) {
     const { t } = useTranslation(["verifySMSModal"]);
     const [value, setValue] = useState('');
     const [submitted, setSubmitted] = useState<boolean>(false)
-    const [errors, setError] = useState<any>([]);
+    const [errors, setErrors] = useState<any>([]);
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
     const [cellOnLayoutHandler, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
     const toast = useToast()
@@ -81,11 +81,11 @@ export default function (props: VerifySMSModalProps) {
                     body: JSON.stringify({query: query, variables: {confirmCode: value}})
                 })
             return await response.json().then(data => {
-                if (!!data.errors?.length) {
-                    setError(data.errors)
+                if (!!data.errors) {
+                    setErrors([...errors, data.errors])
                 } else if (data.data.confirmUser.error === "USER_CONFIRM_FAILED") {
                     // Check for known error (when confirm code is wrong)
-                    setError(data.errors)
+                    setErrors([...errors, data.data.confirmUser.error])
                     setSubmitted(false)
                 } else {
                     // If successfully verified SMS
@@ -94,7 +94,7 @@ export default function (props: VerifySMSModalProps) {
                 }
             })
         } catch(error) {
-            setError([...errors, error])
+            setErrors([...errors, error])
         }
     }
 

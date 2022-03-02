@@ -4,7 +4,7 @@ import {Fab, Icon,
         Text, useToast,
         Center } from "native-base"
 import {AntDesign} from "@expo/vector-icons"
-import {useIsFocused, useNavigation} from "@react-navigation/native";
+import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps, QueueInfo} from "../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
 import useInterval from "../utilities/useInterval";
@@ -13,6 +13,7 @@ import ConfirmDeleteAlert from "../containers/ConfirmDeleteAlert";
 import {useTranslation} from "react-i18next";
 import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
+import QueuesPageMenu from "../containers/QueuesPageMenu";
 
 
 type QueuesPageProps = {
@@ -32,7 +33,7 @@ export default function () {
     const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
     const toast = useToast()
     const toastId = "errorToast"
-    useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
+    useEffect(() => navigation.setOptions({headerLeft: () => false, headerRight: RightHeaderGroup()}), [])
 
     useEffect(() => {
         if (!!errors.length) {
@@ -114,16 +115,9 @@ export default function () {
                 showConfirmDeleteAlert={showConfirmDeleteAlert}
                 setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
             />
-            <Fab
-                onPress={() => setShowCreateQueueModal(!showCreateQueueModal)}
-                position="absolute"
-                placement="bottom-right"
-                size="sm"
-                icon={<Icon color="white" as={<AntDesign name="plus" />} size="sm" />}
-                renderInPortal={useIsFocused()}  // So that the FAB only renders in the current screen
-            />
             <CreateQueueModal showModal={showCreateQueueModal} setShowModal={setShowCreateQueueModal} />
             <ConfirmDeleteAlert showAlert={showConfirmDeleteAlert} setShowAlert={setShowConfirmDeleteAlert}/>
+            <QueuesPageMenu />
         </>
     )
 }

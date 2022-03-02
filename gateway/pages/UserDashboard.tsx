@@ -1,7 +1,7 @@
-import React, {SetStateAction, useContext, useEffect, useState} from 'react'
-import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
+import React, {useEffect, useState} from 'react'
+import {useIsFocused, useNavigation, useRoute, useFocusEffect} from "@react-navigation/native";
 import {HomeScreenProps, UserInfo} from "../types";
-import {StyleSheet} from 'react-native'
+import {StyleSheet, BackHandler} from 'react-native'
 import {Avatar, Center, Heading, HStack, Image, Text, useToast} from "native-base";
 
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
@@ -15,14 +15,16 @@ import calculateTimeToNow from "../utilities/calculateTimeToNow";
 import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
 import secondsToTime from "../utilities/secondsToTime";
+import LeaveQueueAlert from "../containers/LeaveQueueAlert";
 
 
 export default function () {
     const { t } = useTranslation(["userDashboard"]);
     const route = useRoute<HomeScreenProps["route"]>()
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const [errors, setError] = useState<any>([]);
+    const [errors, setErrors] = useState<any>([]);
     const [showModal, setShowModal] = useState<boolean>(false)
+    const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false)
     // Render the header (dark mode toggle and language picker)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
     const toast = useToast()
@@ -100,11 +102,11 @@ export default function () {
                 data => {
                     if (!!data.errors?.length) {
                         // Check for errors on response
-                        setError(data.errors)
+                        setErrors([...errors, data.errors])
                         setShowModal(true)
                     } else if (data.data.getUser.error === "USER_DOES_NOT_EXIST"){
                         // Check if user exists on backend
-                        setError(data.data.getUser.error)
+                        setErrors([...errors, data.data.getUser.error])
                         // Try letting the user confirm via SMS
                         setShowModal(true)
                     } else {
@@ -112,6 +114,7 @@ export default function () {
                         const queueData = data.data.getUser.queue
                         // If user status is unverified, show SMS verification modal
                         if (userData.status === "UNVERIFIED") {
+                            console.log("USER IS UNVERIFIED")
                             setShowModal(true)
                         }
                         // If summoned is toggled true, immediately navigate to Summon Screen
@@ -169,8 +172,7 @@ export default function () {
                 }
             )
         } catch(error) {
-            setError([...errors, error])
-            console.log(error)
+            setErrors([...errors, error])
         }
     }
 
@@ -178,6 +180,20 @@ export default function () {
     useEffect(() => {fetchUserStats().then(null)}, [showModal])
     // Poll only if user is currently on this screen
     useInterval(fetchUserStats, useIsFocused() ? 5000 : null)
+
+    React.useEffect(
+        // Use effect to prevent going back without logging out
+        () =>
+            navigation.addListener('beforeRemove', (e) => {
+                // Prevent default behavior of leaving the screen
+                e.preventDefault();
+
+                // Prompt the user before leaving the screen
+                setIsAlertOpen(true)
+            }),
+        [navigation]
+    )
+
 
     return (
         <Center>
@@ -201,6 +217,7 @@ export default function () {
                 <UserDashboardGroup {...props.stats}/>
             </Center>
             <UserDashboardMenu />
+            <LeaveQueueAlert isAlertOpen={isAlertOpen} setIsAlertOpen={setIsAlertOpen}/>
             <VerifySMSModal userInfo={props} showModal={showModal} setShowModal={setShowModal}/>
         </Center>
     )
@@ -221,8 +238,8 @@ const styles = StyleSheet.create({
     },
     avatar: {
         flex: 1,
-        width: scale(200),
-        height: scale(60),
+        width: scale(500),
+        height: scale(100),
         borderRadius: 10,
     },
     headingFormat: {

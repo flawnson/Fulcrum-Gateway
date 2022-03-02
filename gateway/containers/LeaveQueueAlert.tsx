@@ -80,6 +80,7 @@ export default (props: LeaveQueueAlertProps) => {
 
 
     const onLeave = () => {
+        console.log("LEFT")
         props.setIsAlertOpen(false)
         leaveQueue().then()
     }
