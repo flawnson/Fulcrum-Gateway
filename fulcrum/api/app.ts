@@ -71,8 +71,8 @@ const cookieConfig = {
     maxAge: 3000000000, //long time (~1 month)
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",  //cookie only works in https (we are developing) - set to true for production
-    sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax'
-    // sameSite: 'none'
+    //sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax'
+    sameSite: 'lax'
     //secure: false
   },
   saveUninitialized: false,
@@ -105,7 +105,7 @@ app.get('/', (req, res) => {
 app.use('/api', graphqlHTTP(async (req, res, params) => ({
   schema: schema,
   context: { req, res, prisma },
-  graphiql: true,
+  graphiql: (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test") ? false : true,
 })));
 
 //module.exports = app;
