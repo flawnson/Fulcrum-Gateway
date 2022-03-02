@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1,
-        width: scale(100),
-        height: scale(100)
+        width: scale(200),
+        height: scale(200)
     },
     text: {
         flex: 1,
-        fontSize: scale(30)
+        fontSize: scale(16)
     }
 })
