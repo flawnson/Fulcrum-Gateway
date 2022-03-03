@@ -100,17 +100,15 @@ export default function () {
 
     async function fetchQueueData () {
         try {
-            const response = await fetch(baseURL(), {
-                                         method: 'POST',
-                                         headers: {
-                                             'Content-Type': 'application/json',
-                                             'Access-Control-Allow-Origin': corsURL(),
-                                         },
-                                         credentials: 'include',
-                                         body: JSON.stringify(body)
-                                         })
-            await response.json().then(
-                data => {
+            fetch(baseURL(), {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json',
+                     'Access-Control-Allow-Origin': corsURL(),
+                 },
+                 credentials: 'include',
+                 body: JSON.stringify(body)
+        }).then(response => response.json()).then(data => {
                     const queueData = data.data.getQueue
                     data = data.data.getQueue.users
                     // Count the number users with of each type of status

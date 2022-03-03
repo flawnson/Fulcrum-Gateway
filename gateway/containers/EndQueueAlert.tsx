@@ -49,7 +49,7 @@ export default (props: LeaveQueueAlertProps) => {
 
     const deleteQueue = async () => {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,8 +57,7 @@ export default (props: LeaveQueueAlertProps) => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: deleteQueueQuery, variables: deleteQueueVariables})
-            });
-            return await response.json()
+            }).then(response => response.json()).then(data => {})
         } catch(error) {
             setError([...errors, error])
         }

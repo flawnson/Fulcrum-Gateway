@@ -88,18 +88,16 @@ export default function () {
 
     const fetchUserStats = async () => {
         try {
-            const response = await fetch(baseURL(),
-                                     {
-                                          method: 'POST',
-                                          headers: {
-                                              'Content-Type': 'application/json',
-                                              'Access-Control-Allow-Origin': corsURL(),
-                                          },
-                                          credentials: 'include',
-                                          body: JSON.stringify({query: query})
-                                     })
-            await response.json().then(
-                data => {
+            fetch(baseURL(),
+                 {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                          'Access-Control-Allow-Origin': corsURL(),
+                      },
+                      credentials: 'include',
+                      body: JSON.stringify({query: query})
+            }).then(response => response.json()).then(data => {
                     if (!!data.errors?.length) {
                         // Check for errors on response
                         setErrors([...errors, data.errors])

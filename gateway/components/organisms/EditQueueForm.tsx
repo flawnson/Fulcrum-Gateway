@@ -62,14 +62,13 @@ export default function ({navigation, setShowModal}: CreateQueueFormType) {
 
     async function submit () {
         try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+            fetch('https://jsonplaceholder.typicode.com/posts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
-            });
-            return await response.json()
+            }).then(response => response.json()).then(data => {})
         } catch(error) {
             return error
         }

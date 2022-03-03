@@ -47,7 +47,7 @@ export default function () {
 
     const fetchShareData = async () => {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,9 +55,7 @@ export default function () {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query})
-            })
-            await response.json().then(
-                data => {
+            }).then(response => response.json()).then(data => {
                     data = data.data.getUser.queue
                     setShareData( {
                             ...shareData,

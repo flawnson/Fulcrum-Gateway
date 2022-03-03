@@ -55,18 +55,17 @@ export default function () {
 
     async function fetchAbandonedData () {
         try {
-            const response = await fetch(baseURL(),
-                                         {
-                                          method: 'POST',
-                                          headers: {
-                                                 'Content-Type': 'application/json',
-                                                 'Access-Control-Allow-Origin': corsURL(),
-                                                   },
-                                          credentials: 'include',
-                                          body: JSON.stringify({query: query, variables: variables})})
-            await response.json().then(
-                data => {
-                    if (!!data.errors?.length) {setError(data.errors[0])}  // Check for errors on response
+            fetch(baseURL(),
+                 {
+                  method: 'POST',
+                  headers: {
+                         'Content-Type': 'application/json',
+                         'Access-Control-Allow-Origin': corsURL(),
+                           },
+                  credentials: 'include',
+                  body: JSON.stringify({query: query, variables: variables})
+            }).then(response => response.json()).then(data => {
+                if (!!data.errors?.length) {setError(data.errors[0])}  // Check for errors on response
                     data = data.data.getQueue.users
                     data = data.filter((d: UserStats) => d.status === "ABANDONED" ||
                                                               d.status === "KICKED" ||

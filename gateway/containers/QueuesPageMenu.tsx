@@ -46,7 +46,7 @@ export default function () {
 
     const logout = async () => {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,9 +54,7 @@ export default function () {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: signedInAs === "ORGANIZER" ? organizerLogoutQuery : assistantLogoutQuery})
-            });
-            // enter you logic when the fetch is successful
-            return await response.json().then(data => {
+            }).then(response => response.json()).then(data => {
                     // Check for errors on response
                     if (!!data.errors?.length) {
                         setError(data.errors[0])

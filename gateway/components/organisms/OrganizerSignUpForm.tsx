@@ -71,7 +71,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
 
     async function signUp () {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -79,8 +79,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData}),
-            });
-            return await response.json().then(data => {
+            }).then(response => response.json()).then(data => {
                 if (!!data.errors?.length) {
                     setSubmitted(false)
                     setErrors([...errors, data.errors[0]])

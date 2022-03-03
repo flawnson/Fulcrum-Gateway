@@ -58,7 +58,7 @@ export default function () {
 
     async function fetchUserData () {
         try {
-            const response = await fetch(baseURL(),
+            fetch(baseURL(),
                 {
                     method: 'POST',
                     headers: {
@@ -67,9 +67,7 @@ export default function () {
                     },
                     credentials: 'include',
                     body: JSON.stringify({query: query, variables: variables})
-                })
-            await response.json().then(
-                data => {
+                }).then(response => response.json()).then(data => {
                     if (!!data.errors?.length) {setErrors(data.errors[0])}  // Check for errors on response
                     data = data.data.getQueue.users
                     data = data.filter((d: UserStats) => d.status === "ENQUEUED" || d.status === "DEFERRED")

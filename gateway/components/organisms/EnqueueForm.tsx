@@ -129,7 +129,7 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
     async function joinQueue () {
         setLoading(true)
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -137,9 +137,7 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
                 },
                 credentials: 'include',
                 body: JSON.stringify(body)  // Directly pass formData as variables
-            });
-            await response.json().then(
-                data => {
+            }).then(response => response.json()).then(data => {
                     // If response is valid and returns an id, then set auth context, submit, and navigate to dashboard
                     if (!!data.errors?.length) {
                         // Check for errors on response

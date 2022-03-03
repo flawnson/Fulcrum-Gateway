@@ -56,16 +56,15 @@ export default function (props: UserCatalogCardProps) {
 
     async function toggleSummonUser (userId: string) {
         try {
-            const response = await fetch(baseURL(), {
-                                         method: 'POST',
-                                         headers: {
-                                             'Content-Type': 'application/json',
-                                             'Access-Control-Allow-Origin': corsURL(),
-                                         },
-                                         credentials: 'include',
-                                         body: JSON.stringify({query: summonQuery, variables: {"userId": userId, "summoned": summoned}})
-                                     });
-            return await response.json()
+            fetch(baseURL(), {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json',
+                     'Access-Control-Allow-Origin': corsURL(),
+                 },
+                 credentials: 'include',
+                 body: JSON.stringify({query: summonQuery, variables: {"userId": userId, "summoned": summoned}})
+            }).then(response => response.json()).then(data => {})
         } catch(error) {
             return error
         }

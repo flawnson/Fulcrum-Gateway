@@ -75,18 +75,16 @@ export default function () {
 
     async function fetchQueuesData () {
         try {
-            const response = await fetch(baseURL(),
-                                     {
-                                         method: 'POST',
-                                         headers: {
-                                         'Content-Type': 'application/json',
-                                         'Access-Control-Allow-Origin': corsURL(),
-                                         },
-                                         credentials: 'include',
-                                         body: JSON.stringify({query: query, variables: variables})
-                                     })
-            await response.json().then(
-                data => {
+            fetch(baseURL(),
+                 {
+                     method: 'POST',
+                     headers: {
+                     'Content-Type': 'application/json',
+                     'Access-Control-Allow-Origin': corsURL(),
+                     },
+                     credentials: 'include',
+                     body: JSON.stringify({query: query, variables: variables})
+        }).then(response => response.json()).then(data => {
                     if (!!data.errors?.length) {setError([...errors, data.errors[0]])}  // Check for errors on response
                     setOrganizerInfo({name: data.data.getOrganizer.name})
                     setProps(data.data.getOrganizer.queues)
