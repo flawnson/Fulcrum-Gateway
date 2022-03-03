@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-    Button, Link,
-    Modal, Center, useToast
-} from 'native-base'
+import { Button, Link,
+        Modal, Center,
+        useToast } from 'native-base'
 import { StyleSheet, SafeAreaView,
         Text, View } from 'react-native';
 import { CodeField, Cursor,

@@ -17,7 +17,7 @@ export default function () {
     const { isThemeDark } = React.useContext(PreferencesContext)
     const { t } = useTranslation(["userDashboardMenu"]);
     const [showDeferPositionModal, setShowDeferPositionModal] = React.useState(false)
-    const [isAlertOpen, setIsAlertOpen] = React.useState(false)
+    const [isLeaveQueueAlertOpen, setIsLeaveQueueAlertOpen] = React.useState(false)
     const [errors, setError] = useState<any>([]);
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueId: 'some_id',
@@ -102,7 +102,7 @@ export default function () {
                         </Text>
                     </HStack>
                 </Menu.Item>
-                <Menu.Item onPress={() => setIsAlertOpen(true)}>
+                <Menu.Item onPress={() => setIsLeaveQueueAlertOpen(true)}>
                     <HStack space={3}>
                         <Ionicons
                             name={'md-exit-outline'}
@@ -128,7 +128,7 @@ export default function () {
                 </Menu.Item>
             </Menu>
             <DeferPositionModal showModal={showDeferPositionModal} setShowModal={setShowDeferPositionModal}/>
-            <LeaveQueueAlert isAlertOpen={isAlertOpen} setIsAlertOpen={setIsAlertOpen}/>
+            <LeaveQueueAlert isAlertOpen={isLeaveQueueAlertOpen} setIsAlertOpen={setIsLeaveQueueAlertOpen}/>
         </>
     )
 }
