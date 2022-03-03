@@ -41,12 +41,14 @@ export class GetQueueResolver {
       queryQueueId = args.queueId;
     }
 
+    console.log("Get queue");
+    console.log("Waiting for prisma (get queue)");
     const queue = await ctx.prisma.queue.findUnique({
       where: {
         id: queryQueueId
       }
     });
-
+    console.log("Done waiting for prisma (get queue)");
     if(!queue){
       let error = {
         error: errors.QUEUE_DOES_NOT_EXIST

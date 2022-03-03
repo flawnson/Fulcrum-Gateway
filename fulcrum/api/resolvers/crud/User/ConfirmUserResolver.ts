@@ -30,6 +30,8 @@ export class ConfirmUserResolver {
   @Mutation(returns => UserResult)
   async confirmUser(@Ctx() ctx: Context, @Args() args: ConfirmUserArgs): Promise<typeof UserResult> {
 
+    console.log("Verify sms");
+    console.log("Waiting for redis (verify sms)");
     const userId = await redis.get(confirmUserPrefix + args.confirmCode);
 
     if (!userId) {
@@ -40,6 +42,8 @@ export class ConfirmUserResolver {
       return error;
     }
 
+    console.log("Done waiting for redis (verify sms)");
+    console.log("Waiting for prisma (verify sms)");
     const update = await ctx.prisma.user.update({
       where: {
         id: userId
@@ -48,9 +52,11 @@ export class ConfirmUserResolver {
         status: UserStatus.ENQUEUED
       }
     });
+    console.log("Done Waiting for Prisma (verify sms)")
 
+    console.log("Waiting for redis 2 (verify sms)");
     await redis.del(confirmUserPrefix + args.confirmCode);
-
+    console.log("Done for redis 2 (verify sms)");
     // create session
     ctx.req.session!.userId = userId;
     console.log("User confirmed");

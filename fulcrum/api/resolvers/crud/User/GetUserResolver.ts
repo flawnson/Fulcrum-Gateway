@@ -41,12 +41,14 @@ export class GetUserResolver {
     if (args.userId) {
       queryUserId = args.userId;
     }
-
+    console.log("Get user");
+    console.log("Waiting for prisma (get user)");
     const user = await ctx.prisma.user.findUnique({
       where: {
         id: queryUserId,
       }
     });
+    console.log("Done waiting for prisma (get user)");
 
     if(!user){
       let error = {
