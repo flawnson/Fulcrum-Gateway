@@ -63,7 +63,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
 
     async function logIn () {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,8 +71,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData})
-            });
-            return await response.json().then(data => {
+            }).then(response => response.json()).then(data => {
                     setShowModal(false)
                     setSubmitted(false)
                     navigation.navigate("QueueDashboard")

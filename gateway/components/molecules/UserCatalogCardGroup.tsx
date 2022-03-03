@@ -89,7 +89,7 @@ export default function (props: UserCatalogCardProps) {
                 : status === "SUMMONED"
                 ? {query: summonUserQuery, variables: {userId: userId, summoned: true}}
                 : {error: "error"}
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -97,8 +97,7 @@ export default function (props: UserCatalogCardProps) {
                 },
                 credentials: 'include',
                 body: JSON.stringify(body)
-            });
-            return await response.json()
+            }).then(response => response.json()).then(data => {})
         } catch(error) {
             setError([...errors, error])
         }

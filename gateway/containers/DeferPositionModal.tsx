@@ -30,7 +30,7 @@ export default function (props: DeferPositionModal) {
 
     async function deferPosition () {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,8 +38,7 @@ export default function (props: DeferPositionModal) {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: variables})
-            });
-            return await response.json().then(data => {
+            }).then(response => response.json()).then(data => {
                     console.log(data)
                 }
             )

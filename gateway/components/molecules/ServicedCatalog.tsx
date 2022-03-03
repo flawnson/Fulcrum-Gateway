@@ -55,7 +55,7 @@ export default function () {
 
     async function fetchServicedData () {
         try {
-            const response = await fetch(baseURL(),
+            fetch(baseURL(),
                 {
                     method: 'POST',
                     headers: {
@@ -64,9 +64,7 @@ export default function () {
                     },
                     credentials: 'include',
                     body: JSON.stringify({query: query, variables: variables})
-                })
-            await response.json().then(
-                data => {
+                }).then(response => response.json()).then(data => {
                     if (!!data.errors?.length) {setError(data.errors[0])}  // Check for errors on response
                     data = data.data.getQueue.users
                     data = data.filter((d: UserStats) => d.status === "SERVICED")

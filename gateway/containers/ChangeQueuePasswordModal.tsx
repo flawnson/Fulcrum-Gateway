@@ -39,7 +39,7 @@ export default function (props: ChangeQueuePasswordProps) {
 
     async function changePassword () {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -47,8 +47,7 @@ export default function (props: ChangeQueuePasswordProps) {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData}),
-            });
-            return await response.json().then(data => {
+            }).then(response => response.json()).then(data => {
                     props.setShowModal(false)
                     setSubmitted(false)
                 }

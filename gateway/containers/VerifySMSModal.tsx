@@ -69,7 +69,7 @@ export default function (props: VerifySMSModalProps) {
 
     const submitSMSVerification = async () => {
         try {
-            const response = await fetch(baseURL(),
+            fetch(baseURL(),
                 {
                     method: 'POST',
                     headers: {
@@ -78,8 +78,7 @@ export default function (props: VerifySMSModalProps) {
                     },
                     credentials: 'include',
                     body: JSON.stringify({query: query, variables: {confirmCode: value}})
-                })
-            return await response.json().then(data => {
+        }).then(response => response.json()).then(data => {
                 if (!!data.errors) {
                     setErrors([...errors, data.errors])
                 } else if (data.data.confirmUser.error === "USER_CONFIRM_FAILED") {

@@ -69,7 +69,7 @@ export default function (props: QueuesCatalogCardProps) {
                 : state === "DELETED"
                 ? {query: deleteQuery, variables: {queueId: props.entity.queueId}}
                 : {error: "error"}  // Trigger error if state is not PAUSED or DELETED
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,9 +77,7 @@ export default function (props: QueuesCatalogCardProps) {
                 },
                 credentials: 'include',
                 body: JSON.stringify(body)
-            });
-            // enter you logic when the fetch is successful
-            return await response.json()
+            }).then(response => response.json()).then(data => {})
         } catch(error) {
             // enter your logic for when there is an error (ex. error toast)
             return error

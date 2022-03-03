@@ -53,7 +53,7 @@ export default (props: LeaveQueueAlertProps) => {
 
     async function leaveQueue () {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,8 +61,7 @@ export default (props: LeaveQueueAlertProps) => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: variables})
-            });
-            return await response.json().then(data => {
+            }).then(response => response.json()).then(data => {
                     if (!!data.errors?.length) {
                         setError([...errors, data.errors[0]])
                     } else {
