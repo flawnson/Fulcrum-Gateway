@@ -142,27 +142,25 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
                     if (!!data.errors?.length) {
                         // Check for errors on response
                         setError([...errors, data.errors])
-                    } else if (data.data.joinQueue.error === "USER_ALREADY_EXISTS") {
+                    } else if (data.data.joinQueue?.error === "USER_ALREADY_EXISTS") {
                         // Check if user exists on backend
+                        toast.show({
+                            title: t('already_enqueued_title'),
+                            status: "error",
+                            description: t("already_enqueued_message"),
+                            duration: 10
+                        })
                         signIn('USER')
                         navigation.navigate("UserDashboard", {name: formData.name!, phoneNumber: formData.phoneNumber!})
-                    } else if (data?.data?.createUser || data?.data?.joinQueue.id) {
-                        setSubmitted(true)
-                        if (!setShowModal) {
+                    } else if (data?.data?.createUser) {
+                        // Case if Organizer or Assistant creates user
+                    } else if (data?.data?.joinQueue.id) {
                             signIn('USER')
                             navigation.navigate("UserDashboard", {name: formData.name!, phoneNumber: formData.phoneNumber!})
-                        } else {
-                            !!setShowModal ? setShowModal(false) : null
-                        }
-                        setSubmitted(false) // turn back to false for when user revisits page
-                    } else {
-                        setSubmitted(false)
-                        toast.show({
-                            title: t('something_went_wrong', {ns: "common"}),
-                            status: "error",
-                            description: t("cannot_enqueue_message")
-                        })
                     }
+                    // turn back to false for when user revisits page
+                    setSubmitted(false)
+                    // Reopen Join code form in case of revisit
                     setJoinCodeFormOpen(true)
                 }
             )
@@ -225,6 +223,7 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
 
     const onSubmit = () => {
         // Attempt to join queue first, and if successful, update UI
+        setSubmitted(true)
         joinQueue().then()
     };
 

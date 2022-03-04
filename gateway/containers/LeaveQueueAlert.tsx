@@ -31,10 +31,6 @@ export default (props: LeaveQueueAlertProps) => {
         }
     }, [errors])  // Render alert if errors
 
-    const onClose = () => {
-        props.setIsAlertOpen(false)
-    }
-
     const query = `
         mutation change_status($status: String!) {
             changeStatus(status: $status) {
@@ -66,8 +62,7 @@ export default (props: LeaveQueueAlertProps) => {
                         setError([...errors, data.errors[0]])
                     } else {
                         signOut()
-                        navigation.reset({index: 1, routes: [{name: "HomePage"}]})
-                        navigation.navigate("AbandonedScreen")
+                        navigation.reset({index: 0, routes: [{name: "AbandonedScreen"}]})
                         AsyncStorage.clear().then()
                     }
                 }
@@ -77,12 +72,15 @@ export default (props: LeaveQueueAlertProps) => {
         }
     }
 
-
     const onLeave = () => {
-        console.log("LEFT")
         props.setIsAlertOpen(false)
         leaveQueue().then()
     }
+
+    const onClose = () => {
+        props.setIsAlertOpen(false)
+    }
+
 
     const cancelRef = React.useRef(null)
     return (

@@ -3,12 +3,13 @@ import {AlertDialog, Button, Text} from 'native-base'
 import {useTranslation} from "react-i18next";
 
 
-type ConfirmDeleteAlert = {
+type ConfirmActionAlert = {
+    message: string
     showAlert: {show: boolean, callback: Function},
     setShowAlert: React.Dispatch<React.SetStateAction<any>>
 }
 
-export default function (props: ConfirmDeleteAlert) {
+export default function (props: ConfirmActionAlert) {
     const cancelRef = React.useRef(null)
     const { t } = useTranslation(["confirmDeleteAlert", "common"]);
 
@@ -28,7 +29,7 @@ export default function (props: ConfirmDeleteAlert) {
                 <AlertDialog.Header>{t("header")}</AlertDialog.Header>
                 <AlertDialog.Body>
                     <Text>
-                        {t("message")}
+                        {props.message}
                     </Text>
                 </AlertDialog.Body>
                 <AlertDialog.Footer>

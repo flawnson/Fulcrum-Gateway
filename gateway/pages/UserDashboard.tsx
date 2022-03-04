@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import {useIsFocused, useNavigation, useRoute, useFocusEffect} from "@react-navigation/native";
 import {HomeScreenProps, UserInfo} from "../types";
 import {StyleSheet, BackHandler} from 'react-native'
@@ -23,8 +23,8 @@ export default function () {
     const route = useRoute<HomeScreenProps["route"]>()
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [errors, setErrors] = useState<any>([]);
-    const [showModal, setShowModal] = useState<boolean>(false)
-    const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false)
+    const [showVerifySMSModal, setShowVerifySMSModal] = useState<boolean>(false)
+    const [isLeaveQueueAlertOpen, setIsLeaveQueueAlertOpen] = useState<boolean>(false)
     // Render the header (dark mode toggle and language picker)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
     const toast = useToast()
@@ -99,25 +99,23 @@ export default function () {
                       body: JSON.stringify({query: query})
             }).then(response => response.json()).then(data => {
                     if (!!data.errors?.length) {
-                        // Check for errors on response
+                        // If any general errors, assume unverified and let user verify
+                        setShowVerifySMSModal(true)
                         setErrors([...errors, data.errors])
-                        setShowModal(true)
                     } else if (data.data.getUser.error === "USER_DOES_NOT_EXIST"){
                         // Check if user exists on backend
                         setErrors([...errors, data.data.getUser.error])
-                        // Try letting the user confirm via SMS
-                        setShowModal(true)
+                        navigation.navigate("HomePage")
                     } else {
                         const userData = data.data.getUser
                         const queueData = data.data.getUser.queue
-                        // If user status is unverified, show SMS verification modal
-                        if (userData.status === "UNVERIFIED") {
-                            console.log("USER IS UNVERIFIED")
-                            setShowModal(true)
-                        }
                         // If summoned is toggled true, immediately navigate to Summon Screen
                         if (userData.summoned) {
                             navigation.navigate("SummonScreen", {queueId: queueData.id, userId: userData.id})
+                        }
+                        // If user status is unverified, show SMS verification modal
+                        if (userData.status === "UNVERIFIED") {
+                            setShowVerifySMSModal(true)
                         }
                         // Set the queue state
                         setState(queueData.state)
@@ -175,22 +173,27 @@ export default function () {
     }
 
     // Run on first render or when modal is opened or closed
-    useEffect(() => {fetchUserStats().then(null)}, [showModal])
+    useEffect(() => {fetchUserStats().then(null)}, [showVerifySMSModal])
     // Poll only if user is currently on this screen
     useInterval(fetchUserStats, useIsFocused() ? 5000 : null)
 
-    React.useEffect(
+    /*
+    useFocusEffect(
         // Use effect to prevent going back without logging out
-        () =>
-            navigation.addListener('beforeRemove', (e) => {
-                // Prevent default behavior of leaving the screen
-                e.preventDefault();
+            useCallback(() => {
+                    navigation.addListener('beforeRemove', (e) => {
 
-                // Prompt the user before leaving the screen
-                setIsAlertOpen(true)
-            }),
-        [navigation]
+                        // Prevent default behavior of leaving the screen
+                        e.preventDefault();
+
+                        // Prompt the user before leaving the screen
+                        setIsLeaveQueueAlertOpen(true)
+                    })
+                },
+            [navigation]
+        )
     )
+    */
 
 
     return (
@@ -215,8 +218,8 @@ export default function () {
                 <UserDashboardGroup {...props.stats}/>
             </Center>
             <UserDashboardMenu />
-            <LeaveQueueAlert isAlertOpen={isAlertOpen} setIsAlertOpen={setIsAlertOpen}/>
-            <VerifySMSModal userInfo={props} showModal={showModal} setShowModal={setShowModal}/>
+            <LeaveQueueAlert isAlertOpen={isLeaveQueueAlertOpen} setIsAlertOpen={setIsLeaveQueueAlertOpen}/>
+            <VerifySMSModal userInfo={props} showModal={showVerifySMSModal} setShowModal={setShowVerifySMSModal}/>
         </Center>
     )
 }

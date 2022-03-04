@@ -7,7 +7,6 @@ import {HomeScreenProps, QueueInfo, QueueState} from "../../types";
 import { FlatList } from "react-native-gesture-handler";
 import QueueMultiSelectButtons from "../organisms/QueueMultiSelectButtons";
 import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
-import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
 import baseURL from "../../utilities/baseURL";
 import corsURL from "../../utilities/corsURL";
 import {scale} from "../../utilities/scales";
@@ -18,8 +17,8 @@ import {useTranslation} from "react-i18next";
 type QueuesStatsProps = {
     entities: QueueInfo[]
     setEntities: React.Dispatch<React.SetStateAction<QueueInfo[]>>
-    showConfirmDeleteAlert: {show: boolean, callback: Function},
-    setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<any>>
+    showConfirmActionAlert: {show: boolean, callback: Function},
+    setShowConfirmActionAlert: React.Dispatch<React.SetStateAction<any>>
 }
 
 type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
@@ -36,7 +35,6 @@ export default function (props: QueuesStatsProps) {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [queueState, setQueueState] = useState<QueueState>("ACTIVE")
     const [paused, setPaused] = useState<boolean>(true)
-    const { width, height } = useDimensions()
     const [selectedItems, setSelectedItems] = useState<Array<QueueInfo["queueId"]>>([])
 
     useEffect(() => {
@@ -84,7 +82,7 @@ export default function (props: QueuesStatsProps) {
                 },
                 credentials: 'include',
                 body: JSON.stringify(body)
-            }).then(response => response.json()).then(data => {})
+            }).then(response => response.json()).then(data => {console.log(data)})
         } catch(error) {
             // enter your logic for when there is an error (ex. error toast)
             console.log(error)
@@ -93,7 +91,7 @@ export default function (props: QueuesStatsProps) {
 
     const onChangeQueueState = (queueState: QueueState) => {
         if (queueState === "DELETED"){
-            props.setShowConfirmDeleteAlert(
+            props.setShowConfirmActionAlert(
                 {
                     show: true,
                     callback: () => {
@@ -188,8 +186,8 @@ export default function (props: QueuesStatsProps) {
                                         onLongPress={() => selectItems(item)}
                                         deSelectItems={deSelectItems}
                                         selected={getSelected(item)}
-                                        showConfirmDeleteAlert={props.showConfirmDeleteAlert}
-                                        setShowConfirmDeleteAlert={props.setShowConfirmDeleteAlert}
+                                        showConfirmDeleteAlert={props.showConfirmActionAlert}
+                                        setShowConfirmDeleteAlert={props.setShowConfirmActionAlert}
                                         entity={item}/>
                                     }
                                 }

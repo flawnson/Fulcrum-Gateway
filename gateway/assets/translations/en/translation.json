@@ -53,7 +53,9 @@
     "footer": " to create your own virtual queue at",
     "cannot_enqueue_message": "Something wrong happened and we can't seem to join the queue... Please try again",
     "join_code_not_exist_message": "It looks like the join code you entered doesn't match any queue we have on record. Please check your code and try again, or use the QR code scanner.",
-    "queue_paused_or_inactive_message": "It looks like the queue you're trying to join is either paused or inactive. Please try again or ask the organizer for details."
+    "queue_paused_or_inactive_message": "It looks like the queue you're trying to join is either paused or inactive. Please try again or ask the organizer for details.",
+    "already_enqueued_title": "You're already enqueued!",
+    "already_enqueued_message": "You're already in a queue. You have to leave this one before joining another queue."
   },
   "createQueuePage": {
     "business_name_label": "Queue name",
@@ -110,7 +112,7 @@
   "leaveQueueAlert": {
     "header": "Leave Queue",
     "dialog": "Are you sure you want to abandon your position in line? You will have to enter the code again and start from the end of the line if you choose to rejoin.",
-    "cannot_leave_queue_message": "Something went wrong and we can't seem to log you out of this queue right now... Plase try again soon."
+    "cannot_leave_queue_message": "Something went wrong and we can't seem to log you out of this queue right now... Please try again soon."
   },
   "endQueueAlert": {
     "header": "End Queue",
@@ -125,7 +127,7 @@
     "share_queue": "Share Queue",
     "change_password": "Change queue password",
     "logout_queue": "Logout",
-    "cannot_fetch_share_data_message": "Something went wrong and we can't seem to be able to end the queue right now... Please try again soon"
+    "cannot_fetch_share_data_message": "Something went wrong and we can't seem to be able to end the queue right now... Please try again soon."
   },
   "queuesPageMenu": {
     "create_queue": "Create Queue",
@@ -138,16 +140,24 @@
   "userDashboardMenu": {
     "defer": "Defer Position",
     "leave": "Leave Queue",
-    "share": "Share Queue"
+    "share": "Share Queue",
+    "cannot_fetch_share_data_message": "Something went wrong and we can't seem to be able to get your share queue data right now... Please try again soon."
   },
   "queuesPage": {
-    "cannot_fetch_queue_message": "Something went wrong and we can't seem to be able to update the queue data right now... We're working on a fix."
+    "cannot_fetch_queue_message": "Something went wrong and we can't seem to be able to update the queue data right now... We're working on a fix.",
+    "confirm_delete_queues_message": "Deleting queues is a permanent action and cannot be undone."
+  },
+  "queuesCatalogCard": {
+    "confirm_delete_queues_message": "Deleting queues is a permanent action and cannot be undone."
   },
   "queuesCatalogCardGroup": {
     "your_queues": "Your queues"
   },
+  "userCatalogCard": {
+    "confirm_delete_user_message": "Deleting users is a permanent action and cannot be undone."
+  },
   "userCatalogCardGroup": {
-    "cannot_change_status_message": "Something went wrong and we can't seem to be able to change user status right now... Please try again soon"
+    "cannot_change_status_message": "Something went wrong and we can't seem to be able to change user status right now... Please try again soon."
   },
   "userCatalogGroup": {
     "enqueued": "Enqueued",
@@ -174,8 +184,6 @@
     "abandoned_tooltip": "The number of queuers that have since abandoned their position in line."
   },
   "QRCodeScanner": {
-    "message": "We are going live in July!",
-    "confirmation": "Bar code with type {{type}} and data {{data}} has been scanned!",
     "requesting": "Requesting for camera permission",
     "no_access": "No access to camera",
     "scan_again": "Tap to Scan Again",
@@ -224,7 +232,7 @@
     "password_placeholder": "Definitely not 123456",
     "forgot_password": "Forgot Password?",
     "new_organizer": "I'm a new organizer. ",
-    "cannot_login_error": "We can't seem to log you in right now... Please try again soon"
+    "cannot_login_error": "We can't seem to log you in right now... Please try again soon."
   },
   "assistantLoginForm": {
     "joinCode_not_defined_error": "Oops! Looks like you forgot to provide a joinCode...",
@@ -233,7 +241,7 @@
     "password_title": "Password",
     "joinCode_title": "Join Code",
     "password_placeholder": "Definitely not 123456",
-    "cannot_login_message": "We can't seem to log you in right now... Please try again soon"
+    "cannot_login_message": "We can't seem to log you in right now... Please try again soon."
   },
   "verifySMSModal": {
     "title": "Verify your phone number",
@@ -243,8 +251,7 @@
     "title": "Oops! Something went wrong"
   },
   "confirmDeleteAlert": {
-    "header": "Are you sure you want to do this?",
-    "message": "Deleting a {{entity}} is permanent and cannot be undone."
+    "header": "Are you sure you want to do this?"
   },
   "changeQueuePasswordModal": {
     "title": "Change queue password",

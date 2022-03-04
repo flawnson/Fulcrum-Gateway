@@ -18,7 +18,7 @@ export default function () {
     const [errors, setErrors] = useState<any>([]);
     const {width, height} = useDimensions()
     // The callback is so that we can call the method that deletes the cards from the flatlist when delete confirmed
-    const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
+    const [showConfirmActionAlert, setShowConfirmActionAlert] = useState<any>({show: false, callback: () => {}})
     const toast = useToast()
 
     useEffect(() => {
@@ -95,7 +95,7 @@ export default function () {
     // Run on first render
     useEffect(() => {fetchUserData().then()}, [])
     // Poll only if user is currently on this screen and if Alert isn't being shown
-    useInterval(fetchUserData, useIsFocused() && !showConfirmDeleteAlert ? 5000 : null)
+    useInterval(fetchUserData, useIsFocused() && !showConfirmActionAlert ? 5000 : null)
 
     return (
         <ScrollView
@@ -109,8 +109,8 @@ export default function () {
             <EnqueuedCatalogCardGroup
                 entities={props}
                 setEntities={setProps}
-                showConfirmDeleteAlert={showConfirmDeleteAlert}
-                setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
+                showConfirmActionAlert={showConfirmActionAlert}
+                setShowConfirmActionAlert={setShowConfirmActionAlert}
             />
         </ScrollView>
     )

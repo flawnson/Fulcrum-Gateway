@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native'
-import {useNavigation} from "@react-navigation/native";
+import {StackActions, useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../types";
 import {Center} from "native-base";
 import {useTranslation} from "react-i18next";
@@ -8,7 +8,7 @@ import {useTranslation} from "react-i18next";
 
 export default function() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const { t, i18n } = useTranslation("abandonedScreen");
+    const { t } = useTranslation("abandonedScreen");
 
     return (
         <Center style={styles.container}>
@@ -17,7 +17,7 @@ export default function() {
             </Text>
             <Text style={styles.subText}>
                 {t('footer')}
-            <Text style={styles.linkText} onPress={() => navigation.navigate('HomePage')}> fiefoe.com</Text>
+            <Text style={styles.linkText} onPress={() => StackActions.popToTop() && navigation.navigate('HomePage')}> fiefoe.com</Text>
             </Text>
         </Center>
     )

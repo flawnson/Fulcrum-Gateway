@@ -10,10 +10,11 @@ import { Swipeable, RectButton,
         LongPressGestureHandlerEventPayload,
         TapGestureHandlerEventPayload,
         LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
-import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
+import ConfirmActionAlert from "../../containers/ConfirmActionAlert";
 import { scale } from "../../utilities/scales"
 import corsURL from "../../utilities/corsURL";
 import baseURL from "../../utilities/baseURL";
+import {useTranslation} from "react-i18next";
 
 type UserCatalogCardProps = {
     entities: Array<UserStats>
@@ -22,8 +23,8 @@ type UserCatalogCardProps = {
     onLongPress: (event?: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => void,
     deSelectItems: () => void,
     selected: boolean,
-    showConfirmDeleteAlert?: {show: boolean, callback: Function}  // Only needed for enqueued page
-    setShowConfirmDeleteAlert?: React.Dispatch<React.SetStateAction<any>>  // Only needed for enqueued page
+    showConfirmActionAlert?: {show: boolean, callback: Function}  // Only needed for enqueued page
+    setShowConfirmActionAlert?: React.Dispatch<React.SetStateAction<any>>  // Only needed for enqueued page
     entity: UserStats,
 }
 type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
@@ -37,6 +38,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: UserCatalogCardProps) {
+    const { t } = useTranslation("userCatalogCard")
     const [summoned, setSummoned] = useState<boolean>(false)
     const swipeableRef = useRef(null)  // Needed to automatically close swipe action
 
@@ -110,8 +112,8 @@ export default function (props: UserCatalogCardProps) {
         changeUserStatus(status).then()
         if (status === "KICKED") {
             // Only needed if enqueued. Serviced and abandoned do not provide confirm delete props
-            props.setShowConfirmDeleteAlert ?
-            props.setShowConfirmDeleteAlert(
+            props.setShowConfirmActionAlert ?
+            props.setShowConfirmActionAlert(
                 {
                     show: true,
                     callback: () => props.setEntities(
@@ -154,9 +156,10 @@ export default function (props: UserCatalogCardProps) {
 
     return (
         <>
-            {props.showConfirmDeleteAlert && props.setShowConfirmDeleteAlert ? <ConfirmDeleteAlert
-                showAlert={props.showConfirmDeleteAlert}
-                setShowAlert={props.setShowConfirmDeleteAlert}
+            {props.showConfirmActionAlert && props.setShowConfirmActionAlert ? <ConfirmActionAlert
+                message={t("confirm_delete_user_message")}
+                showAlert={props.showConfirmActionAlert}
+                setShowAlert={props.setShowConfirmActionAlert}
             /> : <></>}
             <ConditionalWrapper
                 condition={props.entity.index}  // User index is only provided to enqueued users, not serviced or reneged
@@ -252,6 +255,7 @@ export default function (props: UserCatalogCardProps) {
 
 const styles = StyleSheet.create({
     card: {
+        cursor: 'pointer',
         marginTop: scale(10),
         marginBottom: scale(10),
     },

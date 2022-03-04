@@ -102,6 +102,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData})
             }).then(response => response.json()).then(data => {
+                console.log(data)
                     setShowModal(false)
                     setSubmitted(false)
                 }

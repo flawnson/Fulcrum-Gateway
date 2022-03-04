@@ -9,7 +9,7 @@ import {HomeScreenProps, QueueInfo} from "../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
 import useInterval from "../utilities/useInterval";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
-import ConfirmDeleteAlert from "../containers/ConfirmDeleteAlert";
+import ConfirmActionAlert from "../containers/ConfirmActionAlert";
 import {useTranslation} from "react-i18next";
 import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
@@ -18,8 +18,8 @@ import QueuesPageMenu from "../containers/QueuesPageMenu";
 
 type QueuesPageProps = {
     queueInfo: QueueInfo[],
-    showConfirmDeleteAlert: {show: boolean, callback: Function},
-    setShowConfirmDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>
+    showConfirmActionAlert: {show: boolean, callback: Function},
+    setShowActionDeleteAlert: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
@@ -30,7 +30,7 @@ export default function () {
     const [props, setProps] = useState<QueuesPageProps["queueInfo"]>([])
     const [errors, setError] = useState<any>([]);
     const [showCreateQueueModal, setShowCreateQueueModal] = useState<boolean>(false);
-    const [showConfirmDeleteAlert, setShowConfirmDeleteAlert] = useState<any>({show: false, callback: () => {}})
+    const [showConfirmActionAlert, setShowConfirmActionAlert] = useState<any>({show: false, callback: () => {}})
     const toast = useToast()
     const toastId = "errorToast"
     useEffect(() => navigation.setOptions({headerLeft: () => false, headerRight: RightHeaderGroup()}), [])
@@ -110,11 +110,18 @@ export default function () {
             <QueuesCatalogCardGroup
                 entities={props}
                 setEntities={setProps}
-                showConfirmDeleteAlert={showConfirmDeleteAlert}
-                setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
+                showConfirmActionAlert={showConfirmActionAlert}
+                setShowConfirmActionAlert={setShowConfirmActionAlert}
             />
-            <CreateQueueModal showModal={showCreateQueueModal} setShowModal={setShowCreateQueueModal} />
-            <ConfirmDeleteAlert showAlert={showConfirmDeleteAlert} setShowAlert={setShowConfirmDeleteAlert}/>
+            <CreateQueueModal
+                showModal={showCreateQueueModal}
+                setShowModal={setShowCreateQueueModal}
+            />
+            <ConfirmActionAlert
+                message={t("confirm_delete_queues_message")}
+                showAlert={showConfirmActionAlert}
+                setShowAlert={setShowConfirmActionAlert}
+            />
             <QueuesPageMenu />
         </>
     )
