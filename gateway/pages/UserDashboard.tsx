@@ -172,6 +172,8 @@ export default function () {
                 }
             )
         } catch(error) {
+            console.log("User Dashboard Error");
+            console.log(error);
             setErrors([...errors, error])
         }
     }

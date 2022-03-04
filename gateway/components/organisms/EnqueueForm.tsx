@@ -170,6 +170,8 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
             )
             setLoading(false)
         } catch(error) {
+            console.log("Enqueue form error");
+            console.log(error);
             setError([...errors, error])
         }
     }

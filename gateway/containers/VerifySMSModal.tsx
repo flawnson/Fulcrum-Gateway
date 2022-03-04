@@ -93,6 +93,8 @@ export default function (props: VerifySMSModalProps) {
                 }
             })
         } catch(error) {
+            console.log("Verify SMS error");
+            console.log(error);
             setErrors([...errors, error])
         }
     }
