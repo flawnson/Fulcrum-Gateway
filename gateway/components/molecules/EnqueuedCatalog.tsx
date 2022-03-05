@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import EnqueuedCatalogCardGroup from "./UserCatalogCardGroup";
-import useInterval from "../../utilities/useInterval";
+import useInterval, {interval} from "../../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../../types";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import {ScrollView, useToast} from "native-base";
@@ -92,10 +92,10 @@ export default function () {
         }
     }
 
-    // Run on first render
-    useEffect(() => {fetchUserData().then()}, [])
+    // Run on first render and if a user is kicked
+    useEffect(() => {fetchUserData().then()}, [showConfirmDeleteAlert])
     // Poll only if user is currently on this screen and if Alert isn't being shown
-    useInterval(fetchUserData, useIsFocused() && !showConfirmDeleteAlert ? 5000 : null)
+    useInterval(fetchUserData, useIsFocused() && !showConfirmDeleteAlert ? interval : null)
 
     return (
         <ScrollView

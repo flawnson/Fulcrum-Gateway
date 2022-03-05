@@ -6,7 +6,7 @@ import {Avatar, Center, Heading, HStack, Image, Text, useToast} from "native-bas
 
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
 import UserDashboardMenu from "../containers/UserDashboardMenu"
-import useInterval from "../utilities/useInterval";
+import useInterval, {interval} from "../utilities/useInterval";
 import {useTranslation} from "react-i18next";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
@@ -170,6 +170,8 @@ export default function () {
                 }
             )
         } catch(error) {
+            console.log("User Dashboard Error");
+            console.log(error);
             setErrors([...errors, error])
         }
     }
@@ -177,7 +179,7 @@ export default function () {
     // Run on first render or when modal is opened or closed
     useEffect(() => {fetchUserStats().then(null)}, [showModal])
     // Poll only if user is currently on this screen
-    useInterval(fetchUserStats, useIsFocused() ? 5000 : null)
+    useInterval(fetchUserStats, useIsFocused() && !isAlertOpen ? interval : null)
 
     React.useEffect(
         // Use effect to prevent going back without logging out

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {ScrollView, useToast} from "native-base";
-import useInterval from "../../utilities/useInterval";
+import useInterval, {interval} from "../../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../../types";
 import {useIsFocused, useRoute} from "@react-navigation/native";
 import UserCatalogCardGroup from "./UserCatalogCardGroup";
@@ -89,7 +89,7 @@ export default function () {
     // Run on first render
     useEffect(() => {fetchServicedData().then(null)}, [])
     // Poll only if user is currently on this screen
-    useInterval(fetchServicedData, useIsFocused() ? 5000 : null)
+    useInterval(fetchServicedData, useIsFocused() ? interval : null)
 
     return (
         <ScrollView

@@ -1,6 +1,8 @@
 /* Courtesy of useHooks.ts and their wonderful collection of typescript hooks */
 import { useEffect, useRef } from 'react'
 
+export const interval = 20000
+
 export default function useInterval(callback: () => void, delay: number | null) {
     const savedCallback = useRef(callback)
 
