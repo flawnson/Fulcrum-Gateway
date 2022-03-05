@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {ScrollView, useToast} from "native-base";
 import useInterval, {interval} from "../../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../../types";
-import {useIsFocused, useRoute} from "@react-navigation/native";
+import { useRoute} from "@react-navigation/native";
 import UserCatalogCardGroup from "./UserCatalogCardGroup";
 import {useTranslation} from "react-i18next";
 import baseURL from "../../utilities/baseURL";
@@ -11,10 +11,10 @@ import {scale} from "../../utilities/scales";
 import useDimensions from "../../utilities/useDimensions";
 
 
-export default function () {
+export default function (props: {isFocused: boolean}) {
     const { t } = useTranslation("servicedPage")
     const route = useRoute<HomeScreenProps["route"]>()
-    const [props, setProps] = useState<UserStats[]>([])
+    const [state, setState] = useState<UserStats[]>([])
     const [errors, setError] = useState<any>([]);
     const {width, height} = useDimensions()
     const toast = useToast()
@@ -78,7 +78,7 @@ export default function () {
                         servicedData.finishTime = `${finishTime.getHours()}:${finishTime.getHours()}:${finishTime.getHours()}`
                         servicedStats.push(servicedData)
                     })
-                    setProps(servicedStats)
+                    setState(servicedStats)
                 }
             )
         } catch(error) {
@@ -89,7 +89,7 @@ export default function () {
     // Run on first render
     useEffect(() => {fetchServicedData().then(null)}, [])
     // Poll only if user is currently on this screen
-    useInterval(fetchServicedData, useIsFocused() ? interval : null)
+    useInterval(fetchServicedData, props.isFocused ? interval : null)
 
     return (
         <ScrollView
@@ -100,7 +100,7 @@ export default function () {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
         >
-            <UserCatalogCardGroup entities={props} setEntities={setProps}/>
+            <UserCatalogCardGroup entities={state} setEntities={setState}/>
         </ScrollView>
     )
 }
