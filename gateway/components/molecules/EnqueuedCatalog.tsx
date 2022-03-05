@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import EnqueuedCatalogCardGroup from "./UserCatalogCardGroup";
 import useInterval, {interval} from "../../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../../types";
-import { useIsFocused, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import {ScrollView, useToast} from "native-base";
 import {useTranslation} from "react-i18next";
 import baseURL from "../../utilities/baseURL";
@@ -11,10 +11,10 @@ import {scale} from "../../utilities/scales";
 import useDimensions from "../../utilities/useDimensions";
 
 
-export default function () {
+export default function (props: {isFocused: boolean}) {
     const { t } = useTranslation("enqueuedPage")
     const route = useRoute<HomeScreenProps["route"]>()
-    const [props, setProps] = useState<UserStats[]>([])
+    const [state, setState] = useState<UserStats[]>([])
     const [errors, setErrors] = useState<any>([]);
     const {width, height} = useDimensions()
     // The callback is so that we can call the method that deletes the cards from the flatlist when delete confirmed
@@ -56,7 +56,7 @@ export default function () {
     const variables = route.params ? {"queueId": route.params!["queueId"], "orderBy": {"index": "asc"}}
                                    : {"queueId": "123456", "orderBy": {"index": "asc"}}
 
-    async function fetchUserData () {
+    async function fetchEnqueuedData () {
         try {
             const response = await fetch(baseURL(),
                 {
@@ -86,7 +86,7 @@ export default function () {
                         userData.online = ((Math.abs(now - lastOnline)/1000)/60) <= 15
                         user_stats.push(userData)
                     })
-                    setProps(user_stats)
+                    setState(user_stats)
                 }
             )
         } catch(error) {
@@ -95,9 +95,9 @@ export default function () {
     }
 
     // Run on first render and if a user is kicked
-    useEffect(() => {fetchUserData().then()}, [showConfirmDeleteAlert])
+    useEffect(() => {fetchEnqueuedData().then()}, [showConfirmDeleteAlert])
     // Poll only if user is currently on this screen and if Alert isn't being shown
-    useInterval(fetchUserData, useIsFocused() && !showConfirmDeleteAlert ? interval : null)
+    useInterval(fetchEnqueuedData, props.isFocused && !showConfirmDeleteAlert ? interval : null)
 
     return (
         <ScrollView
@@ -109,8 +109,8 @@ export default function () {
             showsHorizontalScrollIndicator={false}
         >
             <EnqueuedCatalogCardGroup
-                entities={props}
-                setEntities={setProps}
+                entities={state}
+                setEntities={setState}
                 showConfirmDeleteAlert={showConfirmDeleteAlert}
                 setShowConfirmDeleteAlert={setShowConfirmDeleteAlert}
             />

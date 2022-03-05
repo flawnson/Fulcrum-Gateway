@@ -14,7 +14,7 @@ import {useTranslation} from "react-i18next"
 import baseURL from "../utilities/baseURL"
 import corsURL from "../utilities/corsURL";
 import {DashboardContext} from "../utilities/DashboardContext";
-import CatalogGroup from "../components/organisms/UserCatalogGroup";
+import UserCatalogGroup from "../components/organisms/UserCatalogGroup";
 
 type UserData = {
     user_id: string,
@@ -105,6 +105,8 @@ export default function () {
                                          headers: {
                                              'Content-Type': 'application/json',
                                              'Access-Control-Allow-Origin': corsURL(),
+                                             'Access-Control-Allow-Methods': "*",
+                                             'Access-Control-Allow-Headers': "*"
                                          },
                                          credentials: 'include',
                                          body: JSON.stringify(body)
@@ -169,7 +171,7 @@ export default function () {
                     <Heading style={styles.headingFormat}>{props.name}</Heading>
                 </HStack>
                 <QueueDashboardGroup {...props.stats}/>
-                <CatalogGroup />
+                <UserCatalogGroup isFocused={useIsFocused()}/>
                 <QueueDashboardMenu />
             </Center>
         </DashboardContext.Provider>
