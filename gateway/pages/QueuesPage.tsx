@@ -7,7 +7,7 @@ import {AntDesign} from "@expo/vector-icons"
 import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps, QueueInfo} from "../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
-import useInterval from "../utilities/useInterval";
+import useInterval, {interval} from "../utilities/useInterval";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import ConfirmActionAlert from "../containers/ConfirmActionAlert";
 import {useTranslation} from "react-i18next";
@@ -95,10 +95,10 @@ export default function () {
         }
     }
 
-    // Run on first render
-    useEffect(() => {fetchQueuesData().then()}, [])
+    // Run on first render and when a queue is created or deleted
+    useEffect(() => {fetchQueuesData().then()}, [showCreateQueueModal, showConfirmDeleteAlert])
     // Poll only if user is currently on this screen and alert is not shown (to prevent flickering)
-    useInterval(fetchQueuesData, useIsFocused() ? 5000 : null)
+    useInterval(fetchQueuesData, useIsFocused() && !showConfirmDeleteAlert && !showCreateQueueModal ? interval : null)
 
     return (
         <>

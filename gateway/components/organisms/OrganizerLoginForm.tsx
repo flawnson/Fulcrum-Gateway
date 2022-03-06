@@ -88,6 +88,8 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                 }
             )
         } catch (error) {
+            console.log("Organizer Login Form Error");
+            console.log(error);
             return error
         }
     }

@@ -43,6 +43,8 @@ export default function (props: DeferPositionModal) {
                 }
             )
         } catch(error) {
+            console.log("Defer position error");
+            console.log(error);
             return error
         }
     }
