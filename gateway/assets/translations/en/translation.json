@@ -245,6 +245,9 @@
   },
   "verifySMSModal": {
     "title": "Verify your phone number",
+    "hello_message": "Hello {{user_name}}!",
+    "message": "Please enter the 6-digit code we sent to {{phone_number}}",
+    "did_not_get_message": "Didn't get a message?",
     "cannot_fetch_verify_sms_message": "Something went wrong and we can't seem to be able to verify your SMS right now... We're working on a fix."
   },
   "generalErrorAlert": {

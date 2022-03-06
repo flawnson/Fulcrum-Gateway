@@ -141,6 +141,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                         <Input
                             placeholder={t("email_placeholder")}
                             onChangeText={(value) => setData({ ...formData, email: value })}
+                            keyboardType={"email-address"}
                         />
                         <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.email}</FormControl.ErrorMessage>
                     </FormControl>

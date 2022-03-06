@@ -96,9 +96,9 @@ export default function () {
     }
 
     // Run on first render and when a queue is created or deleted
-    useEffect(() => {fetchQueuesData().then()}, [showCreateQueueModal, showConfirmDeleteAlert])
+    useEffect(() => {fetchQueuesData().then()}, [showCreateQueueModal, showConfirmActionAlert])
     // Poll only if user is currently on this screen and alert is not shown (to prevent flickering)
-    useInterval(fetchQueuesData, useIsFocused() && !showConfirmDeleteAlert && !showCreateQueueModal ? interval : null)
+    useInterval(fetchQueuesData, useIsFocused() && !showConfirmActionAlert && !showCreateQueueModal ? interval : null)
 
     return (
         <>

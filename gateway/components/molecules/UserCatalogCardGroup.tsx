@@ -128,6 +128,8 @@ export default function (props: UserCatalogCardProps) {
                 props.entities.find(user => user.userId === selectedItem)!.status = queueState
                 changeUserStatus(selectedItem, queueState).then()
             }
+        } else if (queueState === "SUMMONED") {
+            // Figure out logic for batch toggle summon
         }
         deSelectItems()  // Deselect Items after removing cards
     }

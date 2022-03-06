@@ -106,9 +106,16 @@ export default function (props: QueuesStatsProps) {
                 }
             )
         } else if (queueState === "PAUSED") {
-            setPaused(!paused)
-            deSelectItems()
+            // Figure out logic for batch toggle paused
+            props.setEntities(
+                [...props.entities.filter(queue => !selectedItems.includes(queue.queueId))]
+            )
+            for (const selectedItem of selectedItems) {
+                props.entities.find(user => user.queueId === selectedItem)!.state = queueState
+                changeQueueState(selectedItem, queueState).then()
+            }
         }
+        deSelectItems()  // Deselect Items after removing cards
     }
 
     // To remove header when organizer deselects all queues

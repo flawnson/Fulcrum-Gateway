@@ -105,8 +105,6 @@ export default function () {
                                          headers: {
                                              'Content-Type': 'application/json',
                                              'Access-Control-Allow-Origin': corsURL(),
-                                             'Access-Control-Allow-Methods': "*",
-                                             'Access-Control-Allow-Headers': "*"
                                          },
                                          credentials: 'include',
                                          body: JSON.stringify(body)

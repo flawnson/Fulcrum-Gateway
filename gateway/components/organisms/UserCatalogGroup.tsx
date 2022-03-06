@@ -19,8 +19,8 @@ export default function (props: {isFocused: boolean}) {
                 {dashboardContext === "ENQUEUED" ? t("enqueued") :
                 dashboardContext === "SERVICED" ? t("serviced") : t("abandoned")}
             </Text>
-                {dashboardContext === "ENQUEUED" ? <EnqueuedCatalog isFocused={props.isFocused}/> :
-                dashboardContext === "SERVICED" ? <ServicedCatalog isFocused={props.isFocused}/> : <AbandonedCatalog isFocused={props.isFocused}/>}
+            {dashboardContext === "ENQUEUED" ? <EnqueuedCatalog isFocused={props.isFocused}/> :
+            dashboardContext === "SERVICED" ? <ServicedCatalog isFocused={props.isFocused}/> : <AbandonedCatalog isFocused={props.isFocused}/>}
         </View>
     )
 }

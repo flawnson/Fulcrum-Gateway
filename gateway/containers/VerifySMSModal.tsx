@@ -98,6 +98,10 @@ export default function (props: VerifySMSModalProps) {
         }
     }
 
+    function resendSMS () {
+
+    }
+
     function onSubmit () {
         submitSMSVerification().then()
     }
@@ -115,10 +119,10 @@ export default function (props: VerifySMSModalProps) {
                     <Modal.Body>
                         <SafeAreaView style={styles.root}>
                             <Text style={styles.title}>
-                                Hello {props.userInfo.user_name}!
+                                {t("hello_message", {user_name: props.userInfo.user_name})}
                             </Text>
                             <Text style={styles.subtitle}>
-                                Please enter the 6-digit code we sent to {props.userInfo.phone_number}
+                                {t("message", {phone_number: props.userInfo.phone_number})}
                             </Text>
                             <Center>
                                 <CodeField
@@ -152,8 +156,9 @@ export default function (props: VerifySMSModalProps) {
                             }}
                             alignSelf="flex-end"
                             mt="1"
+                            onPress={() => resendSMS()}
                         >
-                            Didn't get a message?
+                            {t("did_not_get_message")}
                         </Link>
                     </Modal.Body>
                     <Modal.Footer>
