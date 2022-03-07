@@ -1,7 +1,11 @@
 {
-  "_comment": "src/assets/translations/en/translation.json",
-  "demoScope": {
-    "title": "i18next is Great!",
-    "description": "Everyone understands me!"
+  "common": {
+    "cancel": "取消",
+    "ok": "提交",
+    "submit": "提交",
+    "submitting": "正在加载, 请稍后......",
+    "confirm": "确认",
+    "login": "登录",
+    "signup": "注册"
   }
 }
