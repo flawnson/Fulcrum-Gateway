@@ -7,7 +7,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 
 type CreateUserModalProps = {
-    queueId: string
+    queueId?: string
     joinCode: string
     navigation: NativeStackNavigationProp<RootStackParamList, "HomePage">
     showModal: boolean,

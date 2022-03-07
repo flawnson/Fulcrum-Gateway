@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-    Button, Link,
-    Modal, Center, useToast
-} from 'native-base'
+import { Button, Link,
+        Modal, Center,
+        useToast } from 'native-base'
 import { StyleSheet, SafeAreaView,
         Text, View } from 'react-native';
 import { CodeField, Cursor,
@@ -26,7 +25,7 @@ export default function (props: VerifySMSModalProps) {
     const { t } = useTranslation(["verifySMSModal"]);
     const [value, setValue] = useState('');
     const [submitted, setSubmitted] = useState<boolean>(false)
-    const [errors, setError] = useState<any>([]);
+    const [errors, setErrors] = useState<any>([]);
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
     const [cellOnLayoutHandler, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
     const toast = useToast()
@@ -70,7 +69,7 @@ export default function (props: VerifySMSModalProps) {
 
     const submitSMSVerification = async () => {
         try {
-            const response = await fetch(baseURL(),
+            fetch(baseURL(),
                 {
                     method: 'POST',
                     headers: {
@@ -79,13 +78,12 @@ export default function (props: VerifySMSModalProps) {
                     },
                     credentials: 'include',
                     body: JSON.stringify({query: query, variables: {confirmCode: value}})
-                })
-            return await response.json().then(data => {
-                if (!!data.errors?.length) {
-                    setError(data.errors)
+        }).then(response => response.json()).then(data => {
+                if (!!data.errors) {
+                    setErrors([...errors, data.errors])
                 } else if (data.data.confirmUser.error === "USER_CONFIRM_FAILED") {
                     // Check for known error (when confirm code is wrong)
-                    setError(data.errors)
+                    setErrors([...errors, data.data.confirmUser.error])
                     setSubmitted(false)
                 } else {
                     // If successfully verified SMS
@@ -94,8 +92,14 @@ export default function (props: VerifySMSModalProps) {
                 }
             })
         } catch(error) {
-            setError([...errors, error])
+            console.log("Verify SMS error");
+            console.log(error);
+            setErrors([...errors, error])
         }
+    }
+
+    function resendSMS () {
+
     }
 
     function onSubmit () {
@@ -115,10 +119,10 @@ export default function (props: VerifySMSModalProps) {
                     <Modal.Body>
                         <SafeAreaView style={styles.root}>
                             <Text style={styles.title}>
-                                Hello {props.userInfo.user_name}!
+                                {t("hello_message", {user_name: props.userInfo.user_name})}
                             </Text>
                             <Text style={styles.subtitle}>
-                                Please enter the 6-digit code we sent to {props.userInfo.phone_number}
+                                {t("message", {phone_number: props.userInfo.phone_number})}
                             </Text>
                             <Center>
                                 <CodeField
@@ -152,8 +156,9 @@ export default function (props: VerifySMSModalProps) {
                             }}
                             alignSelf="flex-end"
                             mt="1"
+                            onPress={() => resendSMS()}
                         >
-                            Didn't get a message?
+                            {t("did_not_get_message")}
                         </Link>
                     </Modal.Body>
                     <Modal.Footer>

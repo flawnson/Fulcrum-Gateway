@@ -1,12 +1,12 @@
-import React, {SetStateAction, useContext, useEffect, useState} from 'react'
-import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
+import React, {useEffect, useState, useCallback} from 'react'
+import {useIsFocused, useNavigation, useRoute, useFocusEffect} from "@react-navigation/native";
 import {HomeScreenProps, UserInfo} from "../types";
-import {StyleSheet} from 'react-native'
+import {StyleSheet, BackHandler} from 'react-native'
 import {Avatar, Center, Heading, HStack, Image, Text, useToast} from "native-base";
 
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
 import UserDashboardMenu from "../containers/UserDashboardMenu"
-import useInterval from "../utilities/useInterval";
+import useInterval, {interval} from "../utilities/useInterval";
 import {useTranslation} from "react-i18next";
 import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 import VerifySMSModal from "../containers/VerifySMSModal";
@@ -15,14 +15,16 @@ import calculateTimeToNow from "../utilities/calculateTimeToNow";
 import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
 import secondsToTime from "../utilities/secondsToTime";
+import LeaveQueueAlert from "../containers/LeaveQueueAlert";
 
 
 export default function () {
     const { t } = useTranslation(["userDashboard"]);
     const route = useRoute<HomeScreenProps["route"]>()
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const [errors, setError] = useState<any>([]);
-    const [showModal, setShowModal] = useState<boolean>(false)
+    const [errors, setErrors] = useState<any>([]);
+    const [showVerifySMSModal, setShowVerifySMSModal] = useState<boolean>(false)
+    const [isLeaveQueueAlertOpen, setIsLeaveQueueAlertOpen] = useState<boolean>(false)
     // Render the header (dark mode toggle and language picker)
     useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
     const toast = useToast()
@@ -86,37 +88,34 @@ export default function () {
 
     const fetchUserStats = async () => {
         try {
-            const response = await fetch(baseURL(),
-                                     {
-                                          method: 'POST',
-                                          headers: {
-                                              'Content-Type': 'application/json',
-                                              'Access-Control-Allow-Origin': corsURL(),
-                                          },
-                                          credentials: 'include',
-                                          body: JSON.stringify({query: query})
-                                     })
-            await response.json().then(
-                data => {
+            fetch(baseURL(),
+                 {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                          'Access-Control-Allow-Origin': corsURL(),
+                      },
+                      credentials: 'include',
+                      body: JSON.stringify({query: query})
+            }).then(response => response.json()).then(data => {
                     if (!!data.errors?.length) {
-                        // Check for errors on response
-                        setError(data.errors)
-                        setShowModal(true)
+                        // If any general errors, assume unverified and let user verify
+                        setShowVerifySMSModal(true)
+                        setErrors([...errors, data.errors])
                     } else if (data.data.getUser.error === "USER_DOES_NOT_EXIST"){
                         // Check if user exists on backend
-                        setError(data.data.getUser.error)
-                        // Try letting the user confirm via SMS
-                        setShowModal(true)
+                        setErrors([...errors, data.data.getUser.error])
+                        navigation.navigate("HomePage")
                     } else {
                         const userData = data.data.getUser
                         const queueData = data.data.getUser.queue
-                        // If user status is unverified, show SMS verification modal
-                        if (userData.status === "UNVERIFIED") {
-                            setShowModal(true)
-                        }
                         // If summoned is toggled true, immediately navigate to Summon Screen
                         if (userData.summoned) {
                             navigation.navigate("SummonScreen", {queueId: queueData.id, userId: userData.id})
+                        }
+                        // If user status is unverified, show SMS verification modal
+                        if (userData.status === "UNVERIFIED") {
+                            setShowVerifySMSModal(true)
                         }
                         // Set the queue state
                         setState(queueData.state)
@@ -169,15 +168,35 @@ export default function () {
                 }
             )
         } catch(error) {
-            setError([...errors, error])
-            console.log(error)
+            console.log("User Dashboard Error");
+            console.log(error);
+            setErrors([...errors, error])
         }
     }
 
     // Run on first render or when modal is opened or closed
-    useEffect(() => {fetchUserStats().then(null)}, [showModal])
+    useEffect(() => {fetchUserStats().then(null)}, [showVerifySMSModal])
     // Poll only if user is currently on this screen
-    useInterval(fetchUserStats, useIsFocused() ? 5000 : null)
+    useInterval(fetchUserStats, useIsFocused() && !isAlertOpen ? interval : null)
+
+    /*
+    useFocusEffect(
+        // Use effect to prevent going back without logging out
+            useCallback(() => {
+                    navigation.addListener('beforeRemove', (e) => {
+
+                        // Prevent default behavior of leaving the screen
+                        e.preventDefault();
+
+                        // Prompt the user before leaving the screen
+                        setIsLeaveQueueAlertOpen(true)
+                    })
+                },
+            [navigation]
+        )
+    )
+    */
+
 
     return (
         <Center>
@@ -201,7 +220,8 @@ export default function () {
                 <UserDashboardGroup {...props.stats}/>
             </Center>
             <UserDashboardMenu />
-            <VerifySMSModal userInfo={props} showModal={showModal} setShowModal={setShowModal}/>
+            <LeaveQueueAlert isAlertOpen={isLeaveQueueAlertOpen} setIsAlertOpen={setIsLeaveQueueAlertOpen}/>
+            <VerifySMSModal userInfo={props} showModal={showVerifySMSModal} setShowModal={setShowVerifySMSModal}/>
         </Center>
     )
 }
@@ -221,8 +241,8 @@ const styles = StyleSheet.create({
     },
     avatar: {
         flex: 1,
-        width: scale(200),
-        height: scale(60),
+        width: scale(500),
+        height: scale(100),
         borderRadius: 10,
     },
     headingFormat: {

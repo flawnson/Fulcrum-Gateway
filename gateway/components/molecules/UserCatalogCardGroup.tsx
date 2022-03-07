@@ -15,8 +15,8 @@ import {useTranslation} from "react-i18next";
 type UserCatalogCardProps = {
     entities: Array<UserStats>
     setEntities: React.Dispatch<React.SetStateAction<UserStats[]>>
-    showConfirmDeleteAlert?: {show: boolean, callback: Function},
-    setShowConfirmDeleteAlert?: React.Dispatch<React.SetStateAction<any>>
+    showConfirmActionAlert?: {show: boolean, callback: Function},
+    setShowConfirmActionAlert?: React.Dispatch<React.SetStateAction<any>>
 }
 type Children = (boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | ((state: PressableStateCallbackType) => React.ReactNode) | null | undefined)
 type ConditionalWrapperArgs = {
@@ -89,7 +89,7 @@ export default function (props: UserCatalogCardProps) {
                 : status === "SUMMONED"
                 ? {query: summonUserQuery, variables: {userId: userId, summoned: true}}
                 : {error: "error"}
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -97,8 +97,7 @@ export default function (props: UserCatalogCardProps) {
                 },
                 credentials: 'include',
                 body: JSON.stringify(body)
-            });
-            return await response.json()
+            }).then(response => response.json()).then(data => {})
         } catch(error) {
             setError([...errors, error])
         }
@@ -106,8 +105,8 @@ export default function (props: UserCatalogCardProps) {
 
     const onChangeUserStatus = (queueState: UserStatus | "SUMMONED") => {
         if (queueState === "KICKED"){
-            props.setShowConfirmDeleteAlert ?
-            props.setShowConfirmDeleteAlert(
+            props.setShowConfirmActionAlert ?
+            props.setShowConfirmActionAlert(
                 {
                     show: true,
                     callback: () => {
@@ -129,15 +128,21 @@ export default function (props: UserCatalogCardProps) {
                 props.entities.find(user => user.userId === selectedItem)!.status = queueState
                 changeUserStatus(selectedItem, queueState).then()
             }
-            deSelectItems()
+        } else if (queueState === "SUMMONED") {
+            // Figure out logic for batch toggle summon
         }
+        deSelectItems()  // Deselect Items after removing cards
     }
 
     // To remove header when organizer deselects all users
     useEffect(() => {
         if (selectedItems.length === 0) {
             if (parentNavigation) {
+                // For when used in a standalone page
                 parentNavigation.setOptions({headerRight: undefined})
+            } else {
+                // For when used as a component within a page, like in Queue Dashboard
+                navigation.setOptions({headerRight: undefined})
             }
         }
     }, [selectedItems])
@@ -160,7 +165,13 @@ export default function (props: UserCatalogCardProps) {
 
     const selectItems = (item: UserStats) => {
         if (parentNavigation) {
+            // For when used in a standalone page
             parentNavigation.setOptions({
+                headerRight: () => <CatalogCardMultiSelectButtons onActionPress={setUserStatus}/>
+            })
+        } else {
+            // For when used as a component within a page, like in Queue Dashboard
+            navigation.setOptions({
                 headerRight: () => <CatalogCardMultiSelectButtons onActionPress={setUserStatus}/>
             })
         }
@@ -198,8 +209,8 @@ export default function (props: UserCatalogCardProps) {
                                     onLongPress={() => selectItems(item)}
                                     deSelectItems={() => deSelectItems()}
                                     selected={getSelected(item)}
-                                    showConfirmDeleteAlert={props.showConfirmDeleteAlert}
-                                    setShowConfirmDeleteAlert={props.setShowConfirmDeleteAlert}
+                                    showConfirmActionAlert={props.showConfirmActionAlert}
+                                    setShowConfirmActionAlert={props.setShowConfirmActionAlert}
                                     entity={item}/>
                         }
                     }

@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import { Text, Menu,
-        HamburgerIcon, Fab,
-        HStack } from 'native-base';
+import {
+    Text, Menu,
+    HamburgerIcon, Fab,
+    HStack, useToast
+} from 'native-base';
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import { HomeScreenProps, ShareData } from "../types";
 import DeferPositionModal from "./DeferPositionModal";
@@ -17,12 +19,28 @@ export default function () {
     const { isThemeDark } = React.useContext(PreferencesContext)
     const { t } = useTranslation(["userDashboardMenu"]);
     const [showDeferPositionModal, setShowDeferPositionModal] = React.useState(false)
-    const [isAlertOpen, setIsAlertOpen] = React.useState(false)
-    const [errors, setError] = useState<any>([]);
+    const [isLeaveQueueAlertOpen, setIsLeaveQueueAlertOpen] = React.useState(false)
+    const [errors, setErrors] = useState<any>([]);
     const [shareData, setShareData] = useState<ShareData>({currentQueueName: "Bob's burgers",
                                                                     currentQueueId: 'some_id',
                                                                     currentQueueQR: 'Image address',
                                                                     currentQueueJoinCode: "1234567890"})
+    const toast = useToast()
+    const toastId = "errorToast"
+
+    useEffect(() => {
+        if (!!errors.length) {
+            if (!toast.isActive(toastId)) {
+                toast.show({
+                    id: toastId,
+                    title: t('something_went_wrong', {ns: "common"}),
+                    status: "error",
+                    description: t("cannot_fetch_share_data_message"),
+                    duration: 10
+                })
+            }
+        }
+    }, [errors])  // Render alert if errors
 
     useEffect(() => {
         fetchShareData().then()
@@ -47,7 +65,7 @@ export default function () {
 
     const fetchShareData = async () => {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,22 +73,25 @@ export default function () {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query})
-            })
-            await response.json().then(
-                data => {
-                    data = data.data.getUser.queue
-                    setShareData( {
-                            ...shareData,
-                            "currentQueueName": data.name,
-                            "currentQueueId": data.queueId,
-                            "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
-                            "currentQueueJoinCode": data.joinCode
-                        }
-                    )
+            }).then(response => response.json()).then(data => {
+                    if (!!data.errors?.length) {
+                        // Check for errors on response
+                        setErrors([...errors, data.errors])
+                    } else {
+                        data = data.data.getUser.queue
+                        setShareData( {
+                                ...shareData,
+                                "currentQueueName": data.name,
+                                "currentQueueId": data.queueId,
+                                "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
+                                "currentQueueJoinCode": data.joinCode
+                            }
+                        )
+                    }
                 }
             )
         } catch (error) {
-            setError([...errors, error])
+            setErrors([...errors, error])
         }
     }
 
@@ -102,7 +123,7 @@ export default function () {
                         </Text>
                     </HStack>
                 </Menu.Item>
-                <Menu.Item onPress={() => setIsAlertOpen(true)}>
+                <Menu.Item onPress={() => setIsLeaveQueueAlertOpen(true)}>
                     <HStack space={3}>
                         <Ionicons
                             name={'md-exit-outline'}
@@ -128,7 +149,7 @@ export default function () {
                 </Menu.Item>
             </Menu>
             <DeferPositionModal showModal={showDeferPositionModal} setShowModal={setShowDeferPositionModal}/>
-            <LeaveQueueAlert isAlertOpen={isAlertOpen} setIsAlertOpen={setIsAlertOpen}/>
+            <LeaveQueueAlert isAlertOpen={isLeaveQueueAlertOpen} setIsAlertOpen={setIsLeaveQueueAlertOpen}/>
         </>
     )
 }

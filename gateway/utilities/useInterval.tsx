@@ -1,6 +1,8 @@
 /* Courtesy of useHooks.ts and their wonderful collection of typescript hooks */
 import { useEffect, useRef } from 'react'
 
+export const interval = 5000
+
 export default function useInterval(callback: () => void, delay: number | null) {
     const savedCallback = useRef(callback)
 
@@ -21,4 +23,3 @@ export default function useInterval(callback: () => void, delay: number | null) 
         return () => clearInterval(id)
     }, [delay])
 }
-

@@ -40,12 +40,10 @@ export default function() {
 
     const fetchData = async () => {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: "POST",
                 body: JSON.stringify({query: query, variables: variables})
-                })
-            await response.json().then(
-                data => {
+            }).then(response => response.json()).then(data => {
                     // If summoned is toggled false, navigate back to User Dashboard
                     if (!data.data.user.summoned) {navigation.navigate("UserDashboard")}
                     data = data.data.queue.name

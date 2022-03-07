@@ -73,7 +73,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
 
     async function logIn () {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,14 +81,15 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData}),
-            });
-            return await response.json().then(data => {
+            }).then(response => response.json()).then(data => {
                     setShowModal(false)
                     setSubmitted(false)
                     navigation.navigate("QueuesPage")
                 }
             )
         } catch (error) {
+            console.log("Organizer Login Form Error");
+            console.log(error);
             return error
         }
     }
@@ -140,6 +141,7 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                         <Input
                             placeholder={t("email_placeholder")}
                             onChangeText={(value) => setData({ ...formData, email: value })}
+                            keyboardType={"email-address"}
                         />
                         <FormControl.ErrorMessage _text={{fontSize: 'xs'}}>{errors.email}</FormControl.ErrorMessage>
                     </FormControl>

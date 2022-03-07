@@ -8,14 +8,13 @@ import {
 } from "native-base"
 import QueueDashboardGroup from "../components/organisms/QueueDashboardStats"
 import QueueDashboardMenu from "../containers/QueueDashboardMenu"
-import useInterval from "../utilities/useInterval"
+import useInterval, {interval} from "../utilities/useInterval"
 import {zipObject} from "lodash"
 import {useTranslation} from "react-i18next"
 import baseURL from "../utilities/baseURL"
 import corsURL from "../utilities/corsURL";
-import EnqueuedCatalog from "../components/molecules/EnqueuedCatalog";
 import {DashboardContext} from "../utilities/DashboardContext";
-import CatalogGroup from "../components/organisms/UserCatalogGroup";
+import UserCatalogGroup from "../components/organisms/UserCatalogGroup";
 
 type UserData = {
     user_id: string,
@@ -153,14 +152,16 @@ export default function () {
                 }
             )
         } catch(error) {
+            console.log("Queue Dasboard error");
+            console.log(error);
             setError([...errors, error])
         }
     }
 
-    // Run on first render
-    useEffect(() => {fetchQueueData().then()}, [])
+    // Run on first render and when the dashboardContext changes (to show the corresponding catalog list)
+    useEffect(() => {fetchQueueData().then()}, [dashboardContext])
     // Poll only if user is currently on this screen
-    useInterval(fetchQueueData, useIsFocused() ? 5000 : null)
+    useInterval(fetchQueueData, useIsFocused() ? interval : null)
 
     return (
         <DashboardContext.Provider value={{dashboardContext, setDashboardContext}}>
@@ -170,7 +171,7 @@ export default function () {
                     <Heading style={styles.headingFormat}>{props.name}</Heading>
                 </HStack>
                 <QueueDashboardGroup {...props.stats}/>
-                <CatalogGroup />
+                <UserCatalogGroup isFocused={useIsFocused()}/>
                 <QueueDashboardMenu />
             </Center>
         </DashboardContext.Provider>

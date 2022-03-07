@@ -9,12 +9,13 @@ import { Swipeable, RectButton,
         LongPressGestureHandlerEventPayload,
         TapGestureHandlerEventPayload,
         LongPressGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
-import ConfirmDeleteAlert from "../../containers/ConfirmDeleteAlert";
+import ConfirmActionAlert from "../../containers/ConfirmActionAlert";
 import calculateTimeToNow from "../../utilities/calculateTimeToNow";
 import { scale } from "../../utilities/scales";
 import useDimensions from "../../utilities/useDimensions";
 import baseURL from "../../utilities/baseURL";
 import corsURL from "../../utilities/corsURL";
+import {useTranslation} from "react-i18next";
 
 type QueuesCatalogCardProps = {
     entities: Array<QueueInfo>
@@ -30,6 +31,7 @@ type QueuesCatalogCardProps = {
 
 
 export default function (props: QueuesCatalogCardProps) {
+    const { t } = useTranslation("queuesCatalogCard")
     const [queueState, setQueueState] = useState<QueueState>(props.entity.state)
     const { width, height } = useDimensions()
     const swipeableRef = useRef(null)
@@ -69,7 +71,7 @@ export default function (props: QueuesCatalogCardProps) {
                 : state === "DELETED"
                 ? {query: deleteQuery, variables: {queueId: props.entity.queueId}}
                 : {error: "error"}  // Trigger error if state is not PAUSED or DELETED
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,9 +79,7 @@ export default function (props: QueuesCatalogCardProps) {
                 },
                 credentials: 'include',
                 body: JSON.stringify(body)
-            });
-            // enter you logic when the fetch is successful
-            return await response.json()
+            }).then(response => response.json()).then(data => {})
         } catch(error) {
             // enter your logic for when there is an error (ex. error toast)
             return error
@@ -157,7 +157,11 @@ export default function (props: QueuesCatalogCardProps) {
 
     return (
         <>
-            <ConfirmDeleteAlert showAlert={props.showConfirmDeleteAlert} setShowAlert={props.setShowConfirmDeleteAlert}/>
+            <ConfirmActionAlert
+                message={t("confirm_delete_queues_message")}
+                showAlert={props.showConfirmDeleteAlert}
+                setShowAlert={props.setShowConfirmDeleteAlert}
+            />
             <Swipeable
                 ref={swipeableRef}
                 renderLeftActions={renderLeftActions}

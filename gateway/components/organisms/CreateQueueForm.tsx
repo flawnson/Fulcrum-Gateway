@@ -93,7 +93,7 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
 
     async function createQueue () {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -101,8 +101,8 @@ export default function ({ navigation, setShowModal }: CreateQueueFormType) {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData})
-            });
-            return await response.json().then(data => {
+            }).then(response => response.json()).then(data => {
+                console.log(data)
                     setShowModal(false)
                     setSubmitted(false)
                 }

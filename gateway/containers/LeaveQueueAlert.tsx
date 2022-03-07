@@ -31,10 +31,6 @@ export default (props: LeaveQueueAlertProps) => {
         }
     }, [errors])  // Render alert if errors
 
-    const onClose = () => {
-        props.setIsAlertOpen(false)
-    }
-
     const query = `
         mutation change_status($status: String!) {
             changeStatus(status: $status) {
@@ -53,7 +49,7 @@ export default (props: LeaveQueueAlertProps) => {
 
     async function leaveQueue () {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,14 +57,12 @@ export default (props: LeaveQueueAlertProps) => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: variables})
-            });
-            return await response.json().then(data => {
+            }).then(response => response.json()).then(data => {
                     if (!!data.errors?.length) {
                         setError([...errors, data.errors[0]])
                     } else {
                         signOut()
-                        navigation.reset({index: 1, routes: [{name: "HomePage"}]})
-                        navigation.navigate("AbandonedScreen")
+                        navigation.reset({index: 0, routes: [{name: "AbandonedScreen"}]})
                         AsyncStorage.clear().then()
                     }
                 }
@@ -78,11 +72,15 @@ export default (props: LeaveQueueAlertProps) => {
         }
     }
 
-
     const onLeave = () => {
         props.setIsAlertOpen(false)
         leaveQueue().then()
     }
+
+    const onClose = () => {
+        props.setIsAlertOpen(false)
+    }
+
 
     const cancelRef = React.useRef(null)
     return (

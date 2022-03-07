@@ -29,11 +29,14 @@ class LoginOrganizerArgs {
 export class LoginOrganizerResolver {
   @Mutation(returns => OrganizerResult, { nullable: true })
   async loginOrganizer(@Ctx() ctx: Context, @Args() args: LoginOrganizerArgs): Promise<typeof OrganizerResult> {
+    console.log("Login organizer");
+    console.log("Waiting for prisma (login organizer)");
     const organizer = await ctx.prisma.organizer.findUnique({
       where: {
         email: args.email
       }
     });
+    console.log("Done waiting for prisma (login organizer)");
 
     if (!organizer) {
       console.log("Organizer with this email does not exist: " + args.email);
@@ -43,7 +46,9 @@ export class LoginOrganizerResolver {
       return error;
     }
 
+    console.log("Waiting for bcrypt (login organizer)");
     const valid = await bcrypt.compare(args.password, organizer.password);
+    console.log("Done waiting for bcrypt (login organizer)");
 
     if (!valid) {
       console.log("Incorrect password for organizer " + args.email);
@@ -62,6 +67,8 @@ export class LoginOrganizerResolver {
     }
 
     ctx.req.session!.organizerId = organizer.id;
+
+    console.log("Organizer logged in");
 
     return organizer;
   }

@@ -8,7 +8,7 @@ import {StyleSheet} from "react-native";
 import {useTranslation} from "react-i18next";
 
 
-export default function () {
+export default function (props: {isFocused: boolean}) {
     const { t } = useTranslation("userCatalogGroup")
     const {dashboardContext} = useContext(DashboardContext)
 
@@ -19,8 +19,8 @@ export default function () {
                 {dashboardContext === "ENQUEUED" ? t("enqueued") :
                 dashboardContext === "SERVICED" ? t("serviced") : t("abandoned")}
             </Text>
-                {dashboardContext === "ENQUEUED" ? <EnqueuedCatalog /> :
-                dashboardContext === "SERVICED" ? <ServicedCatalog /> : <AbandonedCatalog />}
+            {dashboardContext === "ENQUEUED" ? <EnqueuedCatalog isFocused={props.isFocused}/> :
+            dashboardContext === "SERVICED" ? <ServicedCatalog isFocused={props.isFocused}/> : <AbandonedCatalog isFocused={props.isFocused}/>}
         </View>
     )
 }

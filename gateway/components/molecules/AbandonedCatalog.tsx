@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import useInterval from "../../utilities/useInterval";
+import useInterval, {interval} from "../../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../../types";
-import {useIsFocused, useRoute} from "@react-navigation/native";
+import { useRoute} from "@react-navigation/native";
 import UserCatalogCardGroup from "./UserCatalogCardGroup";
 import {ScrollView, useToast} from "native-base";
 import {useTranslation} from "react-i18next";
@@ -11,11 +11,11 @@ import {scale} from "../../utilities/scales";
 import useDimensions from "../../utilities/useDimensions";
 
 
-export default function () {
+export default function (props: {isFocused: boolean}) {
     const { t } = useTranslation("abandonedPage")
     const route = useRoute<HomeScreenProps["route"]>()
     const [errors, setError] = useState<any>([]);
-    const [props, setProps] = useState<UserStats[]>([])
+    const [state, setState] = useState<UserStats[]>([])
     const {width, height} = useDimensions()
     const toast = useToast()
 
@@ -55,18 +55,17 @@ export default function () {
 
     async function fetchAbandonedData () {
         try {
-            const response = await fetch(baseURL(),
-                                         {
-                                          method: 'POST',
-                                          headers: {
-                                                 'Content-Type': 'application/json',
-                                                 'Access-Control-Allow-Origin': corsURL(),
-                                                   },
-                                          credentials: 'include',
-                                          body: JSON.stringify({query: query, variables: variables})})
-            await response.json().then(
-                data => {
-                    if (!!data.errors?.length) {setError(data.errors[0])}  // Check for errors on response
+            fetch(baseURL(),
+                 {
+                  method: 'POST',
+                  headers: {
+                         'Content-Type': 'application/json',
+                         'Access-Control-Allow-Origin': corsURL(),
+                           },
+                  credentials: 'include',
+                  body: JSON.stringify({query: query, variables: variables})
+            }).then(response => response.json()).then(data => {
+                if (!!data.errors?.length) {setError(data.errors[0])}  // Check for errors on response
                     data = data.data.getQueue.users
                     data = data.filter((d: UserStats) => d.status === "ABANDONED" ||
                                                               d.status === "KICKED" ||
@@ -81,7 +80,7 @@ export default function () {
                         abandonedData.finishTime = `${finishTime.getHours()}:${finishTime.getHours()}:${finishTime.getHours()}`
                         abandonedStats.push(abandonedData)
                     })
-                    setProps(abandonedStats)
+                    setState(abandonedStats)
                 }
             )
         } catch(error) {
@@ -92,7 +91,7 @@ export default function () {
     // Run on first render
     useEffect(() => {fetchAbandonedData().then(null)}, [])
     // Poll only if user is currently on this screen
-    useInterval(fetchAbandonedData, useIsFocused() ? 5000 : null)
+    useInterval(fetchAbandonedData, props.isFocused ? interval : null)
 
     return (
         <ScrollView
@@ -103,7 +102,7 @@ export default function () {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
         >
-            <UserCatalogCardGroup entities={props} setEntities={setProps}/>
+            <UserCatalogCardGroup entities={state} setEntities={setState}/>
         </ScrollView>
     )
 }

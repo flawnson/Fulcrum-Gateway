@@ -8,7 +8,7 @@ import {useTranslation} from "react-i18next";
 
 export default function() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
-    const { t, i18n } = useTranslation("endScreen");
+    const { t } = useTranslation("endScreen");
 
     return (
         <Center style={styles.container}>

@@ -129,7 +129,7 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
     async function joinQueue () {
         setLoading(true)
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -137,38 +137,38 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
                 },
                 credentials: 'include',
                 body: JSON.stringify(body)  // Directly pass formData as variables
-            });
-            await response.json().then(
-                data => {
+            }).then(response => response.json()).then(data => {
                     // If response is valid and returns an id, then set auth context, submit, and navigate to dashboard
                     if (!!data.errors?.length) {
                         // Check for errors on response
                         setError([...errors, data.errors])
-                    } else if (data.data.joinQueue.error === "USER_ALREADY_EXISTS") {
+                    } else if (data.data.joinQueue?.error === "USER_ALREADY_EXISTS") {
                         // Check if user exists on backend
-                        setError([...errors, data.data.getUser.error])
-                    } else if (data?.data?.createUser || data?.data?.joinQueue.id) {
-                        setSubmitted(true)
-                        if (!setShowModal) {
+                        toast.show({
+                            title: t('already_enqueued_title'),
+                            status: "error",
+                            description: t("already_enqueued_message"),
+                            duration: 10
+                        })
+                        signIn('USER')
+                        // RECONSIDER THIS BECAUSE THEY DON'T NEED TO RESUBMIT SMS VERIFICATION IF THEY ALREADY EXIST
+                        navigation.navigate("UserDashboard", {name: formData.name!, phoneNumber: formData.phoneNumber!})
+                    } else if (data?.data?.createUser) {
+                        // Case if Organizer or Assistant creates user
+                    } else if (data?.data?.joinQueue.id) {
                             signIn('USER')
                             navigation.navigate("UserDashboard", {name: formData.name!, phoneNumber: formData.phoneNumber!})
-                        } else {
-                            !!setShowModal ? setShowModal(false) : null
-                        }
-                        setSubmitted(false) // turn back to false for when user revisits page
-                    } else {
-                        setSubmitted(false)
-                        toast.show({
-                            title: t('something_went_wrong', {ns: "common"}),
-                            status: "error",
-                            description: t("cannot_enqueue_message")
-                        })
                     }
+                    // turn back to false for when user revisits page
+                    setSubmitted(false)
+                    // Reopen Join code form in case of revisit
                     setJoinCodeFormOpen(true)
                 }
             )
             setLoading(false)
         } catch(error) {
+            console.log("Enqueue form error");
+            console.log(error);
             setError([...errors, error])
         }
     }
@@ -226,6 +226,7 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
 
     const onSubmit = () => {
         // Attempt to join queue first, and if successful, update UI
+        setSubmitted(true)
         joinQueue().then()
     };
 
@@ -244,6 +245,13 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
                             <Input
                                 placeholder="Ex. 123456"
                                 onChangeText={(value) => setData({ ...formData, joinCode: value })}
+                                onKeyPress={(event) => {
+                                    if (event.nativeEvent.key === "Enter") {
+                                        validateJoinCode() ? setJoinCodeFormOpen(false) : null
+                                        validateJoinCode() ? setNameFormOpen(true) : null
+                                    }
+                                }
+                            }
                             />
                             <Center>
                                 <FormControl.HelperText _text={{fontSize: 'xs'}}>
@@ -283,6 +291,13 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
                             <Input
                                 placeholder="Bob Larry"
                                 onChangeText={(value) => setData({ ...formData, name: value })}
+                                onKeyPress={(event) => {
+                                    if (event.nativeEvent.key === "Enter") {
+                                        validateName() ? setNameFormOpen(false) : null
+                                        validateName() ? setPhoneNumberFormOpen(true) : null
+                                    }
+                                }
+                            }
                             />
                             <Center>
                                 <FormControl.HelperText _text={{fontSize: 'xs'}}>
@@ -323,6 +338,15 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
                                 InputLeftElement={<AreaCodeSelector areaCode={areaCode} setAreaCode={setAreaCode}/>}
                                 placeholder="Ex. 6477135354"
                                 onChangeText={(value) => setData({ ...formData, phoneNumber: areaCode + value })}
+                                onKeyPress={(event) => {
+                                    if (event.nativeEvent.key === "Enter") {
+                                        validatePhoneNumber() ? setPhoneNumberFormOpen(false) : null
+                                        validatePhoneNumber() ? onSubmit() : null
+                                        // If form is in modal (and modal dispatch is provided in props) then close modal
+                                        !!setShowModal ? setShowModal(false) : null
+                                    }
+                                }
+                            }
                             />
                             <Center>
                                 <FormControl.HelperText _text={{fontSize: 'xs'}}>

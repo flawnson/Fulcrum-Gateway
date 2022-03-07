@@ -10,7 +10,6 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/PreferencesContext";
 import EndQueueAlert from "./EndQueueAlert";
 import ChangeQueuePasswordModal from "./ChangeQueuePasswordModal";
-import {useTheme} from "native-base";
 import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
 
@@ -18,7 +17,6 @@ export default function () {
     const { t } = useTranslation(["queueDashboardMenu"]);
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
-    const { colors } = useTheme()
     const { signedInAs } = React.useContext(AuthContext)
     const { signOut } = React.useContext(AuthContext)
     const { isThemeDark } = React.useContext(PreferencesContext)
@@ -85,7 +83,7 @@ export default function () {
 
     const fetchShareData = async () => {
         try {
-            const response = await fetch(baseURL(), {
+            fetch(baseURL(), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,9 +91,7 @@ export default function () {
                 },
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: variables})
-            })
-            await response.json().then(
-                data => {
+            }).then(response => response.json()).then(data => {
                     if (!!data.errors?.length) {
                         // Check for errors on response
                         setError([...errors, data.errors[0]])
