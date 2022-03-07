@@ -30,7 +30,7 @@ export default function () {
     const [props, setProps] = useState<QueuesPageProps["queueInfo"]>([])
     const [errors, setError] = useState<any>([]);
     const [showCreateQueueModal, setShowCreateQueueModal] = useState<boolean>(false);
-    const [showConfirmActionAlert, setShowConfirmActionAlert] = useState<any>({show: false, callback: () => {}})
+    const [showConfirmActionAlert, setShowConfirmActionAlert] = useState<{show: boolean, callback: Function}>({show: false, callback: () => {}})
     const toast = useToast()
     const toastId = "errorToast"
     useEffect(() => navigation.setOptions({headerLeft: () => false, headerRight: RightHeaderGroup()}), [])
@@ -98,7 +98,7 @@ export default function () {
     // Run on first render and when a queue is created or deleted
     useEffect(() => {fetchQueuesData().then()}, [showCreateQueueModal, showConfirmActionAlert])
     // Poll only if user is currently on this screen and alert is not shown (to prevent flickering)
-    useInterval(fetchQueuesData, useIsFocused() && !showConfirmActionAlert && !showCreateQueueModal ? interval : null)
+    useInterval(fetchQueuesData, useIsFocused() && !showConfirmActionAlert.show && !showCreateQueueModal ? interval : null)
 
     return (
         <>

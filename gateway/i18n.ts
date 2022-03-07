@@ -4,6 +4,7 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import enTranslation from './assets/translations/en/translation.json'
 import frTranslation from './assets/translations/fr/translation.json'
+import zhTranslation from './assets/translations/zh/translation.json'
 // don't want to use this?
 // have a look at the Quick start guide
 // for passing in lng and translations on init
@@ -11,6 +12,7 @@ import frTranslation from './assets/translations/fr/translation.json'
 export const resources = {
     en: enTranslation,
     fr: frTranslation,
+    zh: zhTranslation,
 }
 
 i18n

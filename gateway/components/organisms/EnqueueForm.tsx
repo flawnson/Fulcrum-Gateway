@@ -16,7 +16,7 @@ import {RouteProp} from "@react-navigation/native";
 type EnqueueFormProps = {
     queueId?: string  // Only provided if enqueue form is in a modal and the user type is an ORGANIZER or ASSISTANT
     joinCode?: string  // Only provided if enqueue form is in a modal
-    route: RouteProp<RootStackParamList, "HomePage">
+    route?: RouteProp<RootStackParamList, "HomePage">  // Only provide if joining queue via link
     navigation: HomeScreenProps["navigation"]
     setShowModal?: React.Dispatch<React.SetStateAction<boolean>>  // Modal for Organizer/Assistant side user creation
 }
@@ -58,12 +58,11 @@ export default function ({queueId, joinCode, route, navigation, setShowModal}: E
     }, [errors])  // Render alert if errors
 
     useEffect(() => {
-        console.log(route.params)
         // If route contains params (from ShareScreen) then automatically input the joincode
-        if (joinCode || route.params) {
+        if (joinCode || route?.params) {
             setJoinCodeFormOpen(false)
             setNameFormOpen(true)
-            setData({...formData, joinCode: !!joinCode ? joinCode : route.params!["joinCode"]})
+            setData({...formData, joinCode: !!joinCode ? joinCode : route?.params!["joinCode"]})
         }
     }, [])
 
