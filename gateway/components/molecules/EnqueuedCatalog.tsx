@@ -100,8 +100,8 @@ export default function (props: {isFocused: boolean}) {
     return (
         <ScrollView
             style={{
-                maxWidth: scale(width / 2),
-                height: scale(height / 3.5)
+                // maxWidth: scale(width / 2),
+                // height: scale(height / 3.5)
             }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}

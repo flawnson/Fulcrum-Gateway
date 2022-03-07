@@ -103,7 +103,7 @@ export default function () {
                                 ...shareData,
                                 "currentQueueName": data.name,
                                 "currentQueueId": data.queueId,
-                                "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
+                                "currentQueueQR": `https://fiefoe.com/${data.joinCode}`,
                                 "currentQueueJoinCode": data.joinCode
                             }
                         )

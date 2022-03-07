@@ -108,20 +108,24 @@ export default function (props: UserCatalogCardProps) {
     }
 
     const onChangeStatus = (status: UserStatus) => {
-        props.entities.find(user => user.userId === props.entity.userId)!.status = status
-        changeUserStatus(status).then()
         if (status === "KICKED") {
             // Only needed if enqueued. Serviced and abandoned do not provide confirm delete props
             props.setShowConfirmActionAlert ?
             props.setShowConfirmActionAlert(
                 {
                     show: true,
-                    callback: () => props.setEntities(
-                        [...props.entities.filter(user => user.userId !== props.entity.userId)]
-                    )
+                    callback: () => {
+                        props.entities.find(user => user.userId === props.entity.userId)!.status = status
+                        changeUserStatus(status).then()
+                        props.setEntities(
+                            [...props.entities.filter(user => user.userId !== props.entity.userId)]
+                        )
+                    }
                 }
             ) : null
         } else if (status === "SERVICED") {
+            props.entities.find(user => user.userId === props.entity.userId)!.status = status
+            changeUserStatus(status).then()
             props.setEntities(
                 [...props.entities.filter(user => user.userId !== props.entity.userId)]
             )

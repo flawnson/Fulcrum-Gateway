@@ -212,7 +212,8 @@
     "confirmPasswordLabel": "Confirm Password",
     "confirmPasswordPlaceholder": "Definitely not my birthday",
     "isLoadingText": "Signing up...",
-    "check_your_email": "We've sent a confirmation link to your email, please complete your sign up from there.",
+    "check_your_email_title": "We've sent a confirmation link to your email, please complete your sign up from there.",
+    "check_your_email_message": "We've sent a confirmation link to your email, please complete your sign up from there.",
     "cannot_sign_up_organizer_message": "Something went wrong and we can't seem to be able to sign you up right now... Please try again soon."
   },
   "logInModal": {
@@ -232,7 +233,9 @@
     "password_placeholder": "Definitely not 123456",
     "forgot_password": "Forgot Password?",
     "new_organizer": "I'm a new organizer. ",
-    "cannot_login_error": "We can't seem to log you in right now... Please try again soon."
+    "cannot_login_error": "We can't seem to log you in right now... Please try again soon.",
+    "wrong_password_error": "We can't seem to log you in right now... Please try again soon.",
+    "account_does_not_exist_error": "We can't seem to log you in right now... Please try again soon."
   },
   "assistantLoginForm": {
     "joinCode_not_defined_error": "Oops! Looks like you forgot to provide a joinCode...",
@@ -241,7 +244,9 @@
     "password_title": "Password",
     "joinCode_title": "Join Code",
     "password_placeholder": "Definitely not 123456",
-    "cannot_login_message": "We can't seem to log you in right now... Please try again soon."
+    "cannot_login_message": "We can't seem to log you in right now... Please try again soon.",
+    "wrong_password_error": "We can't seem to log you in right now... Please try again soon.",
+    "queue_does_not_exist_error": "We can't seem to log you in right now... Please try again soon."
   },
   "verifySMSModal": {
     "title": "Verify your phone number",
