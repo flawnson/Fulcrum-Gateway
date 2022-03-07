@@ -10,8 +10,8 @@ import {useTranslation} from "react-i18next";
 
 export default function () {
     const { t } = useTranslation(["confirmationScreen"]);
-    const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const [errors, setError] = useState<any>([]);
     const toast = useToast()
     const toastId = "errorToast"

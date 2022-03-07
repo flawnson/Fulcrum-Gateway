@@ -54,7 +54,7 @@ export default function (props: {isFocused: boolean}) {
     `
     // @ts-ignore
     const variables = route.params ? {"queueId": route.params!["queueId"], "orderBy": {"index": "asc"}}
-                                   : {"queueId": "123456", "orderBy": {"index": "asc"}}
+                                   : {null: null}
 
     async function fetchEnqueuedData () {
         try {

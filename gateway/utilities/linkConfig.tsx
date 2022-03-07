@@ -2,7 +2,7 @@ export default {
     screens: {
         initialRouteName: 'HomePage',
         HomePage: {
-            path: '',
+            path: '/:joinCode?',
         },
         QueueDashboard: {
             path: 'queuedashboard'

@@ -52,7 +52,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
       mutation login_queue($joinCode: String!, $password: String!) {
           loginQueue(joinCode: $joinCode, password: $password){
               ... on Queue {
-                  id
+                  queueId: id
               }
               ... on Error {
                   error
@@ -74,7 +74,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
             }).then(response => response.json()).then(data => {
                     setShowModal(false)
                     setSubmitted(false)
-                    navigation.navigate("QueueDashboard")
+                    navigation.navigate("QueueDashboard", {queueId: data.data.loginQueue.queueId})
                 }
             )
         } catch (error) {

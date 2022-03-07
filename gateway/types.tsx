@@ -1,13 +1,12 @@
 import {RouteProp} from "@react-navigation/native"
 import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigation/native-stack";
-import {Image} from "native-base";
 import React from "react";
 
 /* React Navigation types used throughout app*/
 export type RootStackParamList = {
-    HomePage: undefined;
+    HomePage: undefined | any | {joinCode: string}; // Confirmation screen and QueueDashboardMenu complains about types if I don't any
     UserDashboard: undefined | {name: string, phoneNumber: string};
-    QueueDashboard: undefined | {queueId: QueueInfo["queueId"]};
+    QueueDashboard: {queueId: QueueInfo["queueId"]};
     QueueDashboardTabs: undefined | {queueId: QueueInfo["queueId"]};  // MAY NOT NEED ANYMORE IF WE GET RID OF TABS
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;

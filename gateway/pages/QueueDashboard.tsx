@@ -152,8 +152,6 @@ export default function () {
                 }
             )
         } catch(error) {
-            console.log("Queue Dasboard error");
-            console.log(error);
             setError([...errors, error])
         }
     }

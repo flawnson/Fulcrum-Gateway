@@ -168,8 +168,6 @@ export default function () {
                 }
             )
         } catch(error) {
-            console.log("User Dashboard Error");
-            console.log(error);
             setErrors([...errors, error])
         }
     }
@@ -177,7 +175,7 @@ export default function () {
     // Run on first render or when modal is opened or closed
     useEffect(() => {fetchUserStats().then(null)}, [showVerifySMSModal])
     // Poll only if user is currently on this screen
-    useInterval(fetchUserStats, useIsFocused() && !isAlertOpen ? interval : null)
+    useInterval(fetchUserStats, useIsFocused() && !isLeaveQueueAlertOpen ? interval : null)
 
     /*
     useFocusEffect(
