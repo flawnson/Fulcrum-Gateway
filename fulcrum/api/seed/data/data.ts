@@ -282,7 +282,7 @@ export let queue_table = [
   {
     id: "costco_queue1",
     organizer_id: "costco_toronto",
-    join_code: "123abc",
+    join_code: "123456",
     name: "Queue1",
     address: "somewhere, someplace",
     state: QueueState.ACTIVE,
@@ -310,7 +310,7 @@ export let queue_table = [
   {
     id: "costco_queue3",
     organizer_id: "costco_toronto",
-    join_code: "a4e35t",
+    join_code: "444777",
     name: "Queue3",
     address: "somewhere, someplace",
     state: QueueState.ACTIVE,
@@ -324,7 +324,7 @@ export let queue_table = [
   {
     id: "costco_queue4",
     organizer_id: "costco_toronto",
-    join_code: "678iuy",
+    join_code: "678321",
     name: "Queue4",
     address: "somewhere, someplace",
     state: QueueState.ACTIVE,

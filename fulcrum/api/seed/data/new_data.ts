@@ -278,7 +278,7 @@ export let queue_table = [
   {
     id: "bakery_queue_1",
     organizer_id: "134huefe234",
-    join_code: "123abc",
+    join_code: "123456",
     name: "Cake Line",
     address: "123 Front Street",
     state: QueueState.ACTIVE,
@@ -306,7 +306,7 @@ export let queue_table = [
   {
     id: "bakery_queue_3",
     organizer_id: "134huefe234",
-    join_code: "a4e35t",
+    join_code: "444777",
     name: "Bagel Line",
     address: "somewhere, someplace",
     state: QueueState.ACTIVE,
