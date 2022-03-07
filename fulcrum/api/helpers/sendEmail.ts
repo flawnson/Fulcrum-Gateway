@@ -55,12 +55,26 @@ export async function sendEmail(email: string, url: string, task: string) {
     };
   }
 
-  const info = await transporter.sendMail(mailOptions);
+  try {
+    const info = await transporter.sendMail(mailOptions);
 
-  console.log("Email sent: %s", info.messageId);
-  // Preview only available when sending through an Ethereal account
-  if (process.env.NODE_ENV === "development") {
-    console.log("Preview URL: ")
-    console.log("%s", nodemailer.getTestMessageUrl(info));
+    console.log("Email sent: %s", info.messageId);
+    // Preview only available when sending through an Ethereal account
+    if (process.env.NODE_ENV === "development") {
+      console.log("Preview URL: ")
+      console.log("%s", nodemailer.getTestMessageUrl(info));
+    }
+  } catch (err) {
+    if (process.env.NODE_ENV === "development"){
+      console.log("Ethereal service is not working currently. Manually printing email contents.")
+      console.log("EMAIL CONTENT: ");
+      console.log(mailOptions);
+      console.log("Link to complete signup is: " + url);
+    }
+    else {
+      console.log("Email service not working in production");
+      throw err;
+    }
   }
+
 }

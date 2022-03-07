@@ -67,7 +67,8 @@ export class CreateQueueResolver {
 
     return await ctx.prisma.$transaction(async (prisma) => {
       // generate 6 digit join code
-      let joinCode = (+new Date * Math.random()).toString(36).substring(0,6);
+      // let joinCode = (+new Date * Math.random()).toString(36).substring(0,6);
+      let joinCode = Math.floor(Math.random() * 899999 + 100000).toString();
 
       //check if this join code is already in use by a queue
       while (true) {
@@ -82,7 +83,8 @@ export class CreateQueueResolver {
           break;
         } else {
           // join code is unavailable, generate new one
-          joinCode = (+new Date * Math.random()).toString(36).substring(0,6);
+          // joinCode = (+new Date * Math.random()).toString(36).substring(0,6);
+          joinCode = Math.floor(Math.random() * 899999 + 100000).toString();
         }
       }
 
