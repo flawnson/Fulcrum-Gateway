@@ -39,7 +39,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: UserCatalogCardProps) {
     const { t } = useTranslation("userCatalogCard")
-    const [summoned, setSummoned] = useState<boolean>(false)
+    const [summoned, setSummoned] = useState<boolean>(props.entity.summoned)
     const swipeableRef = useRef(null)  // Needed to automatically close swipe action
 
     const summonQuery = `

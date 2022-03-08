@@ -40,6 +40,7 @@ export default function (props: {isFocused: boolean}) {
                       userId: id
                       name
                       index
+                      summoned
                       lastOnline: last_online
                       joinTime: join_time
                       status
