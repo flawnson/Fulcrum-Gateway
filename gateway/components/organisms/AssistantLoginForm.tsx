@@ -52,7 +52,7 @@ export default ({navigation, setShowModal}: SignInFormType) => {
       mutation login_queue($joinCode: String!, $password: String!) {
           loginQueue(joinCode: $joinCode, password: $password){
               ... on Queue {
-                  id
+                  queueId: id
               }
               ... on Error {
                   error
@@ -72,9 +72,25 @@ export default ({navigation, setShowModal}: SignInFormType) => {
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData})
             }).then(response => response.json()).then(data => {
+                if (data.data.loginQueue.error === "QUEUE_DOES_NOT_EXIST") {
+                    toast.show({
+                        title: t('something_went_wrong', {ns: "common"}),
+                        status: "error",
+                        description: t("queue_does_not_exist_error"),
+                        isClosable: true
+                    })
+                } else if (data.data.loginOrganizer.error === "INCORRECT_PASSWORD") {
+                    toast.show({
+                        title: t('something_went_wrong', {ns: "common"}),
+                        status: "error",
+                        description: t("wrong_password_error"),
+                        isClosable: true
+                    })
+                } else {
                     setShowModal(false)
-                    setSubmitted(false)
-                    navigation.navigate("QueueDashboard")
+                    navigation.navigate("QueueDashboard", {queueId: data.data.loginQueue.queueId})
+                }
+                setSubmitted(false)
                 }
             )
         } catch (error) {

@@ -12,6 +12,7 @@ import {scale} from "../../utilities/scales";
 
 
 export default function () {
+    const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const { t } = useTranslation(["homePage", "common"]);
     const [showLoginModal, setShowLoginModal] = useState(false)
@@ -20,7 +21,7 @@ export default function () {
     return (
         <View style={styles.container}>
             <LogoAndName styles={styles.logo}/>
-            <EnqueueForm navigation={navigation} />
+            <EnqueueForm route={route} navigation={navigation} />
             <Text style={styles.subText}>
                 <Text style={styles.linkText} onPress={() => setShowLoginModal(true)}>
                     {t("login", {ns: "common"})}

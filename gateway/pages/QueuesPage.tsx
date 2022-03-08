@@ -1,8 +1,6 @@
 import React, {SetStateAction, useEffect, useState} from "react"
 import QueuesCatalogCardGroup from "../components/molecules/QueuesCatalogCardGroup"
-import {Fab, Icon,
-        Text, useToast,
-        Center } from "native-base"
+import {Heading, useToast, Center } from "native-base"
 import {AntDesign} from "@expo/vector-icons"
 import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps, QueueInfo} from "../types";
@@ -30,7 +28,7 @@ export default function () {
     const [props, setProps] = useState<QueuesPageProps["queueInfo"]>([])
     const [errors, setError] = useState<any>([]);
     const [showCreateQueueModal, setShowCreateQueueModal] = useState<boolean>(false);
-    const [showConfirmActionAlert, setShowConfirmActionAlert] = useState<any>({show: false, callback: () => {}})
+    const [showConfirmActionAlert, setShowConfirmActionAlert] = useState<{show: boolean, callback: Function}>({show: false, callback: () => {}})
     const toast = useToast()
     const toastId = "errorToast"
     useEffect(() => navigation.setOptions({headerLeft: () => false, headerRight: RightHeaderGroup()}), [])
@@ -98,14 +96,14 @@ export default function () {
     // Run on first render and when a queue is created or deleted
     useEffect(() => {fetchQueuesData().then()}, [showCreateQueueModal, showConfirmActionAlert])
     // Poll only if user is currently on this screen and alert is not shown (to prevent flickering)
-    useInterval(fetchQueuesData, useIsFocused() && !showConfirmActionAlert && !showCreateQueueModal ? interval : null)
+    useInterval(fetchQueuesData, useIsFocused() && !showConfirmActionAlert.show && !showCreateQueueModal ? interval : null)
 
     return (
         <>
             <Center>
-                <Text style={{fontSize: 24, marginVertical: 30}}>
+                <Heading style={{fontSize: 24, marginVertical: 30}}>
                     {organizerInfo.name}
-                </Text>
+                </Heading>
             </Center>
             <QueuesCatalogCardGroup
                 entities={props}

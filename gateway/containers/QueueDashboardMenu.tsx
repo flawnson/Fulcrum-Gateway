@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {HStack, Menu, Divider, Fab, HamburgerIcon, Text, useToast} from 'native-base';
 import {useNavigation, useRoute, StackActions, useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {HomeScreenProps, ShareData} from "../types";
+import {HomeScreenProps, QueueState, ShareData} from "../types";
 import CreateUserModal from "./CreateUserModal"
 import { useTranslation } from "react-i18next";
 import {AuthContext} from "../utilities/AuthContext";
@@ -20,7 +20,7 @@ export default function () {
     const { signedInAs } = React.useContext(AuthContext)
     const { signOut } = React.useContext(AuthContext)
     const { isThemeDark } = React.useContext(PreferencesContext)
-    const [queuePaused, toggleQueuePaused] = useState(false)
+    const [queueState, setQueueState] = useState<QueueState>("ACTIVE")
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
     const [showChangeQueuePasswordModal, setShowChangeQueuePasswordModal] = useState(false);
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
@@ -67,6 +67,7 @@ export default function () {
                 ... on Queue {
                     queueId: id
                     name
+                    state
                     joinCode: join_code
                 }
                 ... on Error {
@@ -97,11 +98,12 @@ export default function () {
                         setError([...errors, data.errors[0]])
                     } else {
                         data = data.data.getQueue
+                        setQueueState(data.state)
                         setShareData({
                                 ...shareData,
                                 "currentQueueName": data.name,
                                 "currentQueueId": data.queueId,
-                                "currentQueueQR": `http://localhost:8080/api/${data.joinCode}`,
+                                "currentQueueQR": `https://fiefoe.com/${data.joinCode}`,
                                 "currentQueueJoinCode": data.joinCode
                             }
                         )
@@ -141,19 +143,13 @@ export default function () {
         }
     `
 
-    const organizerPauseVariables = `{
+    const pauseQuery = signedInAs === "ORGANIZER" ? organizerPauseQuery : assistantPauseQuery
+    const pauseVariables = signedInAs === "ORGANIZER" ? `{
             "queueId": "${route.params!["queueId"]}",
-            "state": "${queuePaused ? "PAUSED" : "ACTIVE"}"
+            "state": "${queueState === "ACTIVE" ? "PAUSED" : "ACTIVE"}"
+        }` : `{
+            "state": "${queueState === "ACTIVE" ? "PAUSED" : "ACTIVE"}"
         }`
-
-    const assistantPauseVariables = `{
-            "state": "${queuePaused ? "PAUSED" : "ACTIVE"}"
-        }`
-
-    const pauseQuery = signedInAs === "ORGANIZER" ? organizerPauseQuery :
-        signedInAs === "ASSISTANT" ? assistantPauseQuery :
-            {null: null}
-    const pauseVariables = signedInAs === "ORGANIZER" ? organizerPauseVariables : assistantPauseVariables
 
     async function setQueuePaused () {
         try {
@@ -173,7 +169,8 @@ export default function () {
     }
 
     const pauseQueue = () => {
-        toggleQueuePaused(!queuePaused)
+        // If queue state is active, set to paused and vice versa
+        setQueueState(queueState === "ACTIVE" ? "PAUSED" : "ACTIVE")
         setQueuePaused().then()
     }
 
@@ -259,7 +256,7 @@ export default function () {
                             color={isThemeDark ? 'white': 'black'}
                         />
                         <Text>
-                            {queuePaused ? t("pause_queue") : t("unpause_queue")}
+                            {queueState === "ACTIVE" ? t("pause_queue") : t("unpause_queue")}
                         </Text>
                     </HStack>
                 </Menu.Item>

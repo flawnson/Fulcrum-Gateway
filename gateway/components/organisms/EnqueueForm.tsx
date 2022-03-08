@@ -3,18 +3,20 @@ import { VStack, FormControl,
         Input, Button,
         Center, Text,
         ScaleFade, useToast } from "native-base";
-import { HomeScreenProps } from "../../types";
+import { RootStackParamList, HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
 import {AuthContext} from "../../utilities/AuthContext";
 import LoadingSpinner from "../atoms/LoadingSpinner";
 import baseURL from "../../utilities/baseURL";
 import AreaCodeSelector from "../atoms/AreaCodeSelector";
 import corsURL from "../../utilities/corsURL";
+import {RouteProp} from "@react-navigation/native";
 
 
 type EnqueueFormProps = {
     queueId?: string  // Only provided if enqueue form is in a modal and the user type is an ORGANIZER or ASSISTANT
     joinCode?: string  // Only provided if enqueue form is in a modal
+    route?: RouteProp<RootStackParamList, "HomePage">  // Only provide if joining queue via link
     navigation: HomeScreenProps["navigation"]
     setShowModal?: React.Dispatch<React.SetStateAction<boolean>>  // Modal for Organizer/Assistant side user creation
 }
@@ -26,7 +28,7 @@ type EnqueueFormData = {
 }
 
 
-export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueFormProps) {
+export default function ({queueId, joinCode, route, navigation, setShowModal}: EnqueueFormProps) {
     const { t } = useTranslation(["homePage", "common"])
     const [formData, setData] = useState<EnqueueFormData>({})
     const [areaCode, setAreaCode] = useState<string>("1")
@@ -57,10 +59,10 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
 
     useEffect(() => {
         // If route contains params (from ShareScreen) then automatically input the joincode
-        if (joinCode) {
+        if (joinCode || route?.params) {
             setJoinCodeFormOpen(false)
             setNameFormOpen(true)
-            setData({...formData, joinCode: joinCode})
+            setData({...formData, joinCode: !!joinCode ? joinCode : route?.params!["joinCode"]})
         }
     }, [])
 
@@ -167,8 +169,6 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
             )
             setLoading(false)
         } catch(error) {
-            console.log("Enqueue form error");
-            console.log(error);
             setError([...errors, error])
         }
     }
@@ -243,6 +243,7 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
                                 </FormControl.Label>
                             </Center>
                             <Input
+                                autoFocus={true}
                                 placeholder="Ex. 123456"
                                 onChangeText={(value) => setData({ ...formData, joinCode: value })}
                                 onKeyPress={(event) => {
@@ -289,6 +290,7 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
                                 </FormControl.Label>
                             </Center>
                             <Input
+                                autoFocus={true}
                                 placeholder="Bob Larry"
                                 onChangeText={(value) => setData({ ...formData, name: value })}
                                 onKeyPress={(event) => {
@@ -335,6 +337,7 @@ export default function ({queueId, joinCode, navigation, setShowModal}: EnqueueF
                                 </FormControl.Label>
                             </Center>
                             <Input
+                                autoFocus={true}
                                 InputLeftElement={<AreaCodeSelector areaCode={areaCode} setAreaCode={setAreaCode}/>}
                                 placeholder="Ex. 6477135354"
                                 onChangeText={(value) => setData({ ...formData, phoneNumber: areaCode + value })}

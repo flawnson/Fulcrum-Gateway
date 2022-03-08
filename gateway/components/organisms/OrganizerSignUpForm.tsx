@@ -90,9 +90,9 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                     setShowModal(false)
                     setSubmitted(false)
                     toast.show({
-                        title: t("check_your_email"),
+                        title: t("check_your_email_title"),
                         status: "success",
-                        description: t("cannot_sign_up_organizer_message"),
+                        description: t("check_your_email_message"),
                         duration: 10
                     })
                     }
@@ -223,7 +223,7 @@ export default ({navigation, setShowModal}: SignUpFormType) => {
                 <Button
                     mt="2"
                     colorScheme="indigo"
-                    onPress={onSignUpPress}
+                    onPress={() => onSignUpPress()}
                     isLoading={submitted}
                     isLoadingText={t("isLoadingText")}
                 >

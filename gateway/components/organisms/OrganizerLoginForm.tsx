@@ -82,14 +82,26 @@ export default ({navigation, setShowModal}: LogInFormType) => {
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData}),
             }).then(response => response.json()).then(data => {
+                if (data.data.loginOrganizer.error === "ORGANIZER_DOES_NOT_EXIST") {
+                    toast.show({
+                        title: t('something_went_wrong', {ns: "common"}),
+                        status: "error",
+                        description: t("account_does_not_exist_error")
+                    })
+                } else if (data.data.loginOrganizer.error === "INCORRECT_PASSWORD") {
+                    toast.show({
+                        title: t('something_went_wrong', {ns: "common"}),
+                        status: "error",
+                        description: t("wrong_password_error")
+                    })
+                } else {
                     setShowModal(false)
-                    setSubmitted(false)
                     navigation.navigate("QueuesPage")
+                }
+                setSubmitted(false)
                 }
             )
         } catch (error) {
-            console.log("Organizer Login Form Error");
-            console.log(error);
             return error
         }
     }

@@ -49,10 +49,10 @@ export default function () {
         name: "Some Queue",
         state: "ACTIVE",
         stats: [
-            {prefix: t("enqueued_prefix"), stat: 0, suffix: "", tooltip: t("enqueued_tooltip")},
-            {prefix: t("serviced_prefix"), stat: 0, suffix: "", tooltip: t("serviced_tooltip")},
-            {prefix: t("average_prefix"), stat: 0, suffix: "m", tooltip: t("average_tooltip")},
-            {prefix: t("abandoned_prefix"), stat: 0, suffix: "", tooltip: t("abandoned_tooltip")},
+            {prefix: t("enqueued_prefix"), stat: 0, suffix: "", tooltip: null},
+            {prefix: t("serviced_prefix"), stat: 0, suffix: "", tooltip: null},
+            {prefix: t("average_prefix"), stat: 0, suffix: "m", tooltip: null},
+            {prefix: t("abandoned_prefix"), stat: 0, suffix: "", tooltip: null},
         ],
     }
     const [props, setProps] = useState(defaultProps)
@@ -136,24 +136,22 @@ export default function () {
                                     "stats": [{prefix: t("enqueued_prefix"),
                                                stat: stats.enqueued + stats.deferred,
                                                suffix: "",
-                                               tooltip: t("enqueued_tooltip")},
+                                               tooltip: null},
                                               {prefix: t("average_prefix"),
                                                stat: stats.avg,
                                                suffix: "m",
-                                               tooltip: t("average_tooltip")},
+                                               tooltip: null},
                                               {prefix: t("serviced_prefix"),
                                                stat: stats.serviced,
                                                suffix: "",
-                                               tooltip: t("serviced_tooltip")},
+                                               tooltip: null},
                                               {prefix: t("abandoned_prefix"),
                                                stat: stats.abandoned + stats.noshow,
                                                suffix: "",
-                                               tooltip: t("abandoned_tooltip")},]})
+                                               tooltip: null},]})
                 }
             )
         } catch(error) {
-            console.log("Queue Dasboard error");
-            console.log(error);
             setError([...errors, error])
         }
     }

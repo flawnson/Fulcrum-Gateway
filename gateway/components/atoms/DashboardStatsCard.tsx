@@ -21,7 +21,11 @@ export default function (props: Props) {
 
 
     return (
-        <Tooltip label={props.stat.tooltip} openDelay={1000}>
+        <Tooltip
+            isDisabled={!props.stat.tooltip}
+            label={!!props.stat.tooltip ? props.stat.tooltip : "NONE"}
+            openDelay={1000}
+        >
             <Pressable
                 onPress={() => onCardPress()}
             >

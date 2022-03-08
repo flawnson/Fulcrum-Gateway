@@ -30,8 +30,8 @@ export default function () {
         setScanned(true);
         if (re.test(data)) {
             setShowModal(true)
-            console.log(data)
             const extractedJoinCode = /[^/]*$/.exec(data)![0]  // Regex to extract the string after the last forward slash
+            console.log(extractedJoinCode)
             setJoinCode(extractedJoinCode)
         } else {
             toast.show({

@@ -40,6 +40,7 @@ export default function (props: {isFocused: boolean}) {
                       userId: id
                       name
                       index
+                      summoned
                       lastOnline: last_online
                       joinTime: join_time
                       status
@@ -54,7 +55,7 @@ export default function (props: {isFocused: boolean}) {
     `
     // @ts-ignore
     const variables = route.params ? {"queueId": route.params!["queueId"], "orderBy": {"index": "asc"}}
-                                   : {"queueId": "123456", "orderBy": {"index": "asc"}}
+                                   : {null: null}
 
     async function fetchEnqueuedData () {
         try {
@@ -99,10 +100,6 @@ export default function (props: {isFocused: boolean}) {
 
     return (
         <ScrollView
-            style={{
-                maxWidth: scale(width / 2),
-                height: scale(height / 3.5)
-            }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
         >

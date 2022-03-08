@@ -39,7 +39,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: UserCatalogCardProps) {
     const { t } = useTranslation("userCatalogCard")
-    const [summoned, setSummoned] = useState<boolean>(false)
+    const [summoned, setSummoned] = useState<boolean>(props.entity.summoned)
     const swipeableRef = useRef(null)  // Needed to automatically close swipe action
 
     const summonQuery = `
@@ -74,8 +74,11 @@ export default function (props: UserCatalogCardProps) {
 
     const onBellPress = function () {
         setSummoned(!summoned)
-        toggleSummonUser(props.entity.userId).then()
     }
+
+    useEffect(() => {
+        toggleSummonUser(props.entity.userId).then()
+    }, [summoned])
 
     const statusQuery = `
         mutation change_status($userId: String!, $status: String!) {
@@ -108,20 +111,24 @@ export default function (props: UserCatalogCardProps) {
     }
 
     const onChangeStatus = (status: UserStatus) => {
-        props.entities.find(user => user.userId === props.entity.userId)!.status = status
-        changeUserStatus(status).then()
         if (status === "KICKED") {
             // Only needed if enqueued. Serviced and abandoned do not provide confirm delete props
             props.setShowConfirmActionAlert ?
             props.setShowConfirmActionAlert(
                 {
                     show: true,
-                    callback: () => props.setEntities(
-                        [...props.entities.filter(user => user.userId !== props.entity.userId)]
-                    )
+                    callback: () => {
+                        props.entities.find(user => user.userId === props.entity.userId)!.status = status
+                        changeUserStatus(status).then()
+                        props.setEntities(
+                            [...props.entities.filter(user => user.userId !== props.entity.userId)]
+                        )
+                    }
                 }
             ) : null
         } else if (status === "SERVICED") {
+            props.entities.find(user => user.userId === props.entity.userId)!.status = status
+            changeUserStatus(status).then()
             props.setEntities(
                 [...props.entities.filter(user => user.userId !== props.entity.userId)]
             )
@@ -242,7 +249,7 @@ export default function (props: UserCatalogCardProps) {
                                 size={scale(32)}
                                 color={"#999999"}
                                 style={styles.icon}
-                                onPress={onBellPress}
+                                onPress={() => onBellPress()}
                             />
                         }
                     </HStack>

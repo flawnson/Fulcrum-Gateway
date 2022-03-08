@@ -92,6 +92,7 @@ export default function (props: QueuesCatalogCardProps) {
                 {
                     show: true,
                     callback: () => {
+                        changeQueueState(state).then()
                         props.entities.find(user => user.queueId === props.entity.queueId)!.state = state
                         props.setEntities(
                             [...props.entities.filter(user => user.queueId !== props.entity.queueId)]
@@ -102,9 +103,9 @@ export default function (props: QueuesCatalogCardProps) {
         } else if (state === "PAUSED") {
             // @ts-ignore
             swipeableRef?.current?.close()
+            changeQueueState(state).then()
             setQueueState(queueState === "PAUSED" ? "ACTIVE" : "PAUSED")
         }
-        changeQueueState(state).then()
     }
 
     const [timeLeft, setTimeLeft] = useState<object>(calculateTimeToNow(props.entity.create_time))

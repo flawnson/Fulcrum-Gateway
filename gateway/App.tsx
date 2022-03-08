@@ -144,7 +144,7 @@ function App() {
             try {
                 const initialUrl = await Linking.getInitialURL();
 
-                // if (initialUrl == null) {
+                if (initialUrl == null) {
                     // Only restore state if there's no deep link
                     // Without this condition, refreshes and attempts to access the app via a deep link send you to the ErrorScreen
                     const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
@@ -153,7 +153,7 @@ function App() {
                     if (state !== undefined) {
                         setInitialState(state);
                     }
-                // }
+                }
 
             } finally {
                 setIsReady(true);
@@ -212,6 +212,7 @@ function App() {
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
+                                        <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
                                         <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
@@ -224,6 +225,7 @@ function App() {
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
+                                        <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
                                         <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
                                         <Stack.Screen name="HomePage" component={HomePage} />
