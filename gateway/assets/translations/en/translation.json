@@ -27,7 +27,8 @@
     "footer": "Create another queue at"
   },
   "shareScreen": {
-    "message": "Scan the QR code or enter the ID"
+    "message": "Scan the QR code or enter the ID",
+    "copy": "Copy"
   },
   "summonScreen": {
     "message": "You're up!",
@@ -258,7 +259,7 @@
   "generalErrorAlert": {
     "title": "Oops! Something went wrong"
   },
-  "confirmDeleteAlert": {
+  "confirmActionAlert": {
     "header": "Are you sure you want to do this?"
   },
   "changeQueuePasswordModal": {

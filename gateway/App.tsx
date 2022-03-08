@@ -212,6 +212,7 @@ function App() {
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
+                                        <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
                                         <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                         <Stack.Screen name="EndScreen" component={EndScreen} />
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
@@ -224,6 +225,7 @@ function App() {
                                         <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
+                                        <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
                                         <Stack.Screen name="ShareScreen" component={ShareScreen} />
                                         <Stack.Screen name="NotFound" component={ErrorScreen} />
                                         <Stack.Screen name="HomePage" component={HomePage} />

@@ -60,7 +60,7 @@ export type DashboardStat = {
     "prefix": string,
     "stat": number,
     "suffix": string,
-    "tooltip": string,
+    "tooltip": string | null,
 }
 
 export type UserInfo = {

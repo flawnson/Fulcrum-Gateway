@@ -1,8 +1,6 @@
 import React, {SetStateAction, useEffect, useState} from "react"
 import QueuesCatalogCardGroup from "../components/molecules/QueuesCatalogCardGroup"
-import {Fab, Icon,
-        Text, useToast,
-        Center } from "native-base"
+import {Heading, useToast, Center } from "native-base"
 import {AntDesign} from "@expo/vector-icons"
 import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps, QueueInfo} from "../types";
@@ -103,9 +101,9 @@ export default function () {
     return (
         <>
             <Center>
-                <Text style={{fontSize: 24, marginVertical: 30}}>
+                <Heading style={{fontSize: 24, marginVertical: 30}}>
                     {organizerInfo.name}
-                </Text>
+                </Heading>
             </Center>
             <QueuesCatalogCardGroup
                 entities={props}

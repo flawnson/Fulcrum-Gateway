@@ -11,7 +11,7 @@ type ConfirmActionAlert = {
 
 export default function (props: ConfirmActionAlert) {
     const cancelRef = React.useRef(null)
-    const { t } = useTranslation(["confirmDeleteAlert", "common"]);
+    const { t } = useTranslation(["confirmActionAlert", "common"]);
 
     function onConfirmPress() {
         props.showAlert.callback()

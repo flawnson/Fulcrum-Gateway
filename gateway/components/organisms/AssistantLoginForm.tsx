@@ -76,13 +76,15 @@ export default ({navigation, setShowModal}: SignInFormType) => {
                     toast.show({
                         title: t('something_went_wrong', {ns: "common"}),
                         status: "error",
-                        description: t("queue_does_not_exist_error")
+                        description: t("queue_does_not_exist_error"),
+                        isClosable: true
                     })
                 } else if (data.data.loginOrganizer.error === "INCORRECT_PASSWORD") {
                     toast.show({
                         title: t('something_went_wrong', {ns: "common"}),
                         status: "error",
-                        description: t("wrong_password_error")
+                        description: t("wrong_password_error"),
+                        isClosable: true
                     })
                 } else {
                     setShowModal(false)
