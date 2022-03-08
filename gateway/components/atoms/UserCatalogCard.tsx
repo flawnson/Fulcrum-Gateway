@@ -74,8 +74,11 @@ export default function (props: UserCatalogCardProps) {
 
     const onBellPress = function () {
         setSummoned(!summoned)
-        toggleSummonUser(props.entity.userId).then()
     }
+
+    useEffect(() => {
+        toggleSummonUser(props.entity.userId).then()
+    }, [summoned])
 
     const statusQuery = `
         mutation change_status($userId: String!, $status: String!) {
@@ -246,7 +249,7 @@ export default function (props: UserCatalogCardProps) {
                                 size={scale(32)}
                                 color={"#999999"}
                                 style={styles.icon}
-                                onPress={onBellPress}
+                                onPress={() => onBellPress()}
                             />
                         }
                     </HStack>
