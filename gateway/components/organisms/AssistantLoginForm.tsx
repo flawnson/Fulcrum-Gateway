@@ -72,14 +72,14 @@ export default ({navigation, setShowModal}: SignInFormType) => {
                 credentials: 'include',
                 body: JSON.stringify({query: query, variables: formData})
             }).then(response => response.json()).then(data => {
-                if (data.data.loginQueue.error === "QUEUE_DOES_NOT_EXIST") {
+                if (data.data.loginQueue?.error === "QUEUE_DOES_NOT_EXIST") {
                     toast.show({
                         title: t('something_went_wrong', {ns: "common"}),
                         status: "error",
                         description: t("queue_does_not_exist_error"),
                         isClosable: true
                     })
-                } else if (data.data.loginOrganizer.error === "INCORRECT_PASSWORD") {
+                } else if (data.data.loginOrganizer?.error === "INCORRECT_PASSWORD") {
                     toast.show({
                         title: t('something_went_wrong', {ns: "common"}),
                         status: "error",

@@ -33,7 +33,7 @@ export type UserStats = {
     userId: string,
     name: string,
     index?: undefined,  // Needed for UserCatalogCard
-    summoned: boolean,  // Needed for UserCatalogCard
+    summoned?: boolean,  // Needed for UserCatalogCard
     joinTime: string,
     finishTime?: string,
     lastOnline?: string,
