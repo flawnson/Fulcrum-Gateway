@@ -25,9 +25,9 @@ export class QueueCreateWithoutOrganizerInput {
   name!: string;
 
   @TypeGraphQL.Field(_type => String, {
-    nullable: false
+    nullable: true
   })
-  address!: string;
+  address?: string | undefined;
 
   @TypeGraphQL.Field(_type => QueueState, {
     nullable: true
@@ -35,9 +35,9 @@ export class QueueCreateWithoutOrganizerInput {
   state?: "ACTIVE" | "PAUSED" | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
+    nullable: true
   })
-  capacity!: number;
+  capacity?: number | undefined;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: true

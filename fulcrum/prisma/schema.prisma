@@ -29,9 +29,9 @@ model Queue {
   id             String        @id @default(uuid())
   join_code      String     @unique
   name           String
-  address        String
+  address        String?
   state          QueueState @default(ACTIVE)
-  capacity       Int
+  capacity       Int        @default(10000)
   max_party_size Int        @default(1)
   grace_period   Int?
   offline_time   Int?

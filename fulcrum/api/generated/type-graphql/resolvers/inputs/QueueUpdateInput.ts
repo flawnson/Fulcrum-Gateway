@@ -6,6 +6,7 @@ import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdat
 import { EnumQueueStateFieldUpdateOperationsInput } from "../inputs/EnumQueueStateFieldUpdateOperationsInput";
 import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
 import { NullableIntFieldUpdateOperationsInput } from "../inputs/NullableIntFieldUpdateOperationsInput";
+import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 import { OrganizerUpdateOneRequiredWithoutQueuesInput } from "../inputs/OrganizerUpdateOneRequiredWithoutQueuesInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 import { UserUpdateManyWithoutQueueInput } from "../inputs/UserUpdateManyWithoutQueueInput";
@@ -29,10 +30,10 @@ export class QueueUpdateInput {
   })
   name?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
     nullable: true
   })
-  address?: StringFieldUpdateOperationsInput | undefined;
+  address?: NullableStringFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => EnumQueueStateFieldUpdateOperationsInput, {
     nullable: true

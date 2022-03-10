@@ -27,9 +27,9 @@ export class Queue {
   name!: string;
 
   @TypeGraphQL.Field(_type => String, {
-    nullable: false
+    nullable: true
   })
-  address!: string;
+  address?: string | null;
 
   @TypeGraphQL.Field(_type => QueueState, {
     nullable: false

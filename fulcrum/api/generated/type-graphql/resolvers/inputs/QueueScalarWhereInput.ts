@@ -7,6 +7,7 @@ import { EnumQueueStateFilter } from "../inputs/EnumQueueStateFilter";
 import { IntFilter } from "../inputs/IntFilter";
 import { IntNullableFilter } from "../inputs/IntNullableFilter";
 import { StringFilter } from "../inputs/StringFilter";
+import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
 @TypeGraphQL.InputType("QueueScalarWhereInput", {
   isAbstract: true
@@ -42,10 +43,10 @@ export class QueueScalarWhereInput {
   })
   name?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @TypeGraphQL.Field(_type => StringNullableFilter, {
     nullable: true
   })
-  address?: StringFilter | undefined;
+  address?: StringNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => EnumQueueStateFilter, {
     nullable: true
