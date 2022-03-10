@@ -6,6 +6,7 @@ import { DateTimeWithAggregatesFilter } from "../inputs/DateTimeWithAggregatesFi
 import { EnumQueueStateWithAggregatesFilter } from "../inputs/EnumQueueStateWithAggregatesFilter";
 import { IntNullableWithAggregatesFilter } from "../inputs/IntNullableWithAggregatesFilter";
 import { IntWithAggregatesFilter } from "../inputs/IntWithAggregatesFilter";
+import { StringNullableWithAggregatesFilter } from "../inputs/StringNullableWithAggregatesFilter";
 import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
 
 @TypeGraphQL.InputType("QueueScalarWhereWithAggregatesInput", {
@@ -42,10 +43,10 @@ export class QueueScalarWhereWithAggregatesInput {
   })
   name?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
     nullable: true
   })
-  address?: StringWithAggregatesFilter | undefined;
+  address?: StringNullableWithAggregatesFilter | undefined;
 
   @TypeGraphQL.Field(_type => EnumQueueStateWithAggregatesFilter, {
     nullable: true

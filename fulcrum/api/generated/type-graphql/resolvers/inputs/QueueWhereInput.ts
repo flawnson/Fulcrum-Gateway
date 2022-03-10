@@ -8,6 +8,7 @@ import { IntFilter } from "../inputs/IntFilter";
 import { IntNullableFilter } from "../inputs/IntNullableFilter";
 import { OrganizerRelationFilter } from "../inputs/OrganizerRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
+import { StringNullableFilter } from "../inputs/StringNullableFilter";
 import { UserListRelationFilter } from "../inputs/UserListRelationFilter";
 
 @TypeGraphQL.InputType("QueueWhereInput", {
@@ -44,10 +45,10 @@ export class QueueWhereInput {
   })
   name?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @TypeGraphQL.Field(_type => StringNullableFilter, {
     nullable: true
   })
-  address?: StringFilter | undefined;
+  address?: StringNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => EnumQueueStateFilter, {
     nullable: true
