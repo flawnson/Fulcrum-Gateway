@@ -7,8 +7,6 @@ import {ScrollView, useToast} from "native-base";
 import {useTranslation} from "react-i18next";
 import baseURL from "../../utilities/baseURL";
 import corsURL from "../../utilities/corsURL";
-import {scale} from "../../utilities/scales";
-import useDimensions from "../../utilities/useDimensions";
 
 
 export default function (props: {isFocused: boolean}) {
@@ -16,7 +14,6 @@ export default function (props: {isFocused: boolean}) {
     const route = useRoute<HomeScreenProps["route"]>()
     const [errors, setError] = useState<any>([]);
     const [state, setState] = useState<UserStats[]>([])
-    const {width, height} = useDimensions()
     const toast = useToast()
 
     useEffect(() => {

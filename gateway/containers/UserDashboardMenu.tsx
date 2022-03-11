@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import {
-    Text, Menu,
-    HamburgerIcon, Fab,
-    HStack, useToast
-} from 'native-base';
+import { Text, Menu,
+        HamburgerIcon, Fab,
+        HStack, useToast } from 'native-base';
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import { HomeScreenProps, ShareData } from "../types";
 import DeferPositionModal from "./DeferPositionModal";

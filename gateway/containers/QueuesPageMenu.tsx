@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import {AuthContext} from "../utilities/AuthContext";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/PreferencesContext";
-import EndQueueAlert from "./EndQueueAlert";
 import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
 import CreateQueueModal from "./CreateQueueModal";

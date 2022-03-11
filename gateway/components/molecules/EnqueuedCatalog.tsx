@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import EnqueuedCatalogCardGroup from "./UserCatalogCardGroup";
+import UserCatalogCardGroup from "./UserCatalogCardGroup";
 import useInterval, {interval} from "../../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../../types";
 import { useRoute } from "@react-navigation/native";
@@ -7,8 +7,6 @@ import {ScrollView, useToast} from "native-base";
 import {useTranslation} from "react-i18next";
 import baseURL from "../../utilities/baseURL";
 import corsURL from "../../utilities/corsURL";
-import {scale} from "../../utilities/scales";
-import useDimensions from "../../utilities/useDimensions";
 
 
 export default function (props: {isFocused: boolean}) {
@@ -16,7 +14,6 @@ export default function (props: {isFocused: boolean}) {
     const route = useRoute<HomeScreenProps["route"]>()
     const [state, setState] = useState<UserStats[]>([])
     const [errors, setErrors] = useState<any>([]);
-    const {width, height} = useDimensions()
     // The callback is so that we can call the method that deletes the cards from the flatlist when delete confirmed
     const [showConfirmActionAlert, setShowConfirmActionAlert] = useState<any>({show: false, callback: () => {}})
     const toast = useToast()
@@ -85,6 +82,7 @@ export default function (props: {isFocused: boolean}) {
                         userData.online = ((Math.abs(now - lastOnline)/1000)/60) <= 15
                         user_stats.push(userData)
                     })
+                    // console.log(user_stats)
                     setState(user_stats)
                 }
             )
@@ -94,16 +92,16 @@ export default function (props: {isFocused: boolean}) {
     }
 
     // Run on first render and if a user is kicked
-    useEffect(() => {fetchEnqueuedData().then()}, [showConfirmActionAlert])
+    useEffect(() => {fetchEnqueuedData().then()}, [showConfirmActionAlert.show])
     // Poll only if user is currently on this screen and if Alert isn't being shown
-    useInterval(fetchEnqueuedData, props.isFocused && !showConfirmActionAlert ? interval : null)
+    useInterval(fetchEnqueuedData, props.isFocused && !showConfirmActionAlert.show ? interval : null)
 
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
         >
-            <EnqueuedCatalogCardGroup
+            <UserCatalogCardGroup
                 entities={state}
                 setEntities={setState}
                 showConfirmActionAlert={showConfirmActionAlert}

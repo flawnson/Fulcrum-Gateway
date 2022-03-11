@@ -66,7 +66,7 @@ export default function (props: UserCatalogCardProps) {
                  },
                  credentials: 'include',
                  body: JSON.stringify({query: summonQuery, variables: {"userId": userId, "summoned": summoned}})
-            }).then(response => response.json()).then(data => {})
+            }).then(response => response.json()).then()
         } catch(error) {
             return error
         }

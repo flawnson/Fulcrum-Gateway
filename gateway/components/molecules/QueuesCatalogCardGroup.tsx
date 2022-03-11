@@ -9,9 +9,8 @@ import QueueMultiSelectButtons from "../organisms/QueueMultiSelectButtons";
 import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 import baseURL from "../../utilities/baseURL";
 import corsURL from "../../utilities/corsURL";
-import {scale} from "../../utilities/scales";
-import useDimensions from "../../utilities/useDimensions";
 import {useTranslation} from "react-i18next";
+import _ from "lodash";
 
 
 type QueuesStatsProps = {
@@ -30,7 +29,7 @@ type ConditionalWrapperArgs = {
 }
 
 
-export default function (props: QueuesStatsProps) {
+const QueuesCatalogCardGroup = (props: QueuesStatsProps) => {
     const { t } = useTranslation("queuesCatalogCardGroup")
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [queueState, setQueueState] = useState<QueueState>("ACTIVE")
@@ -205,6 +204,9 @@ export default function (props: QueuesStatsProps) {
             </Center>
         )
     }
+
+
+export default React.memo(QueuesCatalogCardGroup, (prevProps, nextProps) => _.isEqual(prevProps, nextProps))
 
 
 const styles = StyleSheet.create({
