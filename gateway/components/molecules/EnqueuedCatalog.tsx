@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import UserCatalogCardGroup from "./UserCatalogCardGroup";
 import useInterval, {interval} from "../../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../../types";
@@ -7,6 +7,7 @@ import {ScrollView, useToast} from "native-base";
 import {useTranslation} from "react-i18next";
 import baseURL from "../../utilities/baseURL";
 import corsURL from "../../utilities/corsURL";
+import {AppState} from "react-native";
 
 
 export default function (props: {isFocused: boolean}) {
@@ -94,7 +95,15 @@ export default function (props: {isFocused: boolean}) {
     // Run on first render and if a user is kicked
     useEffect(() => {fetchEnqueuedData().then()}, [showConfirmActionAlert.show])
     // Poll only if user is currently on this screen and if Alert isn't being shown
-    useInterval(fetchEnqueuedData, props.isFocused && !showConfirmActionAlert.show ? interval : null)
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
+    useEffect(() => {
+        AppState.addEventListener("change", nextAppState => {
+            appState.current = nextAppState;
+            setAppStateVisible(appState.current);
+        });
+    }, []);
+    useInterval(fetchEnqueuedData, props.isFocused && appStateVisible && !showConfirmActionAlert.show ? interval : null)
 
     return (
         <ScrollView

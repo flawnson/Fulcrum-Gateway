@@ -1,7 +1,7 @@
-import React, {SetStateAction, useEffect, useState} from 'react'
+import React, {SetStateAction, useEffect, useRef, useState} from 'react'
 import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native"
 import {DashboardStat, HomeScreenProps} from "../types"
-import {StyleSheet} from 'react-native'
+import {AppState, StyleSheet} from 'react-native'
 import {
     Text, Center,
     Heading, HStack, useToast
@@ -159,7 +159,15 @@ export default function () {
     // Run on first render and when the dashboardContext changes (to show the corresponding catalog list)
     useEffect(() => {fetchQueueData().then()}, [dashboardContext])
     // Poll only if user is currently on this screen
-    useInterval(fetchQueueData, useIsFocused() ? interval : null)
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
+    useEffect(() => {
+        AppState.addEventListener("change", nextAppState => {
+            appState.current = nextAppState;
+            setAppStateVisible(appState.current);
+        });
+    }, []);
+    useInterval(fetchQueueData, useIsFocused() && appStateVisible ? interval : null)
 
     return (
         <DashboardContext.Provider value={{dashboardContext, setDashboardContext}}>
