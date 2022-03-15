@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useCallback} from 'react'
+import React, {useEffect, useState, useCallback, useRef} from 'react'
 import {useIsFocused, useNavigation, useRoute, useFocusEffect} from "@react-navigation/native";
 import {HomeScreenProps, UserInfo} from "../types";
-import {StyleSheet, BackHandler} from 'react-native'
+import {StyleSheet, BackHandler, AppState} from 'react-native'
 import {Avatar, Center, Heading, HStack, Image, Text, useToast} from "native-base";
 
 import UserDashboardGroup from "../components/organisms/UserDashboardStats";
@@ -175,7 +175,15 @@ export default function () {
     // Run on first render or when modal is opened or closed
     useEffect(() => {fetchUserStats().then(null)}, [showVerifySMSModal])
     // Poll only if user is currently on this screen
-    useInterval(fetchUserStats, useIsFocused() && !isLeaveQueueAlertOpen ? interval : null)
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
+    useEffect(() => {
+        AppState.addEventListener("change", nextAppState => {
+            appState.current = nextAppState;
+            setAppStateVisible(appState.current);
+        });
+    }, []);
+    useInterval(fetchUserStats, useIsFocused() && appStateVisible && !isLeaveQueueAlertOpen ? interval : null)
 
     /*
     useFocusEffect(

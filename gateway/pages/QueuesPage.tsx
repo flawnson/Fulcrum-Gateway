@@ -1,7 +1,7 @@
-import React, {SetStateAction, useEffect, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import QueuesCatalogCardGroup from "../components/molecules/QueuesCatalogCardGroup"
+import {AppState} from "react-native";
 import {Heading, useToast, Center } from "native-base"
-import {AntDesign} from "@expo/vector-icons"
 import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps, QueueInfo} from "../types";
 import CreateQueueModal from "../containers/CreateQueueModal";
@@ -95,8 +95,16 @@ export default function () {
 
     // Run on first render and when a queue is created or deleted
     useEffect(() => {fetchQueuesData().then()}, [showCreateQueueModal, showConfirmActionAlert])
-    // Poll only if user is currently on this screen and alert is not shown (to prevent flickering)
-    useInterval(fetchQueuesData, useIsFocused() && !showConfirmActionAlert.show && !showCreateQueueModal ? interval : null)
+    // Poll only if user is currently on this screen, app state is active, and alert is not shown (to prevent flickering)
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
+    useEffect(() => {
+        AppState.addEventListener("change", nextAppState => {
+            appState.current = nextAppState;
+            setAppStateVisible(appState.current);
+        });
+    }, []);
+    useInterval(fetchQueuesData, useIsFocused() && appStateVisible && !showConfirmActionAlert.show && !showCreateQueueModal ? interval : null)
 
     return (
         <>

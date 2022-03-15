@@ -13,10 +13,9 @@ export default function () {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     const [joinCode, setJoinCode] = useState<string>("NONE");
-    const [scanned, setScanned] = useState<boolean>(false);
     const [showModal, setShowModal] = useState<boolean>(false);
     const toast = useToast()
-    const re = new RegExp("https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+    const re = new RegExp("((([A-Za-z]{3,9}:(?:\\/\\/)?)(?:[-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\\+\\$,\\w]+@)[A-Za-z0-9.-]+)((?:\\/[\\+~%\\/.\\w-_]*)?\\??(?:[-\\+=&;%@.\\w_]*)#?(?:[\\w]*))?)")
 
 
     useEffect(() => {
@@ -27,11 +26,9 @@ export default function () {
     }, []);
 
     const handleBarCodeScanned = ({ type, data }: {type: string, data: string}) => {
-        setScanned(true);
         if (re.test(data)) {
             setShowModal(true)
             const extractedJoinCode = /[^/]*$/.exec(data)![0]  // Regex to extract the string after the last forward slash
-            console.log(extractedJoinCode)
             setJoinCode(extractedJoinCode)
         } else {
             toast.show({
@@ -53,22 +50,22 @@ export default function () {
             <View style={styles.container}>
                 <Camera
                     style={StyleSheet.absoluteFillObject}
-                    onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                    onBarCodeScanned={handleBarCodeScanned}
                     barCodeScannerSettings={{
                         barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
                     }}
                 />
-                {scanned &&
-                    <Button
-                        onPress={() => setScanned(false)}
-                        style={styles.scanAgainButton}
-                    >
-                        <Text>
-                            {t("scan_again")}
-                        </Text>
-                    </Button>
-                }
             </View>
+            {/*{scanned &&*/}
+            {/*    <Button*/}
+            {/*        onPress={() => setScanned(false)}*/}
+            {/*        style={styles.scanAgainButton}*/}
+            {/*    >*/}
+            {/*        <Text color="white">*/}
+            {/*            {t("scan_again")}*/}
+            {/*        </Text>*/}
+            {/*    </Button>*/}
+            {/*}*/}
             <CreateUserModal
                 joinCode={joinCode}
                 navigation={navigation}
@@ -89,8 +86,6 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
     },
     scanAgainButton: {
-        flex: 1,
-        alignSelf: "center"
     },
 });
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import useInterval, {interval} from "../../utilities/useInterval";
 import {HomeScreenProps, UserStats} from "../../types";
 import { useRoute} from "@react-navigation/native";
@@ -7,8 +7,7 @@ import {ScrollView, useToast} from "native-base";
 import {useTranslation} from "react-i18next";
 import baseURL from "../../utilities/baseURL";
 import corsURL from "../../utilities/corsURL";
-import {scale} from "../../utilities/scales";
-import useDimensions from "../../utilities/useDimensions";
+import {AppState} from "react-native";
 
 
 export default function (props: {isFocused: boolean}) {
@@ -16,7 +15,6 @@ export default function (props: {isFocused: boolean}) {
     const route = useRoute<HomeScreenProps["route"]>()
     const [errors, setError] = useState<any>([]);
     const [state, setState] = useState<UserStats[]>([])
-    const {width, height} = useDimensions()
     const toast = useToast()
 
     useEffect(() => {
@@ -91,7 +89,15 @@ export default function (props: {isFocused: boolean}) {
     // Run on first render
     useEffect(() => {fetchAbandonedData().then(null)}, [])
     // Poll only if user is currently on this screen
-    useInterval(fetchAbandonedData, props.isFocused ? interval : null)
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
+    useEffect(() => {
+        AppState.addEventListener("change", nextAppState => {
+            appState.current = nextAppState;
+            setAppStateVisible(appState.current);
+        });
+    }, []);
+    useInterval(fetchAbandonedData, props.isFocused && appStateVisible ? interval : null)
 
     return (
         <ScrollView

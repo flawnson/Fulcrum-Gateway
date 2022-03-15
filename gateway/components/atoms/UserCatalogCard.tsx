@@ -1,8 +1,10 @@
-import React, {useState, useEffect, useRef, SetStateAction} from 'react';
+import React, {useState, useEffect, useRef, SetStateAction, useContext} from 'react';
 import {StyleSheet, Animated, PressableStateCallbackType, Pressable, Dimensions} from "react-native";
-import { HStack, Text,
-        Box, View,
-        Avatar, VStack } from 'native-base';
+import {
+    HStack, Text,
+    Box, View,
+    Avatar, VStack, useTheme
+} from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {UserStatus, UserStats} from "../../types";
 import { Swipeable, RectButton,
@@ -15,6 +17,7 @@ import { scale } from "../../utilities/scales"
 import corsURL from "../../utilities/corsURL";
 import baseURL from "../../utilities/baseURL";
 import {useTranslation} from "react-i18next";
+import {DashboardContext} from "../../utilities/DashboardContext";
 
 type UserCatalogCardProps = {
     entities: Array<UserStats>
@@ -39,6 +42,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function (props: UserCatalogCardProps) {
     const { t } = useTranslation("userCatalogCard")
+    const { colors } = useTheme()
     const [summoned, setSummoned] = useState<boolean>(!!props.entity.summoned)  // Force into boolean for serviced and abandoned
     const swipeableRef = useRef(null)  // Needed to automatically close swipe action
 
@@ -66,7 +70,7 @@ export default function (props: UserCatalogCardProps) {
                  },
                  credentials: 'include',
                  body: JSON.stringify({query: summonQuery, variables: {"userId": userId, "summoned": summoned}})
-            }).then(response => response.json()).then(data => {})
+            }).then(response => response.json()).then()
         } catch(error) {
             return error
         }
@@ -223,7 +227,7 @@ export default function (props: UserCatalogCardProps) {
                         <Avatar
                             size={scale(60)}
                             style={styles.avatar}
-                            source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mood[]=happy`}}
+                            source={{uri: `https://avatars.dicebear.com/api/micah/${props.entity.userId}.svg?mouth[]=smile&mouth[]=laughing&eyebrows[]=up`}}
                         >
                             {props.entity.online !== undefined ?
                                 <Avatar.Badge bg={props.entity.online ? "green.500" : "red.500"}/> : <></>}
@@ -247,7 +251,7 @@ export default function (props: UserCatalogCardProps) {
                                 selectable={false}
                                 name={summoned ? "bell-circle" : "bell-circle-outline"}
                                 size={scale(32)}
-                                color={"#999999"}
+                                color={summoned ? colors.primary[500] : colors.gray[400]}
                                 style={styles.icon}
                                 onPress={() => onBellPress()}
                             />

@@ -10,6 +10,7 @@ import NothingToSeeScreen from "../../screens/NothingToSeeScreen";
 import baseURL from "../../utilities/baseURL";
 import corsURL from "../../utilities/corsURL";
 import {useTranslation} from "react-i18next";
+import _ from 'lodash'
 
 
 type UserCatalogCardProps = {
@@ -25,7 +26,7 @@ type ConditionalWrapperArgs = {
     children: any
 }
 
-export default function (props: UserCatalogCardProps) {
+const UserCatalogCardGroup = (props: UserCatalogCardProps) => {
     const { t } = useTranslation(["userCatalogCardGroup"]);
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const parentNavigation = navigation.getParent()
@@ -203,15 +204,15 @@ export default function (props: UserCatalogCardProps) {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({item}: {item: UserStats}) => {
                         return <UserCatalogCard
-                                    entities={props.entities}
-                                    setEntities={props.setEntities}
-                                    onPress={() => handleOnPress(item)}
-                                    onLongPress={() => selectItems(item)}
-                                    deSelectItems={() => deSelectItems()}
-                                    selected={getSelected(item)}
-                                    showConfirmActionAlert={props.showConfirmActionAlert}
-                                    setShowConfirmActionAlert={props.setShowConfirmActionAlert}
-                                    entity={item}/>
+                            entities={props.entities}
+                            setEntities={props.setEntities}
+                            onPress={() => handleOnPress(item)}
+                            onLongPress={() => selectItems(item)}
+                            deSelectItems={() => deSelectItems()}
+                            selected={getSelected(item)}
+                            showConfirmActionAlert={props.showConfirmActionAlert}
+                            setShowConfirmActionAlert={props.setShowConfirmActionAlert}
+                            entity={item}/>
                         }
                     }
                 />
@@ -219,4 +220,9 @@ export default function (props: UserCatalogCardProps) {
         </Center>
     )
 }
+
+
+
+export default React.memo(UserCatalogCardGroup, (prevProps, nextProps) => _.isEqual(prevProps, nextProps))
+
 

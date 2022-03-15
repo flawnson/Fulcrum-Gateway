@@ -56,7 +56,10 @@
     "join_code_not_exist_message": "It looks like the join code you entered doesn't match any queue we have on record. Please check your code and try again, or use the QR code scanner.",
     "queue_paused_or_inactive_message": "It looks like the queue you're trying to join is either paused or inactive. Please try again or ask the organizer for details.",
     "already_enqueued_title": "You're already enqueued!",
-    "already_enqueued_message": "You're already in a queue. You have to leave this one before joining another queue."
+    "already_enqueued_message": "You're already in a queue. You have to leave this one before joining another queue.",
+    "queue_does_not_exist_title": "That queue does not exist!",
+    "queue_does_not_exist_message": "The queue with join code {{joinCode}} doesn't exist. Please check the join code and try again",
+    "organizer_or_assistant": "Are you an organizer?"
   },
   "createQueuePage": {
     "business_name_label": "Queue name",
@@ -132,7 +135,9 @@
   },
   "queuesPageMenu": {
     "create_queue": "Create Queue",
-    "logout_queue": "Logout"
+    "logout_queue": "Logout",
+    "confirm_delete_account_message": "Are you sure you want to delete your account?",
+    "delete_account": "Delete Account"
   },
   "queueMultiSelectButtons": {
     "pause": "Pause Queues",
