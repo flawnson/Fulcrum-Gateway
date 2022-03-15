@@ -128,8 +128,11 @@ function App() {
     const getAuthState = async () => {
         try {
             const authDataString = await AsyncStorage.getItem(AUTH_KEY);
-            const authData = authDataString ? JSON.parse(authDataString) : undefined;
-            setUserType(authData);
+            const authData = authDataString ? JSON.parse(authDataString) : "NONE";
+
+            if (state !== undefined) {
+                setUserType(authData);
+            }
         } catch (err) {
             setUserType("NONE");
         }
@@ -139,7 +142,7 @@ function App() {
         getAuthState().then()
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const restoreState = async () => {
             try {
                 const initialUrl = await Linking.getInitialURL();

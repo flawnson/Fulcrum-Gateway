@@ -2,9 +2,8 @@ import React, {useContext} from 'react';
 import {HStack, Box, Tooltip, Divider, Text, Pressable} from 'native-base';
 import { StyleSheet } from "react-native";
 import { DashboardStat } from "../../types";
-import {moderateScale, scale} from "../../utilities/scales";
+import { scale} from "../../utilities/scales";
 import {DashboardContext} from "../../utilities/DashboardContext";
-import {UserStatus} from "../../types";
 
 type Props = {
     stat: DashboardStat
@@ -12,11 +11,14 @@ type Props = {
 
 
 export default function (props: Props) {
-    const {setDashboardContext} = useContext(DashboardContext)
+    const {dashboardContext, setDashboardContext} = useContext(DashboardContext)
 
     const onCardPress = () => {
         const prefix = props.stat.prefix.toUpperCase()
-        setDashboardContext(prefix)
+        // Check if card has a catalog list (else don't do anything)
+        if (["ENQUEUED", "SERVICED", "ABANDONED"].indexOf(prefix) > -1) {
+            setDashboardContext(prefix)
+        }
     }
 
 
@@ -44,7 +46,7 @@ export default function (props: Props) {
                         borderWidth: "0",
                     }}
                     _light={{
-                        backgroundColor: "gray.50",
+                        backgroundColor: dashboardContext === props.stat.prefix.toUpperCase() ? "primary.50" : "gray.50",
                     }}
                     style={styles.card}
                 >

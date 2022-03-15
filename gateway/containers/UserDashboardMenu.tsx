@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import { Text, Menu,
         HamburgerIcon, Fab,
-        HStack, useToast } from 'native-base';
+        HStack, useToast,
+        Divider } from 'native-base';
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import { HomeScreenProps, ShareData } from "../types";
 import DeferPositionModal from "./DeferPositionModal";
@@ -121,18 +122,6 @@ export default function () {
                         </Text>
                     </HStack>
                 </Menu.Item>
-                <Menu.Item onPress={() => setIsLeaveQueueAlertOpen(true)}>
-                    <HStack space={3}>
-                        <Ionicons
-                            name={'md-exit-outline'}
-                            size={20}
-                            color={isThemeDark ? 'white': 'black'}
-                        />
-                        <Text>
-                            {t("leave")}
-                        </Text>
-                    </HStack>
-                </Menu.Item>
                 <Menu.Item onPress={() => navigation.navigate("ShareScreen", {shareData: shareData})}>
                     <HStack space={3}>
                         <MaterialCommunityIcons
@@ -142,6 +131,19 @@ export default function () {
                         />
                         <Text>
                             {t("share")}
+                        </Text>
+                    </HStack>
+                </Menu.Item>
+                <Divider mt="3" w="100%" />
+                <Menu.Item onPress={() => setIsLeaveQueueAlertOpen(true)}>
+                    <HStack space={3}>
+                        <Ionicons
+                            name={'md-exit-outline'}
+                            size={20}
+                            color={isThemeDark ? 'white': 'black'}
+                        />
+                        <Text>
+                            {t("leave")}
                         </Text>
                     </HStack>
                 </Menu.Item>

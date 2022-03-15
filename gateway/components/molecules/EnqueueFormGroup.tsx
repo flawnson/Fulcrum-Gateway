@@ -15,7 +15,6 @@ export default function () {
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const { t } = useTranslation(["homePage", "common"]);
-    const [showLoginModal, setShowLoginModal] = useState(false)
     const [showSignUpModal, setShowSignUpModal] = useState(false)
 
     return (
@@ -23,17 +22,12 @@ export default function () {
             <LogoAndName styles={styles.logo}/>
             <EnqueueForm route={route} navigation={navigation} />
             <Text style={styles.subText}>
-                <Text style={styles.linkText} onPress={() => setShowLoginModal(true)}>
-                    {t("login", {ns: "common"})}
-                </Text>
-                {t("or")}
                 <Text style={styles.linkText} onPress={() => setShowSignUpModal(true)}>
                     {t("signup", {ns: "common"})}
                 </Text>
                 {t('footer')}
                 <Text style={styles.linkText} onPress={() => navigation.navigate('HomePage')}> fiefoe.com</Text>
             </Text>
-            <LoginModal showModal={showLoginModal} setShowModal={setShowLoginModal}/>
             <OrganizerSignUpModal showModal={showSignUpModal} setShowModal={setShowSignUpModal}/>
         </View>
     )

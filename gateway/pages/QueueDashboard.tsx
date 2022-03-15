@@ -1,6 +1,6 @@
 import React, {SetStateAction, useEffect, useRef, useState} from 'react'
 import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native"
-import {DashboardStat, HomeScreenProps} from "../types"
+import {DashboardStat, HomeScreenProps, QueueState} from "../types"
 import {AppState, StyleSheet} from 'react-native'
 import {
     Text, Center,
@@ -20,6 +20,12 @@ type UserData = {
     user_id: string,
     join_time: Date,
     status: string,
+}
+
+type QueueDashboardStats = {
+    name: string,
+    state: QueueState,
+    stats: DashboardStat[],
 }
 
 
@@ -47,7 +53,7 @@ export default function () {
 
     const defaultProps = {
         name: "Some Queue",
-        state: "ACTIVE",
+        state: "ACTIVE" as QueueState,
         stats: [
             {prefix: t("enqueued_prefix"), stat: 0, suffix: "", tooltip: null},
             {prefix: t("serviced_prefix"), stat: 0, suffix: "", tooltip: null},
@@ -55,7 +61,7 @@ export default function () {
             {prefix: t("abandoned_prefix"), stat: 0, suffix: "", tooltip: null},
         ],
     }
-    const [props, setProps] = useState(defaultProps)
+    const [props, setProps] = useState<QueueDashboardStats>(defaultProps)
 
     // Two queries are needed depending on what type of user you are
     const assistantQuery = `
@@ -178,7 +184,7 @@ export default function () {
                 </HStack>
                 <QueueDashboardGroup {...props.stats}/>
                 <UserCatalogGroup isFocused={useIsFocused()}/>
-                <QueueDashboardMenu />
+                <QueueDashboardMenu queueState={props.state}/>
             </Center>
         </DashboardContext.Provider>
     )

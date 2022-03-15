@@ -11,6 +11,7 @@ import baseURL from "../../utilities/baseURL";
 import AreaCodeSelector from "../atoms/AreaCodeSelector";
 import corsURL from "../../utilities/corsURL";
 import {RouteProp} from "@react-navigation/native";
+import LoginModal from "../../containers/LoginModal";
 
 
 type EnqueueFormProps = {
@@ -38,6 +39,7 @@ export default function ({queueId, joinCode, route, navigation, setShowModal}: E
     const [isJoinCodeFormOpen, setJoinCodeFormOpen] = useState<boolean>(true)
     const [isNameFormOpen, setNameFormOpen] = useState<boolean>(false)
     const [isPhoneNumberFormOpen, setPhoneNumberFormOpen] = useState<boolean>(false)
+    const [showLoginModal, setShowLoginModal] = useState(false)
     const [errors, setError] = useState<any>([]);
     const [formErrors, setFormErrors] = useState<EnqueueFormData>({})
     const toast = useToast()
@@ -144,6 +146,14 @@ export default function ({queueId, joinCode, route, navigation, setShowModal}: E
                     if (!!data.errors?.length) {
                         // Check for errors on response
                         setError([...errors, data.errors])
+                    } else if (data.data.joinQueue?.error === "QUEUE_DOES_NOT_EXIST") {
+                        // Check if user exists on backend
+                        toast.show({
+                            title: t('queue_does_not_exist_title'),
+                            status: "error",
+                            description: t("queue_does_not_exist_message", {joinCode: formData.joinCode}),
+                            duration: 10
+                        })
                     } else if (data.data.joinQueue?.error === "USER_ALREADY_EXISTS") {
                         // Check if user exists on backend
                         toast.show({
@@ -158,8 +168,8 @@ export default function ({queueId, joinCode, route, navigation, setShowModal}: E
                     } else if (data?.data?.createUser) {
                         // Case if Organizer or Assistant creates user
                     } else if (data?.data?.joinQueue.id) {
-                            signIn('USER')
-                            navigation.navigate("UserDashboard", {name: formData.name!, phoneNumber: formData.phoneNumber!})
+                        signIn('USER')
+                        navigation.navigate("UserDashboard", {name: formData.name!, phoneNumber: formData.phoneNumber!})
                     }
                     // turn back to false for when user revisits page
                     setSubmitted(false)
@@ -244,6 +254,7 @@ export default function ({queueId, joinCode, route, navigation, setShowModal}: E
                             </Center>
                             <Input
                                 autoFocus={true}
+                                keyboardType="numeric"
                                 placeholder="Ex. 123456"
                                 onChangeText={(value) => setData({ ...formData, joinCode: value })}
                                 onKeyPress={(event) => {
@@ -379,6 +390,19 @@ export default function ({queueId, joinCode, route, navigation, setShowModal}: E
                     </ScaleFade>
                 </>
             )}
+            <Text mt="5" color={'black'}>
+                {t("organizer_or_assistant")}
+            </Text>
+            <Button
+                width="215"
+                onPress={() => setShowLoginModal(true)}
+                mt="5"
+            >
+                <Text bold color={'white'}>
+                    {t('login', { ns: 'common' })}
+                </Text>
+            </Button>
+            <LoginModal showModal={showLoginModal} setShowModal={setShowLoginModal}/>
         </>
     );
 }

@@ -6,21 +6,22 @@ import {HomeScreenProps, QueueState, ShareData} from "../types";
 import CreateUserModal from "./CreateUserModal"
 import { useTranslation } from "react-i18next";
 import {AuthContext} from "../utilities/AuthContext";
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { PreferencesContext } from "../utilities/PreferencesContext";
 import EndQueueAlert from "./EndQueueAlert";
 import ChangeQueuePasswordModal from "./ChangeQueuePasswordModal";
 import baseURL from "../utilities/baseURL";
 import corsURL from "../utilities/corsURL";
 
-export default function () {
+
+export default function (props: {queueState: QueueState}) {
     const { t } = useTranslation(["queueDashboardMenu"]);
     const route = useRoute<HomeScreenProps["route"]>();  // Don't need this but if I want to pass config or params...
     const navigation = useNavigation<HomeScreenProps["navigation"]>()  // Can call directly in child components instead
     const { signedInAs } = React.useContext(AuthContext)
     const { signOut } = React.useContext(AuthContext)
     const { isThemeDark } = React.useContext(PreferencesContext)
-    const [queueState, setQueueState] = useState<QueueState>("ACTIVE")
+    const [queueState, setQueueState] = useState<QueueState>(props.queueState)
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
     const [showChangeQueuePasswordModal, setShowChangeQueuePasswordModal] = useState(false);
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
@@ -251,7 +252,7 @@ export default function () {
                 <Menu.Item onPress={() => pauseQueue()}>
                     <HStack space={3}>
                         <MaterialCommunityIcons
-                            name={'pause-circle'}
+                            name={queueState === "ACTIVE" ? 'pause-circle' : 'play-circle'}
                             size={20}
                             color={isThemeDark ? 'white': 'black'}
                         />
@@ -272,6 +273,35 @@ export default function () {
                         </Text>
                     </HStack>
                 </Menu.Item>
+                {signedInAs === "ORGANIZER" ?
+                    <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setShowChangeQueuePasswordModal(true)}>
+                        <HStack space={3}>
+                            <MaterialCommunityIcons
+                                name={'form-textbox-password'}
+                                size={20}
+                                color={isThemeDark ? 'white' : 'black'}
+                            />
+                            <Text color={isThemeDark ? 'white' : 'black'}>
+                                {t("change_password")}
+                            </Text>
+                        </HStack>
+                    </Menu.Item>
+                    : <></>}
+                <Divider mt="3" w="100%" />
+                {signedInAs === "ORGANIZER" ?
+                    <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
+                        <HStack space={3}>
+                            <MaterialIcons
+                                name={'delete-forever'}
+                                size={20}
+                                color={isThemeDark ? 'white' : 'black'}
+                            />
+                            <Text color={isThemeDark ? 'white' : 'black'}>
+                                {t("delete_queue")}
+                            </Text>
+                        </HStack>
+                    </Menu.Item>
+                : <></>}
                 <Menu.Item onPress={() => onLogoutPress()}>
                     <HStack space={3}>
                         <MaterialCommunityIcons
@@ -284,34 +314,6 @@ export default function () {
                         </Text>
                     </HStack>
                 </Menu.Item>
-                {signedInAs === "ORGANIZER" ?
-                    <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setIsAlertOpen(true)}>
-                        <HStack space={3}>
-                            <Ionicons
-                                name={'close-circle'}
-                                size={20}
-                                color={isThemeDark ? 'white' : 'black'}
-                            />
-                            <Text color={isThemeDark ? 'white' : 'black'}>
-                                {t("delete_queue")}
-                            </Text>
-                        </HStack>
-                    </Menu.Item>
-                : <></>}
-                {signedInAs === "ORGANIZER" ?
-                    <Menu.Item isDisabled={signedInAs !== "ORGANIZER"} onPress={() => setShowChangeQueuePasswordModal(true)}>
-                        <HStack space={3}>
-                            <Ionicons
-                                name={'close-circle'}
-                                size={20}
-                                color={isThemeDark ? 'white' : 'black'}
-                            />
-                            <Text color={isThemeDark ? 'white' : 'black'}>
-                                {t("change_password")}
-                            </Text>
-                        </HStack>
-                    </Menu.Item>
-                : <></>}
             </Menu>
             <CreateUserModal
                 queueId={shareData.currentQueueId}
