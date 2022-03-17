@@ -87,6 +87,7 @@ export default function (props: VerifySMSModalProps) {
                     setSubmitted(false)
                 } else {
                     // If successfully verified SMS
+                    setValue('')
                     setSubmitted(false)  // To reset form in case unverified again
                     props.setShowModal(false)
                 }
@@ -105,6 +106,13 @@ export default function (props: VerifySMSModalProps) {
     function onSubmit () {
         submitSMSVerification().then()
     }
+
+    useEffect(() => {
+        // To automatically submit the code when confirmation code provided is the correct length
+        if (value.length === 6) {
+            onSubmit()
+        }
+    }, [value])
 
     return (
         <>

@@ -4,6 +4,7 @@ import "reflect-metadata";
 import express from "express";
 import cors from "cors";
 import { createClient } from 'redis';
+import bodyParser from "body-parser";
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import * as dotenv from 'dotenv';
@@ -26,6 +27,9 @@ import { authChecker } from "./middleware/authChecker";
 import { cookieName } from "./constants"
 import { rateLimiter } from './middleware/rateLimiter';
 
+// import { router } from './routes/user'
+const router = require('./routes/user')
+
 const pregeneratedCrudResolvers = [
   // Currently not using any
 ];
@@ -46,6 +50,10 @@ const schema = buildSchemaSync({
 
 const app = express();
 const port = 8080;
+
+// For the REST API to extract the entire body portion of an incoming request stream and expose it on req.body
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const originUrl =
 (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test")
@@ -107,6 +115,8 @@ app.use('/api', graphqlHTTP(async (req, res, params) => ({
   context: { req, res, prisma },
   graphiql: (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test") ? false : true,
 })));
+
+app.use('/rest', router);
 
 //module.exports = app;
 export default app;
