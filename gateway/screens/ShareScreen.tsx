@@ -1,19 +1,22 @@
 // @ts-nocheck to prevent errors for route-params
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet } from 'react-native'
 import {Text, Button, Image, Center, Heading} from 'native-base'
 import { useTranslation } from "react-i18next";
-import {useRoute} from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import {HomeScreenProps} from "../types";
 import { SafeAreaView } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 
 
 export default function() {
     // We get all share data via route params because all user types can access the Share Screen
     // This also prevents rerender hell caused by having the fetch share data method in this screen with useEffect
     const route = useRoute<HomeScreenProps["route"]>()
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const { t } = useTranslation("shareScreen");
+    useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     const copyToClipboard = () => {
         Clipboard.setString(`https://fiefoe.com/${route.params!["shareData"]["currentQueueJoinCode"]}`);

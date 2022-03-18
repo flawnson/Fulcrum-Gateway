@@ -20,8 +20,6 @@ import UserDashboard from "./pages/UserDashboard"
 import { RootStackParamList } from "./types"
 import { nativebaseTheme, navigationTheme } from "./theme"
 import QueuesPage from "./pages/QueuesPage"
-import EnqueuedPage from "./components/molecules/EnqueuedCatalog";
-import QueueDashboardTabs from "./pages/QueueDashboardTabs"
 import QRCodeScanner from "./components/organisms/QRCodeScanner"
 import ErrorScreen from "./screens/ErrorScreen"
 import ConfirmationScreen from "./screens/ConfirmationScreen"
@@ -33,6 +31,7 @@ import SplashScreen from "./screens/SplashScreen"
 import {UserTypes} from "./types"
 import {AuthContext} from "./utilities/AuthContext";
 import LogoAndName from "./components/atoms/LogoAndName";
+import RightHeaderGroup from "./components/molecules/RightHeaderGroup";
 
 // Strict mode can be changed to trigger a warning or an error in case of any nativebase issues
 const nativebaseConfig: object = {
@@ -192,10 +191,13 @@ function App() {
                         }
                     >
                         <Stack.Navigator initialRouteName={"HomePage"}>
-                            <Stack.Group screenOptions={{ headerShown: true,
-                                                          headerBackVisible: true,
-                                                          title: "FieFoe",
-                                                          headerTitle: (props) => <LogoAndName />}} >
+                            <Stack.Group screenOptions={{
+                                headerShown: true,
+                                headerBackVisible: true,
+                                title: "FieFoe",
+                                headerTitle: (props) => <LogoAndName />,
+                                headerRight: RightHeaderGroup()}}
+                            >
                                 {userType === "USER" ? (
                                     <>
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
@@ -212,7 +214,6 @@ function App() {
                                 ) : userType === "ORGANIZER" ? (
                                     <>
                                         <Stack.Screen name="QueuesPage" component={QueuesPage} />
-                                        <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
@@ -225,7 +226,6 @@ function App() {
                                     </>
                                 ) : userType === "ASSISTANT" ? (
                                     <>
-                                        <Stack.Screen name="QueueDashboardTabs" component={QueueDashboardTabs} />
                                         <Stack.Screen name="QueueDashboard" component={QueueDashboard} />
                                         <Stack.Screen name="UserDashboard" component={UserDashboard} />
                                         <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />

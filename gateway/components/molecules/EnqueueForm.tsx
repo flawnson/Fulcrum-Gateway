@@ -390,8 +390,8 @@ export default function ({queueId, joinCode, route, navigation, setShowModal}: E
                     </ScaleFade>
                 </>
             )}
-            <Text mt="5" color={'black'}>
-                {t("organizer_or_assistant")}
+            <Text bold mt="5" color={'black'}>
+                {t("organizer_login")}
             </Text>
             <Button
                 width="215"

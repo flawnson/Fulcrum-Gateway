@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, TouchableHighlight} from 'react-native'
 import {Pressable, Icon, IconButton, View} from 'native-base'
-import EnqueueGroup from "../components/molecules/EnqueueFormGroup";
+import EnqueueGroup from "../components/organisms/EnqueueFormGroup";
 import QRCodeScanner from "../components/organisms/QRCodeScanner";
 import {PreferencesContext} from "../utilities/PreferencesContext";
 import {useNavigation} from "@react-navigation/native";

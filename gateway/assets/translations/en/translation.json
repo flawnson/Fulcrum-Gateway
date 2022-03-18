@@ -59,7 +59,7 @@
     "already_enqueued_message": "You're already in a queue. You have to leave this one before joining another queue.",
     "queue_does_not_exist_title": "That queue does not exist!",
     "queue_does_not_exist_message": "The queue with join code {{joinCode}} doesn't exist. Please check the join code and try again",
-    "organizer_or_assistant": "Are you an organizer?"
+    "organizer_login": "Are you an organizer?"
   },
   "createQueuePage": {
     "business_name_label": "Queue name",

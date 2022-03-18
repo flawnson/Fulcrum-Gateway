@@ -15,6 +15,7 @@ import baseURL from "../utilities/baseURL"
 import corsURL from "../utilities/corsURL";
 import {DashboardContext} from "../utilities/DashboardContext";
 import UserCatalogGroup from "../components/organisms/UserCatalogGroup";
+import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 
 type UserData = {
     user_id: string,
@@ -32,8 +33,10 @@ type QueueDashboardStats = {
 export default function () {
     const { t } = useTranslation(["queueDashboard"]);
     const route = useRoute<HomeScreenProps["route"]>()
+    const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const [errors, setError] = useState<any>([]);
     const [dashboardContext, setDashboardContext] = useState<string>("ENQUEUED");
+    useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
     const toast = useToast()
     const toastId = "errorToast"
 

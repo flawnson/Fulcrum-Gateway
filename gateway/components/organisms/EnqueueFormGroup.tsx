@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native'
 import { View, Text } from 'native-base'
-import EnqueueForm from '../organisms/EnqueueForm'
+import EnqueueForm from '../molecules/EnqueueForm'
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { HomeScreenProps } from "../../types";
 import { useTranslation } from "react-i18next";
-import LoginModal from "../../containers/LoginModal";
 import OrganizerSignUpModal from "../../containers/OrganizerSignUpModal";
 import LogoAndName from "../atoms/LogoAndName";
 import {scale} from "../../utilities/scales";

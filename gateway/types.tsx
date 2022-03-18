@@ -7,7 +7,6 @@ export type RootStackParamList = {
     HomePage: undefined | any | {joinCode: string}; // Confirmation screen and QueueDashboardMenu complains about types if I don't any
     UserDashboard: undefined | {name: string, phoneNumber: string};
     QueueDashboard: {queueId: QueueInfo["queueId"]};
-    QueueDashboardTabs: undefined | {queueId: QueueInfo["queueId"]};  // MAY NOT NEED ANYMORE IF WE GET RID OF TABS
     CreateQueuePage: undefined;
     AbandonedScreen: undefined;
     ShareScreen: {shareData: ShareData};

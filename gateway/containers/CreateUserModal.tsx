@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal } from 'native-base'
 import { HomeScreenProps, RootStackParamList } from "../types";
 import { useTranslation } from "react-i18next";
-import EnqueueForm from "../components/organisms/EnqueueForm";
+import EnqueueForm from "../components/molecules/EnqueueForm";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 

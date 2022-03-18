@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { Button, Link,
         Modal, Center,
-        useToast } from 'native-base'
-import { StyleSheet, SafeAreaView,
-        Text, View } from 'react-native';
+        useToast, View,
+        Heading, Text } from 'native-base'
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { CodeField, Cursor,
         useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import { useTranslation } from "react-i18next";
@@ -126,12 +126,25 @@ export default function (props: VerifySMSModalProps) {
                     <Modal.Header>{t("title")}</Modal.Header>
                     <Modal.Body>
                         <SafeAreaView style={styles.root}>
-                            <Text style={styles.title}>
+                            <Heading
+                                size="lg"
+                                fontWeight="600"
+                                style={styles.title}
+                            >
                                 {t("hello_message", {user_name: props.userInfo.user_name})}
-                            </Text>
-                            <Text style={styles.subtitle}>
+                            </Heading>
+                            <Heading
+                                mt="1"
+                                _dark={{
+                                    color: "warmGray.200",
+                                }}
+                                color="coolGray.600"
+                                fontWeight="medium"
+                                size="xs"
+                                style={styles.subtitle}
+                            >
                                 {t("message", {phone_number: props.userInfo.phone_number})}
-                            </Text>
+                            </Heading>
                             <Center>
                                 <CodeField
                                     ref={ref}
@@ -193,11 +206,9 @@ const styles = StyleSheet.create({
     },
     title: {
         textAlign: 'center',
-        fontSize: scale(24)
     },
     subtitle: {
         textAlign: 'center',
-        fontSize: scale(16)
     },
     codeFieldRoot: {
         marginTop: 20,

@@ -1,24 +1,39 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View, Text} from 'react-native'
 import {useNavigation} from "@react-navigation/native";
 import {HomeScreenProps} from "../types";
-import {Center} from "native-base";
+import {Center, Heading} from "native-base";
 import {useTranslation} from "react-i18next";
+import RightHeaderGroup from "../components/molecules/RightHeaderGroup";
 
 
 export default function() {
     const navigation = useNavigation<HomeScreenProps["navigation"]>()
     const { t } = useTranslation("endScreen");
+    useEffect(() => navigation.setOptions({headerRight: RightHeaderGroup()}), [])
 
     return (
         <Center style={styles.container}>
-            <Text style={styles.header}>
+            <Heading
+                size="lg"
+                fontWeight="600"
+                style={styles.header}
+            >
                 {t('message')}
-            </Text>
-            <Text style={styles.subText}>
+            </Heading>
+            <Heading
+                mt="1"
+                _dark={{
+                    color: "warmGray.200",
+                }}
+                color="coolGray.600"
+                fontWeight="medium"
+                size="xs"
+                style={styles.subText}
+            >
                 {t('footer')}
-            <Text style={styles.linkText} onPress={() => navigation.navigate("HomePage")}> fiefoe.com</Text>
-            </Text>
+                <Text style={styles.linkText} onPress={() => navigation.navigate("HomePage")}> fiefoe.com</Text>
+            </Heading>
         </Center>
     )
 }
@@ -26,19 +41,17 @@ export default function() {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
     },
     header: {
-        flex: 1,
         margin: 10,
-        fontSize: 40,
-        textAlign: "center",
+        fontSize: 36,
     },
     subText: {
-        textAlign: "center",
         margin: 10,
     },
     linkText: {

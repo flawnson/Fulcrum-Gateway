@@ -10,20 +10,6 @@ export default {
         UserDashboard: {
             path: 'userdashboard'
         },
-        QueueDashboardTabs: {
-            path: 'queuedashboardtabs',
-            screens: {
-                EnqueuedPage: {
-                    path: 'enqueuedpage'
-                },
-                ServicedPage: {
-                    path: 'servicedpage'
-                },
-                AbandonedPage: {
-                    path: 'abandonedpage'
-                }
-            }
-        },
         CreateQueuePage: {
             path: 'createqueuepage'
         },
