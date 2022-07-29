@@ -38,7 +38,6 @@ export default function () {
             toast.show({
                 id: toastId,
                 title: t('something_went_wrong', {ns: "common"}),
-                status: "error",
                 description: t("cannot_fetch_queue_message"),
                 duration: 10
             })
